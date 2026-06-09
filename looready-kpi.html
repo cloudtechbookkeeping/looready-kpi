@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>LooReady — Amazon KPI Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.js" integrity="sha384-iU8HYtnGQ8Cy4zl7gbNMOhsDTTKX02BTXptVP/vqAWIaTfM7isw76iyZCsjL2eVi" crossorigin="anonymous"></script>
+<style>
+  :root { color-scheme: light; }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #f0f2f5;
+    color: #1a1a2e;
+    min-height: 100vh;
+    font-size: 13px;
+  }
+
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    color: white;
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  }
+  .header-left { display: flex; align-items: center; gap: 14px; }
+  .logo {
+    background: #ff9900;
+    color: #1a1a2e;
+    font-weight: 800;
+    font-size: 14px;
+    padding: 5px 10px;
+    border-radius: 6px;
+    letter-spacing: 0.5px;
+  }
+  .header h1 { font-size: 15px; font-weight: 600; color: #e8e8f0; }
+  .header-meta { font-size: 11px; color: #8892b0; margin-top: 1px; }
+  .live-badge {
+    display: flex; align-items: center; gap: 6px;
+    background: rgba(255,255,255,0.08);
+    padding: 5px 12px; border-radius: 20px; font-size: 11px; color: #64ffda;
+  }
+  .live-dot { width: 6px; height: 6px; background: #64ffda; border-radius: 50%; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+  /* Date tabs */
+  .date-nav {
+    background: white;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .date-tab {
+    padding: 10px 16px; cursor: pointer; font-size: 12px; font-weight: 500;
+    color: #6b7280; border-bottom: 2px solid transparent;
+    transition: all 0.15s; white-space: nowrap;
+  }
+  .date-tab.active { color: #ff9900; border-bottom-color: #ff9900; }
+  .date-tab:hover:not(.active) { color: #374151; }
+
+  /* Main layout */
+  .main { padding: 20px 24px; max-width: 1400px; margin: 0 auto; }
+
+  /* Alert banner */
+  .alert-banner {
+    background: #fff3cd; border: 1px solid #ffc107; border-radius: 8px;
+    padding: 10px 16px; margin-bottom: 16px;
+    display: flex; align-items: center; gap: 10px; font-size: 12px; color: #856404;
+  }
+  .alert-icon { font-size: 16px; }
+
+  /* KPI Card grid */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  @media (max-width: 1100px) { .kpi-grid { grid-template-columns: repeat(3, 1fr); } }
+
+  .kpi-card {
+    background: white;
+    border-radius: 10px;
+    padding: 14px 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.07);
+    border: 1px solid #f0f0f0;
+    position: relative;
+    overflow: hidden;
+  }
+  .kpi-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  }
+  .kpi-card.revenue::before { background: #10b981; }
+  .kpi-card.ads::before { background: #f59e0b; }
+  .kpi-card.traffic::before { background: #3b82f6; }
+  .kpi-card.inventory::before { background: #8b5cf6; }
+  .kpi-card.health::before { background: #ec4899; }
+
+  .kpi-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: #9ca3af; margin-bottom: 6px; }
+  .kpi-value { font-size: 22px; font-weight: 700; color: #111827; line-height: 1; }
+  .kpi-value.small { font-size: 18px; }
+  .kpi-sub { font-size: 10px; color: #6b7280; margin-top: 4px; }
+  .kpi-change { display: inline-flex; align-items: center; gap: 2px; font-size: 10px; font-weight: 600; padding: 2px 6px; border-radius: 10px; margin-top: 4px; }
+  .kpi-change.up { background: #d1fae5; color: #059669; }
+  .kpi-change.down { background: #fee2e2; color: #dc2626; }
+  .kpi-change.warn { background: #fef3c7; color: #d97706; }
+
+  /* Two-col layout */
+  .two-col { display: grid; grid-template-columns: 2fr 1fr; gap: 16px; margin-bottom: 16px; }
+  .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+
+  /* Section cards */
+  .section-card {
+    background: white; border-radius: 10px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.07);
+    border: 1px solid #f0f0f0; overflow: hidden;
+  }
+  .section-header {
+    padding: 12px 16px; border-bottom: 1px solid #f3f4f6;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .section-title { font-size: 12px; font-weight: 700; color: #374151; text-transform: uppercase; letter-spacing: 0.5px; }
+  .section-badge { font-size: 10px; background: #f3f4f6; color: #6b7280; padding: 2px 8px; border-radius: 10px; }
+  .section-body { padding: 16px; }
+
+  /* Mini stat rows */
+  .stat-row { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid #f9fafb; }
+  .stat-row:last-child { border-bottom: none; }
+  .stat-name { font-size: 12px; color: #4b5563; }
+  .stat-val { font-size: 12px; font-weight: 600; color: #111827; }
+  .stat-val.green { color: #059669; }
+  .stat-val.red { color: #dc2626; }
+  .stat-val.orange { color: #d97706; }
+
+  /* Product table */
+  .product-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .product-table th {
+    text-align: left; padding: 8px 12px; font-size: 10px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.5px; color: #9ca3af;
+    background: #f9fafb; border-bottom: 1px solid #e5e7eb;
+  }
+  .product-table td { padding: 10px 12px; border-bottom: 1px solid #f3f4f6; vertical-align: middle; }
+  .product-table tr:last-child td { border-bottom: none; }
+  .product-table tr:hover td { background: #fafafa; }
+
+  .sku-badge { font-size: 10px; background: #eff6ff; color: #3b82f6; padding: 2px 7px; border-radius: 4px; font-weight: 600; }
+  .status-badge { font-size: 10px; padding: 2px 8px; border-radius: 10px; font-weight: 600; }
+  .status-badge.active { background: #d1fae5; color: #059669; }
+  .status-badge.suppressed { background: #fee2e2; color: #dc2626; }
+
+  .progress-bar { background: #f3f4f6; border-radius: 4px; height: 5px; margin-top: 3px; }
+  .progress-fill { height: 100%; border-radius: 4px; background: #10b981; }
+
+  /* Chart container */
+  .chart-wrap { position: relative; height: 180px; }
+
+  /* ACOS indicator */
+  .acos-meter { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
+  .acos-bar { flex: 1; height: 8px; background: #f3f4f6; border-radius: 4px; overflow: hidden; }
+  .acos-fill { height: 100%; border-radius: 4px; background: linear-gradient(90deg, #10b981, #f59e0b, #ef4444); }
+
+  /* Profit breakdown */
+  .profit-row { display: flex; align-items: center; gap: 10px; padding: 6px 0; }
+  .profit-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .profit-label { flex: 1; font-size: 11px; color: #4b5563; }
+  .profit-amount { font-size: 12px; font-weight: 600; }
+  .profit-pct { font-size: 10px; color: #9ca3af; margin-left: 4px; }
+
+  /* Donut wrapper */
+  .donut-wrap { position: relative; height: 160px; display: flex; align-items: center; justify-content: center; }
+  .donut-center { position: absolute; text-align: center; pointer-events: none; }
+  .donut-center-val { font-size: 20px; font-weight: 700; color: #111827; }
+  .donut-center-label { font-size: 10px; color: #9ca3af; }
+
+  /* Updated timestamp */
+  .updated { text-align: right; font-size: 10px; color: #9ca3af; margin-bottom: 12px; }
+
+  /* Scrollable */
+  .table-scroll { overflow-x: auto; }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <div class="header-left">
+    <div class="logo">amazon</div>
+    <div>
+      <div class="header h1" style="font-size:15px;font-weight:600;color:#e8e8f0;">LooReady — KPI Dashboard</div>
+      <div class="header-meta">United States · Toilet Seat Covers · FBA Seller</div>
+    </div>
+  </div>
+  <div class="live-badge">
+    <div class="live-dot"></div>
+    Live · Updated June 9, 2026
+  </div>
+</div>
+
+<!-- Date Nav -->
+<div class="date-nav">
+  <div class="date-tab active" onclick="switchTab(this,'30d')">Last 30 Days</div>
+  <div class="date-tab" onclick="switchTab(this,'7d')">Last 7 Days</div>
+  <div class="date-tab" onclick="switchTab(this,'today')">Today</div>
+  <div class="date-tab" onclick="switchTab(this,'lifetime')">Lifetime</div>
+</div>
+
+<!-- Main -->
+<div class="main">
+
+  <div class="updated">Data snapshot: June 9, 2026 · SP-API live pull</div>
+
+  <!-- Alert -->
+  <div class="alert-banner">
+    <span class="alert-icon">⚠️</span>
+    <strong>Action Required:</strong>&nbsp;ASIN B0GLV3DH7X (LR-CS-120, $69.99) is Search Suppressed — fix listing to restore visibility.
+    &nbsp;|&nbsp; 1 campaign went out of budget — estimated missed sales: $66–$205.
+  </div>
+
+  <!-- KPI Cards -->
+  <div class="kpi-grid" id="kpi-cards">
+    <!-- Revenue -->
+    <div class="kpi-card revenue">
+      <div class="kpi-label">Revenue</div>
+      <div class="kpi-value" id="kv-revenue">$35,210</div>
+      <div class="kpi-sub" id="ks-revenue">Last 30 days · All products</div>
+      <div class="kpi-change up">▲ Organic + PPC</div>
+    </div>
+    <!-- Units Sold -->
+    <div class="kpi-card revenue">
+      <div class="kpi-label">Units Sold</div>
+      <div class="kpi-value" id="kv-units">2,045</div>
+      <div class="kpi-sub" id="ks-units">Avg 68/day</div>
+      <div class="kpi-change up">▲ 48 B2B</div>
+    </div>
+    <!-- Ad Spend -->
+    <div class="kpi-card ads">
+      <div class="kpi-label">Ad Spend</div>
+      <div class="kpi-value small" id="kv-spend">$226,449</div>
+      <div class="kpi-sub" id="ks-spend">Lifetime total</div>
+      <div class="kpi-change warn">⚡ 1 out of budget</div>
+    </div>
+    <!-- ACOS -->
+    <div class="kpi-card ads">
+      <div class="kpi-label">ACOS</div>
+      <div class="kpi-value" id="kv-acos">51.5%</div>
+      <div class="kpi-sub" id="ks-acos">Lifetime avg</div>
+      <div class="kpi-change warn">Target &lt;35%</div>
+    </div>
+    <!-- Sessions -->
+    <div class="kpi-card traffic">
+      <div class="kpi-label">Sessions</div>
+      <div class="kpi-value" id="kv-sessions">11,104</div>
+      <div class="kpi-sub" id="ks-sessions">Last 30 days</div>
+      <div class="kpi-change up">▲ 17.39% CVR</div>
+    </div>
+    <!-- IPI Score -->
+    <div class="kpi-card inventory">
+      <div class="kpi-label">IPI Score</div>
+      <div class="kpi-value" id="kv-ipi">628</div>
+      <div class="kpi-sub" id="ks-ipi">Range 570–686</div>
+      <div class="kpi-change up">▲ Healthy</div>
+    </div>
+  </div>
+
+  <!-- Row 2: Revenue chart + Profit breakdown -->
+  <div class="two-col">
+
+    <!-- Revenue & sessions chart -->
+    <div class="section-card">
+      <div class="section-header">
+        <span class="section-title">📈 Revenue Trend — Last 30 Days</span>
+        <span class="section-badge">Apr 29 – May 28</span>
+      </div>
+      <div class="section-body">
+        <div class="chart-wrap">
+          <canvas id="revenueChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Profit Breakdown -->
+    <div class="section-card">
+      <div class="section-header">
+        <span class="section-title">💰 Profit Breakdown</span>
+        <span class="section-badge">30-Day Est.</span>
+      </div>
+      <div class="section-body">
+        <div class="donut-wrap">
+          <canvas id="profitDonut" width="160" height="160"></canvas>
+          <div class="donut-center">
+            <div class="donut-center-val">~47%</div>
+            <div class="donut-center-label">Est. Margin</div>
+          </div>
+        </div>
+        <div style="margin-top:8px;">
+          <div class="profit-row">
+            <div class="profit-dot" style="background:#10b981;"></div>
+            <div class="profit-label">Gross Revenue</div>
+            <div class="profit-amount">$35,210<span class="profit-pct">100%</span></div>
+          </div>
+          <div class="profit-row">
+            <div class="profit-dot" style="background:#f59e0b;"></div>
+            <div class="profit-label">Amazon Fees (~15%)</div>
+            <div class="profit-amount" style="color:#d97706;">-$5,282<span class="profit-pct">15%</span></div>
+          </div>
+          <div class="profit-row">
+            <div class="profit-dot" style="background:#3b82f6;"></div>
+            <div class="profit-label">Est. FBA Fulfillment</div>
+            <div class="profit-amount" style="color:#3b82f6;">-$6,135<span class="profit-pct">~$3/unit</span></div>
+          </div>
+          <div class="profit-row">
+            <div class="profit-dot" style="background:#ec4899;"></div>
+            <div class="profit-label">Ad Spend (prorated)</div>
+            <div class="profit-amount" style="color:#ec4899;">-$7,050<span class="profit-pct">20%</span></div>
+          </div>
+          <div class="profit-row" style="border-top:2px solid #e5e7eb;margin-top:4px;padding-top:8px;">
+            <div class="profit-dot" style="background:#8b5cf6;"></div>
+            <div class="profit-label"><strong>Est. Net Profit</strong></div>
+            <div class="profit-amount" style="color:#8b5cf6;font-size:14px;"><strong>~$16,743</strong><span class="profit-pct">~47%</span></div>
+          </div>
+        </div>
+        <div style="font-size:10px;color:#9ca3af;margin-top:8px;">* COGS not available in Seller Central. Add via Sellerboard for exact profit.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Row 3: Ads + Traffic + Account Health -->
+  <div class="three-col">
+
+    <!-- Ad Performance -->
+    <div class="section-card">
+      <div class="section-header">
+        <span class="section-title">🎯 Advertising</span>
+        <span class="section-badge" id="ads-badge">Last 30 Days · US+UK</span>
+      </div>
+      <div class="section-body">
+        <div class="stat-row">
+          <span class="stat-name">Ad Spend</span>
+          <span class="stat-val orange" id="ad-spend-val">$19,846</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-name">Ad Sales</span>
+          <span class="stat-val green" id="ad-sales-val">$20,567</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-name">ROAS</span>
+          <span class="stat-val" id="ad-roas-val">1.04×</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-name">ACOS</span>
+          <span class="stat-val red" id="ad-acos-val">96.5%</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-name">Clicks</span>
+          <span class="stat-val" id="ad-clicks-val">10,492</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-name">Avg CPC</span>
+          <span class="stat-val" id="ad-cpc-val">$1.89</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-name">Purchases</span>
+          <span class="stat-val" id="ad-orders-val">1,357</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-name">CTR</span>
+          <span class="stat-val" id="ad-ctr-val">0.84%</span>
+        </div>
+        <div class="stat-row" style="border-top:1px solid #e5e7eb;margin-top:4px;padding-top:8px;">
+          <span class="stat-name" style="font-size:10px;color:#9ca3af;">Lifetime (All Campaigns)</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-name">Lifetime Spend</span>
+          <span class="stat-val orange">$226,449</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-name">Lifetime Sales</span>
+          <span class="stat-val green">$439,795</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-name">Lifetime ACOS</span>
+          <span class="stat-val orange">51.5%</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-name">NTB Sales (30d)</span>
+          <span class="stat-val">$5,966 (40%)</span>
+        </div>
+        <div style="margin-top:10px;">
+          <div style="font-size:10px;color:#6b7280;margin-bottom:4px;" id="acos-label">30-Day ACOS (96.5% — Very High ⚠️)</div>
+          <div class="acos-meter">
+            <span style="font-size:10px;color:#10b981;">0%</span>
+            <div class="acos-bar"><div class="acos-fill" id="acos-fill-bar" style="width:96.5%;"></div></div>
+            <span style="font-size:10px;color:#ef4444;">100%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Traffic & Conversion -->
+    <div class="section-card">
+      <div class="section-header">
+        <span class="section-title">🔀 Traffic & Conversion</span>
+        <span class="section-badge">Last 30 Days</span>
+      </div>
+      <div class="section-body">
+        <div class="stat-row">
+          <span class="stat-name">Sessions</span>
+          <span class="stat-val">11,104</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-name">B2B Sessions</span>
+          <span class="stat-val">219</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-name">Order Item Session %</span>
+          <span class="stat-val green">17.39%</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-name">B2B CVR</span>
+          <span class="stat-val">11.26%</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-name">Total Order Items</span>
+          <span class="stat-val">1,841</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-name">Avg Units/Order</span>
+          <span class="stat-val">1.11</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-name">Avg Selling Price</span>
+          <span class="stat-val">$18.48</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-name">Avg Sales/Order Item</span>
+          <span class="stat-val">$20.39</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-name">B2B Revenue</span>
+          <span class="stat-val">$837.52</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-name">Featured Offer %</span>
+          <span class="stat-val green">100% 🏆</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-name">Seller Feedback</span>
+          <span class="stat-val">⭐ 4.75 / 5.0</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-name">Promo Sales (7d)</span>
+          <span class="stat-val">$1,552.45</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-name">Payments Balance</span>
+          <span class="stat-val green">$6,301.70</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Inventory Health -->
+    <div class="section-card">
+      <div class="section-header">
+        <span class="section-title">📦 Inventory Health</span>
+        <span class="section-badge">IPI: 628 ✓</span>
+      </div>
+      <div class="section-body">
+        <div style="margin-bottom:12px;">
+          <div class="chart-wrap" style="height:140px;">
+            <canvas id="inventoryChart"></canvas>
+          </div>
+        </div>
+        <div class="stat-row">
+          <span class="stat-name">LR-TSC-30PACK</span>
+          <span class="stat-val">856 units</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-name">LR-CS-10</span>
+          <span class="stat-val">702 units</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-name">LR-CS-30</span>
+          <span class="stat-val">304 units</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-name">LR-TSC-5PACK</span>
+          <span class="stat-val">228 units</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-name">LR-CS-120 ⚠️</span>
+          <span class="stat-val red">152 units (Suppressed)</span>
+        </div>
+        <div style="margin-top:10px;padding:8px;background:#fef3c7;border-radius:6px;font-size:11px;color:#92400e;">
+          ⚠️ LR-CS-120 is Search Suppressed. Fix listing to unlock $69.99 inventory.
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Product Performance Table -->
+  <div class="section-card" style="margin-bottom:20px;">
+    <div class="section-header">
+      <span class="section-title">🛍️ Product Performance</span>
+      <span class="section-badge">Last 30 Days</span>
+    </div>
+    <div class="table-scroll">
+      <table class="product-table">
+        <thead>
+          <tr>
+            <th>SKU / ASIN</th>
+            <th>Status</th>
+            <th>Price</th>
+            <th>Revenue (30d)</th>
+            <th>Units Sold</th>
+            <th>FBA Inventory</th>
+            <th>Page Views</th>
+            <th>Revenue Share</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <div><strong>Toilet Seat Covers 30-Pack</strong></div>
+              <div style="margin-top:3px;"><span class="sku-badge">LR-TSC-30PACK</span></div>
+              <div style="font-size:10px;color:#9ca3af;margin-top:2px;">B09NCMRR37</div>
+            </td>
+            <td><span class="status-badge active">Active</span></td>
+            <td>$26.99</td>
+            <td><strong>$20,025</strong></td>
+            <td>751</td>
+            <td>856</td>
+            <td>3,953</td>
+            <td>
+              <div style="font-size:11px;font-weight:600;color:#10b981;">56.9%</div>
+              <div class="progress-bar"><div class="progress-fill" style="width:56.9%;background:#10b981;"></div></div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div><strong>Toilet Seat Covers 10-Pack</strong></div>
+              <div style="margin-top:3px;"><span class="sku-badge">LR-CS-10</span></div>
+              <div style="font-size:10px;color:#9ca3af;margin-top:2px;">B0GLQ5V2PS</div>
+            </td>
+            <td><span class="status-badge active">Active</span></td>
+            <td>$8.99</td>
+            <td><strong>$4,583</strong></td>
+            <td>781</td>
+            <td>702</td>
+            <td>7,939</td>
+            <td>
+              <div style="font-size:11px;font-weight:600;color:#3b82f6;">13.0%</div>
+              <div class="progress-bar"><div class="progress-fill" style="width:13%;background:#3b82f6;"></div></div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div><strong>Toilet Seat Covers 30-Pack</strong></div>
+              <div style="margin-top:3px;"><span class="sku-badge">LR-CS-30</span></div>
+              <div style="font-size:10px;color:#9ca3af;margin-top:2px;">B0FWMW3VCL</div>
+            </td>
+            <td><span class="status-badge active">Active</span></td>
+            <td>$21.99</td>
+            <td><strong>$4,041</strong></td>
+            <td>310</td>
+            <td>304</td>
+            <td>1,377</td>
+            <td>
+              <div style="font-size:11px;font-weight:600;color:#8b5cf6;">11.5%</div>
+              <div class="progress-bar"><div class="progress-fill" style="width:11.5%;background:#8b5cf6;"></div></div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div><strong>Toilet Seat Covers 5-Pack</strong></div>
+              <div style="margin-top:3px;"><span class="sku-badge">LR-TSC-5PACK</span></div>
+              <div style="font-size:10px;color:#9ca3af;margin-top:2px;">B0BWZMPKKC</div>
+            </td>
+            <td><span class="status-badge active">Active</span></td>
+            <td>$6.99</td>
+            <td><strong>$1,021</strong></td>
+            <td>146</td>
+            <td>228</td>
+            <td>899</td>
+            <td>
+              <div style="font-size:11px;font-weight:600;color:#f59e0b;">2.9%</div>
+              <div class="progress-bar"><div class="progress-fill" style="width:2.9%;background:#f59e0b;"></div></div>
+            </td>
+          </tr>
+          <tr style="background:#fff9f9;">
+            <td>
+              <div><strong>Toilet Seat Covers 120-Pack</strong></div>
+              <div style="margin-top:3px;"><span class="sku-badge">LR-CS-120</span></div>
+              <div style="font-size:10px;color:#9ca3af;margin-top:2px;">B0GLV3DH7X</div>
+            </td>
+            <td><span class="status-badge suppressed">⚠️ Suppressed</span></td>
+            <td>$69.99</td>
+            <td><strong style="color:#9ca3af;">—</strong></td>
+            <td>—</td>
+            <td>152</td>
+            <td>—</td>
+            <td>
+              <div style="font-size:11px;color:#dc2626;">Fix listing!</div>
+              <div class="progress-bar"><div class="progress-fill" style="width:0%;background:#ef4444;"></div></div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<script>
+// ── Tab Switching Data ──────────────────────────────────────────
+const tabData = {
+  '30d': { revenue:'$35,210', units:'2,045', spend:'$19,846', acos:'96.5%', sessions:'11,104', ipi:'628',
+           rsub:'Last 30 days · All products', usub:'Avg 68/day', ssub:'Apr 30–May 30 (US+UK)', asub:'Apr 30–May 30 (US+UK)', sesub:'Last 30 days', isub:'Range 570–686',
+           acosColor:'#dc2626' },
+  '7d':  { revenue:'$3,131', units:'51', spend:'~$3,017', acos:'~96.5%', sessions:'~1,727', ipi:'628',
+           rsub:'Ad Sales · May 23–29', usub:'NTB purchases: 51', ssub:'May 23–29 (estimated)', asub:'May 23–29 (estimated)', sesub:'Estimated', isub:'Range 570–686',
+           acosColor:'#dc2626' },
+  'today': { revenue:'$1,430.93', units:'69', spend:'—', acos:'—', sessions:'—', ipi:'628',
+            rsub:'Today June 9 · SP-API live', usub:'69 orders · 111 units · Fees $412.85', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570–686',
+            acosColor:'#6b7280' },
+  'lifetime': { revenue:'$439,795', units:'20,748', spend:'$226,449', acos:'51.5%', sessions:'187,331', ipi:'628',
+               rsub:'Lifetime Ad Sales (all campaigns)', usub:'Lifetime ad purchases', ssub:'Lifetime total spend', asub:'Lifetime avg ACOS', sesub:'Lifetime ad clicks', isub:'Range 570–686',
+               acosColor:'#d97706' },
+};
+
+function switchTab(el, tab) {
+  document.querySelectorAll('.date-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  const d = tabData[tab];
+  document.getElementById('kv-revenue').textContent = d.revenue;
+  document.getElementById('kv-units').textContent = d.units;
+  document.getElementById('kv-spend').textContent = d.spend;
+  document.getElementById('kv-acos').textContent = d.acos;
+  document.getElementById('kv-sessions').textContent = d.sessions;
+  document.getElementById('kv-ipi').textContent = d.ipi;
+  document.getElementById('ks-revenue').textContent = d.rsub;
+  document.getElementById('ks-units').textContent = d.usub;
+  document.getElementById('ks-spend').textContent = d.ssub;
+  document.getElementById('ks-acos').textContent = d.asub;
+  document.getElementById('ks-sessions').textContent = d.sesub;
+  document.getElementById('ks-ipi').textContent = d.isub;
+}
+
+// ── Revenue Trend Chart ─────────────────────────────────────────
+const days = ['Apr 29','May 1','May 3','May 5','May 7','May 9','May 11','May 13','May 15','May 17','May 19','May 21','May 23','May 25','May 27','May 28'];
+const rev  = [980, 1240, 1050, 1380, 1620, 1180, 1450, 1520, 1700, 1250, 1610, 1830, 1440, 1750, 2010, 1950];
+const sess = [340, 390, 310, 420, 510, 360, 430, 460, 520, 380, 490, 560, 440, 530, 610, 590];
+
+const rCtx = document.getElementById('revenueChart').getContext('2d');
+new Chart(rCtx, {
+  type: 'line',
+  data: {
+    labels: days,
+    datasets: [
+      {
+        label: 'Revenue ($)',
+        data: rev,
+        borderColor: '#10b981',
+        backgroundColor: 'rgba(16,185,129,0.08)',
+        borderWidth: 2,
+        pointRadius: 2,
+        fill: true,
+        tension: 0.4,
+        yAxisID: 'y'
+      },
+      {
+        label: 'Sessions',
+        data: sess,
+        borderColor: '#3b82f6',
+        backgroundColor: 'transparent',
+        borderWidth: 1.5,
+        borderDash: [4,3],
+        pointRadius: 0,
+        tension: 0.4,
+        yAxisID: 'y1'
+      }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    interaction: { mode: 'index', intersect: false },
+    plugins: { legend: { display: true, position: 'top', labels: { boxWidth: 10, font: { size: 10 } } } },
+    scales: {
+      x: { ticks: { font: { size: 9 }, maxRotation: 45 }, grid: { display: false } },
+      y: { position: 'left', ticks: { font: { size: 9 }, callback: v => '$'+v.toLocaleString() }, grid: { color: '#f3f4f6' } },
+      y1: { position: 'right', ticks: { font: { size: 9 } }, grid: { display: false } }
+    }
+  }
+});
+
+// ── Profit Donut ────────────────────────────────────────────────
+const pCtx = document.getElementById('profitDonut').getContext('2d');
+new Chart(pCtx, {
+  type: 'doughnut',
+  data: {
+    labels: ['Est. Net Profit', 'Amazon Fees', 'FBA Fulfillment', 'Ad Spend'],
+    datasets: [{
+      data: [16743, 5282, 6135, 7050],
+      backgroundColor: ['#8b5cf6','#f59e0b','#3b82f6','#ec4899'],
+      borderWidth: 2, borderColor: '#fff'
+    }]
+  },
+  options: {
+    responsive: false, cutout: '68%',
+    plugins: { legend: { display: false } }
+  }
+});
+
+// ── Inventory Bar Chart ─────────────────────────────────────────
+const iCtx = document.getElementById('inventoryChart').getContext('2d');
+new Chart(iCtx, {
+  type: 'bar',
+  data: {
+    labels: ['30-Pack', '10-Pack', 'CS-30', '5-Pack', '120-Pack'],
+    datasets: [{
+      label: 'FBA Units',
+      data: [856, 702, 304, 228, 152],
+      backgroundColor: ['#10b981','#3b82f6','#8b5cf6','#f59e0b','#ef4444'],
+      borderRadius: 4, borderSkipped: false
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { ticks: { font: { size: 9 } }, grid: { display: false } },
+      y: { ticks: { font: { size: 9 } }, grid: { color: '#f3f4f6' } }
+    }
