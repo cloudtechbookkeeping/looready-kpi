@@ -1,6 +1,6 @@
 """
-LooReady - Dashboard Builder & Hostinger SFTP Uploader
-Reads today's KPI JSON, patches looready-kpi.html, uploads via SFTP (SSH port 65002).
+LooReady - Dashboard Builder & Hostinger SSH Uploader
+Reads today's KPI JSON, patches looready-kpi.html, uploads via SSH (cat > pipe).
 SSH credentials come from environment variables (GitHub Secrets).
 """
 
@@ -15,12 +15,12 @@ from pathlib import Path
 
 import paramiko
 
-# -- SSH/SFTP credentials from GitHub Secrets ---------------------------------
+# -- SSH credentials from GitHub Secrets --------------------------------------
 SSH_HOST = os.environ.get("SSH_HOST", "145.79.209.123")
 SSH_PORT = 65002
 SSH_USER = os.environ.get("SSH_USER", "u133013644")
 SSH_PASS = os.environ.get("SSH_PASS") or os.environ["FTP_PASS"]
-REMOTE_DIR  = "public_html/looreadykpi"
+REMOTE_DIR = "public_html/looreadykpi"
 # -----------------------------------------------------------------------------
 
 HTML_FILE = Path("looready-kpi.html")
@@ -82,47 +82,51 @@ def update_html(data):
     return html, today_str, n1, n2, n3
 
 
-def sftp_upload(html_content, status):
-    print("SFTP connecting to " + SSH_HOST + ":" + str(SSH_PORT))
+def ssh_write_file(ssh, remote_path, content_bytes):
+    """Write bytes to a remote file via SSH using cat > pipe."""
+    cmd = "cat > " + remote_path
+    stdin, stdout, stderr = ssh.exec_command(cmd)
+    stdin.write(content_bytes)
+    stdin.channel.shutdown_write()
+    exit_code = stdout.channel.recv_exit_status()
+    err = stderr.read().decode().strip()
+    if exit_code != 0 or err:
+        print("  write_file stderr: " + err + " exit=" + str(exit_code))
+    return exit_code
+
+
+def ssh_upload(html_content, status):
+    print("SSH connecting to " + SSH_HOST + ":" + str(SSH_PORT))
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     ssh.connect(SSH_HOST, port=SSH_PORT, username=SSH_USER, password=SSH_PASS, timeout=30)
     print("SSH connected")
 
-    sftp = ssh.open_sftp()
-
     # Ensure remote directory exists
-    try:
-        sftp.chdir(REMOTE_DIR)
-        print("chdir OK: " + REMOTE_DIR)
-    except IOError:
-        print("Creating remote dir: " + REMOTE_DIR)
-        parts = REMOTE_DIR.split("/")
-        path = ""
-        for part in parts:
-            path = (path + "/" + part).lstrip("/")
-            try:
-                sftp.mkdir(path)
-            except IOError:
-                pass  # already exists
-        sftp.chdir(REMOTE_DIR)
+    mkdir_cmd = "mkdir -p ~/" + REMOTE_DIR
+    stdin, stdout, stderr = ssh.exec_command(mkdir_cmd)
+    stdout.channel.recv_exit_status()
+    print("mkdir done: " + mkdir_cmd)
+
+    remote_base = "~/" + REMOTE_DIR + "/"
 
     # Upload status.txt first (diagnostic)
-    sftp.putfo(io.BytesIO(json.dumps(status).encode("utf-8")), "status.txt")
-    print("status.txt uploaded")
+    status_bytes = json.dumps(status).encode("utf-8")
+    ec = ssh_write_file(ssh, remote_base + "status.txt", status_bytes)
+    print("status.txt uploaded (exit=" + str(ec) + ")")
 
     # Upload index.html
-    data = html_content.encode("utf-8")
-    sftp.putfo(io.BytesIO(data), "index.html")
-    print("index.html uploaded (" + str(len(data)) + " bytes)")
+    html_bytes = html_content.encode("utf-8")
+    ec = ssh_write_file(ssh, remote_base + "index.html", html_bytes)
+    print("index.html uploaded (" + str(len(html_bytes)) + " bytes, exit=" + str(ec) + ")")
 
     # Update status.txt to confirm success
-    status["sftp_ok"] = True
-    sftp.putfo(io.BytesIO(json.dumps(status).encode("utf-8")), "status.txt")
+    status["upload_ok"] = True
+    status_bytes_final = json.dumps(status).encode("utf-8")
+    ssh_write_file(ssh, remote_base + "status.txt", status_bytes_final)
 
-    sftp.close()
     ssh.close()
-    print("SFTP done. Live at: https://looreadykpi.cloudtechbookkeeping.com")
+    print("SSH upload done. Live at: https://looreadykpi.cloudtechbookkeeping.com")
 
 
 if __name__ == "__main__":
@@ -133,10 +137,10 @@ if __name__ == "__main__":
         "run": datetime.datetime.utcnow().isoformat(),
         "today": today_str,
         "n1": n1, "n2": n2, "n3": n3,
-        "sftp_ok": False
+        "upload_ok": False
     }
     try:
-        sftp_upload(html, status)
+        ssh_upload(html, status)
     except Exception as e:
         print("ERROR: " + str(e))
         traceback.print_exc()
