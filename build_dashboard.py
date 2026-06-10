@@ -29,7 +29,7 @@ def load_today_data():
     today = datetime.date.today().isoformat()
     json_path = DATA_DIR / f"{today}.json"
     if not json_path.exists():
-        print(f"No data file for today: {json_path}")
+        print("No data file for today: " + str(json_path))
         sys.exit(1)
     with open(json_path) as f:
         return json.load(f)
@@ -37,28 +37,49 @@ def load_today_data():
 
 def update_html(data):
     today_str = datetime.date.today().strftime("%B %-d, %Y")
-    revenue   = f"${data['revenue_today']:,.2f}"
+    revenue   = "$" + f"{data['revenue_today']:,.2f}"
     orders    = data['orders_today']
     units     = data.get('units_ordered', 0)
     fees      = data.get('finance', {}).get('total_fees', 0)
 
     html = HTML_FILE.read_text(encoding="utf-8")
 
-    html = re.sub(r"Live . Updated .+?<", f"Live . Updated {today_str}<", html)
-    html = re.sub(
-        r"Data snapshot: .+?</div>",
-        f"Data snapshot: {today_str} . SP-API live pull</div>",
-        html
-    )
-    html = re.sub(
-        r"'today':\s*\{[^}]+\}",
-        f"'today': {{ revenue:'{revenue}', units:'{orders}', spend:'--', acos:'--', sessions:'--', ipi:'628', "
-        f"rsub:'Today {today_str} . SP-API live', usub:'{orders} orders . {units} units . Fees ${fees:,.2f}', "
-        f"ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686'}}",
+    # 1. Live badge date - match "Live <sep> Updated <date>" without crossing newlines
+    html, n1 = re.subn(
+        r"Live .{1,3} Updated \w+ \d+, \d{4}",
+        "Live . Updated " + today_str,
         html
     )
 
-    print(f"HTML updated - {revenue}, {orders} orders")
+    # 2. Data snapshot line - [^\n<]* stays on one line
+    html, n2 = re.subn(
+        r"Data snapshot: [^\n<]*</div>",
+        "Data snapshot: " + today_str + " . SP-API live pull</div>",
+        html
+    )
+
+    # 3. today JS data object - [\s\S]*? matches across newlines safely
+    today_obj = (
+        "'today': { revenue:'" + revenue +
+        "', units:'" + str(orders) +
+        "', spend:'--', acos:'--', sessions:'--', ipi:'628',\n" +
+        "            rsub:'Today " + today_str + " . SP-API live'" +
+        ", usub:'" + str(orders) + " orders . " + str(units) +
+        " units . Fees $" + f"{fees:,.2f}'" +
+        ", ssub:'Not yet available', asub:'Not yet available'" +
+        ", sesub:'Not yet available', isub:'Range 570-686',\n" +
+        "            acosColor:'#6b7280' }"
+    )
+    html, n3 = re.subn(
+        r"'today':\s*\{[\s\S]*?\}(?=\s*,)",
+        today_obj,
+        html
+    )
+
+    print("Regex matches: live=" + str(n1) + ", snapshot=" + str(n2) + ", today=" + str(n3))
+    if n1 == 0 or n2 == 0 or n3 == 0:
+        print("WARNING: one or more patterns did not match the HTML!")
+    print("HTML updated - " + revenue + ", " + str(orders) + " orders")
     return html
 
 
@@ -85,7 +106,7 @@ def ftp_upload(html_content):
 
     ftp_makedirs(ftp, remote_dir)
     ftp.cwd(remote_dir)
-    ftp.storbinary(f"STOR {remote_file}", io.BytesIO(html_content.encode("utf-8")))
+    ftp.storbinary("STOR " + remote_file, io.BytesIO(html_content.encode("utf-8")))
     ftp.quit()
     print("Live at: https://looreadykpi.cloudtechbookkeeping.com")
 
