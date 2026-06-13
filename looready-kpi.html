@@ -269,6 +269,15 @@
     </div>
   </div>
 
+  <!-- SKU Units Breakdown -->
+  <div class="section-card" style="margin-bottom:16px;padding:12px 16px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+      <span style="font-size:12px;font-weight:700;color:#1a1a2e;">📦 Units Sold by SKU</span>
+      <span id="sku-tab-label" style="font-size:10px;background:#f3f4f6;color:#6b7280;padding:2px 10px;border-radius:10px;font-weight:500;">Last 30 Days</span>
+    </div>
+    <div id="sku-grid" style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;"></div>
+  </div>
+
   <!-- Row 2: Revenue chart + Profit breakdown -->
   <div class="two-col">
 
@@ -624,15 +633,44 @@
 const tabData = {
   '30d': { revenue:'$35,210', units:'2,045', spend:'$19,846', acos:'96.5%', sessions:'11,104', ipi:'628',
            rsub:'Last 30 days · All products', usub:'Avg 68/day', ssub:'Apr 30–May 30 (US+UK)', asub:'Apr 30–May 30 (US+UK)', sesub:'Last 30 days', isub:'Range 570–686',
-           acosColor:'#dc2626' },
+           acosColor:'#dc2626', skuUnits:{'LR-TSC-30PACK':751,'LR-CS-10':781,'LR-CS-30':310,'LR-TSC-5PACK':146,'LR-CS-120':0} },
   '7d':  { revenue:'$3,131', units:'51', spend:'~$3,017', acos:'~96.5%', sessions:'~1,727', ipi:'628',
            rsub:'Ad Sales · May 23–29', usub:'NTB purchases: 51', ssub:'May 23–29 (estimated)', asub:'May 23–29 (estimated)', sesub:'Estimated', isub:'Range 570–686',
            acosColor:'#dc2626' },
-    'today': { revenue:'--', units:'--', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'--', usub:'--', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280' }, /* TODAY_KPI_PLACEHOLDER */
+  'today': { revenue:'--', units:'--', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'--', usub:'--', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':'--','LR-CS-10':'--','LR-CS-30':'--','LR-TSC-5PACK':'--','LR-CS-120':'--'} }, /* TODAY_KPI_PLACEHOLDER */
   'lifetime': { revenue:'$439,795', units:'20,748', spend:'$226,449', acos:'51.5%', sessions:'187,331', ipi:'628',
                rsub:'Lifetime Ad Sales (all campaigns)', usub:'Lifetime ad purchases', ssub:'Lifetime total spend', asub:'Lifetime avg ACOS', sesub:'Lifetime ad clicks', isub:'Range 570–686',
                acosColor:'#d97706' },
 };
+
+const skuMeta = [
+  { key:'LR-TSC-30PACK', name:'30-Pack',  color:'#10b981', sup:false },
+  { key:'LR-CS-10',      name:'10-Pack',  color:'#3b82f6', sup:false },
+  { key:'LR-CS-30',      name:'CS-30',    color:'#8b5cf6', sup:false },
+  { key:'LR-TSC-5PACK',  name:'5-Pack',   color:'#f59e0b', sup:false },
+  { key:'LR-CS-120',     name:'120-Pack', color:'#ef4444', sup:true  },
+];
+const skuTabLabels = {'30d':'Last 30 Days','7d':'Last 7 Days','today':'Today','lifetime':'Lifetime'};
+
+function renderSkuBreakdown(tab) {
+  const d = tabData[tab] || {};
+  document.getElementById('sku-tab-label').textContent = skuTabLabels[tab] || tab;
+  const grid = document.getElementById('sku-grid');
+  if (!d.skuUnits) {
+    grid.innerHTML = '<div style="grid-column:1/-1;font-size:11px;color:#9ca3af;padding:6px 0;">Per-SKU breakdown not available for this period. Switch to Last 30 Days or Today to see SKU-level data.</div>';
+    return;
+  }
+  grid.innerHTML = skuMeta.map(s => {
+    const val = d.skuUnits[s.key] !== undefined ? d.skuUnits[s.key] : '--';
+    return '<div style="background:#f9fafb;border-radius:8px;padding:10px 12px;border-left:3px solid '+s.color+';">'
+      +'<div style="font-size:10px;font-weight:700;color:'+s.color+';margin-bottom:4px;">'
+      +s.key+(s.sup?' <span style="color:#ef4444;font-size:10px;">⚠️</span>':'')
+      +'</div>'
+      +'<div style="font-size:20px;font-weight:800;color:'+s.color+';">'+val+'</div>'
+      +'<div style="font-size:10px;color:#9ca3af;margin-top:1px;">'+s.name+' · units</div>'
+      +'</div>';
+  }).join('');
+}
 
 function switchTab(el, tab) {
   document.querySelectorAll('.date-tab').forEach(t => t.classList.remove('active'));
@@ -650,7 +688,11 @@ function switchTab(el, tab) {
   document.getElementById('ks-acos').textContent = d.asub;
   document.getElementById('ks-sessions').textContent = d.sesub;
   document.getElementById('ks-ipi').textContent = d.isub;
+  renderSkuBreakdown(tab);
 }
+
+// Initial SKU render
+renderSkuBreakdown('30d');
 
 // ── Revenue Trend Chart ─────────────────────────────────────────
 const days = ['Apr 29','May 1','May 3','May 5','May 7','May 9','May 11','May 13','May 15','May 17','May 19','May 21','May 23','May 25','May 27','May 28'];
@@ -737,7 +779,6 @@ new Chart(iCtx, {
       x: { ticks: { font: { size: 9 } }, grid: { display: false } },
       y: { ticks: { font: { size: 9 } }, grid: { color: '#f3f4f6' } }
     }
-
   }
 });
 </script>
