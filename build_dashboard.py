@@ -28,12 +28,16 @@ def load_today_data():
         return json.load(f)
 
 
+KNOWN_SKUS = ['LR-TSC-30PACK', 'LR-CS-10', 'LR-CS-30', 'LR-TSC-5PACK', 'LR-CS-120']
+
+
 def update_html(data):
     today_str = datetime.date.today().strftime("%B %-d, %Y")
     revenue   = "$" + f"{data['revenue_today']:,.2f}"
     orders    = data['orders_today']
     units     = data.get('units_ordered', 0)
     fees      = data.get('finance', {}).get('total_fees', 0)
+    sku_raw   = data.get('sku_units', {})
 
     html = HTML_FILE.read_text(encoding="utf-8")
     print("HTML len=" + str(len(html)))
@@ -52,7 +56,14 @@ def update_html(data):
         html
     )
 
-    # 3. today JS data object - replace placeholder line (no regex, no truncation risk)
+    # 3. today JS data object — replace placeholder line (no regex, no truncation risk)
+    # Build skuUnits JS object: {SKU: count, ...}
+    sku_parts = []
+    for sku in KNOWN_SKUS:
+        val = sku_raw.get(sku, 0)
+        sku_parts.append(f"'{sku}':{val}")
+    sku_units_js = "{" + ",".join(sku_parts) + "}"
+
     today_obj = (
         "'today': { revenue:'" + revenue +
         "', units:'" + str(orders) +
@@ -62,9 +73,10 @@ def update_html(data):
         " units . Fees $" + f"{fees:,.2f}'" +
         ", ssub:'Not yet available', asub:'Not yet available'" +
         ", sesub:'Not yet available', isub:'Range 570-686'," +
-        " acosColor:'#6b7280' }, /* TODAY_KPI_PLACEHOLDER */"
+        " acosColor:'#6b7280', skuUnits:" + sku_units_js +
+        " }, /* TODAY_KPI_PLACEHOLDER */"
     )
-    placeholder = "'today': { revenue:'--', units:'--', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'--', usub:'--', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280' }, /* TODAY_KPI_PLACEHOLDER */"
+    placeholder = "'today': { revenue:'--', units:'--', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'--', usub:'--', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':'--','LR-CS-10':'--','LR-CS-30':'--','LR-TSC-5PACK':'--','LR-CS-120':'--'} }, /* TODAY_KPI_PLACEHOLDER */"
     n3 = 1 if placeholder in html else 0
     html = html.replace(placeholder, today_obj)
 
