@@ -12,7 +12,7 @@ import time
 import traceback
 from pathlib import Path
 
-# ── Credentials from GitHub Secrets ──────────────────────────────────────────
+# ── Credentials from GitHub Secrets ────────────────────────────────────────────
 CLIENT_ID      = os.environ["AMAZON_CLIENT_ID"]
 CLIENT_SECRET  = os.environ["AMAZON_CLIENT_SECRET"]
 REFRESH_TOKEN  = os.environ["AMAZON_REFRESH_TOKEN"]
@@ -165,10 +165,16 @@ def main():
     kpi["finance"] = finance
     print(f"   ✅ Fees ${finance.get('total_fees', 0):,.2f}")
 
-    print("🏷️  Pulling SKU breakdown...")
+    print("🏷️  Pulling SKU breakdown (today)...")
     sku_units = get_sku_breakdown(token, orders)
     kpi["sku_units"] = sku_units
-    print(f"   ✅ SKU breakdown: {sku_units}")
+    print(f"   ✅ SKU breakdown today: {sku_units}")
+
+    print("🏷️  Pulling SKU breakdown (7d)...")
+    orders_7d = get_orders(token, days=7)
+    sku_units_7d = get_sku_breakdown(token, orders_7d)
+    kpi["sku_units_7d"] = sku_units_7d
+    print(f"   ✅ SKU breakdown 7d: {sku_units_7d}")
 
     with open(save_path, "w") as f:
         json.dump(kpi, f, indent=2, default=str)
