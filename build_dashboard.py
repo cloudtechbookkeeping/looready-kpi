@@ -37,7 +37,8 @@ def update_html(data):
     orders    = data['orders_today']
     units     = data.get('units_ordered', 0)
     fees      = data.get('finance', {}).get('total_fees', 0)
-    sku_raw   = data.get('sku_units', {})
+    sku_raw    = data.get('sku_units', {})
+    sku_raw_7d = data.get('sku_units_7d', {})
 
     html = HTML_FILE.read_text(encoding="utf-8")
     print("HTML len=" + str(len(html)))
@@ -51,13 +52,12 @@ def update_html(data):
 
     # 2. Data snapshot line
     html, n2 = re.subn(
-        r"Data snapshot: [^\n<]*</div>",
-        "Data snapshot: " + today_str + " . SP-API live pull</div>",
+        r"Data snapshot: [^\n<]*<\/div>",
+        "Data snapshot: " + today_str + " . SP-API live pull<\/div>",
         html
     )
 
     # 3. today JS data object — replace placeholder line
-    # Build skuUnits JS object: {SKU: count, ...}
     sku_parts = []
     for sku in KNOWN_SKUS:
         val = sku_raw.get(sku, 0)
@@ -70,7 +70,7 @@ def update_html(data):
         "', units:'" + str(total_units) +
         "', spend:'--', acos:'--', sessions:'--', ipi:'628'," +
         " rsub:'Today " + today_str + " . SP-API live'" +
-        ", usub:'" + str(orders) + " orders . " + str(total_units) +
+        ", usub:'" + str(orders) + " orders . " + str(units) +
         " units . Fees $" + f"{fees:,.2f}'" +
         ", ssub:'Not yet available', asub:'Not yet available'" +
         ", sesub:'Not yet available', isub:'Range 570-686'," +
@@ -81,9 +81,30 @@ def update_html(data):
     n3 = 1 if placeholder in html else 0
     html = html.replace(placeholder, today_obj)
 
-    print("n1=" + str(n1) + " n2=" + str(n2) + " n3=" + str(n3))
-    if n1 == 0 or n2 == 0 or n3 == 0:
-        print("WARNING: one or more regex patterns did not match!")
+    # 4. 7d SKU data object — replace placeholder
+    sku_parts_7d = []
+    for sku in KNOWN_SKUS:
+        val = sku_raw_7d.get(sku, 0)
+        sku_parts_7d.append(f"'{sku}':{val}")
+    sku_units_js_7d = "{" + ",".join(sku_parts_7d) + "}"
+    total_units_7d = sum(sku_raw_7d.get(sku, 0) for sku in KNOWN_SKUS)
+
+    sevenday_obj = (
+        "'7d':  { revenue:'$3,131', units:'" + str(total_units_7d) +
+        "', spend:'~$3,017', acos:'~96.5%', sessions:'~1,727', ipi:'628'," +
+        " rsub:'Ad Sales · May 23–29', usub:'NTB purchases: 51'," +
+        " ssub:'May 23–29 (estimated)', asub:'May 23–29 (estimated)'," +
+        " sesub:'Estimated', isub:'Range 570–686'," +
+        " acosColor:'#dc2626', skuUnits:" + sku_units_js_7d +
+        " }, /* 7D_KPI_PLACEHOLDER */"
+    )
+    placeholder_7d = "'7d':  { revenue:'$3,131', units:'51', spend:'~$3,017', acos:'~96.5%', sessions:'~1,727', ipi:'628', rsub:'Ad Sales · May 23–29', usub:'NTB purchases: 51', ssub:'May 23–29 (estimated)', asub:'May 23–29 (estimated)', sesub:'Estimated', isub:'Range 570–686', acosColor:'#dc2626', skuUnits:{'LR-TSC-30PACK':'--','LR-CS-10':'--','LR-CS-30':'--','LR-TSC-5PACK':'--','LR-CS-120':'--'} }, /* 7D_KPI_PLACEHOLDER */"
+    n4 = 1 if placeholder_7d in html else 0
+    html = html.replace(placeholder_7d, sevenday_obj)
+
+    print("n1=" + str(n1) + " n2=" + str(n2) + " n3=" + str(n3) + " n4=" + str(n4))
+    if n1 == 0 or n2 == 0 or n3 == 0 or n4 == 0:
+        print("WARNING: one or more patterns did not match!")
     return html, today_str, n1, n2, n3
 
 
