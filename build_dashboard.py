@@ -56,20 +56,21 @@ def update_html(data):
         html
     )
 
-    # 3. today JS data object — replace placeholder line (no regex, no truncation risk)
+    # 3. today JS data object — replace placeholder line
     # Build skuUnits JS object: {SKU: count, ...}
     sku_parts = []
     for sku in KNOWN_SKUS:
         val = sku_raw.get(sku, 0)
         sku_parts.append(f"'{sku}':{val}")
     sku_units_js = "{" + ",".join(sku_parts) + "}"
+    total_units = sum(sku_raw.get(sku, 0) for sku in KNOWN_SKUS)
 
     today_obj = (
         "'today': { revenue:'" + revenue +
-        "', units:'" + str(orders) +
+        "', units:'" + str(total_units) +
         "', spend:'--', acos:'--', sessions:'--', ipi:'628'," +
         " rsub:'Today " + today_str + " . SP-API live'" +
-        ", usub:'" + str(orders) + " orders . " + str(units) +
+        ", usub:'" + str(orders) + " orders . " + str(total_units) +
         " units . Fees $" + f"{fees:,.2f}'" +
         ", ssub:'Not yet available', asub:'Not yet available'" +
         ", sesub:'Not yet available', isub:'Range 570-686'," +
