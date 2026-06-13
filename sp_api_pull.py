@@ -82,6 +82,37 @@ def get_sales_metrics(token, days=1):
     return payload[0] if payload else {}
 
 
+def get_order_items(token, order_id):
+    resp = sp_request(token, "GET", f"/orders/v0/orders/{order_id}/orderItems")
+    if resp.status_code == 429:
+        time.sleep(5)
+        resp = sp_request(token, "GET", f"/orders/v0/orders/{order_id}/orderItems")
+    if resp.status_code != 200:
+        print(f"⚠️ OrderItems {order_id} {resp.status_code}")
+        return []
+    return resp.json().get("payload", {}).get("OrderItems", [])
+
+
+def get_sku_breakdown(token, orders):
+    """Returns {SellerSKU: units_ordered} across all today's orders."""
+    sku_units = {}
+    for i, order in enumerate(orders):
+        order_id = order.get("AmazonOrderId")
+        if not order_id:
+            continue
+        items = get_order_items(token, order_id)
+        for item in items:
+            sku = item.get("SellerSKU", "Unknown")
+            qty = int(item.get("QuantityOrdered", 0))
+            sku_units[sku] = sku_units.get(sku, 0) + qty
+        # Respect rate limit: 0.5 req/s, burst 30
+        if i > 0 and i % 25 == 0:
+            time.sleep(3)
+        else:
+            time.sleep(0.3)
+    return sku_units
+
+
 def get_finance(token, days=1):
     end   = datetime.datetime.utcnow()
     start = end - datetime.timedelta(days=days)
@@ -133,6 +164,11 @@ def main():
     finance = get_finance(token, days=1)
     kpi["finance"] = finance
     print(f"   ✅ Fees ${finance.get('total_fees', 0):,.2f}")
+
+    print("🏷️  Pulling SKU breakdown...")
+    sku_units = get_sku_breakdown(token, orders)
+    kpi["sku_units"] = sku_units
+    print(f"   ✅ SKU breakdown: {sku_units}")
 
     with open(save_path, "w") as f:
         json.dump(kpi, f, indent=2, default=str)
