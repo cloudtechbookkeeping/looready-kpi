@@ -55,15 +55,29 @@ def sp_request(access_token, method, path, params=None):
 
 def get_orders(token, days=1):
     since = (datetime.datetime.utcnow() - datetime.timedelta(days=days)).strftime("%Y-%m-%dT00:00:00Z")
-    resp = sp_request(token, "GET", "/orders/v0/orders", {
+    params = {
         "MarketplaceIds": MARKETPLACE_ID,
         "CreatedAfter":   since,
         "OrderStatuses":  "Shipped,Unshipped,PartiallyShipped",
-    })
-    if resp.status_code != 200:
-        print(f"⚠️ Orders {resp.status_code}: {resp.text[:200]}")
-        return []
-    return resp.json().get("payload", {}).get("Orders", [])
+    }
+    all_orders = []
+    page = 0
+    while True:
+        resp = sp_request(token, "GET", "/orders/v0/orders", params)
+        if resp.status_code != 200:
+            print(f"⚠️ Orders page {page} {resp.status_code}: {resp.text[:200]}")
+            break
+        payload = resp.json().get("payload", {})
+        batch = payload.get("Orders", [])
+        all_orders.extend(batch)
+        page += 1
+        print(f"   page {page}: {len(batch)} orders (total so far: {len(all_orders)})")
+        next_token = payload.get("NextToken")
+        if not next_token:
+            break
+        params = {"NextToken": next_token, "MarketplaceIds": MARKETPLACE_ID}
+        time.sleep(1)
+    return all_orders
 
 
 def get_sales_metrics(token, days=1):
@@ -94,7 +108,7 @@ def get_order_items(token, order_id):
 
 
 def get_sku_breakdown(token, orders):
-    """Returns {SellerSKU: units_ordered} across all today's orders."""
+    """Returns {SellerSKU: units_ordered} across all orders."""
     sku_units = {}
     for i, order in enumerate(orders):
         order_id = order.get("AmazonOrderId")
@@ -148,7 +162,7 @@ def main():
 
     kpi = {"date": today, "pulled_at": datetime.datetime.utcnow().isoformat()}
 
-    print("📦 Pulling orders...")
+    print("📦 Pulling today's orders (with pagination)...")
     orders = get_orders(token, days=1)
     revenue = sum(float(o.get("OrderTotal", {}).get("Amount", 0)) for o in orders if o.get("OrderTotal"))
     kpi["orders_today"]  = len(orders)
@@ -170,7 +184,7 @@ def main():
     kpi["sku_units"] = sku_units
     print(f"   ✅ SKU breakdown today: {sku_units}")
 
-    print("🏷️  Pulling SKU breakdown (7d)...")
+    print("🏷️  Pulling SKU breakdown (7d, with pagination)...")
     orders_7d = get_orders(token, days=7)
     sku_units_7d = get_sku_breakdown(token, orders_7d)
     kpi["sku_units_7d"] = sku_units_7d
