@@ -108,7 +108,8 @@ def get_order_items(token, order_id):
 
 
 def get_sku_breakdown(token, orders):
-    """Returns {SellerSKU: units_ordered} across all orders."""
+    """Returns {SellerSKU: units_ordered} across all orders.
+    Uses 2s sleep to stay within 0.5 req/s sustained rate limit."""
     sku_units = {}
     for i, order in enumerate(orders):
         order_id = order.get("AmazonOrderId")
@@ -119,12 +120,29 @@ def get_sku_breakdown(token, orders):
             sku = item.get("SellerSKU", "Unknown")
             qty = int(item.get("QuantityOrdered", 0))
             sku_units[sku] = sku_units.get(sku, 0) + qty
-        # Respect rate limit: 0.5 req/s, burst 30
-        if i > 0 and i % 25 == 0:
-            time.sleep(3)
-        else:
-            time.sleep(0.3)
+        # 0.5 req/s sustained — 2s sleep avoids 429 penalty (5s each)
+        time.sleep(2)
+        if (i + 1) % 20 == 0:
+            print(f"   ... {i+1}/{len(orders)} orders processed")
     return sku_units
+
+
+def load_or_fetch_sku_7d(token):
+    """Fetch 7d SKU breakdown once per day and cache it in kpi_data/."""
+    today = datetime.date.today().isoformat()
+    cache_path = DATA_DIR / f"7d_sku_{today}.json"
+    if cache_path.exists():
+        print("   ⚡ 7d SKU cache hit — loading from file")
+        with open(cache_path) as f:
+            return json.load(f)
+    print("🏷️  Pulling SKU breakdown (7d, paginated)...")
+    orders_7d = get_orders(token, days=7)
+    print(f"   📦 {len(orders_7d)} total orders in last 7 days")
+    sku_units_7d = get_sku_breakdown(token, orders_7d)
+    with open(cache_path, "w") as f:
+        json.dump(sku_units_7d, f)
+    print(f"   ✅ 7d SKU cached: {sku_units_7d}")
+    return sku_units_7d
 
 
 def get_finance(token, days=1):
@@ -184,11 +202,8 @@ def main():
     kpi["sku_units"] = sku_units
     print(f"   ✅ SKU breakdown today: {sku_units}")
 
-    print("🏷️  Pulling SKU breakdown (7d, with pagination)...")
-    orders_7d = get_orders(token, days=7)
-    sku_units_7d = get_sku_breakdown(token, orders_7d)
+    sku_units_7d = load_or_fetch_sku_7d(token)
     kpi["sku_units_7d"] = sku_units_7d
-    print(f"   ✅ SKU breakdown 7d: {sku_units_7d}")
 
     with open(save_path, "w") as f:
         json.dump(kpi, f, indent=2, default=str)
