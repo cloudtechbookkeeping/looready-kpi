@@ -127,6 +127,33 @@ def get_sku_breakdown(token, orders):
     return sku_units
 
 
+def compute_30d_from_daily():
+    """Accumulate revenue + SKU units from last 30 days of cached daily JSON files.
+    No extra API calls — just sums the data already saved by each day's pull."""
+    revenue_30d = 0.0
+    orders_30d = 0
+    sku_units_30d = {}
+    days_found = 0
+    for i in range(30):
+        day = (datetime.date.today() - datetime.timedelta(days=i)).isoformat()
+        path = DATA_DIR / f"{day}.json"
+        if path.exists():
+            with open(path) as f:
+                d = json.load(f)
+            revenue_30d += d.get("revenue_today", 0)
+            orders_30d += d.get("orders_today", 0)
+            for sku, qty in d.get("sku_units", {}).items():
+                sku_units_30d[sku] = sku_units_30d.get(sku, 0) + qty
+            days_found += 1
+    print(f"   📅 30d computed from {days_found} daily files: {orders_30d} orders, ${revenue_30d:,.2f}")
+    return {
+        "sku_units_30d": sku_units_30d,
+        "revenue_30d":   round(revenue_30d, 2),
+        "orders_30d":    orders_30d,
+        "days_30d":      days_found,
+    }
+
+
 def load_or_fetch_7d(token):
     """Fetch 7d revenue + SKU breakdown once per day and cache it."""
     today = datetime.date.today().isoformat()
@@ -213,6 +240,13 @@ def main():
     kpi["sku_units_7d"] = data_7d["sku_units_7d"]
     kpi["revenue_7d"]   = data_7d["revenue_7d"]
     kpi["orders_7d"]    = data_7d["orders_7d"]
+
+    print("📅 Computing 30d totals from daily files...")
+    data_30d = compute_30d_from_daily()
+    kpi["sku_units_30d"] = data_30d["sku_units_30d"]
+    kpi["revenue_30d"]   = data_30d["revenue_30d"]
+    kpi["orders_30d"]    = data_30d["orders_30d"]
+    kpi["days_30d"]      = data_30d["days_30d"]
 
     with open(save_path, "w") as f:
         json.dump(kpi, f, indent=2, default=str)
