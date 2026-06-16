@@ -41,6 +41,10 @@ def update_html(data):
     sku_raw_7d   = data.get('sku_units_7d', {})
     revenue_7d   = "$" + f"{data.get('revenue_7d', 0):,.2f}"
     orders_7d    = data.get('orders_7d', 0)
+    sku_raw_30d  = data.get('sku_units_30d', {})
+    revenue_30d  = "$" + f"{data.get('revenue_30d', 0):,.2f}"
+    orders_30d   = data.get('orders_30d', 0)
+    days_30d     = data.get('days_30d', 0)
 
     html = HTML_FILE.read_text(encoding="utf-8")
     print("HTML len=" + str(len(html)))
@@ -107,8 +111,32 @@ def update_html(data):
     n4 = 1 if placeholder_7d in html else 0
     html = html.replace(placeholder_7d, sevenday_obj)
 
-    print("n1=" + str(n1) + " n2=" + str(n2) + " n3=" + str(n3) + " n4=" + str(n4))
-    if n1 == 0 or n2 == 0 or n3 == 0 or n4 == 0:
+    # 5. 30d data object — accumulated from daily files
+    sku_parts_30d = []
+    for sku in KNOWN_SKUS:
+        val = sku_raw_30d.get(sku, 0)
+        sku_parts_30d.append(f"'{sku}':{val}")
+    sku_units_js_30d = "{" + ",".join(sku_parts_30d) + "}"
+    total_units_30d = sum(sku_raw_30d.get(sku, 0) for sku in KNOWN_SKUS)
+    days_label = str(days_30d) + " days of data" if days_30d < 30 else "Last 30 Days"
+
+    thirtyday_obj = (
+        "'30d': { revenue:'" + revenue_30d +
+        "', units:'" + str(total_units_30d) +
+        "', spend:'--', acos:'--', sessions:'--', ipi:'628'," +
+        " rsub:'" + days_label + " · SP-API live'" +
+        ", usub:'" + str(orders_30d) + " orders . " + str(total_units_30d) + " units'" +
+        ", ssub:'Not yet available', asub:'Not yet available'" +
+        ", sesub:'Not yet available', isub:'Range 570-686'," +
+        " acosColor:'#6b7280', skuUnits:" + sku_units_js_30d +
+        " }, /* 30D_KPI_PLACEHOLDER */"
+    )
+    placeholder_30d = "'30d': { revenue:'--', units:'--', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'--', usub:'--', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':'--','LR-CS-10':'--','LR-CS-30':'--','LR-TSC-5PACK':'--','LR-CS-120':'--'} }, /* 30D_KPI_PLACEHOLDER */"
+    n5 = 1 if placeholder_30d in html else 0
+    html = html.replace(placeholder_30d, thirtyday_obj)
+
+    print("n1=" + str(n1) + " n2=" + str(n2) + " n3=" + str(n3) + " n4=" + str(n4) + " n5=" + str(n5))
+    if n1 == 0 or n2 == 0 or n3 == 0 or n4 == 0 or n5 == 0:
         print("WARNING: one or more patterns did not match!")
     return html, today_str, n1, n2, n3
 
