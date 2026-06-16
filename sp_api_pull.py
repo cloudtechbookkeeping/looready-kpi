@@ -12,7 +12,7 @@ import time
 import traceback
 from pathlib import Path
 
-# ── Credentials from GitHub Secrets ────────────────────────────────────────────
+# ── Credentials from GitHub Secrets ──────────────────────────────────────────
 CLIENT_ID      = os.environ["AMAZON_CLIENT_ID"]
 CLIENT_SECRET  = os.environ["AMAZON_CLIENT_SECRET"]
 REFRESH_TOKEN  = os.environ["AMAZON_REFRESH_TOKEN"]
@@ -127,22 +127,29 @@ def get_sku_breakdown(token, orders):
     return sku_units
 
 
-def load_or_fetch_sku_7d(token):
-    """Fetch 7d SKU breakdown once per day and cache it in kpi_data/."""
+def load_or_fetch_7d(token):
+    """Fetch 7d revenue + SKU breakdown once per day and cache it."""
     today = datetime.date.today().isoformat()
-    cache_path = DATA_DIR / f"7d_sku_{today}.json"
+    cache_path = DATA_DIR / f"7d_cache_{today}.json"
     if cache_path.exists():
-        print("   ⚡ 7d SKU cache hit — loading from file")
+        print("   ⚡ 7d cache hit — loading from file")
         with open(cache_path) as f:
             return json.load(f)
-    print("🏷️  Pulling SKU breakdown (7d, paginated)...")
+    print("🏷️  Pulling 7d data (orders + SKU breakdown, paginated)...")
     orders_7d = get_orders(token, days=7)
     print(f"   📦 {len(orders_7d)} total orders in last 7 days")
+    revenue_7d = sum(float(o.get("OrderTotal", {}).get("Amount", 0)) for o in orders_7d if o.get("OrderTotal"))
+    print(f"   💰 7d revenue: ${revenue_7d:,.2f}")
     sku_units_7d = get_sku_breakdown(token, orders_7d)
+    cache = {
+        "sku_units_7d": sku_units_7d,
+        "revenue_7d": round(revenue_7d, 2),
+        "orders_7d": len(orders_7d),
+    }
     with open(cache_path, "w") as f:
-        json.dump(sku_units_7d, f)
-    print(f"   ✅ 7d SKU cached: {sku_units_7d}")
-    return sku_units_7d
+        json.dump(cache, f)
+    print(f"   ✅ 7d cache saved: {cache}")
+    return cache
 
 
 def get_finance(token, days=1):
@@ -202,8 +209,10 @@ def main():
     kpi["sku_units"] = sku_units
     print(f"   ✅ SKU breakdown today: {sku_units}")
 
-    sku_units_7d = load_or_fetch_sku_7d(token)
-    kpi["sku_units_7d"] = sku_units_7d
+    data_7d = load_or_fetch_7d(token)
+    kpi["sku_units_7d"] = data_7d["sku_units_7d"]
+    kpi["revenue_7d"]   = data_7d["revenue_7d"]
+    kpi["orders_7d"]    = data_7d["orders_7d"]
 
     with open(save_path, "w") as f:
         json.dump(kpi, f, indent=2, default=str)
