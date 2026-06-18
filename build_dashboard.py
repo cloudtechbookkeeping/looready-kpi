@@ -44,6 +44,7 @@ def update_html(data):
     sku_raw_30d  = data.get('sku_units_30d', {})
     revenue_30d  = "$" + f"{data.get('revenue_30d', 0):,.2f}"
     orders_30d   = data.get('orders_30d', 0)
+    units_30d    = data.get('units_30d', 0)   # accurate total from sales metrics API
     days_30d     = data.get('days_30d', 0)
 
     html = HTML_FILE.read_text(encoding="utf-8")
@@ -111,21 +112,20 @@ def update_html(data):
     n4 = 1 if placeholder_7d in html else 0
     html = html.replace(placeholder_7d, sevenday_obj)
 
-    # 5. 30d data object — accumulated from daily files
+    # 5. 30d data object — uses accurate units_30d from sales metrics API
     sku_parts_30d = []
     for sku in KNOWN_SKUS:
         val = sku_raw_30d.get(sku, 0)
         sku_parts_30d.append(f"'{sku}':{val}")
     sku_units_js_30d = "{" + ",".join(sku_parts_30d) + "}"
-    total_units_30d = sum(sku_raw_30d.get(sku, 0) for sku in KNOWN_SKUS)
-    days_label = str(days_30d) + " days of data" if days_30d < 30 else "Last 30 Days"
+    days_label = str(days_30d) + " days SKU data" if days_30d < 30 else "Last 30 Days"
 
     thirtyday_obj = (
         "'30d': { revenue:'" + revenue_30d +
-        "', units:'" + str(total_units_30d) +
+        "', units:'" + str(units_30d) +
         "', spend:'--', acos:'--', sessions:'--', ipi:'628'," +
-        " rsub:'" + days_label + " · SP-API live'" +
-        ", usub:'" + str(orders_30d) + " orders . " + str(total_units_30d) + " units'" +
+        " rsub:'Last 30 Days · SP-API live'" +
+        ", usub:'" + str(orders_30d) + " orders . " + str(units_30d) + " units'" +
         ", ssub:'Not yet available', asub:'Not yet available'" +
         ", sesub:'Not yet available', isub:'Range 570-686'," +
         " acosColor:'#6b7280', skuUnits:" + sku_units_js_30d +
