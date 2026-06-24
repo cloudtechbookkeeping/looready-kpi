@@ -209,6 +209,16 @@
   <div class="date-tab" onclick="switchTab(this,'7d')">Last 7 Days</div>
   <div class="date-tab" onclick="switchTab(this,'today')">Today</div>
   <div class="date-tab" onclick="switchTab(this,'lifetime')">Lifetime</div>
+  <div class="date-tab" id="custom-tab" onclick="openCustomRange(this)">Custom Range</div>
+</div>
+<!-- Custom date picker panel -->
+<div id="custom-date-panel" style="display:none;background:white;border-bottom:1px solid #e5e7eb;padding:10px 24px;align-items:center;gap:12px;flex-wrap:wrap;">
+  <label style="font-size:12px;color:#6b7280;font-weight:500;">From</label>
+  <input type="date" id="custom-start" style="border:1px solid #d1d5db;border-radius:6px;padding:4px 8px;font-size:12px;color:#374151;">
+  <label style="font-size:12px;color:#6b7280;font-weight:500;">To</label>
+  <input type="date" id="custom-end" style="border:1px solid #d1d5db;border-radius:6px;padding:4px 8px;font-size:12px;color:#374151;">
+  <button onclick="applyCustomRange()" style="background:#ff9900;color:white;border:none;border-radius:6px;padding:5px 14px;font-size:12px;font-weight:600;cursor:pointer;">Apply</button>
+  <span id="custom-status" style="font-size:11px;color:#9ca3af;"></span>
 </div>
 
 <!-- Main -->
@@ -417,8 +427,7 @@
     <div class="section-card">
       <div class="section-header">
         <span class="section-title">🔀 Traffic & Conversion</span>
-        <span class="section-badge">Last 30 Days</span>
-      </div>
+        <span class="section-badge">Last 30 Days</spa    </div>
       <div class="section-body">
         <div class="stat-row">
           <span class="stat-name">Sessions</span>
@@ -633,7 +642,7 @@
 const tabData = {
   '30d': { revenue:'$0.00', units:'2450', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Last 30 Days · SP-API live', usub:'2236 orders . 2450 units', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':271,'LR-CS-10':335,'LR-CS-30':125,'LR-TSC-5PACK':47,'LR-CS-120':0} }, /* 30D_KPI_PLACEHOLDER */
   '7d':  { revenue:'$10,154.52', units:'561', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Last 7 Days · SP-API live', usub:'513 orders . 561 units', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':234,'LR-CS-10':217,'LR-CS-30':83,'LR-TSC-5PACK':27,'LR-CS-120':0} }, /* 7D_KPI_PLACEHOLDER */
-  'today': { revenue:'$1,811.38', units:'98', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Today June 24, 2026 . SP-API live', usub:'90 orders . 78 units . Fees $614.52', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':62,'LR-CS-10':25,'LR-CS-30':9,'LR-TSC-5PACK':2,'LR-CS-120':0} }, /* TODAY_KPI_PLACEHOLDER */
+  'today': { revenue:'$1,943.67', units:'106', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Today June 24, 2026 . SP-API live', usub:'98 orders . 78 units . Fees $614.52', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':67,'LR-CS-10':27,'LR-CS-30':9,'LR-TSC-5PACK':3,'LR-CS-120':0} }, /* TODAY_KPI_PLACEHOLDER */
   'lifetime': { revenue:'$439,795', units:'20,748', spend:'$226,449', acos:'51.5%', sessions:'187,331', ipi:'628',
                rsub:'Lifetime Ad Sales (all campaigns)', usub:'Lifetime ad purchases', ssub:'Lifetime total spend', asub:'Lifetime avg ACOS', sesub:'Lifetime ad clicks', isub:'Range 570–686',
                acosColor:'#d97706' },
@@ -646,7 +655,7 @@ const skuMeta = [
   { key:'LR-TSC-5PACK',  name:'5-Pack',   color:'#f59e0b', sup:false },
   { key:'LR-CS-120',     name:'120-Pack', color:'#ef4444', sup:true  },
 ];
-const skuTabLabels = {'30d':'Last 30 Days','7d':'Last 7 Days','today':'Today','lifetime':'Lifetime'};
+const skuTabLabels = {'30d':'Last 30 Days','7d':'Last 7 Days','today':'Today','lifetime':'Lifetime','custom':'Custom Range'};
 
 function renderSkuBreakdown(tab) {
   const d = tabData[tab] || {};
@@ -668,9 +677,77 @@ function renderSkuBreakdown(tab) {
   }).join('');
 }
 
+function openCustomRange(el) {
+  document.querySelectorAll('.date-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  const panel = document.getElementById('custom-date-panel');
+  panel.style.display = panel.style.display === 'flex' ? 'none' : 'flex';
+}
+
+async function applyCustomRange() {
+  const start = document.getElementById('custom-start').value;
+  const end   = document.getElementById('custom-end').value;
+  const status = document.getElementById('custom-status');
+  if (!start || !end) { status.textContent = 'Please select both dates.'; return; }
+  if (start > end)    { status.textContent = 'Start date must be before end date.'; return; }
+  status.textContent = 'Loading…';
+  try {
+    const resp = await fetch('/kpi_history.json');
+    if (!resp.ok) throw new Error('History not available yet');
+    const history = await resp.json();
+    const filtered = history.filter(d => d.date >= start && d.date <= end);
+    if (filtered.length === 0) {
+      status.textContent = 'No data found for this range.';
+      return;
+    }
+    let revenue = 0, orders = 0, units = 0;
+    const sku = {};
+    for (const d of filtered) {
+      revenue += d.revenue || 0;
+      orders  += d.orders  || 0;
+      units   += d.units   || 0;
+      for (const [k, v] of Object.entries(d.sku_units || {})) {
+        sku[k] = (sku[k] || 0) + v;
+      }
+    }
+    const label = start + ' → ' + end + ' (' + filtered.length + ' days)';
+    tabData['custom'] = {
+      revenue: '$' + revenue.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ','),
+      units: String(units),
+      spend: '--', acos: '--', sessions: '--', ipi: '628',
+      rsub: label + ' · SP-API daily data',
+      usub: orders + ' orders · ' + units + ' units',
+      ssub: 'Not yet available', asub: 'Not yet available',
+      sesub: 'Not yet available', isub: 'Range 570-686',
+      acosColor: '#6b7280', skuUnits: sku
+    };
+    skuTabLabels['custom'] = label;
+    status.textContent = filtered.length + ' days loaded';
+    // Update KPI cards
+    const d = tabData['custom'];
+    document.getElementById('kv-revenue').textContent = d.revenue;
+    document.getElementById('kv-units').textContent = d.units;
+    document.getElementById('kv-spend').textContent = d.spend;
+    document.getElementById('kv-acos').textContent = d.acos;
+    document.getElementById('kv-sessions').textContent = d.sessions;
+    document.getElementById('kv-ipi').textContent = d.ipi;
+    document.getElementById('ks-revenue').textContent = d.rsub;
+    document.getElementById('ks-units').textContent = d.usub;
+    document.getElementById('ks-spend').textContent = d.ssub;
+    document.getElementById('ks-acos').textContent = d.asub;
+    document.getElementById('ks-sessions').textContent = d.sesub;
+    document.getElementById('ks-ipi').textContent = d.isub;
+    renderSkuBreakdown('custom');
+  } catch(e) {
+    status.textContent = 'Error: ' + e.message;
+  }
+}
+
 function switchTab(el, tab) {
   document.querySelectorAll('.date-tab').forEach(t => t.classList.remove('active'));
   el.classList.add('active');
+  // Hide custom date panel when switching to a regular tab
+  document.getElementById('custom-date-panel').style.display = 'none';
   const d = tabData[tab];
   document.getElementById('kv-revenue').textContent = d.revenue;
   document.getElementById('kv-units').textContent = d.units;
@@ -737,7 +814,7 @@ new Chart(rCtx, {
   }
 });
 
-// ── Profit Donut ────────────────────────────────────────────────
+// ── Profit Donut ──────────────────────────────────────────────────────────────────
 const pCtx = document.getElementById('profitDonut').getContext('2d');
 new Chart(pCtx, {
   type: 'doughnut',
@@ -755,7 +832,7 @@ new Chart(pCtx, {
   }
 });
 
-// ── Inventory Bar Chart ─────────────────────────────────────────
+// ── Inventory Bar Chart ─────────────────────────────────────────────────────────
 const iCtx = document.getElementById('inventoryChart').getContext('2d');
 new Chart(iCtx, {
   type: 'bar',
