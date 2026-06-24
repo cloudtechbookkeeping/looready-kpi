@@ -141,6 +141,33 @@ def update_html(data):
     return html, today_str, n1, n2, n3
 
 
+def write_history():
+    """Write docs/kpi_history.json with all available daily data for custom date range feature."""
+    history = []
+    for path in sorted(DATA_DIR.glob("*.json")):
+        name = path.stem
+        if "cache" in name:
+            continue
+        try:
+            with open(path) as f:
+                d = json.load(f)
+            if "date" not in d:
+                continue
+            history.append({
+                "date":      d.get("date"),
+                "revenue":   d.get("revenue_today", 0),
+                "orders":    d.get("orders_today", 0),
+                "units":     d.get("units_ordered", 0),
+                "sku_units": d.get("sku_units", {}),
+            })
+        except Exception as e:
+            print("Skipping " + str(path) + ": " + str(e))
+    history.sort(key=lambda x: x["date"])
+    out_path = DOCS_DIR / "kpi_history.json"
+    out_path.write_text(json.dumps(history, indent=2), encoding="utf-8")
+    print("Wrote docs/kpi_history.json (" + str(len(history)) + " days)")
+
+
 def write_docs(html, status):
     DOCS_DIR.mkdir(exist_ok=True)
     index_path = DOCS_DIR / "index.html"
@@ -150,6 +177,8 @@ def write_docs(html, status):
     status_path = DOCS_DIR / "status.json"
     status_path.write_text(json.dumps(status, indent=2), encoding="utf-8")
     print("Wrote docs/status.json")
+
+    write_history()
 
 
 if __name__ == "__main__":
