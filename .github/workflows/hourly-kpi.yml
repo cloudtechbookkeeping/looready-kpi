@@ -38,6 +38,6 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add docs/index.html docs/status.json kpi_data/
+          git add docs/index.html docs/status.json docs/kpi_history.json kpi_data/
           git diff --cached --quiet || git commit -m "Dashboard: $(date -u '+%B %-d %Y %H:%M UTC')"
           git push
