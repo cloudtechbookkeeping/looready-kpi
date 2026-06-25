@@ -32,7 +32,11 @@ KNOWN_SKUS = ['LR-TSC-30PACK', 'LR-CS-10', 'LR-CS-30', 'LR-TSC-5PACK', 'LR-CS-12
 
 
 def update_html(data):
-    today_str = datetime.date.today().strftime("%B %-d, %Y")
+    # US Eastern time (handles DST automatically)
+    import zoneinfo
+    et = zoneinfo.ZoneInfo("America/New_York")
+    now_et = datetime.datetime.now(tz=et)
+    today_str = now_et.strftime("%B %-d, %Y %-I:%M %p ET")
     revenue   = "$" + f"{data['revenue_today']:,.2f}"
     orders    = data['orders_today']
     units     = data.get('units_ordered', 0)
@@ -50,17 +54,17 @@ def update_html(data):
     html = HTML_FILE.read_text(encoding="utf-8")
     print("HTML len=" + str(len(html)))
 
-    # 1. Live badge date
+    # 1. Live badge date+time
     html, n1 = re.subn(
-        r"Live .{1,3} Updated \w+ \d+, \d{4}",
-        "Live . Updated " + today_str,
+        r"Live .{1,3} Updated [^\n<\"]+",
+        "Live · Updated " + today_str,
         html
     )
 
     # 2. Data snapshot line
     html, n2 = re.subn(
         r"Data snapshot: [^\n<]*</div>",
-        "Data snapshot: " + today_str + " . SP-API live pull</div>",
+        "Data snapshot: " + today_str + " · SP-API live pull</div>",
         html
     )
 
@@ -112,7 +116,7 @@ def update_html(data):
     n4 = 1 if placeholder_7d in html else 0
     html = html.replace(placeholder_7d, sevenday_obj)
 
-    # 5. 30d data object — uses accurate units_30d from sales metrics API
+    # 5. 30d data object — accumulated from daily files
     sku_parts_30d = []
     for sku in KNOWN_SKUS:
         val = sku_raw_30d.get(sku, 0)
