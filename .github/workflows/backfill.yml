@@ -1,0 +1,51 @@
+name: LooReady Historical Backfill
+
+on:
+  workflow_dispatch:
+    inputs:
+      start_date:
+        description: 'Start date (YYYY-MM-DD)'
+        required: true
+        default: '2026-01-01'
+      end_date:
+        description: 'End date (YYYY-MM-DD)'
+        required: true
+        default: '2026-01-31'
+
+permissions:
+  contents: write
+
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350   # ~5h 50m — under GitHub's 6h limit
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Run backfill
+        env:
+          AMAZON_CLIENT_ID: ${{ secrets.AMAZON_CLIENT_ID }}
+          AMAZON_CLIENT_SECRET: ${{ secrets.AMAZON_CLIENT_SECRET }}
+          AMAZON_REFRESH_TOKEN: ${{ secrets.AMAZON_REFRESH_TOKEN }}
+        run: python backfill.py --start "${{ github.event.inputs.start_date }}" --end "${{ github.event.inputs.end_date }}"
+
+      - name: Rebuild dashboard with new history
+        run: python build_dashboard.py
+
+      - name: Commit backfilled data and updated dashboard
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add kpi_data/ docs/index.html docs/status.json docs/kpi_history.json
+          git diff --cached --quiet || git commit -m "Backfill: ${{ github.event.inputs.start_date }} to ${{ github.event.inputs.end_date }}"
+          git push
