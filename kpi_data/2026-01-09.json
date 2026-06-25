@@ -1,0 +1,12 @@
+{
+  "date": "2026-01-09",
+  "pulled_at": "2026-06-25T16:38:16.458116Z",
+  "orders_today": 24,
+  "revenue_today": 675.67,
+  "units_ordered": 28,
+  "finance": {},
+  "sku_units": {
+    "LR-TSC-30PACK": 25,
+    "LR-TSC-5PACK": 3
+  }
+}
