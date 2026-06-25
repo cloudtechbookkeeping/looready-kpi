@@ -199,7 +199,7 @@
   </div>
   <div class="live-badge">
     <div class="live-dot"></div>
-    Live · Updated June 9, 2026
+    Live · Updated June 9, 2026 12:00 PM ET
   </div>
 </div>
 
@@ -224,7 +224,7 @@
 <!-- Main -->
 <div class="main">
 
-  <div class="updated">Data snapshot: June 9, 2026 · SP-API live pull</div>
+  <div class="updated">Data snapshot: June 9, 2026 12:00 PM ET · SP-API live pull</div>
 
   <!-- Alert -->
   <div class="alert-banner">
@@ -427,7 +427,8 @@
     <div class="section-card">
       <div class="section-header">
         <span class="section-title">🔀 Traffic & Conversion</span>
-        <span class="section-badge">Last 30 Days</spa    </div>
+        <span class="section-badge">Last 30 Days</span>
+      </div>
       <div class="section-body">
         <div class="stat-row">
           <span class="stat-name">Sessions</span>
@@ -668,12 +669,7 @@ function renderSkuBreakdown(tab) {
   grid.innerHTML = skuMeta.map(s => {
     const val = d.skuUnits[s.key] !== undefined ? d.skuUnits[s.key] : '--';
     return '<div style="background:#f9fafb;border-radius:8px;padding:10px 12px;border-left:3px solid '+s.color+';">'
-      +'<div style="font-size:10px;font-weight:700;color:'+s.color+';margin-bottom:4px;">'
-      +s.key+(s.sup?' <span style="color:#ef4444;font-size:10px;">⚠️</span>':'')
-      +'</div>'
-      +'<div style="font-size:20px;font-weight:800;color:'+s.color+';">'+val+'</div>'
-      +'<div style="font-size:10px;color:#9ca3af;margin-top:1px;">'+s.name+' · units</div>'
-      +'</div>';
+      +'<div style="font-size:10px;font-weight:700;color:'+s.color+';margin-bottom:4px;">'+s.key+(s.sup?'<span style="color:#ef4444;font-size:10px;">⚠️</span>':'')+'</div>'+'<div style="font-size:20px;font-weight:800;color:' +s.color+';">'+val+'</div>'+'<div style="font-size:10px;color:#9ca3af;margin-top:1px;">'+s.name+' · units</div>'+'</div>';
   }).join('');
 }
 
@@ -712,10 +708,10 @@ async function applyCustomRange() {
     }
     const label = start + ' → ' + end + ' (' + filtered.length + ' days)';
     tabData['custom'] = {
-      revenue: '$' + revenue.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ','),
+      revenue: '$' + revenue.toFixed(2).replace(/\B(?=('\d{3})+(?!\d))/g, ','),
       units: String(units),
       spend: '--', acos: '--', sessions: '--', ipi: '628',
-      rsub: label + ' · SP-API daily data',
+      rsub: label + ' · SP-API waily data',
       usub: orders + ' orders · ' + units + ' units',
       ssub: 'Not yet available', asub: 'Not yet available',
       sesub: 'Not yet available', isub: 'Range 570-686',
@@ -814,7 +810,7 @@ new Chart(rCtx, {
   }
 });
 
-// ── Profit Donut ──────────────────────────────────────────────────────────────────
+// ── Profit Donut ────────────────────────────────────────────────
 const pCtx = document.getElementById('profitDonut').getContext('2d');
 new Chart(pCtx, {
   type: 'doughnut',
@@ -832,7 +828,7 @@ new Chart(pCtx, {
   }
 });
 
-// ── Inventory Bar Chart ─────────────────────────────────────────────────────────
+// ── Inventory Bar Chart ────────────────────────────────────────────────
 const iCtx = document.getElementById('inventoryChart').getContext('2d');
 new Chart(iCtx, {
   type: 'bar',
