@@ -199,7 +199,7 @@
   </div>
   <div class="live-badge">
     <div class="live-dot"></div>
-    Live · Updated June 26, 2026 7:43 AM ET
+    Live · Updated June 26, 2026 2:17 PM ET
   </div>
 </div>
 
@@ -224,14 +224,8 @@
 <!-- Main -->
 <div class="main">
 
-  <div class="updated">Data snapshot: June 26, 2026 7:43 AM ET · SP-API live pull</div>
+  <div class="updated">Data snapshot: June 26, 2026 2:17 PM ET · SP-API live pull</div>
 
-  <!-- Alert -->
-  <div class="alert-banner">
-    <span class="alert-icon">⚠️</span>
-    <strong>Action Required:</strong>&nbsp;ASIN B0GLV3DH7X (LR-CS-120, $69.99) is Search Suppressed — fix listing to restore visibility.
-    &nbsp;|&nbsp; 1 campaign went out of budget — estimated missed sales: $66–$205.
-  </div>
 
   <!-- KPI Cards -->
   <div class="kpi-grid" id="kpi-cards">
@@ -291,14 +285,7 @@
   <!-- Row 2: Revenue chart + Profit breakdown -->
   <div class="two-col">
 
-    <!-- Revenue & sessions chart -->
-    <div class="section-card">
-      <div class="section-header">
-        <span class="section-title">📈 Revenue Trend — Last 30 Days</span>
-        <span class="section-badge">Apr 29 – May 28</span>
-      </div>
-      <div class="section-body">
-        <div class="chart-wrap">
+    <!-- Revenue & sessions chart -->wrap">
           <canvas id="revenueChart"></canvas>
         </div>
       </div>
@@ -643,7 +630,7 @@
 const tabData = {
   '30d': { revenue:'$0.00', units:'2678', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Last 30 Days · SP-API live', usub:'2419 orders . 2678 units', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':401,'LR-CS-10':408,'LR-CS-30':161,'LR-TSC-5PACK':59,'LR-CS-120':0} }, /* 30D_KPI_PLACEHOLDER */
   '7d':  { revenue:'$10,425.10', units:'649', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Last 7 Days · SP-API live', usub:'590 orders . 649 units', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':273,'LR-CS-10':243,'LR-CS-30':104,'LR-TSC-5PACK':29,'LR-CS-120':0} }, /* 7D_KPI_PLACEHOLDER */
-  'today': { revenue:'$1,338.65', units:'115', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Today June 26, 2026 7:43 AM ET . SP-API live', usub:'98 orders . 189 units . Fees $532.05', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':38,'LR-CS-10':47,'LR-CS-30':27,'LR-TSC-5PACK':3,'LR-CS-120':0} }, /* TODAY_KPI_PLACEHOLDER */
+  'today': { revenue:'$1,655.75', units:'147', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Today June 26, 2026 2:17 PM ET . SP-API live', usub:'123 orders . 188 units . Fees $532.05', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':44,'LR-CS-10':62,'LR-CS-30':35,'LR-TSC-5PACK':6,'LR-CS-120':0} }, /* TODAY_KPI_PLACEHOLDER */
   'lifetime': { revenue:'$439,795', units:'20,748', spend:'$226,449', acos:'51.5%', sessions:'187,331', ipi:'628',
                rsub:'Lifetime Ad Sales (all campaigns)', usub:'Lifetime ad purchases', ssub:'Lifetime total spend', asub:'Lifetime avg ACOS', sesub:'Lifetime ad clicks', isub:'Range 570–686',
                acosColor:'#d97706' },
@@ -669,7 +656,12 @@ function renderSkuBreakdown(tab) {
   grid.innerHTML = skuMeta.map(s => {
     const val = d.skuUnits[s.key] !== undefined ? d.skuUnits[s.key] : '--';
     return '<div style="background:#f9fafb;border-radius:8px;padding:10px 12px;border-left:3px solid '+s.color+';">'
-      +'<div style="font-size:10px;font-weight:700;color:'+s.color+';margin-bottom:4px;">'+s.key+(s.sup?'<span style="color:#ef4444;font-size:10px;">⚠️</span>':'')+'</div>'+'<div style="font-size:20px;font-weight:800;color:' +s.color+';">'+val+'</div>'+'<div style="font-size:10px;color:#9ca3af;margin-top:1px;">'+s.name+' · units</div>'+'</div>';
+      +'<div style="font-size:10px;font-weight:700;color:'+s.color+';margin-bottom:4px;">'
+      +s.key+(s.sup?' <span style="color:#ef4444;font-size:10px;">⚠️</span>':'')
+      +'</div>'
+      +'<div style="font-size:20px;font-weight:800;color:'+s.color(';">'+val+'</div>'
+      +'<div style="font-size:10px;color:#9ca3af;margin-top:1px;">'+s.name+' · units</div>'
+      +'</div>';
   }).join('');
 }
 
@@ -708,10 +700,10 @@ async function applyCustomRange() {
     }
     const label = start + ' → ' + end + ' (' + filtered.length + ' days)';
     tabData['custom'] = {
-      revenue: '$' + revenue.toFixed(2).replace(/\B(?=('\d{3})+(?!\d))/g, ','),
+      revenue: '$' + revenue.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ','),
       units: String(units),
       spend: '--', acos: '--', sessions: '--', ipi: '628',
-      rsub: label + ' · SP-API waily data',
+      rsub: label + ' · SP-API daily data',
       usub: orders + ' orders · ' + units + ' units',
       ssub: 'Not yet available', asub: 'Not yet available',
       sesub: 'Not yet available', isub: 'Range 570-686',
@@ -828,7 +820,7 @@ new Chart(pCtx, {
   }
 });
 
-// ── Inventory Bar Chart ────────────────────────────────────────────────
+// ── Inventory Bar Chart ─────────────────────────────────────────
 const iCtx = document.getElementById('inventoryChart').getContext('2d');
 new Chart(iCtx, {
   type: 'bar',
