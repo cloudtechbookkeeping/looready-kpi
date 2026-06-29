@@ -199,7 +199,7 @@
   </div>
   <div class="live-badge">
     <div class="live-dot"></div>
-    Live · Updated June 28, 2026 6:45 PM ET
+    Live · Updated June 29, 2026 2:39 AM ET
   </div>
 </div>
 
@@ -224,7 +224,7 @@
 <!-- Main -->
 <div class="main">
 
-  <div class="updated">Data snapshot: June 28, 2026 6:45 PM ET · SP-API live pull</div>
+  <div class="updated">Data snapshot: June 29, 2026 2:39 AM ET · SP-API live pull</div>
 
 
   <!-- KPI Cards -->
@@ -285,7 +285,14 @@
   <!-- Row 2: Revenue chart + Profit breakdown -->
   <div class="two-col">
 
-    <!-- Revenue & sessions chart -->wrap">
+    <!-- Revenue & sessions chart -->
+    <div class="section-card">
+      <div class="section-header">
+        <span class="section-title">📈 Revenue Trend — Last 30 Days</span>
+        <span class="section-badge">Apr 29 – May 28</span>
+      </div>
+      <div class="section-body">
+        <div class="chart-wrap">
           <canvas id="revenueChart"></canvas>
         </div>
       </div>
@@ -630,7 +637,7 @@
 const tabData = {
   '30d': { revenue:'$0.00', units:'2819', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Last 30 Days · SP-API live', usub:'2535 orders . 2819 units', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':507,'LR-CS-10':496,'LR-CS-30':228,'LR-TSC-5PACK':68,'LR-CS-120':0} }, /* 30D_KPI_PLACEHOLDER */
   '7d':  { revenue:'$11,094.20', units:'733', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Last 7 Days · SP-API live', usub:'645 orders . 733 units', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':314,'LR-CS-10':250,'LR-CS-30':140,'LR-TSC-5PACK':29,'LR-CS-120':0} }, /* 7D_KPI_PLACEHOLDER */
-  'today': { revenue:'$1,769.12', units:'95', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Today June 28, 2026 6:45 PM ET . SP-API live', usub:'83 orders . 174 units . Fees $631.63', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':54,'LR-CS-10':19,'LR-CS-30':17,'LR-TSC-5PACK':5,'LR-CS-120':0} }, /* TODAY_KPI_PLACEHOLDER */
+  'today': { revenue:'$1,769.12', units:'95', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Today June 29, 2026 2:39 AM ET . SP-API live', usub:'83 orders . 174 units . Fees $631.63', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':54,'LR-CS-10':19,'LR-CS-30':17,'LR-TSC-5PACK':5,'LR-CS-120':0} }, /* TODAY_KPI_PLACEHOLDER */
   'lifetime': { revenue:'$439,795', units:'20,748', spend:'$226,449', acos:'51.5%', sessions:'187,331', ipi:'628',
                rsub:'Lifetime Ad Sales (all campaigns)', usub:'Lifetime ad purchases', ssub:'Lifetime total spend', asub:'Lifetime avg ACOS', sesub:'Lifetime ad clicks', isub:'Range 570–686',
                acosColor:'#d97706' },
@@ -659,7 +666,7 @@ function renderSkuBreakdown(tab) {
       +'<div style="font-size:10px;font-weight:700;color:'+s.color+';margin-bottom:4px;">'
       +s.key+(s.sup?' <span style="color:#ef4444;font-size:10px;">⚠️</span>':'')
       +'</div>'
-      +'<div style="font-size:20px;font-weight:800;color:'+s.color(';">'+val+'</div>'
+      +'<div style="font-size:20px;font-weight:800;color:'+s.color+';">'+val+'</div>'
       +'<div style="font-size:10px;color:#9ca3af;margin-top:1px;">'+s.name+' · units</div>'
       +'</div>';
   }).join('');
