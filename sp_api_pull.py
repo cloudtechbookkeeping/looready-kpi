@@ -129,16 +129,27 @@ def get_sku_breakdown(token, orders):
 
 def load_or_fetch_30d(token):
     """Fetch accurate 30d totals once per day and cache.
-    Uses /sales/v1/orderMetrics (granularity=TOTAL) for revenue + units — single API call.
+    Uses Orders API (summing OrderTotal.Amount) for revenue — matches Seller Central Account Activity.
     SKU breakdown is accumulated from daily files (grows more complete each day)."""
     today = datetime.date.today().isoformat()
-    cache_path = DATA_DIR / f"30d_cache_{today}.json"
+    # New cache key (_orders) so stale Sales Metrics cache is ignored
+    cache_path = DATA_DIR / f"30d_orders_{today}.json"
     if cache_path.exists():
         print("   ⚡ 30d cache hit — loading from file")
         with open(cache_path) as f:
             return json.load(f)
 
-    print("📅 Pulling 30d totals from sales metrics API...")
+    print("📅 Pulling 30d orders from Orders API (for accurate revenue)...")
+    orders_30d_list = get_orders(token, days=30)
+    revenue_30d = sum(
+        float(o.get("OrderTotal", {}).get("Amount", 0))
+        for o in orders_30d_list if o.get("OrderTotal")
+    )
+    orders_30d = len(orders_30d_list)
+    print(f"   ✅ 30d: {orders_30d} orders, ${revenue_30d:,.2f}")
+
+    # Get unit count from Sales Metrics API (single call, much faster than order items)
+    print("📈 Pulling 30d unit count from Sales Metrics API...")
     end   = datetime.datetime.utcnow()
     start = end - datetime.timedelta(days=30)
     resp = sp_request(token, "GET", "/sales/v1/orderMetrics", {
@@ -148,18 +159,18 @@ def load_or_fetch_30d(token):
         "granularityTimeZone": "US/Pacific",
     })
     units_30d = 0
-    revenue_30d = 0.0
-    orders_30d = 0
     if resp.status_code == 200:
         payload = resp.json().get("payload", [])
         if payload:
-            m = payload[0]
-            units_30d   = m.get("unitCount", 0)
-            orders_30d  = m.get("orderCount", 0)
-            revenue_30d = float(m.get("orderedProductSales", {}).get("amount", 0))
-            print(f"   ✅ 30d metrics: {orders_30d} orders, {units_30d} units, ${revenue_30d:,.2f}")
+            units_30d = payload[0].get("unitCount", 0)
+            print(f"   ✅ 30d units: {units_30d}")
     else:
-        print(f"   ⚠️ Sales metrics 30d {resp.status_code}: {resp.text[:200]}")
+        print(f"   ⚠️ Units API {resp.status_code}: {resp.text[:200]}")
+        # Fallback: sum shipped + unshipped items from order list
+        units_30d = sum(
+            int(o.get("NumberOfItemsShipped", 0)) + int(o.get("NumberOfItemsUnshipped", 0))
+            for o in orders_30d_list
+        )
 
     # SKU breakdown from daily files (partial but grows each day)
     sku_units_30d = {}
