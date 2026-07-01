@@ -199,7 +199,7 @@
   </div>
   <div class="live-badge">
     <div class="live-dot"></div>
-    Live · Updated July 1, 2026 7:00 AM ET
+    Live · Updated July 1, 2026 2:24 PM ET
   </div>
 </div>
 
@@ -210,6 +210,7 @@
   <div class="date-tab" onclick="switchTab(this,'today')">Today</div>
   <div class="date-tab" onclick="switchTab(this,'lifetime')">Lifetime</div>
   <div class="date-tab" id="custom-tab" onclick="openCustomRange(this)">Custom Range</div>
+  <div class="date-tab" id="inventory-tab" onclick="switchToInventory(this)" style="border-left:1px solid #e5e7eb;margin-left:4px;padding-left:12px;">📦 Inventory</div>
 </div>
 <!-- Custom date picker panel -->
 <div id="custom-date-panel" style="display:none;background:white;border-bottom:1px solid #e5e7eb;padding:10px 24px;align-items:center;gap:12px;flex-wrap:wrap;">
@@ -224,7 +225,26 @@
 <!-- Main -->
 <div class="main">
 
-  <div class="updated">Data snapshot: July 1, 2026 7:00 AM ET · SP-API live pull</div>
+  <!-- Inventory Section (shown when Inventory tab is active) -->
+  <div id="inventory-section" style="display:none;padding:16px 0;">
+    <div class="section-card" style="margin-bottom:16px;padding:14px 16px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+        <span style="font-size:13px;font-weight:700;color:#1a1a2e;">🏪 FBA Inventory</span>
+        <span style="font-size:10px;background:#dbeafe;color:#1d4ed8;padding:2px 10px;border-radius:10px;font-weight:600;">Fulfillment by Amazon</span>
+      </div>
+      <div id="fba-grid" style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;"></div>
+    </div>
+    <div class="section-card" style="padding:14px 16px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+        <span style="font-size:13px;font-weight:700;color:#1a1a2e;">🏭 AWD Inventory</span>
+        <span style="font-size:10px;background:#d1fae5;color:#065f46;padding:2px 10px;border-radius:10px;font-weight:600;">Amazon Warehousing & Distribution</span>
+      </div>
+      <div id="awd-grid" style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;"></div>
+    </div>
+  </div>
+
+  <div id="main-kpi-content">
+  <div class="updated">Data snapshot: July 1, 2026 2:24 PM ET · SP-API live pull</div>
 
 
   <!-- KPI Cards -->
@@ -630,14 +650,19 @@
     </div>
   </div>
 
+  </div><!-- /main-kpi-content -->
+
 </div><!-- /main -->
 
 <script>
+// ── Inventory Data ──────────────────────────────────────────────
+const inventoryData = {'LR-TSC-30PACK':{fba:{fulfillable:0,inbound:0,reserved:0,unfulfillable:0},awd:{onhand:0,inbound:0}},'LR-CS-10':{fba:{fulfillable:0,inbound:0,reserved:0,unfulfillable:0},awd:{onhand:0,inbound:0}},'LR-CS-30':{fba:{fulfillable:0,inbound:0,reserved:0,unfulfillable:0},awd:{onhand:0,inbound:0}},'LR-TSC-5PACK':{fba:{fulfillable:0,inbound:0,reserved:0,unfulfillable:0},awd:{onhand:0,inbound:0}},'LR-CS-120':{fba:{fulfillable:0,inbound:0,reserved:0,unfulfillable:0},awd:{onhand:0,inbound:0}}};
+
 // ── Tab Switching Data ──────────────────────────────────────────
 const tabData = {
   '30d': { revenue:'$40,846.85', units:'2829', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Last 30 Days · SP-API live', usub:'2200 orders . 2829 units', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':969,'LR-CS-10':1030,'LR-CS-30':485,'LR-TSC-5PACK':142,'LR-CS-120':0} }, /* 30D_KPI_PLACEHOLDER */
   '7d':  { revenue:'$11,375.50', units:'738', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Last 7 Days · SP-API live', usub:'651 orders . 738 units', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':317,'LR-CS-10':233,'LR-CS-30':162,'LR-TSC-5PACK':26,'LR-CS-120':0} }, /* 7D_KPI_PLACEHOLDER */
-  'today': { revenue:'$1,066.14', units:'60', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Today July 1, 2026 7:00 AM ET . SP-API live', usub:'60 orders . 51 units . Fees $608.12', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':20,'LR-CS-10':28,'LR-CS-30':11,'LR-TSC-5PACK':1,'LR-CS-120':0} }, /* TODAY_KPI_PLACEHOLDER */
+  'today': { revenue:'$1,190.70', units:'68', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Today July 1, 2026 2:24 PM ET . SP-API live', usub:'68 orders . 51 units . Fees $608.12', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':23,'LR-CS-10':31,'LR-CS-30':11,'LR-TSC-5PACK':3,'LR-CS-120':0} }, /* TODAY_KPI_PLACEHOLDER */
   'lifetime': { revenue:'$439,795', units:'20,748', spend:'$226,449', acos:'51.5%', sessions:'187,331', ipi:'628',
                rsub:'Lifetime Ad Sales (all campaigns)', usub:'Lifetime ad purchases', ssub:'Lifetime total spend', asub:'Lifetime avg ACOS', sesub:'Lifetime ad clicks', isub:'Range 570–686',
                acosColor:'#d97706' },
@@ -675,8 +700,67 @@ function renderSkuBreakdown(tab) {
 function openCustomRange(el) {
   document.querySelectorAll('.date-tab').forEach(t => t.classList.remove('active'));
   el.classList.add('active');
+  document.getElementById('inventory-section').style.display = 'none';
+  document.getElementById('main-kpi-content').style.display = '';
   const panel = document.getElementById('custom-date-panel');
   panel.style.display = panel.style.display === 'flex' ? 'none' : 'flex';
+}
+
+// ── Inventory Tab ────────────────────────────────────────────────
+function switchToInventory(el) {
+  document.querySelectorAll('.date-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('custom-date-panel').style.display = 'none';
+  document.getElementById('main-kpi-content').style.display = 'none';
+  document.getElementById('inventory-section').style.display = 'block';
+  renderInventory();
+}
+
+function renderInventory() {
+  const inv = inventoryData;
+  const fbaGrid = document.getElementById('fba-grid');
+  const awdGrid = document.getElementById('awd-grid');
+
+  if (!inv || Object.keys(inv).length === 0) {
+    const msg = '<div style="grid-column:1/-1;font-size:11px;color:#9ca3af;padding:8px 0;">Inventory data will appear after the next hourly update.</div>';
+    fbaGrid.innerHTML = msg;
+    awdGrid.innerHTML = msg;
+    return;
+  }
+
+  fbaGrid.innerHTML = skuMeta.map(s => {
+    const d = (inv[s.key] || {}).fba || {};
+    const fulfillable   = d.fulfillable   ?? '--';
+    const inbound       = d.inbound       ?? '--';
+    const reserved      = d.reserved      ?? '--';
+    const unfulfillable = d.unfulfillable ?? '--';
+    return `<div style="background:#f0f9ff;border-radius:8px;padding:10px 12px;border-left:3px solid ${s.color};">
+      <div style="font-size:9px;font-weight:700;color:${s.color};margin-bottom:6px;">${s.key}</div>
+      <div style="font-size:20px;font-weight:800;color:#1e40af;margin-bottom:4px;">${fulfillable}</div>
+      <div style="font-size:9px;color:#6b7280;">fulfillable</div>
+      <div style="margin-top:6px;font-size:10px;color:#374151;display:grid;grid-template-columns:1fr 1fr;gap:2px;">
+        <span>📥 Inbound</span><span style="font-weight:700;">${inbound}</span>
+        <span>🔒 Reserved</span><span style="font-weight:700;">${reserved}</span>
+        <span>⚠️ Unfulfl.</span><span style="font-weight:700;">${unfulfillable}</span>
+      </div>
+    </div>`;
+  }).join('');
+
+  awdGrid.innerHTML = skuMeta.map(s => {
+    const d = (inv[s.key] || {}).awd || {};
+    const onhand  = d.onhand  ?? '--';
+    const inbound = d.inbound ?? '--';
+    const total   = (typeof onhand === 'number' && typeof inbound === 'number') ? onhand + inbound : '--';
+    return `<div style="background:#f0fdf4;border-radius:8px;padding:10px 12px;border-left:3px solid ${s.color};">
+      <div style="font-size:9px;font-weight:700;color:${s.color};margin-bottom:6px;">${s.key}</div>
+      <div style="font-size:20px;font-weight:800;color:#065f46;margin-bottom:4px;">${onhand}</div>
+      <div style="font-size:9px;color:#6b7280;">on hand</div>
+      <div style="margin-top:6px;font-size:10px;color:#374151;display:grid;grid-template-columns:1fr 1fr;gap:2px;">
+        <span>📥 Inbound</span><span style="font-weight:700;">${inbound}</span>
+        <span>📦 Total</span><span style="font-weight:700;">${total}</span>
+      </div>
+    </div>`;
+  }).join('');
 }
 
 async function applyCustomRange() {
@@ -741,8 +825,9 @@ async function applyCustomRange() {
 function switchTab(el, tab) {
   document.querySelectorAll('.date-tab').forEach(t => t.classList.remove('active'));
   el.classList.add('active');
-  // Hide custom date panel when switching to a regular tab
   document.getElementById('custom-date-panel').style.display = 'none';
+  document.getElementById('inventory-section').style.display = 'none';
+  document.getElementById('main-kpi-content').style.display = '';
   const d = tabData[tab];
   document.getElementById('kv-revenue').textContent = d.revenue;
   document.getElementById('kv-units').textContent = d.units;
