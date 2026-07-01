@@ -1,8 +1,8 @@
 {
   "date": "2026-07-01",
-  "pulled_at": "2026-07-01T21:21:12.176026",
-  "orders_today": 78,
-  "revenue_today": 1364.27,
+  "pulled_at": "2026-07-01T22:14:35.340291",
+  "orders_today": 79,
+  "revenue_today": 1390.88,
   "units_ordered": 51,
   "finance": {
     "total_sales": 1673.1,
@@ -11,7 +11,7 @@
   "sku_units": {
     "LR-CS-30": 13,
     "LR-CS-10": 35,
-    "LR-TSC-30PACK": 26,
+    "LR-TSC-30PACK": 27,
     "LR-TSC-5PACK": 4
   },
   "fba_inventory": {},
