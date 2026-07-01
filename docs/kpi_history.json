@@ -505,6 +505,174 @@
     "sku_units": {}
   },
   {
+    "date": "2026-06-01",
+    "revenue": 1451.12,
+    "orders": 88,
+    "units": 94,
+    "sku_units": {
+      "LR-TSC-30PACK": 28,
+      "LR-CS-10": 52,
+      "LR-CS-30": 12,
+      "LR-TSC-5PACK": 2
+    }
+  },
+  {
+    "date": "2026-06-02",
+    "revenue": 1508.28,
+    "orders": 90,
+    "units": 96,
+    "sku_units": {
+      "LR-CS-10": 49,
+      "LR-TSC-30PACK": 26,
+      "LR-CS-30": 15,
+      "LR-TSC-5PACK": 6
+    }
+  },
+  {
+    "date": "2026-06-03",
+    "revenue": 1782.73,
+    "orders": 101,
+    "units": 106,
+    "sku_units": {
+      "LR-CS-30": 21,
+      "LR-TSC-30PACK": 31,
+      "LR-CS-10": 48,
+      "LR-TSC-5PACK": 6
+    }
+  },
+  {
+    "date": "2026-06-04",
+    "revenue": 1573.71,
+    "orders": 75,
+    "units": 86,
+    "sku_units": {
+      "LR-TSC-5PACK": 7,
+      "LR-TSC-30PACK": 30,
+      "LR-CS-10": 32,
+      "LR-CS-30": 17
+    }
+  },
+  {
+    "date": "2026-06-05",
+    "revenue": 1450.05,
+    "orders": 77,
+    "units": 84,
+    "sku_units": {
+      "LR-CS-10": 32,
+      "LR-TSC-30PACK": 24,
+      "LR-TSC-5PACK": 10,
+      "LR-CS-30": 18
+    }
+  },
+  {
+    "date": "2026-06-06",
+    "revenue": 1198.02,
+    "orders": 52,
+    "units": 58,
+    "sku_units": {
+      "LR-CS-10": 15,
+      "LR-TSC-30PACK": 28,
+      "LR-CS-30": 12,
+      "LR-TSC-5PACK": 3
+    }
+  },
+  {
+    "date": "2026-06-07",
+    "revenue": 1241.85,
+    "orders": 75,
+    "units": 79,
+    "sku_units": {
+      "LR-TSC-30PACK": 20,
+      "LR-CS-10": 39,
+      "LR-CS-30": 17,
+      "LR-TSC-5PACK": 3
+    }
+  },
+  {
+    "date": "2026-06-08",
+    "revenue": 1719.59,
+    "orders": 82,
+    "units": 99,
+    "sku_units": {
+      "LR-CS-30": 21,
+      "LR-CS-10": 42,
+      "LR-TSC-30PACK": 33,
+      "LR-TSC-5PACK": 3
+    }
+  },
+  {
+    "date": "2026-06-09",
+    "revenue": 1203.06,
+    "orders": 71,
+    "units": 75,
+    "sku_units": {
+      "LR-CS-10": 39,
+      "LR-CS-30": 11,
+      "LR-TSC-30PACK": 24,
+      "LR-TSC-5PACK": 1
+    }
+  },
+  {
+    "date": "2026-06-10",
+    "revenue": 1697.6,
+    "orders": 89,
+    "units": 103,
+    "sku_units": {
+      "LR-CS-10": 45,
+      "LR-TSC-30PACK": 28,
+      "LR-TSC-5PACK": 6,
+      "LR-CS-30": 24
+    }
+  },
+  {
+    "date": "2026-06-11",
+    "revenue": 1194.13,
+    "orders": 68,
+    "units": 72,
+    "sku_units": {
+      "LR-CS-10": 35,
+      "LR-TSC-30PACK": 17,
+      "LR-TSC-5PACK": 4,
+      "LR-CS-30": 16
+    }
+  },
+  {
+    "date": "2026-06-12",
+    "revenue": 1613.96,
+    "orders": 77,
+    "units": 88,
+    "sku_units": {
+      "LR-CS-30": 15,
+      "LR-CS-10": 36,
+      "LR-TSC-30PACK": 31,
+      "LR-TSC-5PACK": 6
+    }
+  },
+  {
+    "date": "2026-06-13",
+    "revenue": 1535.6,
+    "orders": 80,
+    "units": 83,
+    "sku_units": {
+      "LR-TSC-30PACK": 30,
+      "LR-CS-10": 35,
+      "LR-TSC-5PACK": 2,
+      "LR-CS-30": 16
+    }
+  },
+  {
+    "date": "2026-06-14",
+    "revenue": 1695.27,
+    "orders": 80,
+    "units": 89,
+    "sku_units": {
+      "LR-TSC-30PACK": 39,
+      "LR-CS-10": 24,
+      "LR-CS-30": 18,
+      "LR-TSC-5PACK": 8
+    }
+  },
+  {
     "date": "2026-06-15",
     "revenue": 1618.62,
     "orders": 83,
