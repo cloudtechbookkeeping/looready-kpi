@@ -139,8 +139,28 @@ def update_html(data):
     n5 = 1 if placeholder_30d in html else 0
     html = html.replace(placeholder_30d, thirtyday_obj)
 
-    print("n1=" + str(n1) + " n2=" + str(n2) + " n3=" + str(n3) + " n4=" + str(n4) + " n5=" + str(n5))
-    if n1 == 0 or n2 == 0 or n3 == 0 or n4 == 0 or n5 == 0:
+    # 6. Inventory data — build per-SKU JS object
+    fba_inv  = data.get("fba_inventory", {})
+    awd_inv  = data.get("awd_inventory", {})
+    inv_parts = []
+    for sku in KNOWN_SKUS:
+        fba = fba_inv.get(sku, {})
+        awd = awd_inv.get(sku, {})
+        inv_parts.append(
+            f"'{sku}':{{fba:{{fulfillable:{fba.get('fulfillable',0)},"
+            f"inbound:{fba.get('inbound',0)},"
+            f"reserved:{fba.get('reserved',0)},"
+            f"unfulfillable:{fba.get('unfulfillable',0)}}},"
+            f"awd:{{onhand:{awd.get('onhand',0)},"
+            f"inbound:{awd.get('inbound',0)}}}}}"
+        )
+    inv_js = "{" + ",".join(inv_parts) + "}"
+    placeholder_inv = "{ /* INVENTORY_PLACEHOLDER */ }"
+    n6 = 1 if placeholder_inv in html else 0
+    html = html.replace(placeholder_inv, inv_js)
+
+    print("n1=" + str(n1) + " n2=" + str(n2) + " n3=" + str(n3) + " n4=" + str(n4) + " n5=" + str(n5) + " n6=" + str(n6))
+    if n1 == 0 or n2 == 0 or n3 == 0 or n4 == 0 or n5 == 0 or n6 == 0:
         print("WARNING: one or more patterns did not match!")
     return html, today_str, n1, n2, n3
 

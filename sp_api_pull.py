@@ -127,6 +127,58 @@ def get_sku_breakdown(token, orders):
     return sku_units
 
 
+def get_fba_inventory(token):
+    """Fetch FBA inventory summaries per SKU."""
+    resp = sp_request(token, "GET", "/fba/inventory/v1/summaries", {
+        "details": "true",
+        "granularityType": "Marketplace",
+        "granularityId": MARKETPLACE_ID,
+        "marketplaceIds": MARKETPLACE_ID,
+    })
+    if resp.status_code != 200:
+        print(f"⚠️ FBA inventory {resp.status_code}: {resp.text[:200]}")
+        return {}
+    summaries = resp.json().get("payload", {}).get("inventorySummaries", [])
+    fba = {}
+    for item in summaries:
+        sku = item.get("sellerSku", "Unknown")
+        det = item.get("inventoryDetails", {})
+        unfulfillable = det.get("unfulfillableQuantity", {})
+        fba[sku] = {
+            "fulfillable":   det.get("fulfillableQuantity", 0),
+            "inbound":       (det.get("inboundWorkingQuantity", 0)
+                              + det.get("inboundShippedQuantity", 0)
+                              + det.get("inboundReceivingQuantity", 0)),
+            "reserved":      det.get("reservedQuantity", {}).get("totalReservedQuantity", 0)
+                             if isinstance(det.get("reservedQuantity"), dict)
+                             else det.get("reservedQuantity", 0),
+            "unfulfillable": unfulfillable.get("totalUnfulfillableQuantity", 0)
+                             if isinstance(unfulfillable, dict) else unfulfillable,
+        }
+    print(f"   ✅ FBA inventory: {len(fba)} SKUs")
+    return fba
+
+
+def get_awd_inventory(token):
+    """Fetch AWD inventory per SKU."""
+    resp = sp_request(token, "GET", "/awd/2024-05-09/inventory", {
+        "details": "SHOW",
+    })
+    if resp.status_code != 200:
+        print(f"⚠️ AWD inventory {resp.status_code}: {resp.text[:200]}")
+        return {}
+    items = resp.json().get("inventory", [])
+    awd = {}
+    for item in items:
+        sku = item.get("sku", "Unknown")
+        awd[sku] = {
+            "onhand":  item.get("totalOnhandQuantity", 0),
+            "inbound": item.get("totalInboundQuantity", 0),
+        }
+    print(f"   ✅ AWD inventory: {len(awd)} SKUs")
+    return awd
+
+
 def load_or_fetch_30d(token):
     """Fetch accurate 30d totals once per day and cache.
     Uses Orders API (summing OrderTotal.Amount) for revenue — matches Seller Central Account Activity.
@@ -280,6 +332,14 @@ def main():
     sku_units = get_sku_breakdown(token, orders)
     kpi["sku_units"] = sku_units
     print(f"   ✅ SKU breakdown today: {sku_units}")
+
+    print("🏪 Pulling FBA inventory...")
+    fba_inv = get_fba_inventory(token)
+    kpi["fba_inventory"] = fba_inv
+
+    print("🏭 Pulling AWD inventory...")
+    awd_inv = get_awd_inventory(token)
+    kpi["awd_inventory"] = awd_inv
 
     data_7d = load_or_fetch_7d(token)
     kpi["sku_units_7d"] = data_7d["sku_units_7d"]

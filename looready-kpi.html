@@ -210,6 +210,7 @@
   <div class="date-tab" onclick="switchTab(this,'today')">Today</div>
   <div class="date-tab" onclick="switchTab(this,'lifetime')">Lifetime</div>
   <div class="date-tab" id="custom-tab" onclick="openCustomRange(this)">Custom Range</div>
+  <div class="date-tab" id="inventory-tab" onclick="switchToInventory(this)" style="border-left:1px solid #e5e7eb;margin-left:4px;padding-left:12px;">📦 Inventory</div>
 </div>
 <!-- Custom date picker panel -->
 <div id="custom-date-panel" style="display:none;background:white;border-bottom:1px solid #e5e7eb;padding:10px 24px;align-items:center;gap:12px;flex-wrap:wrap;">
@@ -224,6 +225,25 @@
 <!-- Main -->
 <div class="main">
 
+  <!-- Inventory Section (shown when Inventory tab is active) -->
+  <div id="inventory-section" style="display:none;padding:16px 0;">
+    <div class="section-card" style="margin-bottom:16px;padding:14px 16px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+        <span style="font-size:13px;font-weight:700;color:#1a1a2e;">🏪 FBA Inventory</span>
+        <span style="font-size:10px;background:#dbeafe;color:#1d4ed8;padding:2px 10px;border-radius:10px;font-weight:600;">Fulfillment by Amazon</span>
+      </div>
+      <div id="fba-grid" style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;"></div>
+    </div>
+    <div class="section-card" style="padding:14px 16px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+        <span style="font-size:13px;font-weight:700;color:#1a1a2e;">🏭 AWD Inventory</span>
+        <span style="font-size:10px;background:#d1fae5;color:#065f46;padding:2px 10px;border-radius:10px;font-weight:600;">Amazon Warehousing & Distribution</span>
+      </div>
+      <div id="awd-grid" style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;"></div>
+    </div>
+  </div>
+
+  <div id="main-kpi-content">
   <div class="updated">Data snapshot: June 9, 2026 12:00 PM ET · SP-API live pull</div>
 
 
@@ -630,9 +650,14 @@
     </div>
   </div>
 
+  </div><!-- /main-kpi-content -->
+
 </div><!-- /main -->
 
 <script>
+// ── Inventory Data ──────────────────────────────────────────────
+const inventoryData = { /* INVENTORY_PLACEHOLDER */ };
+
 // ── Tab Switching Data ──────────────────────────────────────────
 const tabData = {
   '30d': { revenue:'--', units:'--', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'--', usub:'--', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':'--','LR-CS-10':'--','LR-CS-30':'--','LR-TSC-5PACK':'--','LR-CS-120':'--'} }, /* 30D_KPI_PLACEHOLDER */
@@ -675,8 +700,67 @@ function renderSkuBreakdown(tab) {
 function openCustomRange(el) {
   document.querySelectorAll('.date-tab').forEach(t => t.classList.remove('active'));
   el.classList.add('active');
+  document.getElementById('inventory-section').style.display = 'none';
+  document.getElementById('main-kpi-content').style.display = '';
   const panel = document.getElementById('custom-date-panel');
   panel.style.display = panel.style.display === 'flex' ? 'none' : 'flex';
+}
+
+// ── Inventory Tab ────────────────────────────────────────────────
+function switchToInventory(el) {
+  document.querySelectorAll('.date-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('custom-date-panel').style.display = 'none';
+  document.getElementById('main-kpi-content').style.display = 'none';
+  document.getElementById('inventory-section').style.display = 'block';
+  renderInventory();
+}
+
+function renderInventory() {
+  const inv = inventoryData;
+  const fbaGrid = document.getElementById('fba-grid');
+  const awdGrid = document.getElementById('awd-grid');
+
+  if (!inv || Object.keys(inv).length === 0) {
+    const msg = '<div style="grid-column:1/-1;font-size:11px;color:#9ca3af;padding:8px 0;">Inventory data will appear after the next hourly update.</div>';
+    fbaGrid.innerHTML = msg;
+    awdGrid.innerHTML = msg;
+    return;
+  }
+
+  fbaGrid.innerHTML = skuMeta.map(s => {
+    const d = (inv[s.key] || {}).fba || {};
+    const fulfillable   = d.fulfillable   ?? '--';
+    const inbound       = d.inbound       ?? '--';
+    const reserved      = d.reserved      ?? '--';
+    const unfulfillable = d.unfulfillable ?? '--';
+    return `<div style="background:#f0f9ff;border-radius:8px;padding:10px 12px;border-left:3px solid ${s.color};">
+      <div style="font-size:9px;font-weight:700;color:${s.color};margin-bottom:6px;">${s.key}</div>
+      <div style="font-size:20px;font-weight:800;color:#1e40af;margin-bottom:4px;">${fulfillable}</div>
+      <div style="font-size:9px;color:#6b7280;">fulfillable</div>
+      <div style="margin-top:6px;font-size:10px;color:#374151;display:grid;grid-template-columns:1fr 1fr;gap:2px;">
+        <span>📥 Inbound</span><span style="font-weight:700;">${inbound}</span>
+        <span>🔒 Reserved</span><span style="font-weight:700;">${reserved}</span>
+        <span>⚠️ Unfulfl.</span><span style="font-weight:700;">${unfulfillable}</span>
+      </div>
+    </div>`;
+  }).join('');
+
+  awdGrid.innerHTML = skuMeta.map(s => {
+    const d = (inv[s.key] || {}).awd || {};
+    const onhand  = d.onhand  ?? '--';
+    const inbound = d.inbound ?? '--';
+    const total   = (typeof onhand === 'number' && typeof inbound === 'number') ? onhand + inbound : '--';
+    return `<div style="background:#f0fdf4;border-radius:8px;padding:10px 12px;border-left:3px solid ${s.color};">
+      <div style="font-size:9px;font-weight:700;color:${s.color};margin-bottom:6px;">${s.key}</div>
+      <div style="font-size:20px;font-weight:800;color:#065f46;margin-bottom:4px;">${onhand}</div>
+      <div style="font-size:9px;color:#6b7280;">on hand</div>
+      <div style="margin-top:6px;font-size:10px;color:#374151;display:grid;grid-template-columns:1fr 1fr;gap:2px;">
+        <span>📥 Inbound</span><span style="font-weight:700;">${inbound}</span>
+        <span>📦 Total</span><span style="font-weight:700;">${total}</span>
+      </div>
+    </div>`;
+  }).join('');
 }
 
 async function applyCustomRange() {
@@ -741,8 +825,9 @@ async function applyCustomRange() {
 function switchTab(el, tab) {
   document.querySelectorAll('.date-tab').forEach(t => t.classList.remove('active'));
   el.classList.add('active');
-  // Hide custom date panel when switching to a regular tab
   document.getElementById('custom-date-panel').style.display = 'none';
+  document.getElementById('inventory-section').style.display = 'none';
+  document.getElementById('main-kpi-content').style.display = '';
   const d = tabData[tab];
   document.getElementById('kv-revenue').textContent = d.revenue;
   document.getElementById('kv-units').textContent = d.units;
