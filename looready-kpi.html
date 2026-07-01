@@ -687,7 +687,7 @@ async function applyCustomRange() {
   if (start > end)    { status.textContent = 'Start date must be before end date.'; return; }
   status.textContent = 'Loading…';
   try {
-    const resp = await fetch('/kpi_history.json');
+    const resp = await fetch('/kpi_history.json?v=' + Date.now());
     if (!resp.ok) throw new Error('History not available yet');
     const history = await resp.json();
     const filtered = history.filter(d => d.date >= start && d.date <= end);
