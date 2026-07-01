@@ -22,8 +22,8 @@ def load_today_data():
     json_path = DATA_DIR / f"{today}.json"
     print("Data file: " + str(json_path) + " exists=" + str(json_path.exists()))
     if not json_path.exists():
-        print("No data file for today: " + str(json_path))
-        sys.exit(1)
+        print("No data file for today — history-only mode (backfill run)")
+        return None
     with open(json_path) as f:
         return json.load(f)
 
@@ -188,16 +188,25 @@ def write_docs(html, status):
 if __name__ == "__main__":
     print("=== START ===")
     data = load_today_data()
-    html, today_str, n1, n2, n3 = update_html(data)
-    status = {
-        "run": datetime.datetime.utcnow().isoformat(),
-        "today": today_str,
-        "n1": n1, "n2": n2, "n3": n3,
-    }
-    try:
-        write_docs(html, status)
-    except Exception as e:
-        print("ERROR: " + str(e))
-        traceback.print_exc()
-        sys.exit(1)
-    print("=== DONE ===")
+    if data is None:
+        # No today data — backfill run: just regenerate kpi_history.json
+        print("History-only mode: writing kpi_history.json without rebuilding index.html")
+        DOCS_DIR.mkdir(exist_ok=True)
+        write_history()
+        status = {"run": datetime.datetime.utcnow().isoformat(), "note": "history-only backfill run"}
+        (DOCS_DIR / "status.json").write_text(json.dumps(status, indent=2), encoding="utf-8")
+        print("=== DONE (history only) ===")
+    else:
+        html, today_str, n1, n2, n3 = update_html(data)
+        status = {
+            "run": datetime.datetime.utcnow().isoformat(),
+            "today": today_str,
+            "n1": n1, "n2": n2, "n3": n3,
+        }
+        try:
+            write_docs(html, status)
+        except Exception as e:
+            print("ERROR: " + str(e))
+            traceback.print_exc()
+            sys.exit(1)
+        print("=== DONE ===")
