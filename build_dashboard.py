@@ -152,7 +152,8 @@ def update_html(data):
             f"reserved:{fba.get('reserved',0)},"
             f"unfulfillable:{fba.get('unfulfillable',0)}}},"
             f"awd:{{onhand:{awd.get('onhand',0)},"
-            f"inbound:{awd.get('inbound',0)}}}}}"
+            f"inbound:{awd.get('inbound',0)},"
+            f"outbound:{awd.get('outbound',0)}}}}}"
         )
     inv_js = "{" + ",".join(inv_parts) + "}"
     placeholder_inv = "{ /* INVENTORY_PLACEHOLDER */ }"
