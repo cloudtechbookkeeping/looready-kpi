@@ -741,11 +741,14 @@ function renderInventory() {
     const inbound       = d.inbound       ?? '--';
     const reserved      = d.reserved      ?? '--';
     const unfulfillable = d.unfulfillable ?? '--';
+    const nums = [fulfillable, inbound, reserved, unfulfillable];
+    const total = nums.every(v => typeof v === 'number') ? nums.reduce((a,b) => a+b, 0) : '--';
     return `<div style="background:#f0f9ff;border-radius:8px;padding:10px 12px;border-left:3px solid ${s.color};">
       <div style="font-size:9px;font-weight:700;color:${s.color};margin-bottom:6px;">${s.key}</div>
-      <div style="font-size:20px;font-weight:800;color:#1e40af;margin-bottom:4px;">${fulfillable}</div>
-      <div style="font-size:9px;color:#6b7280;">fulfillable</div>
+      <div style="font-size:20px;font-weight:800;color:#1e40af;margin-bottom:4px;">${total}</div>
+      <div style="font-size:9px;color:#6b7280;">total</div>
       <div style="margin-top:6px;font-size:10px;color:#374151;display:grid;grid-template-columns:1fr 1fr;gap:2px;">
+        <span>✅ Fulfillable</span><span style="font-weight:700;">${fulfillable}</span>
         <span>📥 Inbound</span><span style="font-weight:700;">${inbound}</span>
         <span>🔒 Reserved</span><span style="font-weight:700;">${reserved}</span>
         <span>⚠️ Unfulfl.</span><span style="font-weight:700;">${unfulfillable}</span>
