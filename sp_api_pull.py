@@ -172,10 +172,14 @@ def get_awd_inventory(token):
     for item in items:
         sku = item.get("sku", "Unknown")
         awd[sku] = {
-            "onhand":  item.get("totalOnhandQuantity", 0),
-            "inbound": item.get("totalInboundQuantity", 0),
+            "onhand":    item.get("totalOnhandQuantity", 0),
+            "inbound":   item.get("totalInboundQuantity", 0),
+            "outbound":  item.get("totalOutboundQuantity", 0),
         }
     print(f"   ✅ AWD inventory: {len(awd)} SKUs")
+    # Debug: log raw fields from first item so we can see what the API actually returns
+    if items:
+        print(f"   📋 AWD raw fields: {list(items[0].keys())}")
     return awd
 
 

@@ -755,9 +755,13 @@ function renderInventory() {
 
   awdGrid.innerHTML = skuMeta.map(s => {
     const d = (inv[s.key] || {}).awd || {};
-    const onhand  = d.onhand  ?? '--';
-    const inbound = d.inbound ?? '--';
-    const total   = (typeof onhand === 'number' && typeof inbound === 'number') ? onhand + inbound : '--';
+    const onhand   = d.onhand   ?? '--';
+    const inbound  = d.inbound  ?? '--';
+    const outbound = d.outbound ?? null;
+    const total    = (typeof onhand === 'number' && typeof inbound === 'number') ? onhand + inbound : '--';
+    const outboundRow = (outbound !== null && outbound !== 0)
+      ? `<span>🚚 To FBA</span><span style="font-weight:700;">${outbound}</span>`
+      : '';
     return `<div style="background:#f0fdf4;border-radius:8px;padding:10px 12px;border-left:3px solid ${s.color};">
       <div style="font-size:9px;font-weight:700;color:${s.color};margin-bottom:6px;">${s.key}</div>
       <div style="font-size:20px;font-weight:800;color:#065f46;margin-bottom:4px;">${total}</div>
@@ -765,6 +769,7 @@ function renderInventory() {
       <div style="margin-top:6px;font-size:10px;color:#374151;display:grid;grid-template-columns:1fr 1fr;gap:2px;">
         <span>✅ Available</span><span style="font-weight:700;">${onhand}</span>
         <span>📥 Inbound</span><span style="font-weight:700;">${inbound}</span>
+        ${outboundRow}
       </div>
     </div>`;
   }).join('');
