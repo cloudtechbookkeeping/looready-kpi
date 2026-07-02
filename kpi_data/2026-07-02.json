@@ -1,6 +1,6 @@
 {
   "date": "2026-07-02",
-  "pulled_at": "2026-07-02T18:28:26.240230",
+  "pulled_at": "2026-07-02T18:36:22.715378",
   "orders_today": 68,
   "revenue_today": 1285.89,
   "units_ordered": 77,
@@ -16,9 +16,9 @@
   },
   "fba_inventory": {
     "3Z-3J64-NT0U": {
-      "fulfillable": 621,
+      "fulfillable": 619,
       "inbound": 432,
-      "reserved": 575,
+      "reserved": 577,
       "unfulfillable": 5
     },
     "DogSmall": {
@@ -52,9 +52,9 @@
       "unfulfillable": 7
     },
     "LR-TSC-30PACK": {
-      "fulfillable": 621,
+      "fulfillable": 619,
       "inbound": 432,
-      "reserved": 575,
+      "reserved": 577,
       "unfulfillable": 5
     },
     "LR-TSC-5PACK": {
