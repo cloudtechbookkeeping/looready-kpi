@@ -1,20 +1,105 @@
 {
   "date": "2026-07-02",
-  "pulled_at": "2026-07-02T07:04:18.789908",
-  "orders_today": 44,
-  "revenue_today": 850.36,
+  "pulled_at": "2026-07-02T07:55:07.415555",
+  "orders_today": 48,
+  "revenue_today": 964.93,
   "units_ordered": 77,
   "finance": {
     "total_sales": 1404.52,
     "total_fees": 534.09
   },
   "sku_units": {
-    "LR-TSC-30PACK": 17,
-    "LR-CS-10": 15,
-    "LR-CS-30": 10,
+    "LR-TSC-30PACK": 19,
+    "LR-CS-10": 16,
+    "LR-CS-30": 12,
     "LR-TSC-5PACK": 3
   },
-  "fba_inventory": {},
+  "fba_inventory": {
+    "3Z-3J64-NT0U": {
+      "fulfillable": 598,
+      "inbound": 581,
+      "reserved": 453,
+      "unfulfillable": 4
+    },
+    "DogSmall": {
+      "fulfillable": 0,
+      "inbound": 0,
+      "reserved": 0,
+      "unfulfillable": 0
+    },
+    "JS-6SR9-1J8B": {
+      "fulfillable": 0,
+      "inbound": 0,
+      "reserved": 0,
+      "unfulfillable": 0
+    },
+    "LR-CS-10": {
+      "fulfillable": 525,
+      "inbound": 0,
+      "reserved": 46,
+      "unfulfillable": 3
+    },
+    "LR-CS-120": {
+      "fulfillable": 151,
+      "inbound": 0,
+      "reserved": 0,
+      "unfulfillable": 0
+    },
+    "LR-CS-30": {
+      "fulfillable": 568,
+      "inbound": 0,
+      "reserved": 66,
+      "unfulfillable": 7
+    },
+    "LR-TSC-30PACK": {
+      "fulfillable": 598,
+      "inbound": 581,
+      "reserved": 453,
+      "unfulfillable": 4
+    },
+    "LR-TSC-5PACK": {
+      "fulfillable": 240,
+      "inbound": 0,
+      "reserved": 4,
+      "unfulfillable": 0
+    },
+    "LR-TSC-CS-10PACK": {
+      "fulfillable": 0,
+      "inbound": 0,
+      "reserved": 0,
+      "unfulfillable": 0
+    },
+    "LR-TSC-CS-120PACK": {
+      "fulfillable": 0,
+      "inbound": 0,
+      "reserved": 0,
+      "unfulfillable": 0
+    },
+    "LR-TSC-CS-30PACK": {
+      "fulfillable": 0,
+      "inbound": 0,
+      "reserved": 0,
+      "unfulfillable": 0
+    },
+    "MX-Q396-ZY7L": {
+      "fulfillable": 0,
+      "inbound": 0,
+      "reserved": 0,
+      "unfulfillable": 0
+    },
+    "Stickered.MSKU.1770318071325": {
+      "fulfillable": 0,
+      "inbound": 0,
+      "reserved": 0,
+      "unfulfillable": 0
+    },
+    "Stickered.MSKU.1770326263517": {
+      "fulfillable": 0,
+      "inbound": 0,
+      "reserved": 0,
+      "unfulfillable": 0
+    }
+  },
   "awd_inventory": {},
   "sku_units_7d": {
     "LR-CS-10": 209,
