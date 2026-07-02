@@ -1,6 +1,6 @@
 {
   "date": "2026-07-02",
-  "pulled_at": "2026-07-02T18:51:06.100204",
+  "pulled_at": "2026-07-02T18:57:24.934614",
   "orders_today": 68,
   "revenue_today": 1285.89,
   "units_ordered": 77,
@@ -48,7 +48,7 @@
     "LR-CS-30": {
       "fulfillable": 562,
       "inbound": 0,
-      "reserved": 69,
+      "reserved": 70,
       "unfulfillable": 7
     },
     "LR-TSC-30PACK": {
@@ -103,23 +103,28 @@
   "awd_inventory": {
     "LR-CS-10": {
       "onhand": 0,
-      "inbound": 3564
+      "inbound": 3564,
+      "outbound": 0
     },
     "LR-CS-120": {
       "onhand": 48,
-      "inbound": 300
+      "inbound": 300,
+      "outbound": 0
     },
     "LR-CS-30": {
       "onhand": 0,
-      "inbound": 5508
+      "inbound": 5508,
+      "outbound": 0
     },
     "LR-TSC-30PACK": {
       "onhand": 1370,
-      "inbound": 1825
+      "inbound": 1825,
+      "outbound": 0
     },
     "LR-TSC-5PACK": {
       "onhand": 1200,
-      "inbound": 0
+      "inbound": 0,
+      "outbound": 0
     }
   },
   "sku_units_7d": {
