@@ -781,14 +781,15 @@ function renderInventory() {
   totalGrid.innerHTML = skuMeta.map(s => {
     const fba = (inv[s.key] || {}).fba || {};
     const awd = (inv[s.key] || {}).awd || {};
-    const fbaUnits    = fba.fulfillable  ?? 0;
-    const fbaReserved = fba.reserved     ?? 0;
-    const awdUnits    = awd.onhand       ?? 0;
-    const awdInbound  = awd.inbound      ?? 0;
-    const fbaInbound  = fba.inbound      ?? 0;
+    const fbaUnits       = fba.fulfillable    ?? 0;
+    const fbaReserved    = fba.reserved       ?? 0;
+    const fbaUnfulfill   = fba.unfulfillable  ?? 0;
+    const awdUnits       = awd.onhand         ?? 0;
+    const awdInbound     = awd.inbound        ?? 0;
+    const fbaInbound     = fba.inbound        ?? 0;
     const totalInbound = (typeof awdInbound === 'number' && typeof fbaInbound === 'number') ? awdInbound + fbaInbound : '--';
-    const grandTotal = (typeof fbaUnits === 'number' && typeof fbaReserved === 'number' && typeof awdUnits === 'number' && typeof totalInbound === 'number')
-      ? fbaUnits + fbaReserved + awdUnits + totalInbound : '--';
+    const grandTotal = (typeof fbaUnits === 'number' && typeof fbaReserved === 'number' && typeof fbaUnfulfill === 'number' && typeof awdUnits === 'number' && typeof totalInbound === 'number')
+      ? fbaUnits + fbaReserved + fbaUnfulfill + awdUnits + totalInbound : '--';
     return `<div style="background:#faf5ff;border-radius:8px;padding:10px 12px;border-left:3px solid ${s.color};">
       <div style="font-size:9px;font-weight:700;color:${s.color};margin-bottom:6px;">${s.key}</div>
       <div style="font-size:20px;font-weight:800;color:#5b21b6;margin-bottom:4px;">${grandTotal}</div>
@@ -796,6 +797,7 @@ function renderInventory() {
       <div style="margin-top:6px;font-size:10px;color:#374151;display:grid;grid-template-columns:1fr 1fr;gap:2px;">
         <span>🏪 FBA</span><span style="font-weight:700;">${fbaUnits}</span>
         <span>🔒 Reserved</span><span style="font-weight:700;">${fbaReserved}</span>
+        <span>⚠️ Unfulfl.</span><span style="font-weight:700;">${fbaUnfulfill}</span>
         <span>🏭 AWD</span><span style="font-weight:700;">${awdUnits}</span>
         <span>📥 Inbound</span><span style="font-weight:700;">${totalInbound}</span>
       </div>
