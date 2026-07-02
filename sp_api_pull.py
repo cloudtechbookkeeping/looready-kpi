@@ -251,28 +251,53 @@ def load_or_fetch_30d(token):
     return cache
 
 
-def load_or_fetch_7d(token):
-    """Fetch 7d revenue + SKU breakdown once per day and cache it."""
+def load_or_fetch_7d(token, today_sku_units=None, today_revenue=0.0, today_orders=0):
+    """Compute 7d metrics from cached daily files — no per-order API calls.
+    Reads sku_units/revenue_today/orders_today from the last 6 saved daily files,
+    then adds today's values passed in as parameters.
+    Falls back to Orders API for 7d revenue only if too few files exist (<3 days)."""
     today = datetime.date.today().isoformat()
     cache_path = DATA_DIR / f"7d_cache_{today}.json"
     if cache_path.exists():
         print("   ⚡ 7d cache hit — loading from file")
         with open(cache_path) as f:
             return json.load(f)
-    print("🏷️  Pulling 7d data (orders + SKU breakdown, paginated)...")
-    orders_7d = get_orders(token, days=7)
-    print(f"   📦 {len(orders_7d)} total orders in last 7 days")
-    revenue_7d = sum(float(o.get("OrderTotal", {}).get("Amount", 0)) for o in orders_7d if o.get("OrderTotal"))
-    print(f"   💰 7d revenue: ${revenue_7d:,.2f}")
-    sku_units_7d = get_sku_breakdown(token, orders_7d)
+
+    print("🏷️  Computing 7d SKU breakdown from daily files (no per-order API calls)...")
+    sku_units_7d = dict(today_sku_units or {})
+    revenue_7d = float(today_revenue)
+    orders_7d = int(today_orders)
+    days_found = 0
+    for i in range(1, 7):  # yesterday through 6 days ago
+        day = (datetime.date.today() - datetime.timedelta(days=i)).isoformat()
+        path = DATA_DIR / f"{day}.json"
+        if path.exists():
+            with open(path) as f:
+                d = json.load(f)
+            for sku, qty in d.get("sku_units", {}).items():
+                sku_units_7d[sku] = sku_units_7d.get(sku, 0) + qty
+            revenue_7d += d.get("revenue_today", 0)
+            orders_7d += d.get("orders_today", 0)
+            days_found += 1
+
+    # If we have too few cached days, fall back to Orders API for accurate revenue
+    if days_found < 3:
+        print(f"   ⚠️  Only {days_found} daily files found — falling back to Orders API for 7d revenue...")
+        orders_list = get_orders(token, days=7)
+        revenue_7d = sum(float(o.get("OrderTotal", {}).get("Amount", 0)) for o in orders_list if o.get("OrderTotal"))
+        orders_7d = len(orders_list)
+        print(f"   📦 {orders_7d} orders · ${revenue_7d:,.2f} (from API)")
+    else:
+        print(f"   ✅ 7d from {days_found}/6 prior files + today: {orders_7d} orders · ${revenue_7d:,.2f}")
+
     cache = {
         "sku_units_7d": sku_units_7d,
         "revenue_7d": round(revenue_7d, 2),
-        "orders_7d": len(orders_7d),
+        "orders_7d": orders_7d,
     }
     with open(cache_path, "w") as f:
         json.dump(cache, f)
-    print(f"   ✅ 7d cache saved: {cache}")
+    print(f"   ✅ 7d cache saved")
     return cache
 
 
@@ -341,7 +366,11 @@ def main():
     awd_inv = get_awd_inventory(token)
     kpi["awd_inventory"] = awd_inv
 
-    data_7d = load_or_fetch_7d(token)
+    data_7d = load_or_fetch_7d(token,
+        today_sku_units=sku_units,
+        today_revenue=kpi["revenue_today"],
+        today_orders=kpi["orders_today"],
+    )
     kpi["sku_units_7d"] = data_7d["sku_units_7d"]
     kpi["revenue_7d"]   = data_7d["revenue_7d"]
     kpi["orders_7d"]    = data_7d["orders_7d"]
