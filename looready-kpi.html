@@ -3,343 +3,636 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>LooReady — Amazon KPI Dashboard</title>
+<title>LooReady â Amazon KPI Dashboard</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.js" integrity="sha384-iU8HYtnGQ8Cy4zl7gbNMOhsDTTKX02BTXptVP/vqAWIaTfM7isw76iyZCsjL2eVi" crossorigin="anonymous"></script>
 <style>
-  :root { color-scheme: light; }
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    background: #f0f2f5;
-    color: #1a1a2e;
-    min-height: 100vh;
-    font-size: 13px;
-  }
+:root {
+  /* ââ Brand colors from LooREADY logo ââ */
+  --brand-green: #66bc46;        /* logo "Loo" green */
+  --brand-blue:  #2688c9;        /* logo "READY" blue */
+  --brand-green-light: #eef8e8;
+  --brand-blue-light:  #e5f3fb;
 
-  /* Header */
-  .header {
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-    color: white;
-    padding: 14px 24px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-  }
-  .header-left { display: flex; align-items: center; gap: 14px; }
-  .logo {
-    background: #ff9900;
-    color: #1a1a2e;
-    font-weight: 800;
-    font-size: 14px;
-    padding: 5px 10px;
-    border-radius: 6px;
-    letter-spacing: 0.5px;
-  }
-  .header h1 { font-size: 15px; font-weight: 600; color: #e8e8f0; }
-  .header-meta { font-size: 11px; color: #8892b0; margin-top: 1px; }
-  .live-badge {
-    display: flex; align-items: center; gap: 6px;
-    background: rgba(255,255,255,0.08);
-    padding: 5px 12px; border-radius: 20px; font-size: 11px; color: #64ffda;
-  }
-  .live-dot { width: 6px; height: 6px; background: #64ffda; border-radius: 50%; animation: pulse 2s infinite; }
-  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+  /* ââ Page surface ââ */
+  --bg: #f0f5f9;
+  --surface: #ffffff;
+  --border: #dce8f0;
+  --text-primary: #0d1e2e;
+  --text-secondary: #527080;
+  --text-muted: #8eaabb;
 
-  /* Date tabs */
-  .date-nav {
-    background: white;
-    border-bottom: 1px solid #e5e7eb;
-    padding: 0 24px;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-  }
-  .date-tab {
-    padding: 10px 16px; cursor: pointer; font-size: 12px; font-weight: 500;
-    color: #6b7280; border-bottom: 2px solid transparent;
-    transition: all 0.15s; white-space: nowrap;
-  }
-  .date-tab.active { color: #ff9900; border-bottom-color: #ff9900; }
-  .date-tab:hover:not(.active) { color: #374151; }
+  /* ââ Semantic palette (logo-derived) ââ */
+  --green:       #66bc46;  --green-light:  #eef8e8;
+  --blue:        #2688c9;  --blue-light:   #e5f3fb;
+  --orange:      #f59e0b;  --orange-light: #fffbeb;   /* ad spend / warnings */
+  --red:         #ef4444;  --red-light:    #fef2f2;
+  --purple:      #8b5cf6;  --purple-light: #f5f3ff;
+  --yellow:      #eab308;  --yellow-light: #fefce8;
 
-  /* Main layout */
-  .main { padding: 20px 24px; max-width: 1400px; margin: 0 auto; }
+  /* ââ Sidebar ââ */
+  --nav-bg:      #0d1e2e;   /* deep navy, based on logo blue */
+  --nav-hover:   rgba(38,136,201,.20);
+  --nav-active:  rgba(102,188,70,.18);
+  --nav-active-text: #66bc46;
 
-  /* Alert banner */
-  .alert-banner {
-    background: #fff3cd; border: 1px solid #ffc107; border-radius: 8px;
-    padding: 10px 16px; margin-bottom: 16px;
-    display: flex; align-items: center; gap: 10px; font-size: 12px; color: #856404;
-  }
-  .alert-icon { font-size: 16px; }
+  --radius: 12px;
+  --shadow: 0 1px 3px rgba(13,30,46,.07), 0 1px 2px rgba(13,30,46,.04);
+  --shadow-md: 0 4px 6px -1px rgba(13,30,46,.08), 0 2px 4px -1px rgba(13,30,46,.05);
+  color-scheme: light;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  /* KPI Card grid */
-  .kpi-grid {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 12px;
-    margin-bottom: 16px;
-  }
-  @media (max-width: 1100px) { .kpi-grid { grid-template-columns: repeat(3, 1fr); } }
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--bg);
+  color: var(--text-primary);
+  min-height: 100vh;
+  font-size: 14px;
+  line-height: 1.5;
+  display: flex;
+}
 
-  .kpi-card {
-    background: white;
-    border-radius: 10px;
-    padding: 14px 16px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.07);
-    border: 1px solid #f0f0f0;
-    position: relative;
-    overflow: hidden;
-  }
-  .kpi-card::before {
-    content: '';
-    position: absolute; top: 0; left: 0; right: 0; height: 3px;
-  }
-  .kpi-card.revenue::before { background: #10b981; }
-  .kpi-card.ads::before { background: #f59e0b; }
-  .kpi-card.traffic::before { background: #3b82f6; }
-  .kpi-card.inventory::before { background: #8b5cf6; }
-  .kpi-card.health::before { background: #ec4899; }
+/* ââ LEFT SIDEBAR âââââââââââââââââââââââââââââââââââââââââââ */
+.sidebar {
+  width: 220px;
+  min-width: 220px;
+  background: var(--nav-bg);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  z-index: 100;
+  padding: 0 0 24px;
+}
 
-  .kpi-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: #9ca3af; margin-bottom: 6px; }
-  .kpi-value { font-size: 22px; font-weight: 700; color: #111827; line-height: 1; }
-  .kpi-value.small { font-size: 18px; }
-  .kpi-sub { font-size: 10px; color: #6b7280; margin-top: 4px; }
-  .kpi-change { display: inline-flex; align-items: center; gap: 2px; font-size: 10px; font-weight: 600; padding: 2px 6px; border-radius: 10px; margin-top: 4px; }
-  .kpi-change.up { background: #d1fae5; color: #059669; }
-  .kpi-change.down { background: #fee2e2; color: #dc2626; }
-  .kpi-change.warn { background: #fef3c7; color: #d97706; }
+.logo-mark {
+  display: flex; align-items: center;
+  text-decoration: none;
+  padding: 22px 20px 22px;
+  border-bottom: 1px solid rgba(38,136,201,.18);
+  margin-bottom: 12px;
+}
 
-  /* Two-col layout */
-  .two-col { display: grid; grid-template-columns: 2fr 1fr; gap: 16px; margin-bottom: 16px; }
-  .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+/* Main Nav â vertical */
+.main-nav { display: flex; flex-direction: column; gap: 2px; padding: 0 12px; }
+.nav-btn {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 14px;
+  border-radius: 9px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #94a3b8;
+  cursor: pointer;
+  transition: all .15s;
+  border: none; background: none;
+  white-space: nowrap;
+  text-align: left;
+  width: 100%;
+}
+.nav-btn:hover { color: #c8dff0; background: var(--nav-hover); }
+.nav-btn.active { color: var(--nav-active-text); background: var(--nav-active); font-weight: 700; }
+.nav-btn .nav-icon { font-size: 15px; }
 
-  /* Section cards */
-  .section-card {
-    background: white; border-radius: 10px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.07);
-    border: 1px solid #f0f0f0; overflow: hidden;
-  }
-  .section-header {
-    padding: 12px 16px; border-bottom: 1px solid #f3f4f6;
-    display: flex; align-items: center; justify-content: space-between;
-  }
-  .section-title { font-size: 12px; font-weight: 700; color: #374151; text-transform: uppercase; letter-spacing: 0.5px; }
-  .section-badge { font-size: 10px; background: #f3f4f6; color: #6b7280; padding: 2px 8px; border-radius: 10px; }
-  .section-body { padding: 16px; }
+.sidebar-section-label {
+  font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+  color: #3d5a6e; padding: 16px 26px 6px; display: block;
+}
 
-  /* Mini stat rows */
-  .stat-row { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid #f9fafb; }
-  .stat-row:last-child { border-bottom: none; }
-  .stat-name { font-size: 12px; color: #4b5563; }
-  .stat-val { font-size: 12px; font-weight: 600; color: #111827; }
-  .stat-val.green { color: #059669; }
-  .stat-val.red { color: #dc2626; }
-  .stat-val.orange { color: #d97706; }
+/* Live badge in sidebar bottom */
+.sidebar-footer {
+  margin-top: auto;
+  padding: 16px 20px 0;
+}
+.live-badge {
+  display: flex; align-items: center; gap: 9px;
+  font-size: 11px;
+  padding: 10px 13px;
+  background: rgba(38,136,201,.10);
+  border-radius: 10px;
+  border: 1px solid rgba(38,136,201,.22);
+}
+.live-dot { width: 7px; height: 7px; background: var(--brand-green); border-radius: 50%; animation: pulse 2s infinite; flex-shrink: 0; }
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(.8)} }
+.live-label { color: #c8dff0; font-weight: 600; }
+.live-time { color: #5d8099; font-size: 10px; display: block; margin-top: 2px; line-height: 1.4; }
 
-  /* Product table */
-  .product-table { width: 100%; border-collapse: collapse; font-size: 12px; }
-  .product-table th {
-    text-align: left; padding: 8px 12px; font-size: 10px; font-weight: 700;
-    text-transform: uppercase; letter-spacing: 0.5px; color: #9ca3af;
-    background: #f9fafb; border-bottom: 1px solid #e5e7eb;
-  }
-  .product-table td { padding: 10px 12px; border-bottom: 1px solid #f3f4f6; vertical-align: middle; }
-  .product-table tr:last-child td { border-bottom: none; }
-  .product-table tr:hover td { background: #fafafa; }
+/* ââ MAIN AREA ââââââââââââââââââââââââââââââââââââââââââââââ */
+.main-area {
+  margin-left: 220px;
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
 
-  .sku-badge { font-size: 10px; background: #eff6ff; color: #3b82f6; padding: 2px 7px; border-radius: 4px; font-weight: 600; }
-  .status-badge { font-size: 10px; padding: 2px 8px; border-radius: 10px; font-weight: 600; }
-  .status-badge.active { background: #d1fae5; color: #059669; }
-  .status-badge.suppressed { background: #fee2e2; color: #dc2626; }
+/* ââ DATE SUB-NAV âââââââââââââââââââââââââââââââââââââââââââ */
+.date-subnav {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 0 28px;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+.date-tab {
+  padding: 12px 16px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all .15s;
+  white-space: nowrap;
+}
+.date-tab:hover:not(.active) { color: var(--text-primary); }
+.date-tab.active { color: var(--brand-blue); border-bottom-color: var(--brand-blue); font-weight: 600; }
 
-  .progress-bar { background: #f3f4f6; border-radius: 4px; height: 5px; margin-top: 3px; }
-  .progress-fill { height: 100%; border-radius: 4px; background: #10b981; }
+/* Custom date panel */
+#custom-date-panel {
+  display: none;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 10px 28px;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+#custom-date-panel label { font-size: 12px; color: var(--text-secondary); font-weight: 500; }
+#custom-date-panel input[type="date"] {
+  border: 1px solid var(--border); border-radius: 8px;
+  padding: 5px 10px; font-size: 12px; color: var(--text-primary);
+  font-family: inherit; outline: none;
+}
+#custom-date-panel input[type="date"]:focus { border-color: var(--brand-blue); }
+#custom-date-panel button {
+  background: var(--brand-blue); color: white; border: none;
+  border-radius: 8px; padding: 6px 16px; font-size: 12px;
+  font-weight: 600; cursor: pointer; font-family: inherit;
+}
+#custom-status { font-size: 11px; color: var(--text-muted); }
 
-  /* Chart container */
-  .chart-wrap { position: relative; height: 180px; }
+/* ââ PAGE WRAPPER âââââââââââââââââââââââââââââââââââââââââââ */
+.page { padding: 24px 28px 40px; }
+.section { display: none; }
+.section.active { display: block; }
 
-  /* ACOS indicator */
-  .acos-meter { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
-  .acos-bar { flex: 1; height: 8px; background: #f3f4f6; border-radius: 4px; overflow: hidden; }
-  .acos-fill { height: 100%; border-radius: 4px; background: linear-gradient(90deg, #10b981, #f59e0b, #ef4444); }
+/* ââ UPDATED LINE âââââââââââââââââââââââââââââââââââââââââââ */
+.updated-line {
+  font-size: 11px; color: var(--text-muted);
+  margin-bottom: 20px;
+  display: flex; align-items: center; gap: 6px;
+}
+.updated-line::before {
+  content: '';
+  display: inline-block;
+  width: 6px; height: 6px;
+  background: var(--green);
+  border-radius: 50%;
+}
 
-  /* Profit breakdown */
-  .profit-row { display: flex; align-items: center; gap: 10px; padding: 6px 0; }
-  .profit-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
-  .profit-label { flex: 1; font-size: 11px; color: #4b5563; }
-  .profit-amount { font-size: 12px; font-weight: 600; }
-  .profit-pct { font-size: 10px; color: #9ca3af; margin-left: 4px; }
+/* ââ KPI CARDS ââââââââââââââââââââââââââââââââââââââââââââââ */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 14px;
+  margin-bottom: 20px;
+}
+@media (max-width: 1100px) { .kpi-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 700px)  { .kpi-grid { grid-template-columns: repeat(2, 1fr); } }
 
-  /* Donut wrapper */
-  .donut-wrap { position: relative; height: 160px; display: flex; align-items: center; justify-content: center; }
-  .donut-center { position: absolute; text-align: center; pointer-events: none; }
-  .donut-center-val { font-size: 20px; font-weight: 700; color: #111827; }
-  .donut-center-label { font-size: 10px; color: #9ca3af; }
+.kpi-card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+  transition: box-shadow .15s, transform .15s;
+}
+.kpi-card:hover { box-shadow: var(--shadow-md); transform: translateY(-1px); }
 
-  /* Updated timestamp */
-  .updated { text-align: right; font-size: 10px; color: #9ca3af; margin-bottom: 12px; }
+.kpi-accent {
+  position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  border-radius: var(--radius) var(--radius) 0 0;
+}
+.kpi-card.revenue .kpi-accent { background: var(--brand-green); }
+.kpi-card.ads     .kpi-accent { background: var(--orange); }
+.kpi-card.traffic .kpi-accent { background: var(--brand-blue); }
+.kpi-card.inventory .kpi-accent { background: var(--purple); }
+.kpi-card.health  .kpi-accent { background: var(--yellow); }
 
-  /* Scrollable */
-  .table-scroll { overflow-x: auto; }
+.kpi-icon {
+  width: 34px; height: 34px;
+  border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+  margin-bottom: 12px;
+}
+.kpi-card.revenue .kpi-icon { background: var(--green-light); }
+.kpi-card.ads     .kpi-icon { background: var(--orange-light); }
+.kpi-card.traffic .kpi-icon { background: var(--blue-light); }
+.kpi-card.inventory .kpi-icon { background: var(--purple-light); }
+.kpi-card.health  .kpi-icon { background: var(--yellow-light); }
+
+.kpi-label {
+  font-size: 11px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.6px;
+  color: var(--text-muted); margin-bottom: 4px;
+}
+.kpi-value {
+  font-size: 24px; font-weight: 800;
+  color: var(--text-primary); line-height: 1.1;
+  letter-spacing: -0.5px;
+}
+.kpi-value.small { font-size: 19px; }
+.kpi-sub { font-size: 11px; color: var(--text-muted); margin-top: 5px; }
+.kpi-chip {
+  display: inline-flex; align-items: center; gap: 3px;
+  font-size: 10px; font-weight: 600;
+  padding: 2px 8px; border-radius: 20px; margin-top: 6px;
+}
+.kpi-chip.up     { background: var(--green-light);  color: #059669; }
+.kpi-chip.down   { background: var(--red-light);    color: #dc2626; }
+.kpi-chip.warn   { background: var(--yellow-light); color: #d97706; }
+.kpi-chip.neutral{ background: #f1f5f9;             color: var(--text-secondary); }
+
+/* ââ CARDS / LAYOUT âââââââââââââââââââââââââââââââââââââââââ */
+.card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+.card-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.card-title {
+  font-size: 13px; font-weight: 700;
+  color: var(--text-primary);
+  display: flex; align-items: center; gap: 7px;
+}
+.card-title .dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  display: inline-block;
+}
+.card-badge {
+  font-size: 10px; color: var(--text-muted);
+  background: var(--bg); border: 1px solid var(--border);
+  padding: 2px 10px; border-radius: 20px; font-weight: 500;
+}
+.card-body { padding: 20px; }
+
+/* Two / Three column layouts */
+.grid-2 { display: grid; grid-template-columns: 2fr 1fr; gap: 16px; margin-bottom: 16px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 16px; }
+.grid-2-eq { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+@media (max-width: 900px) { .grid-2, .grid-3, .grid-2-eq { grid-template-columns: 1fr; } }
+
+/* ââ STAT ROWS ââââââââââââââââââââââââââââââââââââââââââââââ */
+.stat-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 8px 0; border-bottom: 1px solid #f8fafc;
+}
+.stat-row:last-child { border-bottom: none; }
+.stat-name { font-size: 12px; color: var(--text-secondary); }
+.stat-val  { font-size: 12px; font-weight: 600; color: var(--text-primary); }
+.stat-val.green  { color: var(--green); }
+.stat-val.red    { color: var(--red); }
+.stat-val.orange { color: var(--orange); }
+
+/* ââ CHART WRAP âââââââââââââââââââââââââââââââââââââââââââââ */
+.chart-wrap { position: relative; height: 200px; }
+.chart-wrap.sm { height: 160px; }
+.chart-wrap.lg { height: 260px; }
+
+/* ââ DONUT ââââââââââââââââââââââââââââââââââââââââââââââââââ */
+.donut-wrap {
+  position: relative; height: 180px;
+  display: flex; align-items: center; justify-content: center;
+}
+.donut-center {
+  position: absolute; text-align: center; pointer-events: none;
+}
+.donut-center-val { font-size: 22px; font-weight: 800; color: var(--text-primary); }
+.donut-center-label { font-size: 10px; color: var(--text-muted); margin-top: 1px; }
+
+/* ââ PROFIT ROWS ââââââââââââââââââââââââââââââââââââââââââââ */
+.profit-row { display: flex; align-items: center; gap: 10px; padding: 7px 0; }
+.profit-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+.profit-label { flex: 1; font-size: 12px; color: var(--text-secondary); }
+.profit-amount { font-size: 13px; font-weight: 600; }
+.profit-pct { font-size: 10px; color: var(--text-muted); margin-left: 4px; }
+
+/* ââ PRODUCT TABLE ââââââââââââââââââââââââââââââââââââââââââ */
+.product-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.product-table th {
+  text-align: left; padding: 10px 14px;
+  font-size: 10px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.5px;
+  color: var(--text-muted); background: #f8fafc;
+  border-bottom: 1px solid var(--border);
+}
+.product-table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid #f8fafc;
+  vertical-align: middle;
+}
+.product-table tr:last-child td { border-bottom: none; }
+.product-table tr:hover td { background: #fafafa; }
+
+.sku-badge {
+  font-size: 10px; background: var(--blue-light); color: var(--blue);
+  padding: 2px 8px; border-radius: 5px; font-weight: 600;
+}
+.status-badge {
+  font-size: 10px; padding: 3px 9px; border-radius: 20px; font-weight: 600;
+}
+.status-badge.active     { background: var(--green-light); color: #059669; }
+.status-badge.suppressed { background: var(--red-light);   color: #dc2626; }
+
+.progress-bar { background: #f1f5f9; border-radius: 6px; height: 5px; margin-top: 3px; overflow: hidden; }
+.progress-fill { height: 100%; border-radius: 6px; background: var(--green); }
+
+/* ââ SKU GRID âââââââââââââââââââââââââââââââââââââââââââââââ */
+.sku-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+@media (max-width: 900px) { .sku-grid { grid-template-columns: repeat(3, 1fr); } }
+
+/* ââ ACOS BAR âââââââââââââââââââââââââââââââââââââââââââââââ */
+.acos-meter { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
+.acos-bar { flex: 1; height: 8px; background: #f1f5f9; border-radius: 4px; overflow: hidden; }
+.acos-fill { height: 100%; border-radius: 4px; background: linear-gradient(90deg, #10b981, #f59e0b, #ef4444); }
+
+/* ââ INVENTORY GRIDS ââââââââââââââââââââââââââââââââââââââââ */
+.inv-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+@media (max-width: 900px) { .inv-grid { grid-template-columns: repeat(3, 1fr); } }
+
+/* ââ SECTION DIVIDER ââââââââââââââââââââââââââââââââââââââââ */
+.section-label {
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.8px; color: var(--text-muted);
+  margin-bottom: 12px; padding-left: 2px;
+}
+
+/* ââ ALERT BANNER âââââââââââââââââââââââââââââââââââââââââââ */
+.alert-banner {
+  background: #fffbeb; border: 1px solid #fcd34d; border-radius: var(--radius);
+  padding: 11px 16px; margin-bottom: 16px;
+  display: flex; align-items: center; gap: 10px;
+  font-size: 12px; color: #92400e;
+}
+
+/* ââ INSIGHT CHIPS ROW ââââââââââââââââââââââââââââââââââââââ */
+.insights-row {
+  display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px;
+}
+.insight-chip {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 8px 14px;
+  font-size: 12px;
+}
+.insight-chip .ic-icon { font-size: 16px; }
+.insight-chip .ic-label { color: var(--text-muted); }
+.insight-chip .ic-val { font-weight: 700; color: var(--text-primary); margin-left: 4px; }
+
+/* ââ TABLE SCROLL âââââââââââââââââââââââââââââââââââââââââââ */
+.table-scroll { overflow-x: auto; }
+
+/* ââ MINI SUMMARY CARDS (dashboard bottom row) ââââââââââââââ */
+.mini-stat { display: flex; justify-content: space-between; align-items: center; padding: 9px 0; border-bottom: 1px solid #f8fafc; }
+.mini-stat:last-child { border-bottom: none; }
+.mini-stat-label { font-size: 11px; color: var(--text-secondary); }
+.mini-stat-val { font-size: 12px; font-weight: 700; }
+.mini-stat-val.green  { color: var(--green); }
+.mini-stat-val.orange { color: var(--orange); }
+.mini-stat-val.red    { color: var(--red); }
+.mini-stat-val.blue   { color: var(--blue); }
+
+/* ââ DIVIDER ââââââââââââââââââââââââââââââââââââââââââââââââ */
+.divider { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
+
+.mb-16 { margin-bottom: 16px; }
+.mb-20 { margin-bottom: 20px; }
+
+/* ââ FOOTER NOTE ââââââââââââââââââââââââââââââââââââââââââââ */
+.footnote { font-size: 10px; color: var(--text-muted); margin-top: 8px; }
 </style>
 </head>
 <body>
 
-<!-- Header -->
-<div class="header">
-  <div class="header-left">
-    <div class="logo">amazon</div>
-    <div>
-      <div class="header h1" style="font-size:15px;font-weight:600;color:#e8e8f0;">LooReady — KPI Dashboard</div>
-      <div class="header-meta">United States · Toilet Seat Covers · FBA Seller</div>
+<!-- ââââââââââââââââââââ LEFT SIDEBAR ââââââââââââââââââââ -->
+<aside class="sidebar">
+  <a class="logo-mark" href="#">
+    <svg viewBox="0 0 107 19.97" xmlns="http://www.w3.org/2000/svg" style="height:22px;width:auto;display:block;" aria-label="LooREADY">
+      <path d="M.27,19.51A1.16,1.16,0,0,1,0,18.66V.92A.74.74,0,0,1,.41.23,2.78,2.78,0,0,1,1.69,0h1A2.78,2.78,0,0,1,3.93.23a.74.74,0,0,1,.41.69V16.09h6.27a.68.68,0,0,1,.64.33,2.11,2.11,0,0,1,.2,1.07v.88a2.11,2.11,0,0,1-.2,1.08.68.68,0,0,1-.64.33H1.12A1.16,1.16,0,0,1,.27,19.51Z" fill="#66bc46"/>
+      <path d="M13.63,18.33a6.9,6.9,0,0,1-1.46-4.74,6.82,6.82,0,0,1,1.46-4.72A5.44,5.44,0,0,1,17.9,7.24a5.4,5.4,0,0,1,4.26,1.63,6.84,6.84,0,0,1,1.45,4.72,7,7,0,0,1-1.45,4.74A5.41,5.41,0,0,1,17.9,20,5.44,5.44,0,0,1,13.63,18.33Zm5.91-2a5.48,5.48,0,0,0,.53-2.7,5.48,5.48,0,0,0-.53-2.7A1.77,1.77,0,0,0,17.9,10c-1.47,0-2.2,1.2-2.2,3.6a5.53,5.53,0,0,0,.53,2.7,1.82,1.82,0,0,0,1.67.91A1.76,1.76,0,0,0,19.54,16.29Z" fill="#66bc46"/>
+      <path d="M26.44,18.33A6.9,6.9,0,0,1,25,13.59a6.83,6.83,0,0,1,1.47-4.72A5.42,5.42,0,0,1,30.7,7.24,5.4,5.4,0,0,1,35,8.87a6.84,6.84,0,0,1,1.45,4.72A7,7,0,0,1,35,18.33,5.41,5.41,0,0,1,30.7,20,5.42,5.42,0,0,1,26.44,18.33Zm5.9-2a5.48,5.48,0,0,0,.53-2.7,5.48,5.48,0,0,0-.53-2.7A1.76,1.76,0,0,0,30.7,10c-1.46,0-2.2,1.2-2.2,3.6a5.41,5.41,0,0,0,.54,2.7,1.81,1.81,0,0,0,1.66.91A1.75,1.75,0,0,0,32.34,16.29Z" fill="#66bc46"/>
+      <path d="M38,19.11V4.9a.9.9,0,0,1,.22-.68A.94.94,0,0,1,38.88,4h4.4q5.59,0,5.6,4.23a3.53,3.53,0,0,1-.71,2.2,4.25,4.25,0,0,1-1.92,1.38v.09a2.52,2.52,0,0,1,.88.76A5.3,5.3,0,0,1,47.87,14l2,5a1.44,1.44,0,0,1,.1.43c0,.29-.45.44-1.34.44h-.93c-.75,0-1.19-.16-1.31-.47L44.6,15a3.93,3.93,0,0,0-.49-.78,1.46,1.46,0,0,0-.65-.43,3.8,3.8,0,0,0-1.13-.14h-.88v5.51c0,.47-.45.71-1.35.71h-.76C38.43,19.82,38,19.58,38,19.11Zm5.6-8.5a1.63,1.63,0,0,0,.87-.26,1.91,1.91,0,0,0,.64-.71,2,2,0,0,0,.24-1,1.6,1.6,0,0,0-.51-1.25A2,2,0,0,0,43.43,7h-2v3.66Z" fill="#2688c9"/>
+      <path d="M51.73,19.57a1,1,0,0,1-.21-.69V4.9a.94.94,0,0,1,.21-.68A1,1,0,0,1,52.42,4h8.25a.54.54,0,0,1,.51.27,1.72,1.72,0,0,1,.16.86v.69a1.72,1.72,0,0,1-.16.86.53.53,0,0,1-.51.26H55v3.28h5.07a.53.53,0,0,1,.51.26,1.72,1.72,0,0,1,.16.86v.7a1.7,1.7,0,0,1-.16.86.54.54,0,0,1-.51.27H55v3.65h5.69a.56.56,0,0,1,.52.27,1.77,1.77,0,0,1,.15.84v.71a1.88,1.88,0,0,1-.15.87.57.57,0,0,1-.52.26H52.42A1,1,0,0,1,51.73,19.57Z" fill="#2688c9"/>
+      <path d="M62.7,19.33a1.39,1.39,0,0,1,.09-.41l5-14.49C67.87,4.11,68.3,4,69,4H70.2c.74,0,1.16.16,1.28.48l5,14.49a1.94,1.94,0,0,1,.07.41.4.4,0,0,1-.28.37,2.22,2.22,0,0,1-.85.12h-1a2.85,2.85,0,0,1-.86-.11.56.56,0,0,1-.4-.36l-.91-2.75H66.92L66,19.35c-.1.31-.44.47-1,.47h-.89C63.16,19.82,62.7,19.66,62.7,19.33Zm8.57-5.71L70,9.62a5.35,5.35,0,0,1-.2-.7c-.05-.26-.1-.51-.14-.75h-.09l0,.28a6.47,6.47,0,0,1-.3,1.17l-1.33,4Z" fill="#2688c9"/>
+      <path d="M78.29,19.57a1,1,0,0,1-.22-.69V4.9a.94.94,0,0,1,.22-.68A.94.94,0,0,1,79,4h5A8,8,0,0,1,88,4.92,5.77,5.77,0,0,1,90.4,7.59a9.93,9.93,0,0,1,.83,4.3,10,10,0,0,1-.83,4.31A5.87,5.87,0,0,1,88,18.87a7.89,7.89,0,0,1-3.94.91H79A.94.94,0,0,1,78.29,19.57ZM84,16.83a3.15,3.15,0,0,0,2.72-1.26,6.15,6.15,0,0,0,.93-3.68,6.12,6.12,0,0,0-.93-3.67A3.16,3.16,0,0,0,84,7H81.57v9.88Z" fill="#2688c9"/>
+      <path d="M107,.75l-6.81,14.58-1.81,3.88a.78.78,0,0,1-.58.51,3,3,0,0,1-.72.08H95.93c-1.15,0-1.73-.2-1.73-.62a2,2,0,0,1,.11-.51l1.55-3-5.12-11a.3.3,0,0,1,0-.34,2,2,0,0,1,1.49-.41h1.46c.92,0,1.46.2,1.61.61l2.74,6.18L102.37.6c.15-.4.68-.6,1.6-.6h1.46a2,2,0,0,1,1.5.41A.32.32,0,0,1,107,.75Z" fill="#2688c9"/>
+    </svg>
+  </a>
+
+  <span class="sidebar-section-label">Navigation</span>
+  <nav class="main-nav">
+    <button class="nav-btn active" onclick="switchSection('dashboard', this)">
+      <span class="nav-icon">ð</span> Dashboard
+    </button>
+    <button class="nav-btn" onclick="switchSection('sales', this)">
+      <span class="nav-icon">ð°</span> Sales
+    </button>
+    <button class="nav-btn" onclick="switchSection('inventory', this)">
+      <span class="nav-icon">ð¦</span> Inventory
+    </button>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="live-badge">
+      <div class="live-dot"></div>
+      <div>
+        <span class="live-label">Live</span>
+        <span class="live-time">Updated June 9, 2026<br>12:00 PM ET</span>
+      </div>
     </div>
   </div>
-  <div class="live-badge">
-    <div class="live-dot"></div>
-    Live · Updated June 9, 2026 12:00 PM ET
-  </div>
-</div>
+</aside>
 
-<!-- Date Nav -->
-<div class="date-nav">
+<!-- ââââââââââââââââââââ MAIN AREA ââââââââââââââââââââ -->
+<div class="main-area">
+
+<!-- ââââââââââââââââââââ DATE SUB-NAV (Dashboard + Sales only) ââââââââââââââââââââ -->
+<div class="date-subnav" id="date-subnav">
   <div class="date-tab active" onclick="switchTab(this,'30d')">Last 30 Days</div>
   <div class="date-tab" onclick="switchTab(this,'7d')">Last 7 Days</div>
   <div class="date-tab" onclick="switchTab(this,'today')">Today</div>
   <div class="date-tab" onclick="switchTab(this,'lifetime')">Lifetime</div>
-  <div class="date-tab" id="custom-tab" onclick="openCustomRange(this)">Custom Range</div>
-  <div class="date-tab" id="inventory-tab" onclick="switchToInventory(this)" style="border-left:1px solid #e5e7eb;margin-left:4px;padding-left:12px;">📦 Inventory</div>
+  <div class="date-tab" onclick="openCustomRange(this)">Custom Range</div>
 </div>
-<!-- Custom date picker panel -->
-<div id="custom-date-panel" style="display:none;background:white;border-bottom:1px solid #e5e7eb;padding:10px 24px;align-items:center;gap:12px;flex-wrap:wrap;">
-  <label style="font-size:12px;color:#6b7280;font-weight:500;">From</label>
-  <input type="date" id="custom-start" style="border:1px solid #d1d5db;border-radius:6px;padding:4px 8px;font-size:12px;color:#374151;">
-  <label style="font-size:12px;color:#6b7280;font-weight:500;">To</label>
-  <input type="date" id="custom-end" style="border:1px solid #d1d5db;border-radius:6px;padding:4px 8px;font-size:12px;color:#374151;">
-  <button onclick="applyCustomRange()" style="background:#ff9900;color:white;border:none;border-radius:6px;padding:5px 14px;font-size:12px;font-weight:600;cursor:pointer;">Apply</button>
-  <span id="custom-status" style="font-size:11px;color:#9ca3af;"></span>
+<div id="custom-date-panel">
+  <label>From</label>
+  <input type="date" id="custom-start">
+  <label>To</label>
+  <input type="date" id="custom-end">
+  <button onclick="applyCustomRange()">Apply</button>
+  <span id="custom-status"></span>
 </div>
 
-<!-- Main -->
-<div class="main">
+<!-- ââââââââââââââââââââ PAGE ââââââââââââââââââââ -->
+<div class="page">
 
-  <!-- Inventory Section (shown when Inventory tab is active) -->
-  <div id="inventory-section" style="display:none;padding:16px 0;">
-    <div class="section-card" style="margin-bottom:16px;padding:14px 16px;">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
-        <span style="font-size:13px;font-weight:700;color:#1a1a2e;">📊 Total Inventory</span>
-        <span style="font-size:10px;background:#ede9fe;color:#5b21b6;padding:2px 10px;border-radius:10px;font-weight:600;">FBA + AWD Combined</span>
-      </div>
-      <div id="total-grid" style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;"></div>
-    </div>
-    <div class="section-card" style="margin-bottom:16px;padding:14px 16px;">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
-        <span style="font-size:13px;font-weight:700;color:#1a1a2e;">🏪 FBA Inventory</span>
-        <span style="font-size:10px;background:#dbeafe;color:#1d4ed8;padding:2px 10px;border-radius:10px;font-weight:600;">Fulfillment by Amazon</span>
-      </div>
-      <div id="fba-grid" style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;"></div>
-    </div>
-    <div class="section-card" style="padding:14px 16px;">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
-        <span style="font-size:13px;font-weight:700;color:#1a1a2e;">🏭 AWD Inventory</span>
-        <span style="font-size:10px;background:#d1fae5;color:#065f46;padding:2px 10px;border-radius:10px;font-weight:600;">Amazon Warehousing & Distribution</span>
-      </div>
-      <div id="awd-grid" style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;"></div>
-    </div>
-  </div>
+<!-- ââââââââââââââ DASHBOARD SECTION ââââââââââââââ -->
+<div id="section-dashboard" class="section active">
 
-  <div id="main-kpi-content">
-  <div class="updated">Data snapshot: June 9, 2026 12:00 PM ET · SP-API live pull</div>
-
+  <div class="updated-line">Data snapshot: June 9, 2026 12:00 PM ET Â· SP-API live pull</div>
 
   <!-- KPI Cards -->
   <div class="kpi-grid" id="kpi-cards">
-    <!-- Revenue -->
     <div class="kpi-card revenue">
+      <div class="kpi-accent"></div>
+      <div class="kpi-icon">ð°</div>
       <div class="kpi-label">Revenue</div>
       <div class="kpi-value" id="kv-revenue">$35,210</div>
-      <div class="kpi-sub" id="ks-revenue">Last 30 days · All products</div>
-      <div class="kpi-change up">▲ Organic + PPC</div>
+      <div class="kpi-sub" id="ks-revenue">Last 30 days Â· All products</div>
+      <div class="kpi-chip up">â² Organic + PPC</div>
     </div>
-    <!-- Units Sold -->
     <div class="kpi-card revenue">
+      <div class="kpi-accent"></div>
+      <div class="kpi-icon">ð¦</div>
       <div class="kpi-label">Units Sold</div>
       <div class="kpi-value" id="kv-units">2,045</div>
       <div class="kpi-sub" id="ks-units">Avg 68/day</div>
-      <div class="kpi-change up">▲ 48 B2B</div>
+      <div class="kpi-chip up">â² 48 B2B</div>
     </div>
-    <!-- Ad Spend -->
     <div class="kpi-card ads">
+      <div class="kpi-accent"></div>
+      <div class="kpi-icon">ð¯</div>
       <div class="kpi-label">Ad Spend</div>
       <div class="kpi-value small" id="kv-spend">$226,449</div>
       <div class="kpi-sub" id="ks-spend">Lifetime total</div>
-      <div class="kpi-change warn">⚡ 1 out of budget</div>
+      <div class="kpi-chip warn">â¡ 1 out of budget</div>
     </div>
-    <!-- ACOS -->
     <div class="kpi-card ads">
+      <div class="kpi-accent"></div>
+      <div class="kpi-icon">ð</div>
       <div class="kpi-label">ACOS</div>
       <div class="kpi-value" id="kv-acos">51.5%</div>
       <div class="kpi-sub" id="ks-acos">Lifetime avg</div>
-      <div class="kpi-change warn">Target &lt;35%</div>
+      <div class="kpi-chip warn">Target &lt;35%</div>
     </div>
-    <!-- Sessions -->
     <div class="kpi-card traffic">
+      <div class="kpi-accent"></div>
+      <div class="kpi-icon">ð¥</div>
       <div class="kpi-label">Sessions</div>
       <div class="kpi-value" id="kv-sessions">11,104</div>
       <div class="kpi-sub" id="ks-sessions">Last 30 days</div>
-      <div class="kpi-change up">▲ 17.39% CVR</div>
+      <div class="kpi-chip up">â² 17.39% CVR</div>
     </div>
-    <!-- IPI Score -->
     <div class="kpi-card inventory">
+      <div class="kpi-accent"></div>
+      <div class="kpi-icon">ð</div>
       <div class="kpi-label">IPI Score</div>
       <div class="kpi-value" id="kv-ipi">628</div>
-      <div class="kpi-sub" id="ks-ipi">Range 570–686</div>
-      <div class="kpi-change up">▲ Healthy</div>
+      <div class="kpi-sub" id="ks-ipi">Range 570â686</div>
+      <div class="kpi-chip up">â² Healthy</div>
     </div>
   </div>
 
-  <!-- SKU Units Breakdown -->
-  <div class="section-card" style="margin-bottom:16px;padding:12px 16px;">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
-      <span style="font-size:12px;font-weight:700;color:#1a1a2e;">📦 Units Sold by SKU</span>
-      <span id="sku-tab-label" style="font-size:10px;background:#f3f4f6;color:#6b7280;padding:2px 10px;border-radius:10px;font-weight:500;">Last 30 Days</span>
+  <!-- Key Insights Row -->
+  <div class="insights-row">
+    <div class="insight-chip">
+      <span class="ic-icon">ð</span>
+      <span class="ic-label">Buy Box</span>
+      <span class="ic-val">100%</span>
     </div>
-    <div id="sku-grid" style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;"></div>
+    <div class="insight-chip">
+      <span class="ic-icon">â­</span>
+      <span class="ic-label">Seller Rating</span>
+      <span class="ic-val">4.75 / 5.0</span>
+    </div>
+    <div class="insight-chip">
+      <span class="ic-icon">ð³</span>
+      <span class="ic-label">Payments Balance</span>
+      <span class="ic-val" style="color:var(--green);">$6,301.70</span>
+    </div>
+    <div class="insight-chip">
+      <span class="ic-icon">ð</span>
+      <span class="ic-label">CVR</span>
+      <span class="ic-val">17.39%</span>
+    </div>
+    <div class="insight-chip">
+      <span class="ic-icon">ð¦</span>
+      <span class="ic-label">Active SKUs</span>
+      <span class="ic-val">4 / 5</span>
+    </div>
+    <div class="insight-chip">
+      <span class="ic-icon">â ï¸</span>
+      <span class="ic-label">LR-CS-120 Suppressed</span>
+      <span class="ic-val" style="color:var(--red);">Fix listing</span>
+    </div>
   </div>
 
-  <!-- Row 2: Revenue chart + Profit breakdown -->
-  <div class="two-col">
-
-    <!-- Revenue & sessions chart -->
-    <div class="section-card">
-      <div class="section-header">
-        <span class="section-title">📈 Revenue Trend — Last 30 Days</span>
-        <span class="section-badge">Apr 29 – May 28</span>
+  <!-- SKU Breakdown -->
+  <div class="card mb-20">
+    <div class="card-header">
+      <div class="card-title">
+        <span class="dot" style="background:var(--blue);"></span>
+        Units Sold by SKU
       </div>
-      <div class="section-body">
-        <div class="chart-wrap">
+      <span class="card-badge" id="sku-tab-label">Last 30 Days</span>
+    </div>
+    <div class="card-body">
+      <div class="sku-grid" id="sku-grid"></div>
+    </div>
+  </div>
+
+  <!-- Revenue Chart + Profit Breakdown -->
+  <div class="grid-2 mb-20">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">
+          <span class="dot" style="background:var(--green);"></span>
+          Revenue Trend â Last 30 Days
+        </div>
+        <span class="card-badge">Apr 29 â May 28</span>
+      </div>
+      <div class="card-body">
+        <div class="chart-wrap lg">
           <canvas id="revenueChart"></canvas>
         </div>
       </div>
     </div>
 
-    <!-- Profit Breakdown -->
-    <div class="section-card">
-      <div class="section-header">
-        <span class="section-title">💰 Profit Breakdown</span>
-        <span class="section-badge">30-Day Est.</span>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">
+          <span class="dot" style="background:var(--purple);"></span>
+          Profit Breakdown
+        </div>
+        <span class="card-badge">30-Day Est.</span>
       </div>
-      <div class="section-body">
+      <div class="card-body">
         <div class="donut-wrap">
-          <canvas id="profitDonut" width="160" height="160"></canvas>
+          <canvas id="profitDonut" width="180" height="180"></canvas>
           <div class="donut-center">
             <div class="donut-center-val">~47%</div>
             <div class="donut-center-label">Est. Margin</div>
           </div>
         </div>
-        <div style="margin-top:8px;">
+        <div style="margin-top:4px;">
           <div class="profit-row">
             <div class="profit-dot" style="background:#10b981;"></div>
             <div class="profit-label">Gross Revenue</div>
@@ -348,74 +641,294 @@
           <div class="profit-row">
             <div class="profit-dot" style="background:#f59e0b;"></div>
             <div class="profit-label">Amazon Fees (~15%)</div>
-            <div class="profit-amount" style="color:#d97706;">-$5,282<span class="profit-pct">15%</span></div>
+            <div class="profit-amount" style="color:var(--orange);">-$5,282<span class="profit-pct">15%</span></div>
           </div>
           <div class="profit-row">
             <div class="profit-dot" style="background:#3b82f6;"></div>
             <div class="profit-label">Est. FBA Fulfillment</div>
-            <div class="profit-amount" style="color:#3b82f6;">-$6,135<span class="profit-pct">~$3/unit</span></div>
+            <div class="profit-amount" style="color:var(--blue);">-$6,135<span class="profit-pct">~$3/unit</span></div>
           </div>
           <div class="profit-row">
             <div class="profit-dot" style="background:#ec4899;"></div>
             <div class="profit-label">Ad Spend (prorated)</div>
             <div class="profit-amount" style="color:#ec4899;">-$7,050<span class="profit-pct">20%</span></div>
           </div>
-          <div class="profit-row" style="border-top:2px solid #e5e7eb;margin-top:4px;padding-top:8px;">
-            <div class="profit-dot" style="background:#8b5cf6;"></div>
+          <div class="profit-row" style="border-top:2px solid var(--border);margin-top:4px;padding-top:10px;">
+            <div class="profit-dot" style="background:var(--purple);"></div>
             <div class="profit-label"><strong>Est. Net Profit</strong></div>
-            <div class="profit-amount" style="color:#8b5cf6;font-size:14px;"><strong>~$16,743</strong><span class="profit-pct">~47%</span></div>
+            <div class="profit-amount" style="color:var(--purple);font-size:15px;font-weight:800;">~$16,743<span class="profit-pct">~47%</span></div>
           </div>
         </div>
-        <div style="font-size:10px;color:#9ca3af;margin-top:8px;">* COGS not available in Seller Central. Add via Sellerboard for exact profit.</div>
+        <p class="footnote">* COGS not in Seller Central. Add via Sellerboard for exact profit.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dashboard bottom: Ads summary + Traffic summary + Inventory summary -->
+  <div class="grid-3">
+    <!-- Ads Summary -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">
+          <span class="dot" style="background:var(--orange);"></span>
+          Advertising
+        </div>
+        <span class="card-badge" id="ads-badge">Last 30 Days Â· US+UK</span>
+      </div>
+      <div class="card-body" style="padding: 16px 20px;">
+        <div class="mini-stat">
+          <span class="mini-stat-label">Ad Spend</span>
+          <span class="mini-stat-val orange" id="ad-spend-val">$19,846</span>
+        </div>
+        <div class="mini-stat">
+          <span class="mini-stat-label">Ad Sales</span>
+          <span class="mini-stat-val green" id="ad-sales-val">$20,567</span>
+        </div>
+        <div class="mini-stat">
+          <span class="mini-stat-label">ROAS</span>
+          <span class="mini-stat-val" id="ad-roas-val">1.04Ã</span>
+        </div>
+        <div class="mini-stat">
+          <span class="mini-stat-label">ACOS</span>
+          <span class="mini-stat-val red" id="ad-acos-val">96.5%</span>
+        </div>
+        <div class="mini-stat">
+          <span class="mini-stat-label">Clicks</span>
+          <span class="mini-stat-val" id="ad-clicks-val">10,492</span>
+        </div>
+        <div class="mini-stat">
+          <span class="mini-stat-label">CPC</span>
+          <span class="mini-stat-val" id="ad-cpc-val">$1.89</span>
+        </div>
+        <div class="mini-stat">
+          <span class="mini-stat-label">Purchases</span>
+          <span class="mini-stat-val" id="ad-orders-val">1,357</span>
+        </div>
+        <div class="mini-stat">
+          <span class="mini-stat-label">CTR</span>
+          <span class="mini-stat-val" id="ad-ctr-val">0.84%</span>
+        </div>
+        <div style="margin-top:12px;">
+          <div style="font-size:10px;color:var(--text-muted);margin-bottom:5px;" id="acos-label">30-Day ACOS (96.5% â Very High â ï¸)</div>
+          <div class="acos-meter">
+            <span style="font-size:10px;color:var(--green);">0%</span>
+            <div class="acos-bar"><div class="acos-fill" id="acos-fill-bar" style="width:96.5%;"></div></div>
+            <span style="font-size:10px;color:var(--red);">100%</span>
+          </div>
+        </div>
       </div>
     </div>
 
+    <!-- Traffic Summary -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">
+          <span class="dot" style="background:var(--blue);"></span>
+          Traffic &amp; Conversion
+        </div>
+        <span class="card-badge">Last 30 Days</span>
+      </div>
+      <div class="card-body" style="padding: 16px 20px;">
+        <div class="mini-stat">
+          <span class="mini-stat-label">Sessions</span>
+          <span class="mini-stat-val">11,104</span>
+        </div>
+        <div class="mini-stat">
+          <span class="mini-stat-label">Conversion Rate</span>
+          <span class="mini-stat-val green">17.39%</span>
+        </div>
+        <div class="mini-stat">
+          <span class="mini-stat-label">Page Views</span>
+          <span class="mini-stat-val">14,268</span>
+        </div>
+        <div class="mini-stat">
+          <span class="mini-stat-label">Order Items</span>
+          <span class="mini-stat-val">1,841</span>
+        </div>
+        <div class="mini-stat">
+          <span class="mini-stat-label">Avg Selling Price</span>
+          <span class="mini-stat-val">$18.48</span>
+        </div>
+        <div class="mini-stat">
+          <span class="mini-stat-label">B2B Sessions</span>
+          <span class="mini-stat-val blue">219</span>
+        </div>
+        <div class="mini-stat">
+          <span class="mini-stat-label">B2B CVR</span>
+          <span class="mini-stat-val">11.26%</span>
+        </div>
+        <div class="mini-stat">
+          <span class="mini-stat-label">Buy Box %</span>
+          <span class="mini-stat-val green">100% ð</span>
+        </div>
+        <div class="mini-stat">
+          <span class="mini-stat-label">Promo Sales (7d)</span>
+          <span class="mini-stat-val">$1,552.45</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Inventory Summary -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">
+          <span class="dot" style="background:var(--purple);"></span>
+          Inventory Health
+        </div>
+        <span class="card-badge">IPI: 628 â</span>
+      </div>
+      <div class="card-body" style="padding: 16px 20px;">
+        <div class="chart-wrap sm" style="margin-bottom:12px;">
+          <canvas id="inventoryChart"></canvas>
+        </div>
+        <div class="mini-stat">
+          <span class="mini-stat-label">LR-TSC-30PACK</span>
+          <span class="mini-stat-val">856 units</span>
+        </div>
+        <div class="mini-stat">
+          <span class="mini-stat-label">LR-CS-10</span>
+          <span class="mini-stat-val">702 units</span>
+        </div>
+        <div class="mini-stat">
+          <span class="mini-stat-label">LR-CS-30</span>
+          <span class="mini-stat-val">304 units</span>
+        </div>
+        <div class="mini-stat">
+          <span class="mini-stat-label">LR-TSC-5PACK</span>
+          <span class="mini-stat-val">228 units</span>
+        </div>
+        <div class="mini-stat">
+          <span class="mini-stat-label">LR-CS-120 â ï¸</span>
+          <span class="mini-stat-val red">152 (Suppressed)</span>
+        </div>
+        <div style="margin-top:12px;padding:10px 12px;background:#fff7ed;border-radius:8px;border:1px solid #fed7aa;font-size:11px;color:#92400e;">
+          â ï¸ LR-CS-120 is Search Suppressed. Fix listing to unlock $69.99 inventory.
+        </div>
+      </div>
+    </div>
   </div>
 
-  <!-- Row 3: Ads + Traffic + Account Health -->
-  <div class="three-col">
+</div><!-- /section-dashboard -->
 
-    <!-- Ad Performance -->
-    <div class="section-card">
-      <div class="section-header">
-        <span class="section-title">🎯 Advertising</span>
-        <span class="section-badge" id="ads-badge">Last 30 Days · US+UK</span>
+
+<!-- ââââââââââââââ SALES SECTION ââââââââââââââ -->
+<div id="section-sales" class="section">
+
+  <div class="updated-line" style="margin-bottom:20px;">Sales Analysis Â· United States &amp; United Kingdom Â· FBA</div>
+
+  <!-- Revenue chart full width -->
+  <div class="card mb-20">
+    <div class="card-header">
+      <div class="card-title">
+        <span class="dot" style="background:var(--green);"></span>
+        Revenue Trend â Last 30 Days
       </div>
-      <div class="section-body">
+      <span class="card-badge">Apr 29 â May 28</span>
+    </div>
+    <div class="card-body">
+      <div class="chart-wrap lg">
+        <canvas id="revenueChartSales"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Profit + Advertising side by side -->
+  <div class="grid-2-eq mb-20" style="grid-template-columns: 1.2fr 1fr;">
+    <!-- Profit Breakdown full -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">
+          <span class="dot" style="background:var(--purple);"></span>
+          Profit Breakdown
+        </div>
+        <span class="card-badge">30-Day Estimate</span>
+      </div>
+      <div class="card-body">
+        <div style="display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:start;">
+          <div class="donut-wrap" style="height:160px;width:160px;">
+            <canvas id="profitDonutSales" width="160" height="160"></canvas>
+            <div class="donut-center">
+              <div class="donut-center-val" style="font-size:18px;">~47%</div>
+              <div class="donut-center-label">Margin</div>
+            </div>
+          </div>
+          <div>
+            <div class="profit-row">
+              <div class="profit-dot" style="background:#10b981;"></div>
+              <div class="profit-label">Gross Revenue</div>
+              <div class="profit-amount">$35,210<span class="profit-pct">100%</span></div>
+            </div>
+            <div class="profit-row">
+              <div class="profit-dot" style="background:#f59e0b;"></div>
+              <div class="profit-label">Amazon Fees</div>
+              <div class="profit-amount" style="color:var(--orange);">-$5,282<span class="profit-pct">15%</span></div>
+            </div>
+            <div class="profit-row">
+              <div class="profit-dot" style="background:#3b82f6;"></div>
+              <div class="profit-label">FBA Fulfillment</div>
+              <div class="profit-amount" style="color:var(--blue);">-$6,135<span class="profit-pct">~$3/unit</span></div>
+            </div>
+            <div class="profit-row">
+              <div class="profit-dot" style="background:#ec4899;"></div>
+              <div class="profit-label">Ad Spend (prorated)</div>
+              <div class="profit-amount" style="color:#ec4899;">-$7,050<span class="profit-pct">20%</span></div>
+            </div>
+            <div class="profit-row" style="border-top:2px solid var(--border);margin-top:6px;padding-top:10px;">
+              <div class="profit-dot" style="background:var(--purple);"></div>
+              <div class="profit-label"><strong>Est. Net Profit</strong></div>
+              <div class="profit-amount" style="color:var(--purple);font-size:16px;font-weight:800;">~$16,743<span class="profit-pct">~47%</span></div>
+            </div>
+            <p class="footnote" style="margin-top:10px;">* COGS not available in Seller Central.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Full Advertising Details -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">
+          <span class="dot" style="background:var(--orange);"></span>
+          Advertising Performance
+        </div>
+        <span class="card-badge">US + UK</span>
+      </div>
+      <div class="card-body" style="padding:16px 20px;">
         <div class="stat-row">
           <span class="stat-name">Ad Spend</span>
-          <span class="stat-val orange" id="ad-spend-val">$19,846</span>
+          <span class="stat-val orange">$19,846</span>
         </div>
         <div class="stat-row">
           <span class="stat-name">Ad Sales</span>
-          <span class="stat-val green" id="ad-sales-val">$20,567</span>
+          <span class="stat-val green">$20,567</span>
         </div>
         <div class="stat-row">
           <span class="stat-name">ROAS</span>
-          <span class="stat-val" id="ad-roas-val">1.04×</span>
+          <span class="stat-val">1.04Ã</span>
         </div>
         <div class="stat-row">
           <span class="stat-name">ACOS</span>
-          <span class="stat-val red" id="ad-acos-val">96.5%</span>
+          <span class="stat-val red">96.5%</span>
         </div>
         <div class="stat-row">
           <span class="stat-name">Clicks</span>
-          <span class="stat-val" id="ad-clicks-val">10,492</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-name">Avg CPC</span>
-          <span class="stat-val" id="ad-cpc-val">$1.89</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-name">Purchases</span>
-          <span class="stat-val" id="ad-orders-val">1,357</span>
+          <span class="stat-val">10,492</span>
         </div>
         <div class="stat-row">
           <span class="stat-name">CTR</span>
-          <span class="stat-val" id="ad-ctr-val">0.84%</span>
+          <span class="stat-val">0.84%</span>
         </div>
-        <div class="stat-row" style="border-top:1px solid #e5e7eb;margin-top:4px;padding-top:8px;">
-          <span class="stat-name" style="font-size:10px;color:#9ca3af;">Lifetime (All Campaigns)</span>
+        <div class="stat-row">
+          <span class="stat-name">Purchases</span>
+          <span class="stat-val">1,357</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-name">NTB Sales (30d)</span>
+          <span class="stat-val">$5,966 (40%)</span>
+        </div>
+        <div style="height:1px;background:var(--border);margin:10px 0;"></div>
+        <div class="stat-row">
+          <span class="stat-name" style="font-size:10px;font-weight:700;color:var(--text-muted);">LIFETIME TOTALS</span>
         </div>
         <div class="stat-row">
           <span class="stat-name">Lifetime Spend</span>
@@ -429,139 +942,68 @@
           <span class="stat-name">Lifetime ACOS</span>
           <span class="stat-val orange">51.5%</span>
         </div>
-        <div class="stat-row">
-          <span class="stat-name">NTB Sales (30d)</span>
-          <span class="stat-val">$5,966 (40%)</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Traffic & Conversion full card -->
+  <div class="card mb-20">
+    <div class="card-header">
+      <div class="card-title">
+        <span class="dot" style="background:var(--blue);"></span>
+        Traffic &amp; Conversion Details
+      </div>
+      <span class="card-badge">Last 30 Days</span>
+    </div>
+    <div class="card-body">
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0;">
+        <div style="padding:0 20px 0 0;border-right:1px solid var(--border);">
+          <div class="section-label" style="margin-bottom:10px;">Traffic</div>
+          <div class="stat-row"><span class="stat-name">Sessions</span><span class="stat-val">11,104</span></div>
+          <div class="stat-row"><span class="stat-name">B2B Sessions</span><span class="stat-val">219</span></div>
+          <div class="stat-row"><span class="stat-name">Page Views</span><span class="stat-val">14,268</span></div>
         </div>
-        <div style="margin-top:10px;">
-          <div style="font-size:10px;color:#6b7280;margin-bottom:4px;" id="acos-label">30-Day ACOS (96.5% — Very High ⚠️)</div>
-          <div class="acos-meter">
-            <span style="font-size:10px;color:#10b981;">0%</span>
-            <div class="acos-bar"><div class="acos-fill" id="acos-fill-bar" style="width:96.5%;"></div></div>
-            <span style="font-size:10px;color:#ef4444;">100%</span>
-          </div>
+        <div style="padding:0 20px;border-right:1px solid var(--border);">
+          <div class="section-label" style="margin-bottom:10px;">Conversion</div>
+          <div class="stat-row"><span class="stat-name">CVR</span><span class="stat-val green">17.39%</span></div>
+          <div class="stat-row"><span class="stat-name">B2B CVR</span><span class="stat-val">11.26%</span></div>
+          <div class="stat-row"><span class="stat-name">Order Items</span><span class="stat-val">1,841</span></div>
+        </div>
+        <div style="padding:0 20px;border-right:1px solid var(--border);">
+          <div class="section-label" style="margin-bottom:10px;">Pricing</div>
+          <div class="stat-row"><span class="stat-name">Avg Selling Price</span><span class="stat-val">$18.48</span></div>
+          <div class="stat-row"><span class="stat-name">Avg / Order Item</span><span class="stat-val">$20.39</span></div>
+          <div class="stat-row"><span class="stat-name">Avg Units / Order</span><span class="stat-val">1.11</span></div>
+        </div>
+        <div style="padding:0 0 0 20px;">
+          <div class="section-label" style="margin-bottom:10px;">Account Health</div>
+          <div class="stat-row"><span class="stat-name">Buy Box %</span><span class="stat-val green">100% ð</span></div>
+          <div class="stat-row"><span class="stat-name">Seller Feedback</span><span class="stat-val">â­ 4.75 / 5.0</span></div>
+          <div class="stat-row"><span class="stat-name">B2B Revenue</span><span class="stat-val">$837.52</span></div>
         </div>
       </div>
     </div>
-
-    <!-- Traffic & Conversion -->
-    <div class="section-card">
-      <div class="section-header">
-        <span class="section-title">🔀 Traffic & Conversion</span>
-        <span class="section-badge">Last 30 Days</span>
-      </div>
-      <div class="section-body">
-        <div class="stat-row">
-          <span class="stat-name">Sessions</span>
-          <span class="stat-val">11,104</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-name">B2B Sessions</span>
-          <span class="stat-val">219</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-name">Order Item Session %</span>
-          <span class="stat-val green">17.39%</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-name">B2B CVR</span>
-          <span class="stat-val">11.26%</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-name">Total Order Items</span>
-          <span class="stat-val">1,841</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-name">Avg Units/Order</span>
-          <span class="stat-val">1.11</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-name">Avg Selling Price</span>
-          <span class="stat-val">$18.48</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-name">Avg Sales/Order Item</span>
-          <span class="stat-val">$20.39</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-name">B2B Revenue</span>
-          <span class="stat-val">$837.52</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-name">Featured Offer %</span>
-          <span class="stat-val green">100% 🏆</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-name">Seller Feedback</span>
-          <span class="stat-val">⭐ 4.75 / 5.0</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-name">Promo Sales (7d)</span>
-          <span class="stat-val">$1,552.45</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-name">Payments Balance</span>
-          <span class="stat-val green">$6,301.70</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Inventory Health -->
-    <div class="section-card">
-      <div class="section-header">
-        <span class="section-title">📦 Inventory Health</span>
-        <span class="section-badge">IPI: 628 ✓</span>
-      </div>
-      <div class="section-body">
-        <div style="margin-bottom:12px;">
-          <div class="chart-wrap" style="height:140px;">
-            <canvas id="inventoryChart"></canvas>
-          </div>
-        </div>
-        <div class="stat-row">
-          <span class="stat-name">LR-TSC-30PACK</span>
-          <span class="stat-val">856 units</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-name">LR-CS-10</span>
-          <span class="stat-val">702 units</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-name">LR-CS-30</span>
-          <span class="stat-val">304 units</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-name">LR-TSC-5PACK</span>
-          <span class="stat-val">228 units</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-name">LR-CS-120 ⚠️</span>
-          <span class="stat-val red">152 units (Suppressed)</span>
-        </div>
-        <div style="margin-top:10px;padding:8px;background:#fef3c7;border-radius:6px;font-size:11px;color:#92400e;">
-          ⚠️ LR-CS-120 is Search Suppressed. Fix listing to unlock $69.99 inventory.
-        </div>
-      </div>
-    </div>
-
   </div>
 
   <!-- Product Performance Table -->
-  <div class="section-card" style="margin-bottom:20px;">
-    <div class="section-header">
-      <span class="section-title">🛍️ Product Performance</span>
-      <span class="section-badge">Last 30 Days</span>
+  <div class="card mb-20">
+    <div class="card-header">
+      <div class="card-title">
+        <span class="dot" style="background:var(--green);"></span>
+        Product Performance
+      </div>
+      <span class="card-badge">Last 30 Days</span>
     </div>
     <div class="table-scroll">
       <table class="product-table">
         <thead>
           <tr>
-            <th>SKU / ASIN</th>
+            <th>Product / SKU</th>
             <th>Status</th>
             <th>Price</th>
             <th>Revenue (30d)</th>
             <th>Units Sold</th>
-            <th>FBA Inventory</th>
+            <th>FBA Stock</th>
             <th>Page Views</th>
             <th>Revenue Share</th>
           </tr>
@@ -569,87 +1011,87 @@
         <tbody>
           <tr>
             <td>
-              <div><strong>Toilet Seat Covers 30-Pack</strong></div>
+              <div style="font-weight:600;font-size:13px;">Toilet Seat Covers 30-Pack</div>
               <div style="margin-top:3px;"><span class="sku-badge">LR-TSC-30PACK</span></div>
-              <div style="font-size:10px;color:#9ca3af;margin-top:2px;">B09NCMRR37</div>
+              <div style="font-size:10px;color:var(--text-muted);margin-top:2px;">B09NCMRR37</div>
             </td>
             <td><span class="status-badge active">Active</span></td>
-            <td>$26.99</td>
-            <td><strong>$20,025</strong></td>
+            <td style="font-weight:600;">$26.99</td>
+            <td style="font-weight:700;color:var(--text-primary);">$20,025</td>
             <td>751</td>
             <td>856</td>
             <td>3,953</td>
             <td>
-              <div style="font-size:11px;font-weight:600;color:#10b981;">56.9%</div>
-              <div class="progress-bar"><div class="progress-fill" style="width:56.9%;background:#10b981;"></div></div>
+              <div style="font-size:12px;font-weight:700;color:var(--green);">56.9%</div>
+              <div class="progress-bar"><div class="progress-fill" style="width:56.9%;background:var(--green);"></div></div>
             </td>
           </tr>
           <tr>
             <td>
-              <div><strong>Toilet Seat Covers 10-Pack</strong></div>
+              <div style="font-weight:600;font-size:13px;">Toilet Seat Covers 10-Pack</div>
               <div style="margin-top:3px;"><span class="sku-badge">LR-CS-10</span></div>
-              <div style="font-size:10px;color:#9ca3af;margin-top:2px;">B0GLQ5V2PS</div>
+              <div style="font-size:10px;color:var(--text-muted);margin-top:2px;">B0GLQ5V2PS</div>
             </td>
             <td><span class="status-badge active">Active</span></td>
-            <td>$8.99</td>
-            <td><strong>$4,583</strong></td>
+            <td style="font-weight:600;">$8.99</td>
+            <td style="font-weight:700;">$4,583</td>
             <td>781</td>
             <td>702</td>
             <td>7,939</td>
             <td>
-              <div style="font-size:11px;font-weight:600;color:#3b82f6;">13.0%</div>
-              <div class="progress-bar"><div class="progress-fill" style="width:13%;background:#3b82f6;"></div></div>
+              <div style="font-size:12px;font-weight:700;color:var(--blue);">13.0%</div>
+              <div class="progress-bar"><div class="progress-fill" style="width:13%;background:var(--blue);"></div></div>
             </td>
           </tr>
           <tr>
             <td>
-              <div><strong>Toilet Seat Covers 30-Pack</strong></div>
+              <div style="font-weight:600;font-size:13px;">Toilet Seat Covers 30-Pack (Alt)</div>
               <div style="margin-top:3px;"><span class="sku-badge">LR-CS-30</span></div>
-              <div style="font-size:10px;color:#9ca3af;margin-top:2px;">B0FWMW3VCL</div>
+              <div style="font-size:10px;color:var(--text-muted);margin-top:2px;">B0FWMW3VCL</div>
             </td>
             <td><span class="status-badge active">Active</span></td>
-            <td>$21.99</td>
-            <td><strong>$4,041</strong></td>
+            <td style="font-weight:600;">$21.99</td>
+            <td style="font-weight:700;">$4,041</td>
             <td>310</td>
             <td>304</td>
             <td>1,377</td>
             <td>
-              <div style="font-size:11px;font-weight:600;color:#8b5cf6;">11.5%</div>
-              <div class="progress-bar"><div class="progress-fill" style="width:11.5%;background:#8b5cf6;"></div></div>
+              <div style="font-size:12px;font-weight:700;color:var(--purple);">11.5%</div>
+              <div class="progress-bar"><div class="progress-fill" style="width:11.5%;background:var(--purple);"></div></div>
             </td>
           </tr>
           <tr>
             <td>
-              <div><strong>Toilet Seat Covers 5-Pack</strong></div>
+              <div style="font-weight:600;font-size:13px;">Toilet Seat Covers 5-Pack</div>
               <div style="margin-top:3px;"><span class="sku-badge">LR-TSC-5PACK</span></div>
-              <div style="font-size:10px;color:#9ca3af;margin-top:2px;">B0BWZMPKKC</div>
+              <div style="font-size:10px;color:var(--text-muted);margin-top:2px;">B0BWZMPKKC</div>
             </td>
             <td><span class="status-badge active">Active</span></td>
-            <td>$6.99</td>
-            <td><strong>$1,021</strong></td>
+            <td style="font-weight:600;">$6.99</td>
+            <td style="font-weight:700;">$1,021</td>
             <td>146</td>
             <td>228</td>
             <td>899</td>
             <td>
-              <div style="font-size:11px;font-weight:600;color:#f59e0b;">2.9%</div>
-              <div class="progress-bar"><div class="progress-fill" style="width:2.9%;background:#f59e0b;"></div></div>
+              <div style="font-size:12px;font-weight:700;color:var(--yellow);">2.9%</div>
+              <div class="progress-bar"><div class="progress-fill" style="width:2.9%;background:var(--yellow);"></div></div>
             </td>
           </tr>
-          <tr style="background:#fff9f9;">
+          <tr style="background:#fef2f2;">
             <td>
-              <div><strong>Toilet Seat Covers 120-Pack</strong></div>
+              <div style="font-weight:600;font-size:13px;">Toilet Seat Covers 120-Pack</div>
               <div style="margin-top:3px;"><span class="sku-badge">LR-CS-120</span></div>
-              <div style="font-size:10px;color:#9ca3af;margin-top:2px;">B0GLV3DH7X</div>
+              <div style="font-size:10px;color:var(--text-muted);margin-top:2px;">B0GLV3DH7X</div>
             </td>
-            <td><span class="status-badge suppressed">⚠️ Suppressed</span></td>
-            <td>$69.99</td>
-            <td><strong style="color:#9ca3af;">—</strong></td>
-            <td>—</td>
+            <td><span class="status-badge suppressed">â ï¸ Suppressed</span></td>
+            <td style="font-weight:600;">$69.99</td>
+            <td style="color:var(--text-muted);">â</td>
+            <td style="color:var(--text-muted);">â</td>
             <td>152</td>
-            <td>—</td>
+            <td style="color:var(--text-muted);">â</td>
             <td>
-              <div style="font-size:11px;color:#dc2626;">Fix listing!</div>
-              <div class="progress-bar"><div class="progress-fill" style="width:0%;background:#ef4444;"></div></div>
+              <div style="font-size:11px;color:var(--red);font-weight:600;">Fix listing!</div>
+              <div class="progress-bar"><div class="progress-fill" style="width:0%;background:var(--red);"></div></div>
             </td>
           </tr>
         </tbody>
@@ -657,21 +1099,72 @@
     </div>
   </div>
 
-  </div><!-- /main-kpi-content -->
+</div><!-- /section-sales -->
 
-</div><!-- /main -->
+
+<!-- ââââââââââââââ INVENTORY SECTION ââââââââââââââ -->
+<div id="section-inventory" class="section">
+
+  <div class="updated-line" style="margin-bottom:20px;">Inventory snapshot Â· FBA + AWD combined Â· IPI Score: 628</div>
+
+  <!-- Total Inventory -->
+  <div class="card mb-20">
+    <div class="card-header">
+      <div class="card-title">
+        <span class="dot" style="background:var(--purple);"></span>
+        Total Inventory
+      </div>
+      <span class="card-badge" style="background:var(--purple-light);color:var(--purple);border-color:var(--purple-light);">FBA + AWD Combined</span>
+    </div>
+    <div class="card-body">
+      <div class="inv-grid" id="total-grid"></div>
+    </div>
+  </div>
+
+  <!-- FBA Inventory -->
+  <div class="card mb-20">
+    <div class="card-header">
+      <div class="card-title">
+        <span class="dot" style="background:var(--blue);"></span>
+        FBA Inventory
+      </div>
+      <span class="card-badge" style="background:var(--blue-light);color:var(--blue);border-color:var(--blue-light);">Fulfillment by Amazon</span>
+    </div>
+    <div class="card-body">
+      <div class="inv-grid" id="fba-grid"></div>
+    </div>
+  </div>
+
+  <!-- AWD Inventory -->
+  <div class="card mb-20">
+    <div class="card-header">
+      <div class="card-title">
+        <span class="dot" style="background:var(--green);"></span>
+        AWD Inventory
+      </div>
+      <span class="card-badge" style="background:var(--green-light);color:var(--green);border-color:var(--green-light);">Amazon Warehousing &amp; Distribution</span>
+    </div>
+    <div class="card-body">
+      <div class="inv-grid" id="awd-grid"></div>
+    </div>
+  </div>
+
+</div><!-- /section-inventory -->
+
+</div><!-- /page -->
+
 
 <script>
-// ── Inventory Data ──────────────────────────────────────────────
+// ââ Inventory Data ââââââââââââââââââââââââââââââââââââââââââââââ
 const inventoryData = { /* INVENTORY_PLACEHOLDER */ };
 
-// ── Tab Switching Data ──────────────────────────────────────────
+// ââ Tab Switching Data ââââââââââââââââââââââââââââââââââââââââââ
 const tabData = {
   '30d': { revenue:'--', units:'--', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'--', usub:'--', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':'--','LR-CS-10':'--','LR-CS-30':'--','LR-TSC-5PACK':'--','LR-CS-120':'--'} }, /* 30D_KPI_PLACEHOLDER */
   '7d':  { revenue:'--', units:'--', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'--', usub:'--', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':'--','LR-CS-10':'--','LR-CS-30':'--','LR-TSC-5PACK':'--','LR-CS-120':'--'} }, /* 7D_KPI_PLACEHOLDER */
   'today': { revenue:'--', units:'--', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'--', usub:'--', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':'--','LR-CS-10':'--','LR-CS-30':'--','LR-TSC-5PACK':'--','LR-CS-120':'--'} }, /* TODAY_KPI_PLACEHOLDER */
   'lifetime': { revenue:'$439,795', units:'20,748', spend:'$226,449', acos:'51.5%', sessions:'187,331', ipi:'628',
-               rsub:'Lifetime Ad Sales (all campaigns)', usub:'Lifetime ad purchases', ssub:'Lifetime total spend', asub:'Lifetime avg ACOS', sesub:'Lifetime ad clicks', isub:'Range 570–686',
+               rsub:'Lifetime Ad Sales (all campaigns)', usub:'Lifetime ad purchases', ssub:'Lifetime total spend', asub:'Lifetime avg ACOS', sesub:'Lifetime ad clicks', isub:'Range 570â686',
                acosColor:'#d97706' },
 };
 
@@ -684,54 +1177,78 @@ const skuMeta = [
 ];
 const skuTabLabels = {'30d':'Last 30 Days','7d':'Last 7 Days','today':'Today','lifetime':'Lifetime','custom':'Custom Range'};
 
-function renderSkuBreakdown(tab) {
-  const d = tabData[tab] || {};
-  document.getElementById('sku-tab-label').textContent = skuTabLabels[tab] || tab;
-  const grid = document.getElementById('sku-grid');
-  if (!d.skuUnits) {
-    grid.innerHTML = '<div style="grid-column:1/-1;font-size:11px;color:#9ca3af;padding:6px 0;">Per-SKU breakdown not available for this period. Switch to Last 30 Days or Today to see SKU-level data.</div>';
-    return;
-  }
-  grid.innerHTML = skuMeta.map(s => {
-    const val = d.skuUnits[s.key] !== undefined ? d.skuUnits[s.key] : '--';
-    return '<div style="background:#f9fafb;border-radius:8px;padding:10px 12px;border-left:3px solid '+s.color+';">'
-      +'<div style="font-size:10px;font-weight:700;color:'+s.color+';margin-bottom:4px;">'
-      +s.key+(s.sup?' <span style="color:#ef4444;font-size:10px;">⚠️</span>':'')
-      +'</div>'
-      +'<div style="font-size:20px;font-weight:800;color:'+s.color+';">'+val+'</div>'
-      +'<div style="font-size:10px;color:#9ca3af;margin-top:1px;">'+s.name+' · units</div>'
-      +'</div>';
-  }).join('');
+// ââ Section Switching âââââââââââââââââââââââââââââââââââââââââââ
+let currentSection = 'dashboard';
+function switchSection(name, btn) {
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.getElementById('section-' + name).classList.add('active');
+  currentSection = name;
+  // Show/hide date sub-nav (Inventory doesn't need it)
+  document.getElementById('date-subnav').style.display = name === 'inventory' ? 'none' : '';
+  document.getElementById('custom-date-panel').style.display = 'none';
+  if (name === 'inventory') renderInventory();
+}
+
+// ââ Date Tab Switching ââââââââââââââââââââââââââââââââââââââââââ
+function switchTab(el, tab) {
+  document.querySelectorAll('.date-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('custom-date-panel').style.display = 'none';
+  const d = tabData[tab];
+  if (!d) return;
+  document.getElementById('kv-revenue').textContent  = d.revenue;
+  document.getElementById('kv-units').textContent    = d.units;
+  document.getElementById('kv-spend').textContent    = d.spend;
+  document.getElementById('kv-acos').textContent     = d.acos;
+  document.getElementById('kv-sessions').textContent = d.sessions;
+  document.getElementById('kv-ipi').textContent      = d.ipi;
+  document.getElementById('ks-revenue').textContent  = d.rsub;
+  document.getElementById('ks-units').textContent    = d.usub;
+  document.getElementById('ks-spend').textContent    = d.ssub;
+  document.getElementById('ks-acos').textContent     = d.asub;
+  document.getElementById('ks-sessions').textContent = d.sesub;
+  document.getElementById('ks-ipi').textContent      = d.isub;
+  renderSkuBreakdown(tab);
 }
 
 function openCustomRange(el) {
   document.querySelectorAll('.date-tab').forEach(t => t.classList.remove('active'));
   el.classList.add('active');
-  document.getElementById('inventory-section').style.display = 'none';
-  document.getElementById('main-kpi-content').style.display = '';
   const panel = document.getElementById('custom-date-panel');
   panel.style.display = panel.style.display === 'flex' ? 'none' : 'flex';
 }
 
-// ── Inventory Tab ────────────────────────────────────────────────
-function switchToInventory(el) {
-  document.querySelectorAll('.date-tab').forEach(t => t.classList.remove('active'));
-  el.classList.add('active');
-  document.getElementById('custom-date-panel').style.display = 'none';
-  document.getElementById('main-kpi-content').style.display = 'none';
-  document.getElementById('inventory-section').style.display = 'block';
-  renderInventory();
+// ââ SKU Breakdown âââââââââââââââââââââââââââââââââââââââââââââââ
+function renderSkuBreakdown(tab) {
+  const d = tabData[tab] || {};
+  document.getElementById('sku-tab-label').textContent = skuTabLabels[tab] || tab;
+  const grid = document.getElementById('sku-grid');
+  if (!d.skuUnits) {
+    grid.innerHTML = '<div style="grid-column:1/-1;font-size:11px;color:var(--text-muted);padding:8px 0;">Per-SKU breakdown not available for this period.</div>';
+    return;
+  }
+  grid.innerHTML = skuMeta.map(s => {
+    const val = d.skuUnits[s.key] !== undefined ? d.skuUnits[s.key] : '--';
+    return `<div style="background:#f8fafc;border-radius:10px;padding:14px 16px;border-left:3px solid ${s.color};border:1px solid var(--border);border-left:3px solid ${s.color};">
+      <div style="font-size:10px;font-weight:700;color:${s.color};margin-bottom:6px;letter-spacing:.3px;">${s.key}${s.sup?' <span style="color:var(--red);">â ï¸</span>':''}</div>
+      <div style="font-size:26px;font-weight:800;color:${s.color};line-height:1;">${val}</div>
+      <div style="font-size:10px;color:var(--text-muted);margin-top:4px;">${s.name} Â· units</div>
+    </div>`;
+  }).join('');
 }
 
+// ââ Inventory âââââââââââââââââââââââââââââââââââââââââââââââââââ
 function renderInventory() {
   const inv = inventoryData;
-  const fbaGrid = document.getElementById('fba-grid');
-  const awdGrid = document.getElementById('awd-grid');
+  const fbaGrid   = document.getElementById('fba-grid');
+  const awdGrid   = document.getElementById('awd-grid');
+  const totalGrid = document.getElementById('total-grid');
 
   if (!inv || Object.keys(inv).length === 0) {
-    const msg = '<div style="grid-column:1/-1;font-size:11px;color:#9ca3af;padding:8px 0;">Inventory data will appear after the next hourly update.</div>';
-    fbaGrid.innerHTML = msg;
-    awdGrid.innerHTML = msg;
+    const msg = '<div style="grid-column:1/-1;font-size:12px;color:var(--text-muted);padding:10px 0;">Inventory data will appear after the next hourly update.</div>';
+    fbaGrid.innerHTML = awdGrid.innerHTML = totalGrid.innerHTML = msg;
     return;
   }
 
@@ -743,15 +1260,15 @@ function renderInventory() {
     const unfulfillable = d.unfulfillable ?? '--';
     const nums = [fulfillable, inbound, reserved, unfulfillable];
     const total = nums.every(v => typeof v === 'number') ? nums.reduce((a,b) => a+b, 0) : '--';
-    return `<div style="background:#f0f9ff;border-radius:8px;padding:10px 12px;border-left:3px solid ${s.color};">
-      <div style="font-size:9px;font-weight:700;color:${s.color};margin-bottom:6px;">${s.key}</div>
-      <div style="font-size:20px;font-weight:800;color:#1e40af;margin-bottom:4px;">${total}</div>
-      <div style="font-size:9px;color:#6b7280;">total</div>
-      <div style="margin-top:6px;font-size:10px;color:#374151;display:grid;grid-template-columns:1fr 1fr;gap:2px;">
-        <span>✅ Fulfillable</span><span style="font-weight:700;">${fulfillable}</span>
-        <span>📥 Inbound</span><span style="font-weight:700;">${inbound}</span>
-        <span>🔒 Reserved</span><span style="font-weight:700;">${reserved}</span>
-        <span>⚠️ Unfulfl.</span><span style="font-weight:700;">${unfulfillable}</span>
+    return `<div style="background:#eff6ff;border-radius:10px;padding:14px;border:1px solid #dbeafe;border-top:3px solid ${s.color};">
+      <div style="font-size:10px;font-weight:700;color:${s.color};margin-bottom:8px;">${s.key}</div>
+      <div style="font-size:26px;font-weight:800;color:#1e40af;line-height:1;margin-bottom:4px;">${total}</div>
+      <div style="font-size:9px;color:var(--text-muted);margin-bottom:8px;">total units</div>
+      <div style="font-size:10px;color:#374151;display:grid;grid-template-columns:1fr 1fr;gap:3px;">
+        <span style="color:var(--text-muted);">â Fulfillable</span><span style="font-weight:700;">${fulfillable}</span>
+        <span style="color:var(--text-muted);">ð¥ Inbound</span><span style="font-weight:700;">${inbound}</span>
+        <span style="color:var(--text-muted);">ð Reserved</span><span style="font-weight:700;">${reserved}</span>
+        <span style="color:var(--text-muted);">â ï¸ Unfulfl.</span><span style="font-weight:700;">${unfulfillable}</span>
       </div>
     </div>`;
   }).join('');
@@ -763,219 +1280,88 @@ function renderInventory() {
     const outbound = d.outbound ?? null;
     const total    = (typeof onhand === 'number' && typeof inbound === 'number') ? onhand + inbound : '--';
     const outboundRow = (outbound !== null && outbound !== 0)
-      ? `<span>🚚 To FBA</span><span style="font-weight:700;">${outbound}</span>`
-      : '';
-    return `<div style="background:#f0fdf4;border-radius:8px;padding:10px 12px;border-left:3px solid ${s.color};">
-      <div style="font-size:9px;font-weight:700;color:${s.color};margin-bottom:6px;">${s.key}</div>
-      <div style="font-size:20px;font-weight:800;color:#065f46;margin-bottom:4px;">${total}</div>
-      <div style="font-size:9px;color:#6b7280;">total</div>
-      <div style="margin-top:6px;font-size:10px;color:#374151;display:grid;grid-template-columns:1fr 1fr;gap:2px;">
-        <span>✅ Available</span><span style="font-weight:700;">${onhand}</span>
-        <span>📥 Inbound</span><span style="font-weight:700;">${inbound}</span>
+      ? `<span style="color:var(--text-muted);">ð To FBA</span><span style="font-weight:700;">${outbound}</span>` : '';
+    return `<div style="background:#ecfdf5;border-radius:10px;padding:14px;border:1px solid #d1fae5;border-top:3px solid ${s.color};">
+      <div style="font-size:10px;font-weight:700;color:${s.color};margin-bottom:8px;">${s.key}</div>
+      <div style="font-size:26px;font-weight:800;color:#065f46;line-height:1;margin-bottom:4px;">${total}</div>
+      <div style="font-size:9px;color:var(--text-muted);margin-bottom:8px;">total units</div>
+      <div style="font-size:10px;color:#374151;display:grid;grid-template-columns:1fr 1fr;gap:3px;">
+        <span style="color:var(--text-muted);">â Available</span><span style="font-weight:700;">${onhand}</span>
+        <span style="color:var(--text-muted);">ð¥ Inbound</span><span style="font-weight:700;">${inbound}</span>
         ${outboundRow}
       </div>
     </div>`;
   }).join('');
 
-  const totalGrid = document.getElementById('total-grid');
   totalGrid.innerHTML = skuMeta.map(s => {
     const fba = (inv[s.key] || {}).fba || {};
     const awd = (inv[s.key] || {}).awd || {};
-    const fbaUnits       = fba.fulfillable    ?? 0;
-    const fbaReserved    = fba.reserved       ?? 0;
-    const fbaUnfulfill   = fba.unfulfillable  ?? 0;
-    const awdUnits       = awd.onhand         ?? 0;
-    const awdInbound     = awd.inbound        ?? 0;
-    const fbaInbound     = fba.inbound        ?? 0;
-    const totalInbound = (typeof awdInbound === 'number' && typeof fbaInbound === 'number') ? awdInbound + fbaInbound : '--';
-    const grandTotal = (typeof fbaUnits === 'number' && typeof fbaReserved === 'number' && typeof fbaUnfulfill === 'number' && typeof awdUnits === 'number' && typeof totalInbound === 'number')
+    const fbaUnits      = fba.fulfillable   ?? 0;
+    const fbaReserved   = fba.reserved      ?? 0;
+    const fbaUnfulfill  = fba.unfulfillable ?? 0;
+    const awdUnits      = awd.onhand        ?? 0;
+    const awdInbound    = awd.inbound       ?? 0;
+    const fbaInbound    = fba.inbound       ?? 0;
+    const totalInbound  = (typeof awdInbound === 'number' && typeof fbaInbound === 'number') ? awdInbound + fbaInbound : '--';
+    const grandTotal    = (typeof fbaUnits === 'number' && typeof fbaReserved === 'number' && typeof fbaUnfulfill === 'number' && typeof awdUnits === 'number' && typeof totalInbound === 'number')
       ? fbaUnits + fbaReserved + fbaUnfulfill + awdUnits + totalInbound : '--';
-    return `<div style="background:#faf5ff;border-radius:8px;padding:10px 12px;border-left:3px solid ${s.color};">
-      <div style="font-size:9px;font-weight:700;color:${s.color};margin-bottom:6px;">${s.key}</div>
-      <div style="font-size:20px;font-weight:800;color:#5b21b6;margin-bottom:4px;">${grandTotal}</div>
-      <div style="font-size:9px;color:#6b7280;">FBA + AWD + Inbound</div>
-      <div style="margin-top:6px;font-size:10px;color:#374151;display:grid;grid-template-columns:1fr 1fr;gap:2px;">
-        <span>🏪 FBA</span><span style="font-weight:700;">${fbaUnits}</span>
-        <span>🔒 Reserved</span><span style="font-weight:700;">${fbaReserved}</span>
-        <span>⚠️ Unfulfl.</span><span style="font-weight:700;">${fbaUnfulfill}</span>
-        <span>🏭 AWD</span><span style="font-weight:700;">${awdUnits}</span>
-        <span>📥 Inbound</span><span style="font-weight:700;">${totalInbound}</span>
+    return `<div style="background:#f5f3ff;border-radius:10px;padding:14px;border:1px solid #ede9fe;border-top:3px solid ${s.color};">
+      <div style="font-size:10px;font-weight:700;color:${s.color};margin-bottom:8px;">${s.key}</div>
+      <div style="font-size:26px;font-weight:800;color:#5b21b6;line-height:1;margin-bottom:4px;">${grandTotal}</div>
+      <div style="font-size:9px;color:var(--text-muted);margin-bottom:8px;">FBA + AWD + Inbound</div>
+      <div style="font-size:10px;color:#374151;display:grid;grid-template-columns:1fr 1fr;gap:3px;">
+        <span style="color:var(--text-muted);">ðª FBA</span><span style="font-weight:700;">${fbaUnits}</span>
+        <span style="color:var(--text-muted);">ð Reserved</span><span style="font-weight:700;">${fbaReserved}</span>
+        <span style="color:var(--text-muted);">â ï¸ Unfulfl.</span><span style="font-weight:700;">${fbaUnfulfill}</span>
+        <span style="color:var(--text-muted);">ð­ AWD</span><span style="font-weight:700;">${awdUnits}</span>
+        <span style="color:var(--text-muted);">ð¥ Inbound</span><span style="font-weight:700;">${totalInbound}</span>
       </div>
     </div>`;
   }).join('');
 }
 
+// ââ Custom Range ââââââââââââââââââââââââââââââââââââââââââââââââ
 async function applyCustomRange() {
   const start = document.getElementById('custom-start').value;
   const end   = document.getElementById('custom-end').value;
   const status = document.getElementById('custom-status');
   if (!start || !end) { status.textContent = 'Please select both dates.'; return; }
   if (start > end)    { status.textContent = 'Start date must be before end date.'; return; }
-  status.textContent = 'Loading…';
+  status.textContent = 'Loadingâ¦';
   try {
     const resp = await fetch('/kpi_history.json?v=' + Date.now());
     if (!resp.ok) throw new Error('History not available yet');
     const history = await resp.json();
     const filtered = history.filter(d => d.date >= start && d.date <= end);
-    if (filtered.length === 0) {
-      status.textContent = 'No data found for this range.';
-      return;
-    }
+    if (filtered.length === 0) { status.textContent = 'No data found for this range.'; return; }
     let revenue = 0, orders = 0, units = 0;
     const sku = {};
     for (const d of filtered) {
       revenue += d.revenue || 0;
       orders  += d.orders  || 0;
       units   += d.units   || 0;
-      for (const [k, v] of Object.entries(d.sku_units || {})) {
-        sku[k] = (sku[k] || 0) + v;
-      }
+      for (const [k, v] of Object.entries(d.sku_units || {})) { sku[k] = (sku[k] || 0) + v; }
     }
-    const label = start + ' → ' + end + ' (' + filtered.length + ' days)';
+    const label = start + ' â ' + end + ' (' + filtered.length + ' days)';
     tabData['custom'] = {
       revenue: '$' + revenue.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ','),
-      units: String(units),
-      spend: '--', acos: '--', sessions: '--', ipi: '628',
-      rsub: label + ' · SP-API daily data',
-      usub: orders + ' orders · ' + units + ' units',
+      units: String(units), spend: '--', acos: '--', sessions: '--', ipi: '628',
+      rsub: label + ' Â· SP-API daily data', usub: orders + ' orders Â· ' + units + ' units',
       ssub: 'Not yet available', asub: 'Not yet available',
       sesub: 'Not yet available', isub: 'Range 570-686',
       acosColor: '#6b7280', skuUnits: sku
     };
     skuTabLabels['custom'] = label;
     status.textContent = filtered.length + ' days loaded';
-    // Update KPI cards
     const d = tabData['custom'];
-    document.getElementById('kv-revenue').textContent = d.revenue;
-    document.getElementById('kv-units').textContent = d.units;
-    document.getElementById('kv-spend').textContent = d.spend;
-    document.getElementById('kv-acos').textContent = d.acos;
+    document.getElementById('kv-revenue').textContent  = d.revenue;
+    document.getElementById('kv-units').textContent    = d.units;
+    document.getElementById('kv-spend').textContent    = d.spend;
+    document.getElementById('kv-acos').textContent     = d.acos;
     document.getElementById('kv-sessions').textContent = d.sessions;
-    document.getElementById('kv-ipi').textContent = d.ipi;
-    document.getElementById('ks-revenue').textContent = d.rsub;
-    document.getElementById('ks-units').textContent = d.usub;
-    document.getElementById('ks-spend').textContent = d.ssub;
-    document.getElementById('ks-acos').textContent = d.asub;
-    document.getElementById('ks-sessions').textContent = d.sesub;
-    document.getElementById('ks-ipi').textContent = d.isub;
-    renderSkuBreakdown('custom');
-  } catch(e) {
-    status.textContent = 'Error: ' + e.message;
-  }
-}
-
-function switchTab(el, tab) {
-  document.querySelectorAll('.date-tab').forEach(t => t.classList.remove('active'));
-  el.classList.add('active');
-  document.getElementById('custom-date-panel').style.display = 'none';
-  document.getElementById('inventory-section').style.display = 'none';
-  document.getElementById('main-kpi-content').style.display = '';
-  const d = tabData[tab];
-  document.getElementById('kv-revenue').textContent = d.revenue;
-  document.getElementById('kv-units').textContent = d.units;
-  document.getElementById('kv-spend').textContent = d.spend;
-  document.getElementById('kv-acos').textContent = d.acos;
-  document.getElementById('kv-sessions').textContent = d.sessions;
-  document.getElementById('kv-ipi').textContent = d.ipi;
-  document.getElementById('ks-revenue').textContent = d.rsub;
-  document.getElementById('ks-units').textContent = d.usub;
-  document.getElementById('ks-spend').textContent = d.ssub;
-  document.getElementById('ks-acos').textContent = d.asub;
-  document.getElementById('ks-sessions').textContent = d.sesub;
-  document.getElementById('ks-ipi').textContent = d.isub;
-  renderSkuBreakdown(tab);
-}
-
-// Initial SKU render
-renderSkuBreakdown('30d');
-
-// ── Revenue Trend Chart ─────────────────────────────────────────
-const days = ['Apr 29','May 1','May 3','May 5','May 7','May 9','May 11','May 13','May 15','May 17','May 19','May 21','May 23','May 25','May 27','May 28'];
-const rev  = [980, 1240, 1050, 1380, 1620, 1180, 1450, 1520, 1700, 1250, 1610, 1830, 1440, 1750, 2010, 1950];
-const sess = [340, 390, 310, 420, 510, 360, 430, 460, 520, 380, 490, 560, 440, 530, 610, 590];
-
-const rCtx = document.getElementById('revenueChart').getContext('2d');
-new Chart(rCtx, {
-  type: 'line',
-  data: {
-    labels: days,
-    datasets: [
-      {
-        label: 'Revenue ($)',
-        data: rev,
-        borderColor: '#10b981',
-        backgroundColor: 'rgba(16,185,129,0.08)',
-        borderWidth: 2,
-        pointRadius: 2,
-        fill: true,
-        tension: 0.4,
-        yAxisID: 'y'
-      },
-      {
-        label: 'Sessions',
-        data: sess,
-        borderColor: '#3b82f6',
-        backgroundColor: 'transparent',
-        borderWidth: 1.5,
-        borderDash: [4,3],
-        pointRadius: 0,
-        tension: 0.4,
-        yAxisID: 'y1'
-      }
-    ]
-  },
-  options: {
-    responsive: true, maintainAspectRatio: false,
-    interaction: { mode: 'index', intersect: false },
-    plugins: { legend: { display: true, position: 'top', labels: { boxWidth: 10, font: { size: 10 } } } },
-    scales: {
-      x: { ticks: { font: { size: 9 }, maxRotation: 45 }, grid: { display: false } },
-      y: { position: 'left', ticks: { font: { size: 9 }, callback: v => '$'+v.toLocaleString() }, grid: { color: '#f3f4f6' } },
-      y1: { position: 'right', ticks: { font: { size: 9 } }, grid: { display: false } }
-    }
-  }
-});
-
-// ── Profit Donut ────────────────────────────────────────────────
-const pCtx = document.getElementById('profitDonut').getContext('2d');
-new Chart(pCtx, {
-  type: 'doughnut',
-  data: {
-    labels: ['Est. Net Profit', 'Amazon Fees', 'FBA Fulfillment', 'Ad Spend'],
-    datasets: [{
-      data: [16743, 5282, 6135, 7050],
-      backgroundColor: ['#8b5cf6','#f59e0b','#3b82f6','#ec4899'],
-      borderWidth: 2, borderColor: '#fff'
-    }]
-  },
-  options: {
-    responsive: false, cutout: '68%',
-    plugins: { legend: { display: false } }
-  }
-});
-
-// ── Inventory Bar Chart ─────────────────────────────────────────
-const iCtx = document.getElementById('inventoryChart').getContext('2d');
-new Chart(iCtx, {
-  type: 'bar',
-  data: {
-    labels: ['30-Pack', '10-Pack', 'CS-30', '5-Pack', '120-Pack'],
-    datasets: [{
-      label: 'FBA Units',
-      data: [856, 702, 304, 228, 152],
-      backgroundColor: ['#10b981','#3b82f6','#8b5cf6','#f59e0b','#ef4444'],
-      borderRadius: 4, borderSkipped: false
-    }]
-  },
-  options: {
-    responsive: true, maintainAspectRatio: false,
-    plugins: { legend: { display: false } },
-    scales: {
-      x: { ticks: { font: { size: 9 } }, grid: { display: false } },
-      y: { ticks: { font: { size: 9 } }, grid: { color: '#f3f4f6' } }
-    }
-  }
-});
-</script>
-</body>
-</html>
+    document.getElementById('kv-ipi').textContent      = d.ipi;
+    document.getElementById('ks-revenue').textContent  = d.rsub;
+    document.getElementById('ks-units').textContent    = d.usub;
+    document.getElementById('ks-spend').textContent    = d.ssub;
+    document.getElementById('ks-acos').textContent     = d.asub;
+    document.getElementById('ks-sessi
