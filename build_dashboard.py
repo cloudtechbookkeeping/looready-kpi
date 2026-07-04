@@ -36,7 +36,9 @@ def update_html(data):
     import zoneinfo
     et = zoneinfo.ZoneInfo("America/New_York")
     now_et = datetime.datetime.now(tz=et)
-    today_str = now_et.strftime("%B %-d, %Y %-I:%M %p ET")
+    today_str  = now_et.strftime("%B %-d, %Y %-I:%M %p ET")
+    date_str   = now_et.strftime("%B %-d, %Y")
+    time_str   = now_et.strftime("%-I:%M %p ET")
     revenue   = "$" + f"{data['revenue_today']:,.2f}"
     orders    = data['orders_today']
     units     = data.get('units_ordered', 0)
@@ -54,10 +56,10 @@ def update_html(data):
     html = HTML_FILE.read_text(encoding="utf-8")
     print("HTML len=" + str(len(html)))
 
-    # 1. Live badge date+time
+    # 1. Live badge date+time (spans: <span>Live</span><span>Updated DATE<br>TIME</span>)
     html, n1 = re.subn(
-        r"Live .{1,3} Updated [^\n<\"]+",
-        "Live · Updated " + today_str,
+        r"Updated [^<]+<br>[^<]+",
+        "Updated " + date_str + "<br>" + time_str,
         html
     )
 
