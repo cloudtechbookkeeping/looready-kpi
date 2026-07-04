@@ -152,6 +152,7 @@ def update_html(data):
             f"'{sku}':{{fba:{{fulfillable:{fba.get('fulfillable',0)},"
             f"inbound:{fba.get('inbound',0)},"
             f"reserved:{fba.get('reserved',0)},"
+            f"researching:{fba.get('researching',0)},"
             f"unfulfillable:{fba.get('unfulfillable',0)}}},"
             f"awd:{{onhand:{awd.get('onhand',0)},"
             f"inbound:{awd.get('inbound',0)},"

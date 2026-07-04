@@ -1257,8 +1257,9 @@ function renderInventory() {
     const fulfillable   = d.fulfillable   ?? '--';
     const inbound       = d.inbound       ?? '--';
     const reserved      = d.reserved      ?? '--';
+    const researching   = d.researching   ?? '--';
     const unfulfillable = d.unfulfillable ?? '--';
-    const nums = [fulfillable, inbound, reserved, unfulfillable];
+    const nums = [fulfillable, inbound, reserved, researching, unfulfillable];
     const total = nums.every(v => typeof v === 'number') ? nums.reduce((a,b) => a+b, 0) : '--';
     return `<div style="background:#eff6ff;border-radius:10px;padding:14px;border:1px solid #dbeafe;border-top:3px solid ${s.color};">
       <div style="font-size:10px;font-weight:700;color:${s.color};margin-bottom:8px;">${s.key}</div>
@@ -1268,6 +1269,7 @@ function renderInventory() {
         <span style="color:var(--text-muted);">✅ Fulfillable</span><span style="font-weight:700;">${fulfillable}</span>
         <span style="color:var(--text-muted);">📥 Inbound</span><span style="font-weight:700;">${inbound}</span>
         <span style="color:var(--text-muted);">🔒 Reserved</span><span style="font-weight:700;">${reserved}</span>
+        <span style="color:var(--text-muted);">🔍 Researching</span><span style="font-weight:700;">${researching}</span>
         <span style="color:var(--text-muted);">⚠️ Unfulfl.</span><span style="font-weight:700;">${unfulfillable}</span>
       </div>
     </div>`;
@@ -1298,13 +1300,14 @@ function renderInventory() {
     const awd = (inv[s.key] || {}).awd || {};
     const fbaUnits      = fba.fulfillable   ?? 0;
     const fbaReserved   = fba.reserved      ?? 0;
+    const fbaResearch   = fba.researching   ?? 0;
     const fbaUnfulfill  = fba.unfulfillable ?? 0;
     const awdUnits      = awd.onhand        ?? 0;
     const awdInbound    = awd.inbound       ?? 0;
     const fbaInbound    = fba.inbound       ?? 0;
     const totalInbound  = (typeof awdInbound === 'number' && typeof fbaInbound === 'number') ? awdInbound + fbaInbound : '--';
-    const grandTotal    = (typeof fbaUnits === 'number' && typeof fbaReserved === 'number' && typeof fbaUnfulfill === 'number' && typeof awdUnits === 'number' && typeof totalInbound === 'number')
-      ? fbaUnits + fbaReserved + fbaUnfulfill + awdUnits + totalInbound : '--';
+    const grandTotal    = (typeof fbaUnits === 'number' && typeof fbaReserved === 'number' && typeof fbaResearch === 'number' && typeof fbaUnfulfill === 'number' && typeof awdUnits === 'number' && typeof totalInbound === 'number')
+      ? fbaUnits + fbaReserved + fbaResearch + fbaUnfulfill + awdUnits + totalInbound : '--';
     return `<div style="background:#f5f3ff;border-radius:10px;padding:14px;border:1px solid #ede9fe;border-top:3px solid ${s.color};">
       <div style="font-size:10px;font-weight:700;color:${s.color};margin-bottom:8px;">${s.key}</div>
       <div style="font-size:26px;font-weight:800;color:#5b21b6;line-height:1;margin-bottom:4px;">${grandTotal}</div>

@@ -152,6 +152,9 @@ def get_fba_inventory(token):
             "reserved":      det.get("reservedQuantity", {}).get("totalReservedQuantity", 0)
                              if isinstance(det.get("reservedQuantity"), dict)
                              else det.get("reservedQuantity", 0),
+            "researching":   det.get("researchingQuantity", {}).get("totalResearchingQuantity", 0)
+                             if isinstance(det.get("researchingQuantity"), dict)
+                             else det.get("researchingQuantity", 0),
             "unfulfillable": unfulfillable.get("totalUnfulfillableQuantity", 0)
                              if isinstance(unfulfillable, dict) else unfulfillable,
         }
