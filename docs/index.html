@@ -3,19 +3,19 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>LooReady â Amazon KPI Dashboard</title>
+<title>LooReady — Amazon KPI Dashboard</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.js" integrity="sha384-iU8HYtnGQ8Cy4zl7gbNMOhsDTTKX02BTXptVP/vqAWIaTfM7isw76iyZCsjL2eVi" crossorigin="anonymous"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
 :root {
-  /* ââ Brand colors from LooREADY logo ââ */
+  /* ── Brand colors from LooREADY logo ── */
   --brand-green: #66bc46;        /* logo "Loo" green */
   --brand-blue:  #2688c9;        /* logo "READY" blue */
   --brand-green-light: #eef8e8;
   --brand-blue-light:  #e5f3fb;
 
-  /* ââ Page surface ââ */
+  /* ── Page surface ── */
   --bg: #f0f5f9;
   --surface: #ffffff;
   --border: #dce8f0;
@@ -23,7 +23,7 @@
   --text-secondary: #527080;
   --text-muted: #8eaabb;
 
-  /* ââ Semantic palette (logo-derived) ââ */
+  /* ── Semantic palette (logo-derived) ── */
   --green:       #66bc46;  --green-light:  #eef8e8;
   --blue:        #2688c9;  --blue-light:   #e5f3fb;
   --orange:      #f59e0b;  --orange-light: #fffbeb;   /* ad spend / warnings */
@@ -31,7 +31,7 @@
   --purple:      #8b5cf6;  --purple-light: #f5f3ff;
   --yellow:      #eab308;  --yellow-light: #fefce8;
 
-  /* ââ Sidebar ââ */
+  /* ── Sidebar ── */
   --nav-bg:      #0d1e2e;   /* deep navy, based on logo blue */
   --nav-hover:   rgba(38,136,201,.20);
   --nav-active:  rgba(102,188,70,.18);
@@ -54,7 +54,7 @@ body {
   display: flex;
 }
 
-/* ââ LEFT SIDEBAR âââââââââââââââââââââââââââââââââââââââââââ */
+/* ── LEFT SIDEBAR ─────────────────────────────────────────── */
 .sidebar {
   width: 220px;
   min-width: 220px;
@@ -76,7 +76,7 @@ body {
   margin-bottom: 12px;
 }
 
-/* Main Nav â vertical */
+/* Main Nav — vertical */
 .main-nav { display: flex; flex-direction: column; gap: 2px; padding: 0 12px; }
 .nav-btn {
   display: flex; align-items: center; gap: 10px;
@@ -119,7 +119,7 @@ body {
 .live-label { color: #c8dff0; font-weight: 600; }
 .live-time { color: #5d8099; font-size: 10px; display: block; margin-top: 2px; line-height: 1.4; }
 
-/* ââ MAIN AREA ââââââââââââââââââââââââââââââââââââââââââââââ */
+/* ── MAIN AREA ────────────────────────────────────────────── */
 .main-area {
   margin-left: 220px;
   flex: 1;
@@ -128,7 +128,7 @@ body {
   flex-direction: column;
 }
 
-/* ââ DATE SUB-NAV âââââââââââââââââââââââââââââââââââââââââââ */
+/* ── DATE SUB-NAV ─────────────────────────────────────────── */
 .date-subnav {
   background: var(--surface);
   border-bottom: 1px solid var(--border);
@@ -177,12 +177,12 @@ body {
 }
 #custom-status { font-size: 11px; color: var(--text-muted); }
 
-/* ââ PAGE WRAPPER âââââââââââââââââââââââââââââââââââââââââââ */
+/* ── PAGE WRAPPER ─────────────────────────────────────────── */
 .page { padding: 24px 28px 40px; }
 .section { display: none; }
 .section.active { display: block; }
 
-/* ââ UPDATED LINE âââââââââââââââââââââââââââââââââââââââââââ */
+/* ── UPDATED LINE ─────────────────────────────────────────── */
 .updated-line {
   font-size: 11px; color: var(--text-muted);
   margin-bottom: 20px;
@@ -196,7 +196,7 @@ body {
   border-radius: 50%;
 }
 
-/* ââ KPI CARDS ââââââââââââââââââââââââââââââââââââââââââââââ */
+/* ── KPI CARDS ────────────────────────────────────────────── */
 .kpi-grid {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
@@ -263,7 +263,7 @@ body {
 .kpi-chip.warn   { background: var(--yellow-light); color: #d97706; }
 .kpi-chip.neutral{ background: #f1f5f9;             color: var(--text-secondary); }
 
-/* ââ CARDS / LAYOUT âââââââââââââââââââââââââââââââââââââââââ */
+/* ── CARDS / LAYOUT ───────────────────────────────────────── */
 .card {
   background: var(--surface);
   border-radius: var(--radius);
@@ -298,7 +298,7 @@ body {
 .grid-2-eq { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
 @media (max-width: 900px) { .grid-2, .grid-3, .grid-2-eq { grid-template-columns: 1fr; } }
 
-/* ââ STAT ROWS ââââââââââââââââââââââââââââââââââââââââââââââ */
+/* ── STAT ROWS ────────────────────────────────────────────── */
 .stat-row {
   display: flex; justify-content: space-between; align-items: center;
   padding: 8px 0; border-bottom: 1px solid #f8fafc;
@@ -310,12 +310,12 @@ body {
 .stat-val.red    { color: var(--red); }
 .stat-val.orange { color: var(--orange); }
 
-/* ââ CHART WRAP âââââââââââââââââââââââââââââââââââââââââââââ */
+/* ── CHART WRAP ───────────────────────────────────────────── */
 .chart-wrap { position: relative; height: 200px; }
 .chart-wrap.sm { height: 160px; }
 .chart-wrap.lg { height: 260px; }
 
-/* ââ DONUT ââââââââââââââââââââââââââââââââââââââââââââââââââ */
+/* ── DONUT ────────────────────────────────────────────────── */
 .donut-wrap {
   position: relative; height: 180px;
   display: flex; align-items: center; justify-content: center;
@@ -326,14 +326,14 @@ body {
 .donut-center-val { font-size: 22px; font-weight: 800; color: var(--text-primary); }
 .donut-center-label { font-size: 10px; color: var(--text-muted); margin-top: 1px; }
 
-/* ââ PROFIT ROWS ââââââââââââââââââââââââââââââââââââââââââââ */
+/* ── PROFIT ROWS ──────────────────────────────────────────── */
 .profit-row { display: flex; align-items: center; gap: 10px; padding: 7px 0; }
 .profit-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
 .profit-label { flex: 1; font-size: 12px; color: var(--text-secondary); }
 .profit-amount { font-size: 13px; font-weight: 600; }
 .profit-pct { font-size: 10px; color: var(--text-muted); margin-left: 4px; }
 
-/* ââ PRODUCT TABLE ââââââââââââââââââââââââââââââââââââââââââ */
+/* ── PRODUCT TABLE ────────────────────────────────────────── */
 .product-table { width: 100%; border-collapse: collapse; font-size: 12px; }
 .product-table th {
   text-align: left; padding: 10px 14px;
@@ -363,27 +363,27 @@ body {
 .progress-bar { background: #f1f5f9; border-radius: 6px; height: 5px; margin-top: 3px; overflow: hidden; }
 .progress-fill { height: 100%; border-radius: 6px; background: var(--green); }
 
-/* ââ SKU GRID âââââââââââââââââââââââââââââââââââââââââââââââ */
+/* ── SKU GRID ─────────────────────────────────────────────── */
 .sku-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
 @media (max-width: 900px) { .sku-grid { grid-template-columns: repeat(3, 1fr); } }
 
-/* ââ ACOS BAR âââââââââââââââââââââââââââââââââââââââââââââââ */
+/* ── ACOS BAR ─────────────────────────────────────────────── */
 .acos-meter { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
 .acos-bar { flex: 1; height: 8px; background: #f1f5f9; border-radius: 4px; overflow: hidden; }
 .acos-fill { height: 100%; border-radius: 4px; background: linear-gradient(90deg, #10b981, #f59e0b, #ef4444); }
 
-/* ââ INVENTORY GRIDS ââââââââââââââââââââââââââââââââââââââââ */
+/* ── INVENTORY GRIDS ──────────────────────────────────────── */
 .inv-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
 @media (max-width: 900px) { .inv-grid { grid-template-columns: repeat(3, 1fr); } }
 
-/* ââ SECTION DIVIDER ââââââââââââââââââââââââââââââââââââââââ */
+/* ── SECTION DIVIDER ──────────────────────────────────────── */
 .section-label {
   font-size: 11px; font-weight: 700; text-transform: uppercase;
   letter-spacing: 0.8px; color: var(--text-muted);
   margin-bottom: 12px; padding-left: 2px;
 }
 
-/* ââ ALERT BANNER âââââââââââââââââââââââââââââââââââââââââââ */
+/* ── ALERT BANNER ─────────────────────────────────────────── */
 .alert-banner {
   background: #fffbeb; border: 1px solid #fcd34d; border-radius: var(--radius);
   padding: 11px 16px; margin-bottom: 16px;
@@ -391,7 +391,7 @@ body {
   font-size: 12px; color: #92400e;
 }
 
-/* ââ INSIGHT CHIPS ROW ââââââââââââââââââââââââââââââââââââââ */
+/* ── INSIGHT CHIPS ROW ────────────────────────────────────── */
 .insights-row {
   display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px;
 }
@@ -407,10 +407,10 @@ body {
 .insight-chip .ic-label { color: var(--text-muted); }
 .insight-chip .ic-val { font-weight: 700; color: var(--text-primary); margin-left: 4px; }
 
-/* ââ TABLE SCROLL âââââââââââââââââââââââââââââââââââââââââââ */
+/* ── TABLE SCROLL ─────────────────────────────────────────── */
 .table-scroll { overflow-x: auto; }
 
-/* ââ MINI SUMMARY CARDS (dashboard bottom row) ââââââââââââââ */
+/* ── MINI SUMMARY CARDS (dashboard bottom row) ────────────── */
 .mini-stat { display: flex; justify-content: space-between; align-items: center; padding: 9px 0; border-bottom: 1px solid #f8fafc; }
 .mini-stat:last-child { border-bottom: none; }
 .mini-stat-label { font-size: 11px; color: var(--text-secondary); }
@@ -420,19 +420,19 @@ body {
 .mini-stat-val.red    { color: var(--red); }
 .mini-stat-val.blue   { color: var(--blue); }
 
-/* ââ DIVIDER ââââââââââââââââââââââââââââââââââââââââââââââââ */
+/* ── DIVIDER ──────────────────────────────────────────────── */
 .divider { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
 
 .mb-16 { margin-bottom: 16px; }
 .mb-20 { margin-bottom: 20px; }
 
-/* ââ FOOTER NOTE ââââââââââââââââââââââââââââââââââââââââââââ */
+/* ── FOOTER NOTE ──────────────────────────────────────────── */
 .footnote { font-size: 10px; color: var(--text-muted); margin-top: 8px; }
 </style>
 </head>
 <body>
 
-<!-- ââââââââââââââââââââ LEFT SIDEBAR ââââââââââââââââââââ -->
+<!-- ════════════════════ LEFT SIDEBAR ════════════════════ -->
 <aside class="sidebar">
   <a class="logo-mark" href="#">
     <svg viewBox="0 0 107 19.97" xmlns="http://www.w3.org/2000/svg" style="height:22px;width:auto;display:block;" aria-label="LooREADY">
@@ -450,13 +450,13 @@ body {
   <span class="sidebar-section-label">Navigation</span>
   <nav class="main-nav">
     <button class="nav-btn active" onclick="switchSection('dashboard', this)">
-      <span class="nav-icon">ð</span> Dashboard
+      <span class="nav-icon">📊</span> Dashboard
     </button>
     <button class="nav-btn" onclick="switchSection('sales', this)">
-      <span class="nav-icon">ð°</span> Sales
+      <span class="nav-icon">💰</span> Sales
     </button>
     <button class="nav-btn" onclick="switchSection('inventory', this)">
-      <span class="nav-icon">ð¦</span> Inventory
+      <span class="nav-icon">📦</span> Inventory
     </button>
   </nav>
 
@@ -471,10 +471,10 @@ body {
   </div>
 </aside>
 
-<!-- ââââââââââââââââââââ MAIN AREA ââââââââââââââââââââ -->
+<!-- ════════════════════ MAIN AREA ════════════════════ -->
 <div class="main-area">
 
-<!-- ââââââââââââââââââââ DATE SUB-NAV (Dashboard + Sales only) ââââââââââââââââââââ -->
+<!-- ════════════════════ DATE SUB-NAV (Dashboard + Sales only) ════════════════════ -->
 <div class="date-subnav" id="date-subnav">
   <div class="date-tab active" onclick="switchTab(this,'30d')">Last 30 Days</div>
   <div class="date-tab" onclick="switchTab(this,'7d')">Last 7 Days</div>
@@ -491,43 +491,43 @@ body {
   <span id="custom-status"></span>
 </div>
 
-<!-- ââââââââââââââââââââ PAGE ââââââââââââââââââââ -->
+<!-- ════════════════════ PAGE ════════════════════ -->
 <div class="page">
 
-<!-- ââââââââââââââ DASHBOARD SECTION ââââââââââââââ -->
+<!-- ══════════════ DASHBOARD SECTION ══════════════ -->
 <div id="section-dashboard" class="section active">
 
-  <div class="updated-line">Data snapshot: July 3, 2026 8:25 PM ET · SP-API live pull</div>
+  <div class="updated-line">Data snapshot: July 3, 2026 8:35 PM ET · SP-API live pull</div>
 
   <!-- KPI Cards -->
   <div class="kpi-grid" id="kpi-cards">
     <div class="kpi-card revenue">
       <div class="kpi-accent"></div>
-      <div class="kpi-icon">ð°</div>
+      <div class="kpi-icon">💰</div>
       <div class="kpi-label">Revenue</div>
       <div class="kpi-value" id="kv-revenue">$35,210</div>
-      <div class="kpi-sub" id="ks-revenue">Last 30 days Â· All products</div>
-      <div class="kpi-chip up">â² Organic + PPC</div>
+      <div class="kpi-sub" id="ks-revenue">Last 30 days · All products</div>
+      <div class="kpi-chip up">▲ Organic + PPC</div>
     </div>
     <div class="kpi-card revenue">
       <div class="kpi-accent"></div>
-      <div class="kpi-icon">ð¦</div>
+      <div class="kpi-icon">📦</div>
       <div class="kpi-label">Units Sold</div>
       <div class="kpi-value" id="kv-units">2,045</div>
       <div class="kpi-sub" id="ks-units">Avg 68/day</div>
-      <div class="kpi-chip up">â² 48 B2B</div>
+      <div class="kpi-chip up">▲ 48 B2B</div>
     </div>
     <div class="kpi-card ads">
       <div class="kpi-accent"></div>
-      <div class="kpi-icon">ð¯</div>
+      <div class="kpi-icon">🎯</div>
       <div class="kpi-label">Ad Spend</div>
       <div class="kpi-value small" id="kv-spend">$226,449</div>
       <div class="kpi-sub" id="ks-spend">Lifetime total</div>
-      <div class="kpi-chip warn">â¡ 1 out of budget</div>
+      <div class="kpi-chip warn">⚡ 1 out of budget</div>
     </div>
     <div class="kpi-card ads">
       <div class="kpi-accent"></div>
-      <div class="kpi-icon">ð</div>
+      <div class="kpi-icon">📊</div>
       <div class="kpi-label">ACOS</div>
       <div class="kpi-value" id="kv-acos">51.5%</div>
       <div class="kpi-sub" id="ks-acos">Lifetime avg</div>
@@ -535,51 +535,51 @@ body {
     </div>
     <div class="kpi-card traffic">
       <div class="kpi-accent"></div>
-      <div class="kpi-icon">ð¥</div>
+      <div class="kpi-icon">👥</div>
       <div class="kpi-label">Sessions</div>
       <div class="kpi-value" id="kv-sessions">11,104</div>
       <div class="kpi-sub" id="ks-sessions">Last 30 days</div>
-      <div class="kpi-chip up">â² 17.39% CVR</div>
+      <div class="kpi-chip up">▲ 17.39% CVR</div>
     </div>
     <div class="kpi-card inventory">
       <div class="kpi-accent"></div>
-      <div class="kpi-icon">ð</div>
+      <div class="kpi-icon">🏆</div>
       <div class="kpi-label">IPI Score</div>
       <div class="kpi-value" id="kv-ipi">628</div>
-      <div class="kpi-sub" id="ks-ipi">Range 570â686</div>
-      <div class="kpi-chip up">â² Healthy</div>
+      <div class="kpi-sub" id="ks-ipi">Range 570–686</div>
+      <div class="kpi-chip up">▲ Healthy</div>
     </div>
   </div>
 
   <!-- Key Insights Row -->
   <div class="insights-row">
     <div class="insight-chip">
-      <span class="ic-icon">ð</span>
+      <span class="ic-icon">🏆</span>
       <span class="ic-label">Buy Box</span>
       <span class="ic-val">100%</span>
     </div>
     <div class="insight-chip">
-      <span class="ic-icon">â­</span>
+      <span class="ic-icon">⭐</span>
       <span class="ic-label">Seller Rating</span>
       <span class="ic-val">4.75 / 5.0</span>
     </div>
     <div class="insight-chip">
-      <span class="ic-icon">ð³</span>
+      <span class="ic-icon">💳</span>
       <span class="ic-label">Payments Balance</span>
       <span class="ic-val" style="color:var(--green);">$6,301.70</span>
     </div>
     <div class="insight-chip">
-      <span class="ic-icon">ð</span>
+      <span class="ic-icon">🔄</span>
       <span class="ic-label">CVR</span>
       <span class="ic-val">17.39%</span>
     </div>
     <div class="insight-chip">
-      <span class="ic-icon">ð¦</span>
+      <span class="ic-icon">📦</span>
       <span class="ic-label">Active SKUs</span>
       <span class="ic-val">4 / 5</span>
     </div>
     <div class="insight-chip">
-      <span class="ic-icon">â ï¸</span>
+      <span class="ic-icon">⚠️</span>
       <span class="ic-label">LR-CS-120 Suppressed</span>
       <span class="ic-val" style="color:var(--red);">Fix listing</span>
     </div>
@@ -605,9 +605,9 @@ body {
       <div class="card-header">
         <div class="card-title">
           <span class="dot" style="background:var(--green);"></span>
-          Revenue Trend â Last 30 Days
+          Revenue Trend — Last 30 Days
         </div>
-        <span class="card-badge">Apr 29 â May 28</span>
+        <span class="card-badge">Apr 29 – May 28</span>
       </div>
       <div class="card-body">
         <div class="chart-wrap lg">
@@ -673,7 +673,7 @@ body {
           <span class="dot" style="background:var(--orange);"></span>
           Advertising
         </div>
-        <span class="card-badge" id="ads-badge">Last 30 Days Â· US+UK</span>
+        <span class="card-badge" id="ads-badge">Last 30 Days · US+UK</span>
       </div>
       <div class="card-body" style="padding: 16px 20px;">
         <div class="mini-stat">
@@ -686,7 +686,7 @@ body {
         </div>
         <div class="mini-stat">
           <span class="mini-stat-label">ROAS</span>
-          <span class="mini-stat-val" id="ad-roas-val">1.04Ã</span>
+          <span class="mini-stat-val" id="ad-roas-val">1.04×</span>
         </div>
         <div class="mini-stat">
           <span class="mini-stat-label">ACOS</span>
@@ -709,7 +709,7 @@ body {
           <span class="mini-stat-val" id="ad-ctr-val">0.84%</span>
         </div>
         <div style="margin-top:12px;">
-          <div style="font-size:10px;color:var(--text-muted);margin-bottom:5px;" id="acos-label">30-Day ACOS (96.5% â Very High â ï¸)</div>
+          <div style="font-size:10px;color:var(--text-muted);margin-bottom:5px;" id="acos-label">30-Day ACOS (96.5% — Very High ⚠️)</div>
           <div class="acos-meter">
             <span style="font-size:10px;color:var(--green);">0%</span>
             <div class="acos-bar"><div class="acos-fill" id="acos-fill-bar" style="width:96.5%;"></div></div>
@@ -759,7 +759,7 @@ body {
         </div>
         <div class="mini-stat">
           <span class="mini-stat-label">Buy Box %</span>
-          <span class="mini-stat-val green">100% ð</span>
+          <span class="mini-stat-val green">100% 🏆</span>
         </div>
         <div class="mini-stat">
           <span class="mini-stat-label">Promo Sales (7d)</span>
@@ -775,7 +775,7 @@ body {
           <span class="dot" style="background:var(--purple);"></span>
           Inventory Health
         </div>
-        <span class="card-badge">IPI: 628 â</span>
+        <span class="card-badge">IPI: 628 ✓</span>
       </div>
       <div class="card-body" style="padding: 16px 20px;">
         <div class="chart-wrap sm" style="margin-bottom:12px;">
@@ -798,11 +798,11 @@ body {
           <span class="mini-stat-val">228 units</span>
         </div>
         <div class="mini-stat">
-          <span class="mini-stat-label">LR-CS-120 â ï¸</span>
+          <span class="mini-stat-label">LR-CS-120 ⚠️</span>
           <span class="mini-stat-val red">152 (Suppressed)</span>
         </div>
         <div style="margin-top:12px;padding:10px 12px;background:#fff7ed;border-radius:8px;border:1px solid #fed7aa;font-size:11px;color:#92400e;">
-          â ï¸ LR-CS-120 is Search Suppressed. Fix listing to unlock $69.99 inventory.
+          ⚠️ LR-CS-120 is Search Suppressed. Fix listing to unlock $69.99 inventory.
         </div>
       </div>
     </div>
@@ -811,19 +811,19 @@ body {
 </div><!-- /section-dashboard -->
 
 
-<!-- ââââââââââââââ SALES SECTION ââââââââââââââ -->
+<!-- ══════════════ SALES SECTION ══════════════ -->
 <div id="section-sales" class="section">
 
-  <div class="updated-line" style="margin-bottom:20px;">Sales Analysis Â· United States &amp; United Kingdom Â· FBA</div>
+  <div class="updated-line" style="margin-bottom:20px;">Sales Analysis · United States &amp; United Kingdom · FBA</div>
 
   <!-- Revenue chart full width -->
   <div class="card mb-20">
     <div class="card-header">
       <div class="card-title">
         <span class="dot" style="background:var(--green);"></span>
-        Revenue Trend â Last 30 Days
+        Revenue Trend — Last 30 Days
       </div>
-      <span class="card-badge">Apr 29 â May 28</span>
+      <span class="card-badge">Apr 29 – May 28</span>
     </div>
     <div class="card-body">
       <div class="chart-wrap lg">
@@ -904,7 +904,7 @@ body {
         </div>
         <div class="stat-row">
           <span class="stat-name">ROAS</span>
-          <span class="stat-val">1.04Ã</span>
+          <span class="stat-val">1.04×</span>
         </div>
         <div class="stat-row">
           <span class="stat-name">ACOS</span>
@@ -977,8 +977,8 @@ body {
         </div>
         <div style="padding:0 0 0 20px;">
           <div class="section-label" style="margin-bottom:10px;">Account Health</div>
-          <div class="stat-row"><span class="stat-name">Buy Box %</span><span class="stat-val green">100% ð</span></div>
-          <div class="stat-row"><span class="stat-name">Seller Feedback</span><span class="stat-val">â­ 4.75 / 5.0</span></div>
+          <div class="stat-row"><span class="stat-name">Buy Box %</span><span class="stat-val green">100% 🏆</span></div>
+          <div class="stat-row"><span class="stat-name">Seller Feedback</span><span class="stat-val">⭐ 4.75 / 5.0</span></div>
           <div class="stat-row"><span class="stat-name">B2B Revenue</span><span class="stat-val">$837.52</span></div>
         </div>
       </div>
@@ -1083,12 +1083,12 @@ body {
               <div style="margin-top:3px;"><span class="sku-badge">LR-CS-120</span></div>
               <div style="font-size:10px;color:var(--text-muted);margin-top:2px;">B0GLV3DH7X</div>
             </td>
-            <td><span class="status-badge suppressed">â ï¸ Suppressed</span></td>
+            <td><span class="status-badge suppressed">⚠️ Suppressed</span></td>
             <td style="font-weight:600;">$69.99</td>
-            <td style="color:var(--text-muted);">â</td>
-            <td style="color:var(--text-muted);">â</td>
+            <td style="color:var(--text-muted);">—</td>
+            <td style="color:var(--text-muted);">—</td>
             <td>152</td>
-            <td style="color:var(--text-muted);">â</td>
+            <td style="color:var(--text-muted);">—</td>
             <td>
               <div style="font-size:11px;color:var(--red);font-weight:600;">Fix listing!</div>
               <div class="progress-bar"><div class="progress-fill" style="width:0%;background:var(--red);"></div></div>
@@ -1102,10 +1102,10 @@ body {
 </div><!-- /section-sales -->
 
 
-<!-- ââââââââââââââ INVENTORY SECTION ââââââââââââââ -->
+<!-- ══════════════ INVENTORY SECTION ══════════════ -->
 <div id="section-inventory" class="section">
 
-  <div class="updated-line" style="margin-bottom:20px;">Inventory snapshot Â· FBA + AWD combined Â· IPI Score: 628</div>
+  <div class="updated-line" style="margin-bottom:20px;">Inventory snapshot · FBA + AWD combined · IPI Score: 628</div>
 
   <!-- Total Inventory -->
   <div class="card mb-20">
@@ -1155,16 +1155,16 @@ body {
 
 
 <script>
-// ââ Inventory Data ââââââââââââââââââââââââââââââââââââââââââââââ
-const inventoryData = {'LR-TSC-30PACK':{fba:{fulfillable:679,inbound:407,reserved:503,unfulfillable:4},awd:{onhand:1370,inbound:1825,outbound:0}},'LR-CS-10':{fba:{fulfillable:480,inbound:0,reserved:35,unfulfillable:3},awd:{onhand:0,inbound:3564,outbound:0}},'LR-CS-30':{fba:{fulfillable:563,inbound:0,reserved:57,unfulfillable:7},awd:{onhand:0,inbound:5508,outbound:0}},'LR-TSC-5PACK':{fba:{fulfillable:231,inbound:0,reserved:5,unfulfillable:0},awd:{onhand:1200,inbound:0,outbound:0}},'LR-CS-120':{fba:{fulfillable:151,inbound:0,reserved:0,unfulfillable:0},awd:{onhand:48,inbound:300,outbound:0}}};
+// ── Inventory Data ──────────────────────────────────────────────
+const inventoryData = {'LR-TSC-30PACK':{fba:{fulfillable:679,inbound:407,reserved:503,unfulfillable:4},awd:{onhand:1370,inbound:1825,outbound:0}},'LR-CS-10':{fba:{fulfillable:479,inbound:0,reserved:36,unfulfillable:3},awd:{onhand:0,inbound:3564,outbound:0}},'LR-CS-30':{fba:{fulfillable:563,inbound:0,reserved:57,unfulfillable:7},awd:{onhand:0,inbound:5508,outbound:0}},'LR-TSC-5PACK':{fba:{fulfillable:231,inbound:0,reserved:5,unfulfillable:0},awd:{onhand:1200,inbound:0,outbound:0}},'LR-CS-120':{fba:{fulfillable:151,inbound:0,reserved:0,unfulfillable:0},awd:{onhand:48,inbound:300,outbound:0}}};
 
-// ââ Tab Switching Data ââââââââââââââââââââââââââââââââââââââââââ
+// ── Tab Switching Data ──────────────────────────────────────────
 const tabData = {
   '30d': { revenue:'$39,744.21', units:'2749', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Last 30 Days · SP-API live', usub:'2100 orders . 2749 units', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':969,'LR-CS-10':1007,'LR-CS-30':473,'LR-TSC-5PACK':140,'LR-CS-120':0} }, /* 30D_KPI_PLACEHOLDER */
   '7d':  { revenue:'$8,659.40', units:'480', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Last 7 Days · SP-API live', usub:'451 orders . 480 units', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':196,'LR-CS-10':175,'LR-CS-30':79,'LR-TSC-5PACK':30,'LR-CS-120':0} }, /* 7D_KPI_PLACEHOLDER */
-  'today': { revenue:'$353.25', units:'20', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Today July 3, 2026 8:25 PM ET . SP-API live', usub:'20 orders . 90 units . Fees $644.30', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':8,'LR-CS-10':6,'LR-CS-30':2,'LR-TSC-5PACK':4,'LR-CS-120':0} }, /* TODAY_KPI_PLACEHOLDER */
+  'today': { revenue:'$353.25', units:'20', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Today July 3, 2026 8:35 PM ET . SP-API live', usub:'20 orders . 90 units . Fees $644.30', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':8,'LR-CS-10':6,'LR-CS-30':2,'LR-TSC-5PACK':4,'LR-CS-120':0} }, /* TODAY_KPI_PLACEHOLDER */
   'lifetime': { revenue:'$439,795', units:'20,748', spend:'$226,449', acos:'51.5%', sessions:'187,331', ipi:'628',
-               rsub:'Lifetime Ad Sales (all campaigns)', usub:'Lifetime ad purchases', ssub:'Lifetime total spend', asub:'Lifetime avg ACOS', sesub:'Lifetime ad clicks', isub:'Range 570â686',
+               rsub:'Lifetime Ad Sales (all campaigns)', usub:'Lifetime ad purchases', ssub:'Lifetime total spend', asub:'Lifetime avg ACOS', sesub:'Lifetime ad clicks', isub:'Range 570–686',
                acosColor:'#d97706' },
 };
 
@@ -1177,7 +1177,7 @@ const skuMeta = [
 ];
 const skuTabLabels = {'30d':'Last 30 Days','7d':'Last 7 Days','today':'Today','lifetime':'Lifetime','custom':'Custom Range'};
 
-// ââ Section Switching âââââââââââââââââââââââââââââââââââââââââââ
+// ── Section Switching ───────────────────────────────────────────
 let currentSection = 'dashboard';
 function switchSection(name, btn) {
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
@@ -1191,7 +1191,7 @@ function switchSection(name, btn) {
   if (name === 'inventory') renderInventory();
 }
 
-// ââ Date Tab Switching ââââââââââââââââââââââââââââââââââââââââââ
+// ── Date Tab Switching ──────────────────────────────────────────
 function switchTab(el, tab) {
   document.querySelectorAll('.date-tab').forEach(t => t.classList.remove('active'));
   el.classList.add('active');
@@ -1220,7 +1220,7 @@ function openCustomRange(el) {
   panel.style.display = panel.style.display === 'flex' ? 'none' : 'flex';
 }
 
-// ââ SKU Breakdown âââââââââââââââââââââââââââââââââââââââââââââââ
+// ── SKU Breakdown ───────────────────────────────────────────────
 function renderSkuBreakdown(tab) {
   const d = tabData[tab] || {};
   document.getElementById('sku-tab-label').textContent = skuTabLabels[tab] || tab;
@@ -1232,14 +1232,14 @@ function renderSkuBreakdown(tab) {
   grid.innerHTML = skuMeta.map(s => {
     const val = d.skuUnits[s.key] !== undefined ? d.skuUnits[s.key] : '--';
     return `<div style="background:#f8fafc;border-radius:10px;padding:14px 16px;border-left:3px solid ${s.color};border:1px solid var(--border);border-left:3px solid ${s.color};">
-      <div style="font-size:10px;font-weight:700;color:${s.color};margin-bottom:6px;letter-spacing:.3px;">${s.key}${s.sup?' <span style="color:var(--red);">â ï¸</span>':''}</div>
+      <div style="font-size:10px;font-weight:700;color:${s.color};margin-bottom:6px;letter-spacing:.3px;">${s.key}${s.sup?' <span style="color:var(--red);">⚠️</span>':''}</div>
       <div style="font-size:26px;font-weight:800;color:${s.color};line-height:1;">${val}</div>
-      <div style="font-size:10px;color:var(--text-muted);margin-top:4px;">${s.name} Â· units</div>
+      <div style="font-size:10px;color:var(--text-muted);margin-top:4px;">${s.name} · units</div>
     </div>`;
   }).join('');
 }
 
-// ââ Inventory âââââââââââââââââââââââââââââââââââââââââââââââââââ
+// ── Inventory ───────────────────────────────────────────────────
 function renderInventory() {
   const inv = inventoryData;
   const fbaGrid   = document.getElementById('fba-grid');
@@ -1265,10 +1265,10 @@ function renderInventory() {
       <div style="font-size:26px;font-weight:800;color:#1e40af;line-height:1;margin-bottom:4px;">${total}</div>
       <div style="font-size:9px;color:var(--text-muted);margin-bottom:8px;">total units</div>
       <div style="font-size:10px;color:#374151;display:grid;grid-template-columns:1fr 1fr;gap:3px;">
-        <span style="color:var(--text-muted);">â Fulfillable</span><span style="font-weight:700;">${fulfillable}</span>
-        <span style="color:var(--text-muted);">ð¥ Inbound</span><span style="font-weight:700;">${inbound}</span>
-        <span style="color:var(--text-muted);">ð Reserved</span><span style="font-weight:700;">${reserved}</span>
-        <span style="color:var(--text-muted);">â ï¸ Unfulfl.</span><span style="font-weight:700;">${unfulfillable}</span>
+        <span style="color:var(--text-muted);">✅ Fulfillable</span><span style="font-weight:700;">${fulfillable}</span>
+        <span style="color:var(--text-muted);">📥 Inbound</span><span style="font-weight:700;">${inbound}</span>
+        <span style="color:var(--text-muted);">🔒 Reserved</span><span style="font-weight:700;">${reserved}</span>
+        <span style="color:var(--text-muted);">⚠️ Unfulfl.</span><span style="font-weight:700;">${unfulfillable}</span>
       </div>
     </div>`;
   }).join('');
@@ -1280,14 +1280,14 @@ function renderInventory() {
     const outbound = d.outbound ?? null;
     const total    = (typeof onhand === 'number' && typeof inbound === 'number') ? onhand + inbound : '--';
     const outboundRow = (outbound !== null && outbound !== 0)
-      ? `<span style="color:var(--text-muted);">ð To FBA</span><span style="font-weight:700;">${outbound}</span>` : '';
+      ? `<span style="color:var(--text-muted);">🚚 To FBA</span><span style="font-weight:700;">${outbound}</span>` : '';
     return `<div style="background:#ecfdf5;border-radius:10px;padding:14px;border:1px solid #d1fae5;border-top:3px solid ${s.color};">
       <div style="font-size:10px;font-weight:700;color:${s.color};margin-bottom:8px;">${s.key}</div>
       <div style="font-size:26px;font-weight:800;color:#065f46;line-height:1;margin-bottom:4px;">${total}</div>
       <div style="font-size:9px;color:var(--text-muted);margin-bottom:8px;">total units</div>
       <div style="font-size:10px;color:#374151;display:grid;grid-template-columns:1fr 1fr;gap:3px;">
-        <span style="color:var(--text-muted);">â Available</span><span style="font-weight:700;">${onhand}</span>
-        <span style="color:var(--text-muted);">ð¥ Inbound</span><span style="font-weight:700;">${inbound}</span>
+        <span style="color:var(--text-muted);">✅ Available</span><span style="font-weight:700;">${onhand}</span>
+        <span style="color:var(--text-muted);">📥 Inbound</span><span style="font-weight:700;">${inbound}</span>
         ${outboundRow}
       </div>
     </div>`;
@@ -1310,24 +1310,24 @@ function renderInventory() {
       <div style="font-size:26px;font-weight:800;color:#5b21b6;line-height:1;margin-bottom:4px;">${grandTotal}</div>
       <div style="font-size:9px;color:var(--text-muted);margin-bottom:8px;">FBA + AWD + Inbound</div>
       <div style="font-size:10px;color:#374151;display:grid;grid-template-columns:1fr 1fr;gap:3px;">
-        <span style="color:var(--text-muted);">ðª FBA</span><span style="font-weight:700;">${fbaUnits}</span>
-        <span style="color:var(--text-muted);">ð Reserved</span><span style="font-weight:700;">${fbaReserved}</span>
-        <span style="color:var(--text-muted);">â ï¸ Unfulfl.</span><span style="font-weight:700;">${fbaUnfulfill}</span>
-        <span style="color:var(--text-muted);">ð­ AWD</span><span style="font-weight:700;">${awdUnits}</span>
-        <span style="color:var(--text-muted);">ð¥ Inbound</span><span style="font-weight:700;">${totalInbound}</span>
+        <span style="color:var(--text-muted);">🏪 FBA</span><span style="font-weight:700;">${fbaUnits}</span>
+        <span style="color:var(--text-muted);">🔒 Reserved</span><span style="font-weight:700;">${fbaReserved}</span>
+        <span style="color:var(--text-muted);">⚠️ Unfulfl.</span><span style="font-weight:700;">${fbaUnfulfill}</span>
+        <span style="color:var(--text-muted);">🏭 AWD</span><span style="font-weight:700;">${awdUnits}</span>
+        <span style="color:var(--text-muted);">📥 Inbound</span><span style="font-weight:700;">${totalInbound}</span>
       </div>
     </div>`;
   }).join('');
 }
 
-// ââ Custom Range ââââââââââââââââââââââââââââââââââââââââââââââââ
+// ── Custom Range ────────────────────────────────────────────────
 async function applyCustomRange() {
   const start = document.getElementById('custom-start').value;
   const end   = document.getElementById('custom-end').value;
   const status = document.getElementById('custom-status');
   if (!start || !end) { status.textContent = 'Please select both dates.'; return; }
   if (start > end)    { status.textContent = 'Start date must be before end date.'; return; }
-  status.textContent = 'Loadingâ¦';
+  status.textContent = 'Loading…';
   try {
     const resp = await fetch('/kpi_history.json?v=' + Date.now());
     if (!resp.ok) throw new Error('History not available yet');
@@ -1342,11 +1342,11 @@ async function applyCustomRange() {
       units   += d.units   || 0;
       for (const [k, v] of Object.entries(d.sku_units || {})) { sku[k] = (sku[k] || 0) + v; }
     }
-    const label = start + ' â ' + end + ' (' + filtered.length + ' days)';
+    const label = start + ' → ' + end + ' (' + filtered.length + ' days)';
     tabData['custom'] = {
       revenue: '$' + revenue.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ','),
       units: String(units), spend: '--', acos: '--', sessions: '--', ipi: '628',
-      rsub: label + ' Â· SP-API daily data', usub: orders + ' orders Â· ' + units + ' units',
+      rsub: label + ' · SP-API daily data', usub: orders + ' orders · ' + units + ' units',
       ssub: 'Not yet available', asub: 'Not yet available',
       sesub: 'Not yet available', isub: 'Range 570-686',
       acosColor: '#6b7280', skuUnits: sku
@@ -1364,4 +1364,108 @@ async function applyCustomRange() {
     document.getElementById('ks-units').textContent    = d.usub;
     document.getElementById('ks-spend').textContent    = d.ssub;
     document.getElementById('ks-acos').textContent     = d.asub;
-    document.getElementById('ks-sessi
+    document.getElementById('ks-sessions').textContent = d.sesub;
+    document.getElementById('ks-ipi').textContent      = d.isub;
+    renderSkuBreakdown('custom');
+  } catch(e) { status.textContent = 'Error: ' + e.message; }
+}
+
+// ── Init SKU ────────────────────────────────────────────────────
+renderSkuBreakdown('30d');
+
+// ── Revenue Chart ───────────────────────────────────────────────
+const days = ['Apr 29','May 1','May 3','May 5','May 7','May 9','May 11','May 13','May 15','May 17','May 19','May 21','May 23','May 25','May 27','May 28'];
+const rev  = [980,1240,1050,1380,1620,1180,1450,1520,1700,1250,1610,1830,1440,1750,2010,1950];
+const sess = [340,390,310,420,510,360,430,460,520,380,490,560,440,530,610,590];
+
+const chartConfig = (ctx, label) => new Chart(ctx, {
+  type: 'line',
+  data: {
+    labels: days,
+    datasets: [
+      {
+        label: 'Revenue ($)',
+        data: rev,
+        borderColor: '#66bc46',
+        backgroundColor: 'rgba(102,188,70,.08)',
+        borderWidth: 2.5,
+        fill: true,
+        tension: 0.4,
+        pointRadius: 0,
+        pointHoverRadius: 5,
+        pointHoverBackgroundColor: '#66bc46',
+        yAxisID: 'y',
+      },
+      {
+        label: 'Sessions',
+        data: sess,
+        borderColor: '#2688c9',
+        backgroundColor: 'transparent',
+        borderWidth: 1.5,
+        borderDash: [4,3],
+        tension: 0.4,
+        pointRadius: 0,
+        pointHoverRadius: 4,
+        pointHoverBackgroundColor: '#2688c9',
+        yAxisID: 'y1',
+      }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    interaction: { mode: 'index', intersect: false },
+    plugins: {
+      legend: { position: 'top', labels: { font: { size: 11, family: 'Inter' }, padding: 12, boxWidth: 10 } },
+      tooltip: {
+        backgroundColor: '#0f172a', titleFont: { size: 11, family: 'Inter' },
+        bodyFont: { size: 11, family: 'Inter' }, padding: 10, cornerRadius: 8,
+        callbacks: { label: ctx => ctx.datasetIndex === 0 ? ' $' + ctx.parsed.y.toLocaleString() : ' ' + ctx.parsed.y.toLocaleString() + ' sessions' }
+      }
+    },
+    scales: {
+      x: { grid: { display: false }, ticks: { font: { size: 10, family: 'Inter' }, color: '#94a3b8', maxRotation: 0, maxTicksLimit: 8 } },
+      y:  { position: 'left',  grid: { color: '#f1f5f9' }, ticks: { font: { size: 10, family: 'Inter' }, color: '#94a3b8', callback: v => '$' + (v/1000).toFixed(1) + 'k' } },
+      y1: { position: 'right', grid: { display: false }, ticks: { font: { size: 10, family: 'Inter' }, color: '#2688c9' } },
+    }
+  }
+});
+
+chartConfig(document.getElementById('revenueChart').getContext('2d'));
+chartConfig(document.getElementById('revenueChartSales').getContext('2d'));
+
+// ── Profit Donut ────────────────────────────────────────────────
+const donutData = {
+  labels: ['Net Profit ~47%','Amazon Fees 15%','FBA Fulfillment 17%','Ad Spend 20%'],
+  datasets: [{ data: [16743, 5282, 6135, 7050], backgroundColor: ['#66bc46','#f59e0b','#2688c9','#ec4899'], borderWidth: 0, hoverOffset: 4 }]
+};
+const donutOpts = {
+  responsive: true, maintainAspectRatio: false,
+  cutout: '70%',
+  plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => ' $' + c.parsed.toLocaleString() } } }
+};
+new Chart(document.getElementById('profitDonut').getContext('2d'), { type: 'doughnut', data: donutData, options: donutOpts });
+new Chart(document.getElementById('profitDonutSales').getContext('2d'), { type: 'doughnut', data: donutData, options: donutOpts });
+
+// ── Inventory Bar Chart ─────────────────────────────────────────
+const iCtx = document.getElementById('inventoryChart').getContext('2d');
+new Chart(iCtx, {
+  type: 'bar',
+  data: {
+    labels: ['30-Pack','10-Pack','CS-30','5-Pack','120-Pack'],
+    datasets: [{ label: 'FBA Units', data: [856,702,304,228,152],
+      backgroundColor: ['#66bc46','#2688c9','#8b5cf6','#f59e0b','#ef4444'],
+      borderRadius: 5, borderSkipped: false }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => ' ' + c.parsed.y + ' units' } } },
+    scales: {
+      x: { grid: { display: false }, ticks: { font: { size: 9, family: 'Inter' }, color: '#94a3b8' } },
+      y: { grid: { color: '#f1f5f9' }, ticks: { font: { size: 9, family: 'Inter' }, color: '#94a3b8' } }
+    }
+  }
+});
+</script>
+</div><!-- /main-area -->
+</body>
+</html>
