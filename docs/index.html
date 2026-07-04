@@ -465,7 +465,7 @@ body {
       <div class="live-dot"></div>
       <div>
         <span class="live-label">Live</span>
-        <span class="live-time">Updated July 4, 2026<br>3:31 AM ET</span>
+        <span class="live-time">Updated July 4, 2026<br>7:59 AM ET</span>
       </div>
     </div>
   </div>
@@ -497,7 +497,7 @@ body {
 <!-- ══════════════ DASHBOARD SECTION ══════════════ -->
 <div id="section-dashboard" class="section active">
 
-  <div class="updated-line">Data snapshot: July 4, 2026 3:31 AM ET · SP-API live pull</div>
+  <div class="updated-line">Data snapshot: July 4, 2026 7:59 AM ET · SP-API live pull</div>
 
   <!-- KPI Cards -->
   <div class="kpi-grid" id="kpi-cards">
@@ -1156,13 +1156,13 @@ body {
 
 <script>
 // ── Inventory Data ──────────────────────────────────────────────
-const inventoryData = {'LR-TSC-30PACK':{fba:{fulfillable:697,inbound:407,reserved:478,unfulfillable:4},awd:{onhand:1370,inbound:1825,outbound:0}},'LR-CS-10':{fba:{fulfillable:476,inbound:0,reserved:31,unfulfillable:3},awd:{onhand:0,inbound:3564,outbound:0}},'LR-CS-30':{fba:{fulfillable:565,inbound:0,reserved:51,unfulfillable:7},awd:{onhand:0,inbound:5508,outbound:0}},'LR-TSC-5PACK':{fba:{fulfillable:229,inbound:0,reserved:7,unfulfillable:0},awd:{onhand:1200,inbound:0,outbound:0}},'LR-CS-120':{fba:{fulfillable:151,inbound:0,reserved:0,unfulfillable:0},awd:{onhand:48,inbound:300,outbound:0}}};
+const inventoryData = {'LR-TSC-30PACK':{fba:{fulfillable:697,inbound:407,reserved:474,unfulfillable:5},awd:{onhand:1370,inbound:1825,outbound:0}},'LR-CS-10':{fba:{fulfillable:475,inbound:0,reserved:26,unfulfillable:3},awd:{onhand:0,inbound:3564,outbound:0}},'LR-CS-30':{fba:{fulfillable:582,inbound:0,reserved:21,unfulfillable:7},awd:{onhand:0,inbound:5508,outbound:0}},'LR-TSC-5PACK':{fba:{fulfillable:227,inbound:0,reserved:9,unfulfillable:0},awd:{onhand:1200,inbound:0,outbound:0}},'LR-CS-120':{fba:{fulfillable:151,inbound:0,reserved:0,unfulfillable:0},awd:{onhand:48,inbound:300,outbound:0}}};
 
 // ── Tab Switching Data ──────────────────────────────────────────
 const tabData = {
   '30d': { revenue:'$39,744.21', units:'2749', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Last 30 Days · SP-API live', usub:'2100 orders . 2749 units', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':969,'LR-CS-10':1007,'LR-CS-30':473,'LR-TSC-5PACK':140,'LR-CS-120':0} }, /* 30D_KPI_PLACEHOLDER */
   '7d':  { revenue:'$8,659.40', units:'480', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Last 7 Days · SP-API live', usub:'451 orders . 480 units', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':196,'LR-CS-10':175,'LR-CS-30':79,'LR-TSC-5PACK':30,'LR-CS-120':0} }, /* 7D_KPI_PLACEHOLDER */
-  'today': { revenue:'$633.49', units:'35', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Today July 4, 2026 3:31 AM ET . SP-API live', usub:'35 orders . 89 units . Fees $644.30', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':15,'LR-CS-10':11,'LR-CS-30':5,'LR-TSC-5PACK':4,'LR-CS-120':0} }, /* TODAY_KPI_PLACEHOLDER */
+  'today': { revenue:'$720.72', units:'41', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Today July 4, 2026 7:59 AM ET . SP-API live', usub:'41 orders . 89 units . Fees $644.30', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':15,'LR-CS-10':15,'LR-CS-30':7,'LR-TSC-5PACK':4,'LR-CS-120':0} }, /* TODAY_KPI_PLACEHOLDER */
   'lifetime': { revenue:'$439,795', units:'20,748', spend:'$226,449', acos:'51.5%', sessions:'187,331', ipi:'628',
                rsub:'Lifetime Ad Sales (all campaigns)', usub:'Lifetime ad purchases', ssub:'Lifetime total spend', asub:'Lifetime avg ACOS', sesub:'Lifetime ad clicks', isub:'Range 570–686',
                acosColor:'#d97706' },
