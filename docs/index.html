@@ -465,7 +465,7 @@ body {
       <div class="live-dot"></div>
       <div>
         <span class="live-label">Live</span>
-        <span class="live-time">Updated July 4, 2026<br>11:47 AM ET</span>
+        <span class="live-time">Updated July 4, 2026<br>1:04 PM ET</span>
       </div>
     </div>
   </div>
@@ -497,7 +497,7 @@ body {
 <!-- ══════════════ DASHBOARD SECTION ══════════════ -->
 <div id="section-dashboard" class="section active">
 
-  <div class="updated-line">Data snapshot: July 4, 2026 11:47 AM ET · SP-API live pull</div>
+  <div class="updated-line">Data snapshot: July 4, 2026 1:04 PM ET · SP-API live pull</div>
 
   <!-- KPI Cards -->
   <div class="kpi-grid" id="kpi-cards">
@@ -1156,13 +1156,13 @@ body {
 
 <script>
 // ── Inventory Data ──────────────────────────────────────────────
-const inventoryData = {'LR-TSC-30PACK':{fba:{fulfillable:698,inbound:357,reserved:522,unfulfillable:5},awd:{onhand:1370,inbound:1825,outbound:0}},'LR-CS-10':{fba:{fulfillable:466,inbound:0,reserved:34,unfulfillable:3},awd:{onhand:1512,inbound:2052,outbound:0}},'LR-CS-30':{fba:{fulfillable:599,inbound:0,reserved:13,unfulfillable:7},awd:{onhand:1512,inbound:3996,outbound:0}},'LR-TSC-5PACK':{fba:{fulfillable:225,inbound:0,reserved:11,unfulfillable:0},awd:{onhand:1200,inbound:0,outbound:0}},'LR-CS-120':{fba:{fulfillable:151,inbound:0,reserved:0,unfulfillable:0},awd:{onhand:48,inbound:300,outbound:0}}};
+const inventoryData = {'LR-TSC-30PACK':{fba:{fulfillable:695,inbound:357,reserved:525,researching:2,unfulfillable:5},awd:{onhand:1370,inbound:1825,outbound:0}},'LR-CS-10':{fba:{fulfillable:462,inbound:0,reserved:38,researching:5,unfulfillable:3},awd:{onhand:1512,inbound:2052,outbound:0}},'LR-CS-30':{fba:{fulfillable:595,inbound:0,reserved:17,researching:1,unfulfillable:7},awd:{onhand:1512,inbound:3996,outbound:0}},'LR-TSC-5PACK':{fba:{fulfillable:224,inbound:0,reserved:12,researching:0,unfulfillable:0},awd:{onhand:1200,inbound:0,outbound:0}},'LR-CS-120':{fba:{fulfillable:151,inbound:0,reserved:0,researching:0,unfulfillable:0},awd:{onhand:48,inbound:300,outbound:0}}};
 
 // ── Tab Switching Data ──────────────────────────────────────────
 const tabData = {
   '30d': { revenue:'$39,744.21', units:'2749', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Last 30 Days · SP-API live', usub:'2100 orders . 2749 units', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':969,'LR-CS-10':1007,'LR-CS-30':473,'LR-TSC-5PACK':140,'LR-CS-120':0} }, /* 30D_KPI_PLACEHOLDER */
   '7d':  { revenue:'$8,659.40', units:'480', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Last 7 Days · SP-API live', usub:'451 orders . 480 units', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':196,'LR-CS-10':175,'LR-CS-30':79,'LR-TSC-5PACK':30,'LR-CS-120':0} }, /* 7D_KPI_PLACEHOLDER */
-  'today': { revenue:'$753.92', units:'43', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Today July 4, 2026 11:47 AM ET . SP-API live', usub:'43 orders . 89 units . Fees $644.30', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':15,'LR-CS-10':16,'LR-CS-30':8,'LR-TSC-5PACK':4,'LR-CS-120':0} }, /* TODAY_KPI_PLACEHOLDER */
+  'today': { revenue:'$753.92', units:'43', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Today July 4, 2026 1:04 PM ET . SP-API live', usub:'43 orders . 89 units . Fees $644.30', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':15,'LR-CS-10':16,'LR-CS-30':8,'LR-TSC-5PACK':4,'LR-CS-120':0} }, /* TODAY_KPI_PLACEHOLDER */
   'lifetime': { revenue:'$439,795', units:'20,748', spend:'$226,449', acos:'51.5%', sessions:'187,331', ipi:'628',
                rsub:'Lifetime Ad Sales (all campaigns)', usub:'Lifetime ad purchases', ssub:'Lifetime total spend', asub:'Lifetime avg ACOS', sesub:'Lifetime ad clicks', isub:'Range 570–686',
                acosColor:'#d97706' },
@@ -1257,8 +1257,9 @@ function renderInventory() {
     const fulfillable   = d.fulfillable   ?? '--';
     const inbound       = d.inbound       ?? '--';
     const reserved      = d.reserved      ?? '--';
+    const researching   = d.researching   ?? '--';
     const unfulfillable = d.unfulfillable ?? '--';
-    const nums = [fulfillable, inbound, reserved, unfulfillable];
+    const nums = [fulfillable, inbound, reserved, researching, unfulfillable];
     const total = nums.every(v => typeof v === 'number') ? nums.reduce((a,b) => a+b, 0) : '--';
     return `<div style="background:#eff6ff;border-radius:10px;padding:14px;border:1px solid #dbeafe;border-top:3px solid ${s.color};">
       <div style="font-size:10px;font-weight:700;color:${s.color};margin-bottom:8px;">${s.key}</div>
@@ -1268,6 +1269,7 @@ function renderInventory() {
         <span style="color:var(--text-muted);">✅ Fulfillable</span><span style="font-weight:700;">${fulfillable}</span>
         <span style="color:var(--text-muted);">📥 Inbound</span><span style="font-weight:700;">${inbound}</span>
         <span style="color:var(--text-muted);">🔒 Reserved</span><span style="font-weight:700;">${reserved}</span>
+        <span style="color:var(--text-muted);">🔍 Researching</span><span style="font-weight:700;">${researching}</span>
         <span style="color:var(--text-muted);">⚠️ Unfulfl.</span><span style="font-weight:700;">${unfulfillable}</span>
       </div>
     </div>`;
@@ -1298,13 +1300,14 @@ function renderInventory() {
     const awd = (inv[s.key] || {}).awd || {};
     const fbaUnits      = fba.fulfillable   ?? 0;
     const fbaReserved   = fba.reserved      ?? 0;
+    const fbaResearch   = fba.researching   ?? 0;
     const fbaUnfulfill  = fba.unfulfillable ?? 0;
     const awdUnits      = awd.onhand        ?? 0;
     const awdInbound    = awd.inbound       ?? 0;
     const fbaInbound    = fba.inbound       ?? 0;
     const totalInbound  = (typeof awdInbound === 'number' && typeof fbaInbound === 'number') ? awdInbound + fbaInbound : '--';
-    const grandTotal    = (typeof fbaUnits === 'number' && typeof fbaReserved === 'number' && typeof fbaUnfulfill === 'number' && typeof awdUnits === 'number' && typeof totalInbound === 'number')
-      ? fbaUnits + fbaReserved + fbaUnfulfill + awdUnits + totalInbound : '--';
+    const grandTotal    = (typeof fbaUnits === 'number' && typeof fbaReserved === 'number' && typeof fbaResearch === 'number' && typeof fbaUnfulfill === 'number' && typeof awdUnits === 'number' && typeof totalInbound === 'number')
+      ? fbaUnits + fbaReserved + fbaResearch + fbaUnfulfill + awdUnits + totalInbound : '--';
     return `<div style="background:#f5f3ff;border-radius:10px;padding:14px;border:1px solid #ede9fe;border-top:3px solid ${s.color};">
       <div style="font-size:10px;font-weight:700;color:${s.color};margin-bottom:8px;">${s.key}</div>
       <div style="font-size:26px;font-weight:800;color:#5b21b6;line-height:1;margin-bottom:4px;">${grandTotal}</div>

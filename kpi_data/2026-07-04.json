@@ -1,6 +1,6 @@
 {
   "date": "2026-07-04",
-  "pulled_at": "2026-07-04T15:46:16.103811",
+  "pulled_at": "2026-07-04T17:02:35.315123",
   "orders_today": 43,
   "revenue_today": 753.92,
   "units_ordered": 89,
@@ -16,87 +16,101 @@
   },
   "fba_inventory": {
     "3Z-3J64-NT0U": {
-      "fulfillable": 698,
+      "fulfillable": 695,
       "inbound": 357,
-      "reserved": 522,
+      "reserved": 525,
+      "researching": 2,
       "unfulfillable": 5
     },
     "DogSmall": {
       "fulfillable": 0,
       "inbound": 0,
       "reserved": 0,
+      "researching": 0,
       "unfulfillable": 0
     },
     "JS-6SR9-1J8B": {
       "fulfillable": 0,
       "inbound": 0,
       "reserved": 0,
+      "researching": 0,
       "unfulfillable": 0
     },
     "LR-CS-10": {
-      "fulfillable": 466,
+      "fulfillable": 462,
       "inbound": 0,
-      "reserved": 34,
+      "reserved": 38,
+      "researching": 5,
       "unfulfillable": 3
     },
     "LR-CS-120": {
       "fulfillable": 151,
       "inbound": 0,
       "reserved": 0,
+      "researching": 0,
       "unfulfillable": 0
     },
     "LR-CS-30": {
-      "fulfillable": 599,
+      "fulfillable": 595,
       "inbound": 0,
-      "reserved": 13,
+      "reserved": 17,
+      "researching": 1,
       "unfulfillable": 7
     },
     "LR-TSC-30PACK": {
-      "fulfillable": 698,
+      "fulfillable": 695,
       "inbound": 357,
-      "reserved": 522,
+      "reserved": 525,
+      "researching": 2,
       "unfulfillable": 5
     },
     "LR-TSC-5PACK": {
-      "fulfillable": 225,
+      "fulfillable": 224,
       "inbound": 0,
-      "reserved": 11,
+      "reserved": 12,
+      "researching": 0,
       "unfulfillable": 0
     },
     "LR-TSC-CS-10PACK": {
       "fulfillable": 0,
       "inbound": 0,
       "reserved": 0,
+      "researching": 0,
       "unfulfillable": 0
     },
     "LR-TSC-CS-120PACK": {
       "fulfillable": 0,
       "inbound": 0,
       "reserved": 0,
+      "researching": 0,
       "unfulfillable": 0
     },
     "LR-TSC-CS-30PACK": {
       "fulfillable": 0,
       "inbound": 0,
       "reserved": 0,
+      "researching": 0,
       "unfulfillable": 0
     },
     "MX-Q396-ZY7L": {
       "fulfillable": 0,
       "inbound": 0,
       "reserved": 0,
+      "researching": 0,
       "unfulfillable": 0
     },
     "Stickered.MSKU.1770318071325": {
       "fulfillable": 0,
       "inbound": 0,
       "reserved": 0,
+      "researching": 0,
       "unfulfillable": 0
     },
     "Stickered.MSKU.1770326263517": {
       "fulfillable": 0,
       "inbound": 0,
       "reserved": 0,
+      "researching": 0,
       "unfulfillable": 0
     }
   },
