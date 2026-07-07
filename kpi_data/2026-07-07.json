@@ -1,0 +1,161 @@
+{
+  "date": "2026-07-07",
+  "pulled_at": "2026-07-07T00:04:49.971065",
+  "orders_today": 19,
+  "revenue_today": 359.32,
+  "units_ordered": 85,
+  "finance": {
+    "total_sales": 1710.36,
+    "total_fees": 696.23
+  },
+  "sku_units": {
+    "LR-CS-10": 12,
+    "LR-TSC-30PACK": 7,
+    "LR-CS-30": 3
+  },
+  "fba_inventory": {
+    "3Z-3J64-NT0U": {
+      "fulfillable": 707,
+      "inbound": 426,
+      "reserved": 541,
+      "researching": 1,
+      "unfulfillable": 5
+    },
+    "DogSmall": {
+      "fulfillable": 0,
+      "inbound": 0,
+      "reserved": 0,
+      "researching": 0,
+      "unfulfillable": 0
+    },
+    "JS-6SR9-1J8B": {
+      "fulfillable": 0,
+      "inbound": 0,
+      "reserved": 0,
+      "researching": 0,
+      "unfulfillable": 0
+    },
+    "LR-CS-10": {
+      "fulfillable": 394,
+      "inbound": 0,
+      "reserved": 1571,
+      "researching": 3,
+      "unfulfillable": 3
+    },
+    "LR-CS-120": {
+      "fulfillable": 151,
+      "inbound": 0,
+      "reserved": 0,
+      "researching": 0,
+      "unfulfillable": 0
+    },
+    "LR-CS-30": {
+      "fulfillable": 553,
+      "inbound": 378,
+      "reserved": 32,
+      "researching": 0,
+      "unfulfillable": 4
+    },
+    "LR-TSC-30PACK": {
+      "fulfillable": 707,
+      "inbound": 426,
+      "reserved": 541,
+      "researching": 1,
+      "unfulfillable": 5
+    },
+    "LR-TSC-5PACK": {
+      "fulfillable": 208,
+      "inbound": 0,
+      "reserved": 20,
+      "researching": 0,
+      "unfulfillable": 0
+    },
+    "LR-TSC-CS-10PACK": {
+      "fulfillable": 0,
+      "inbound": 0,
+      "reserved": 0,
+      "researching": 0,
+      "unfulfillable": 0
+    },
+    "LR-TSC-CS-120PACK": {
+      "fulfillable": 0,
+      "inbound": 0,
+      "reserved": 0,
+      "researching": 0,
+      "unfulfillable": 0
+    },
+    "LR-TSC-CS-30PACK": {
+      "fulfillable": 0,
+      "inbound": 0,
+      "reserved": 0,
+      "researching": 0,
+      "unfulfillable": 0
+    },
+    "MX-Q396-ZY7L": {
+      "fulfillable": 0,
+      "inbound": 0,
+      "reserved": 0,
+      "researching": 0,
+      "unfulfillable": 0
+    },
+    "Stickered.MSKU.1770318071325": {
+      "fulfillable": 0,
+      "inbound": 0,
+      "reserved": 0,
+      "researching": 0,
+      "unfulfillable": 0
+    },
+    "Stickered.MSKU.1770326263517": {
+      "fulfillable": 0,
+      "inbound": 0,
+      "reserved": 0,
+      "researching": 0,
+      "unfulfillable": 0
+    }
+  },
+  "awd_inventory": {
+    "LR-CS-10": {
+      "onhand": 0,
+      "inbound": 2052,
+      "outbound": 0
+    },
+    "LR-CS-120": {
+      "onhand": 48,
+      "inbound": 300,
+      "outbound": 0
+    },
+    "LR-CS-30": {
+      "onhand": 1512,
+      "inbound": 3996,
+      "outbound": 0
+    },
+    "LR-TSC-30PACK": {
+      "onhand": 1290,
+      "inbound": 1825,
+      "outbound": 0
+    },
+    "LR-TSC-5PACK": {
+      "onhand": 1200,
+      "inbound": 0,
+      "outbound": 0
+    }
+  },
+  "sku_units_7d": {
+    "LR-CS-10": 170,
+    "LR-TSC-30PACK": 143,
+    "LR-CS-30": 67,
+    "LR-TSC-5PACK": 28
+  },
+  "revenue_7d": 7174.34,
+  "orders_7d": 388,
+  "sku_units_30d": {
+    "LR-CS-10": 973,
+    "LR-TSC-5PACK": 135,
+    "LR-CS-30": 449,
+    "LR-TSC-30PACK": 946
+  },
+  "revenue_30d": 39269.81,
+  "orders_30d": 2100,
+  "units_30d": 2748,
+  "days_30d": 29
+}
