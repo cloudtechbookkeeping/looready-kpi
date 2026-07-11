@@ -443,9 +443,9 @@ body {
 .inv-tab.active { background: var(--nav-bg); color: #fff; font-weight: 700; }
 
 /* ── SUPPLY CHAIN ─────────────────────────────────────────── */
-/* Overview row: health cards left, action board right */
-.sc-overview-row { display: flex; gap: 16px; margin-bottom: 20px; align-items: flex-start; }
-.sc-health-section { flex: 1; min-width: 0; }
+/* Overview: health cards top, action board below (both full-width) */
+.sc-overview-row { display: block; margin-bottom: 0; }
+.sc-health-section { margin-bottom: 14px; }
 .sc-health-title { font-size: 13px; font-weight: 700; color: var(--text-primary); margin-bottom: 10px; }
 .sc-summary-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
 .sc-card {
@@ -467,9 +467,9 @@ body {
 .sc-card-label { font-size: 12px; font-weight: 700; color: var(--text-primary); margin-top: 2px; }
 .sc-card-sub   { font-size: 10px; color: var(--text-muted); margin-top: 1px; }
 /* Action board tiles */
-.sc-action-section { width: 400px; flex-shrink: 0; }
+.sc-action-section { width: 100%; margin-bottom: 20px; }
 .sc-action-title { font-size: 13px; font-weight: 700; color: var(--text-primary); margin-bottom: 10px; }
-.sc-action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.sc-action-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
 .sc-action-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 14px; box-shadow: var(--shadow); }
 .sc-action-card-top { display: flex; align-items: center; gap: 8px; margin-bottom: 3px; }
 .sc-action-card-icon { font-size: 16px; }
@@ -488,10 +488,17 @@ body {
 .sc-row-btn-gray   { background:#f1f5f9; border-color:#cbd5e1; color:#475569; }
 .sc-row-btn-yellow { background:#fef9c3; border-color:#fde047; color:#a16207; }
 
-.sc-how { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: var(--radius); padding: 14px 18px; margin-bottom: 16px; font-size: 12px; color: #334155; }
-.sc-how h4 { font-size: 12px; font-weight: 700; color: #1e3a8a; margin-bottom: 8px; }
-.sc-how ul { margin-left: 18px; line-height: 1.9; }
-.sc-how b  { color: #1e293b; }
+/* Calculation docs */
+.sc-calc-docs { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin-top: 20px; box-shadow: var(--shadow); }
+.sc-calc-docs-title { font-size: 14px; font-weight: 700; color: var(--text-primary); margin-bottom: 16px; padding-bottom: 10px; border-bottom: 2px solid var(--border); display: flex; align-items: center; gap: 8px; }
+.sc-calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.sc-calc-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 14px; }
+.sc-calc-card-title { font-size: 11px; font-weight: 700; color: var(--text-primary); margin-bottom: 10px; border-bottom: 1px solid #e2e8f0; padding-bottom: 7px; }
+.sc-calc-formula { background: #fff; border: 1px solid #e2e8f0; border-radius: 5px; padding: 9px 11px; font-family: monospace; font-size: 10.5px; color: #1e293b; margin-bottom: 8px; line-height: 1.75; }
+.sc-calc-note { font-size: 10px; color: var(--text-muted); line-height: 1.55; }
+.sc-calc-tier { display: flex; align-items: flex-start; gap: 7px; padding: 5px 0; border-bottom: 1px solid #e2e8f0; font-size: 10.5px; line-height: 1.4; }
+.sc-calc-tier:last-child { border-bottom: none; }
+.sc-calc-tier-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; margin-top: 2px; }
 
 .sc-legend { background: var(--surface); border-radius: var(--radius); padding: 11px 16px; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; box-shadow: var(--shadow); font-size: 11.5px; }
 .sc-leg-title { font-weight: 700; color: var(--text-primary); }
@@ -503,7 +510,7 @@ body {
 .sc-pill-ontrack { background: #d1fae5; color: #047857; }
 .sc-pill-na      { background: #e2e8f0; color: #475569; }
 
-.sc-table { width: 100%; border-collapse: collapse; background: var(--surface); font-size: 12px; min-width: 1150px; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
+.sc-table { width: 100%; border-collapse: collapse; background: var(--surface); font-size: 12px; min-width: 1300px; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
 .sc-table thead th { background: #1e293b; color: #fff; font-size: 10px; text-transform: uppercase; letter-spacing: .02em; padding: 10px 10px; text-align: left; font-weight: 700; }
 .sc-table tbody td { padding: 11px 10px; border-bottom: 1px solid var(--border); vertical-align: middle; }
 .sc-table tbody tr:nth-child(odd) { background: #fbfcfe; }
@@ -556,7 +563,7 @@ body {
       <div class="live-dot"></div>
       <div>
         <span class="live-label">Live</span>
-        <span class="live-time">Updated July 11, 2026<br>6:32 PM ET</span>
+        <span class="live-time">Updated July 11, 2026<br>6:50 PM ET</span>
       </div>
     </div>
   </div>
@@ -588,7 +595,7 @@ body {
 <!-- ══════════════ DASHBOARD SECTION ══════════════ -->
 <div id="section-dashboard" class="section active">
 
-  <div class="updated-line">Data snapshot: July 11, 2026 6:32 PM ET · SP-API live pull</div>
+  <div class="updated-line">Data snapshot: July 11, 2026 6:50 PM ET · SP-API live pull</div>
 
   <!-- KPI Cards -->
   <div class="kpi-grid" id="kpi-cards">
@@ -1265,13 +1272,13 @@ body {
 
 <script>
 // ── Inventory Data ──────────────────────────────────────────────
-const inventoryData = {'LR-TSC-30PACK':{fba:{fulfillable:889,inbound:339,reserved:425,researching:0,unfulfillable:4},awd:{onhand:1110,inbound:1825,outbound:0}},'LR-CS-10':{fba:{fulfillable:485,inbound:0,reserved:1312,researching:0,unfulfillable:2},awd:{onhand:0,inbound:2052,outbound:0}},'LR-CS-30':{fba:{fulfillable:538,inbound:27,reserved:401,researching:2,unfulfillable:6},awd:{onhand:1107,inbound:3996,outbound:0}},'LR-TSC-5PACK':{fba:{fulfillable:174,inbound:0,reserved:34,researching:0,unfulfillable:0},awd:{onhand:1200,inbound:0,outbound:0}},'LR-CS-120':{fba:{fulfillable:151,inbound:0,reserved:0,researching:0,unfulfillable:0},awd:{onhand:48,inbound:300,outbound:0}}};
+const inventoryData = {'LR-TSC-30PACK':{fba:{fulfillable:889,inbound:339,reserved:425,researching:0,unfulfillable:4},awd:{onhand:1110,inbound:1825,outbound:0}},'LR-CS-10':{fba:{fulfillable:490,inbound:0,reserved:1307,researching:0,unfulfillable:2},awd:{onhand:0,inbound:2052,outbound:0}},'LR-CS-30':{fba:{fulfillable:540,inbound:27,reserved:399,researching:2,unfulfillable:6},awd:{onhand:1107,inbound:3996,outbound:0}},'LR-TSC-5PACK':{fba:{fulfillable:174,inbound:0,reserved:34,researching:0,unfulfillable:0},awd:{onhand:1200,inbound:0,outbound:0}},'LR-CS-120':{fba:{fulfillable:151,inbound:0,reserved:0,researching:0,unfulfillable:0},awd:{onhand:48,inbound:300,outbound:0}}};
 
 // ── Tab Switching Data ──────────────────────────────────────────
 const tabData = {
   '30d': { revenue:'$41,552.64', units:'2699', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Last 30 Days · SP-API live', usub:'2200 orders . 2699 units', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':960,'LR-CS-10':957,'LR-CS-30':400,'LR-TSC-5PACK':135,'LR-CS-120':0}, days30d:29 }, /* 30D_KPI_PLACEHOLDER */
   '7d':  { revenue:'$7,284.66', units:'420', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Last 7 Days · SP-API live', usub:'398 orders . 420 units', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':161,'LR-CS-10':195,'LR-CS-30':42,'LR-TSC-5PACK':22,'LR-CS-120':0} }, /* 7D_KPI_PLACEHOLDER */
-  'today': { revenue:'$1,206.75', units:'78', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Today July 11, 2026 6:32 PM ET . SP-API live', usub:'72 orders . 95 units . Fees $423.60', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':19,'LR-CS-10':44,'LR-CS-30':10,'LR-TSC-5PACK':5,'LR-CS-120':0} }, /* TODAY_KPI_PLACEHOLDER */
+  'today': { revenue:'$1,206.75', units:'78', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Today July 11, 2026 6:50 PM ET . SP-API live', usub:'72 orders . 95 units . Fees $423.60', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':19,'LR-CS-10':44,'LR-CS-30':10,'LR-TSC-5PACK':5,'LR-CS-120':0} }, /* TODAY_KPI_PLACEHOLDER */
   'lifetime': { revenue:'$439,795', units:'20,748', spend:'$226,449', acos:'51.5%', sessions:'187,331', ipi:'628',
                rsub:'Lifetime Ad Sales (all campaigns)', usub:'Lifetime ad purchases', ssub:'Lifetime total spend', asub:'Lifetime avg ACOS', sesub:'Lifetime ad clicks', isub:'Range 570–686',
                acosColor:'#d97706' },
@@ -1590,18 +1597,63 @@ function renderSupplyChain() {
       </div>
     </div>`;
 
-  // ── how-it-works banner ───────────────────────────────────────
+  // ── how-it-works — comprehensive calc docs ────────────────────
   const howHTML = `
-    <div class="sc-how">
-      <h4>📋 How dates &amp; quantities are calculated</h4>
-      <ul>
-        <li><b>Sales Velocity</b> = units sold in last ${days30d} days ÷ ${days30d} (30-day rolling average).</li>
-        <li><b>Days of Supply</b> = (FBA on-hand + FBA inbound + AWD on-hand + AWD inbound) ÷ daily velocity.</li>
-        <li><b>Notify Mr. Wang By</b> = Today + (Days of Supply − 120). Negative = already overdue.</li>
-        <li><b>Order Qty</b> = velocity × 120 days (full lead cycle to cover next reorder).</li>
-        <li><b>Arrival Window</b> = Notify Date + 100 days (earliest) to + 120 days (latest).</li>
-        <li><b>Status tiers:</b> Overdue ≤ 0 days · Urgent 1–14 days · Soon 15–45 days · On Track 45+ days.</li>
-      </ul>
+    <div class="sc-calc-docs">
+      <div class="sc-calc-docs-title">📋 How Calculations Work — Full Reference</div>
+      <div class="sc-calc-grid">
+
+        <div class="sc-calc-card">
+          <div class="sc-calc-card-title">⏱ Lead Time Cycle</div>
+          <div class="sc-calc-formula">Total Lead = 120 days<br>= 60d production<br>+ 60d shipping (China → US/UK)</div>
+          <div class="sc-calc-note">Minimum time from placing order with Mr. Wang to goods arriving at FBA/AWD warehouse. All status and date calculations are anchored to this 120-day cycle.</div>
+        </div>
+
+        <div class="sc-calc-card">
+          <div class="sc-calc-card-title">📈 Sales Velocity</div>
+          <div class="sc-calc-formula">Velocity =<br>Units Sold (${days30d}d) ÷ ${days30d}<br><br>= daily sell-through rate</div>
+          <div class="sc-calc-note">30-day rolling average of daily sales. Used as the baseline rate for all supply forecasting. If no data for a SKU, status shows N/A.</div>
+        </div>
+
+        <div class="sc-calc-card">
+          <div class="sc-calc-card-title">📦 Days of Supply</div>
+          <div class="sc-calc-formula">DoS = Total Stock ÷ Velocity<br><br>Total Stock =<br>  FBA On-Hand<br>+ FBA Inbound<br>+ AWD On-Hand<br>+ AWD Inbound</div>
+          <div class="sc-calc-note">How many days of inventory remain at current sell rate, counting all units in the pipeline (on shelf + en route).</div>
+        </div>
+
+        <div class="sc-calc-card">
+          <div class="sc-calc-card-title">📅 Stockout Date</div>
+          <div class="sc-calc-formula">Stockout Date =<br>Today + Days of Supply</div>
+          <div class="sc-calc-note">The projected date when all stock will be depleted at the current sales velocity. If this date is sooner than the arrival window, a stockout gap exists.</div>
+        </div>
+
+        <div class="sc-calc-card">
+          <div class="sc-calc-card-title">🔔 Notify Mr. Wang By</div>
+          <div class="sc-calc-formula">Notify Date =<br>Today + (DoS − 120)<br><br>If (DoS − 120) ≤ 0<br>→ OVERDUE: order immediately</div>
+          <div class="sc-calc-note">The latest safe date to place the production order. Calculated so that goods arrive exactly when current stock runs out. Negative = we needed to order in the past.</div>
+        </div>
+
+        <div class="sc-calc-card">
+          <div class="sc-calc-card-title">🛒 Order Quantity</div>
+          <div class="sc-calc-formula">Order Qty =<br>Velocity × 120 days</div>
+          <div class="sc-calc-note">Units needed to cover one full 120-day lead cycle. Ensures stock lasts through the entire production + shipping period until the next order arrives.</div>
+        </div>
+
+        <div class="sc-calc-card">
+          <div class="sc-calc-card-title">🚢 Est. Arrival Window</div>
+          <div class="sc-calc-formula">Earliest =<br>  Notify Date + 100d<br>Latest =<br>  Notify Date + 120d</div>
+          <div class="sc-calc-note">Expected range when ordered goods will arrive at the warehouse. The 20-day window accounts for production and shipping variability.</div>
+        </div>
+
+        <div class="sc-calc-card">
+          <div class="sc-calc-card-title">🚦 Status Tiers</div>
+          <div class="sc-calc-tier"><div class="sc-calc-tier-dot" style="background:#b91c1c;"></div><div><b>Overdue</b> — DoS − 120 ≤ 0 days. Contact Mr. Wang immediately. Consider air freight.</div></div>
+          <div class="sc-calc-tier"><div class="sc-calc-tier-dot" style="background:#c2410c;"></div><div><b>Urgent</b> — 1–14 days to notify. Act this week to avoid stockout.</div></div>
+          <div class="sc-calc-tier"><div class="sc-calc-tier-dot" style="background:#a16207;"></div><div><b>Soon</b> — 15–45 days to notify. Start planning the order now.</div></div>
+          <div class="sc-calc-tier"><div class="sc-calc-tier-dot" style="background:#047857;"></div><div><b>On Track</b> — 45+ days to notify. Healthy supply, monitor regularly.</div></div>
+        </div>
+
+      </div>
     </div>`;
 
   // ── legend ────────────────────────────────────────────────────
@@ -1642,6 +1694,7 @@ function renderSupplyChain() {
       </td>
       <td><span class="sc-pill ${cfg.pillCls}">${cfg.label}</span></td>
       <td><span class="sc-days ${cfg.dayCls}">${daysLabel}</span></td>
+      <td style="font-size:11px;font-weight:700;color:var(--text-primary);">${stkLabel}</td>
       <td style="font-weight:700;">${velLabel}</td>
       <td>${r.fbaOnHand.toLocaleString()}</td>
       <td>${r.awdOnHand.toLocaleString()}</td>
@@ -1666,7 +1719,7 @@ function renderSupplyChain() {
         <div class="table-scroll">
           <table class="sc-table">
             <thead><tr>
-              <th>SKU</th><th>Status</th><th>Days of Supply</th><th>Velocity (30d avg)</th>
+              <th>SKU</th><th>Status</th><th>Days of Supply</th><th>Stockout Date</th><th>Velocity (30d avg)</th>
               <th>FBA On-Hand</th><th>AWD On-Hand</th><th>Total Inbound</th>
               <th>Notify Mr. Wang By</th><th>Order Qty (120d)</th>
               <th>Est. Arrival Window</th><th>Action</th>
