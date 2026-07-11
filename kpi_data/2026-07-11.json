@@ -1,6 +1,6 @@
 {
   "date": "2026-07-11",
-  "pulled_at": "2026-07-11T23:30:44.260984",
+  "pulled_at": "2026-07-11T23:36:05.127883",
   "orders_today": 74,
   "revenue_today": 1253.18,
   "units_ordered": 95,
@@ -16,9 +16,9 @@
   },
   "fba_inventory": {
     "3Z-3J64-NT0U": {
-      "fulfillable": 889,
+      "fulfillable": 888,
       "inbound": 339,
-      "reserved": 423,
+      "reserved": 424,
       "researching": 0,
       "unfulfillable": 4
     },
@@ -58,9 +58,9 @@
       "unfulfillable": 6
     },
     "LR-TSC-30PACK": {
-      "fulfillable": 889,
+      "fulfillable": 888,
       "inbound": 339,
-      "reserved": 423,
+      "reserved": 424,
       "researching": 0,
       "unfulfillable": 4
     },
