@@ -466,20 +466,27 @@ body {
 .sc-card-green  .sc-card-value { color: var(--green);  }
 .sc-card-label { font-size: 12px; font-weight: 700; color: var(--text-primary); margin-top: 2px; }
 .sc-card-sub   { font-size: 10px; color: var(--text-muted); margin-top: 1px; }
-/* Action board tiles */
-.sc-action-section { width: 100%; margin-bottom: 20px; }
-.sc-action-title { font-size: 13px; font-weight: 700; color: var(--text-primary); margin-bottom: 10px; }
-.sc-action-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-.sc-action-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 14px; box-shadow: var(--shadow); display: flex; flex-direction: column; }
-.sc-action-card-top { display: flex; align-items: center; gap: 8px; margin-bottom: 3px; }
-.sc-action-card-icon { font-size: 16px; }
-.sc-action-card-name { font-size: 11.5px; font-weight: 700; color: var(--text-primary); }
-.sc-action-card-desc { font-size: 10.5px; color: var(--text-muted); margin-bottom: 7px; line-height: 1.4; flex: 1; }
-.sc-action-card-btn { display: block; width: 100%; padding: 5px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; border: 1px solid; text-align: center; box-sizing: border-box; margin-top: auto; }
-.sc-ac-red    .sc-action-card-btn { background:#fee2e2; border-color:#fca5a5; color:#b91c1c; }
-.sc-ac-orange .sc-action-card-btn { background:#ffedd5; border-color:#fdba74; color:#c2410c; }
-.sc-ac-green  .sc-action-card-btn { background:#d1fae5; border-color:#6ee7b7; color:#047857; }
-.sc-ac-blue   .sc-action-card-btn { background:#dbeafe; border-color:#93c5fd; color:#1d4ed8; }
+/* Action board list rows */
+.sc-ab-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; border-bottom: 1px solid var(--border); gap: 14px; }
+.sc-ab-row:last-child { border-bottom: none; }
+.sc-ab-left { flex: 1; min-width: 0; }
+.sc-ab-title { font-size: 13px; font-weight: 700; margin-bottom: 3px; }
+.sc-ab-detail { font-size: 11.5px; color: var(--text-muted); line-height: 1.5; }
+.sc-ab-btn { white-space: nowrap; padding: 5px 14px; border-radius: 6px; font-size: 11px; font-weight: 700; border: 1px solid; flex-shrink: 0; }
+.sc-ab-overdue { background: #fff5f5; }
+.sc-ab-overdue .sc-ab-title { color: #b91c1c; }
+.sc-ab-air { background: #fff7ed; }
+.sc-ab-air .sc-ab-title { color: #c2410c; }
+.sc-ab-urgent { background: #fff7ed; }
+.sc-ab-urgent .sc-ab-title { color: #c2410c; }
+.sc-ab-ontrack { background: #f0fdf4; }
+.sc-ab-ontrack .sc-ab-title { color: #047857; }
+.sc-ab-na { background: #f8fafc; }
+.sc-ab-na .sc-ab-title { color: #475569; }
+.sc-ab-btn-red    { background:#fee2e2; border-color:#fca5a5; color:#b91c1c; }
+.sc-ab-btn-orange { background:#ffedd5; border-color:#fdba74; color:#c2410c; }
+.sc-ab-btn-green  { background:#d1fae5; border-color:#6ee7b7; color:#047857; }
+.sc-ab-btn-gray   { background:#f1f5f9; border-color:#cbd5e1; color:#475569; }
 /* Per-row action button */
 .sc-row-btn { padding: 5px 12px; border-radius: 6px; font-size: 11px; font-weight: 700; border: 1px solid; white-space: nowrap; }
 .sc-row-btn-red    { background:#fee2e2; border-color:#fca5a5; color:#b91c1c; }
@@ -566,7 +573,7 @@ body {
       <div class="live-dot"></div>
       <div>
         <span class="live-label">Live</span>
-        <span class="live-time">Updated July 11, 2026<br>7:07 PM ET</span>
+        <span class="live-time">Updated July 11, 2026<br>7:25 PM ET</span>
       </div>
     </div>
   </div>
@@ -598,7 +605,7 @@ body {
 <!-- ══════════════ DASHBOARD SECTION ══════════════ -->
 <div id="section-dashboard" class="section active">
 
-  <div class="updated-line">Data snapshot: July 11, 2026 7:07 PM ET · SP-API live pull</div>
+  <div class="updated-line">Data snapshot: July 11, 2026 7:25 PM ET · SP-API live pull</div>
 
   <!-- KPI Cards -->
   <div class="kpi-grid" id="kpi-cards">
@@ -1275,13 +1282,13 @@ body {
 
 <script>
 // ── Inventory Data ──────────────────────────────────────────────
-const inventoryData = {'LR-TSC-30PACK':{fba:{fulfillable:889,inbound:339,reserved:425,researching:0,unfulfillable:4},awd:{onhand:1110,inbound:1825,outbound:0}},'LR-CS-10':{fba:{fulfillable:488,inbound:0,reserved:1309,researching:0,unfulfillable:2},awd:{onhand:0,inbound:2052,outbound:0}},'LR-CS-30':{fba:{fulfillable:540,inbound:27,reserved:397,researching:2,unfulfillable:6},awd:{onhand:1107,inbound:3996,outbound:0}},'LR-TSC-5PACK':{fba:{fulfillable:174,inbound:0,reserved:34,researching:0,unfulfillable:0},awd:{onhand:1200,inbound:0,outbound:0}},'LR-CS-120':{fba:{fulfillable:151,inbound:0,reserved:0,researching:0,unfulfillable:0},awd:{onhand:48,inbound:300,outbound:0}}};
+const inventoryData = {'LR-TSC-30PACK':{fba:{fulfillable:890,inbound:339,reserved:422,researching:0,unfulfillable:4},awd:{onhand:1110,inbound:1825,outbound:0}},'LR-CS-10':{fba:{fulfillable:488,inbound:0,reserved:1309,researching:0,unfulfillable:2},awd:{onhand:0,inbound:2052,outbound:0}},'LR-CS-30':{fba:{fulfillable:540,inbound:27,reserved:397,researching:2,unfulfillable:6},awd:{onhand:1107,inbound:3996,outbound:0}},'LR-TSC-5PACK':{fba:{fulfillable:173,inbound:0,reserved:35,researching:0,unfulfillable:0},awd:{onhand:1200,inbound:0,outbound:0}},'LR-CS-120':{fba:{fulfillable:151,inbound:0,reserved:0,researching:0,unfulfillable:0},awd:{onhand:48,inbound:300,outbound:0}}};
 
 // ── Tab Switching Data ──────────────────────────────────────────
 const tabData = {
   '30d': { revenue:'$41,552.64', units:'2699', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Last 30 Days · SP-API live', usub:'2200 orders . 2699 units', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':960,'LR-CS-10':957,'LR-CS-30':400,'LR-TSC-5PACK':135,'LR-CS-120':0}, days30d:29 }, /* 30D_KPI_PLACEHOLDER */
   '7d':  { revenue:'$7,284.66', units:'420', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Last 7 Days · SP-API live', usub:'398 orders . 420 units', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':161,'LR-CS-10':195,'LR-CS-30':42,'LR-TSC-5PACK':22,'LR-CS-120':0} }, /* 7D_KPI_PLACEHOLDER */
-  'today': { revenue:'$1,253.18', units:'80', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Today July 11, 2026 7:07 PM ET . SP-API live', usub:'74 orders . 95 units . Fees $423.60', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':19,'LR-CS-10':44,'LR-CS-30':12,'LR-TSC-5PACK':5,'LR-CS-120':0} }, /* TODAY_KPI_PLACEHOLDER */
+  'today': { revenue:'$1,253.18', units:'80', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Today July 11, 2026 7:25 PM ET . SP-API live', usub:'74 orders . 95 units . Fees $423.60', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':19,'LR-CS-10':44,'LR-CS-30':12,'LR-TSC-5PACK':5,'LR-CS-120':0} }, /* TODAY_KPI_PLACEHOLDER */
   'lifetime': { revenue:'$439,795', units:'20,748', spend:'$226,449', acos:'51.5%', sessions:'187,331', ipi:'628',
                rsub:'Lifetime Ad Sales (all campaigns)', usub:'Lifetime ad purchases', ssub:'Lifetime total spend', asub:'Lifetime avg ACOS', sesub:'Lifetime ad clicks', isub:'Range 570–686',
                acosColor:'#d97706' },
@@ -1573,31 +1580,6 @@ function renderSupplyChain() {
           </div>
         </div>
       </div>
-      <div class="sc-action-section">
-        <div class="sc-action-title">Action Board <span style="background:#e2e8f0;color:#475569;font-size:11px;padding:2px 8px;border-radius:12px;font-weight:700;margin-left:6px;">${counts.overdue + counts.urgent}</span></div>
-        <div class="sc-action-grid">
-          <div class="sc-action-card sc-ac-red">
-            <div class="sc-action-card-top"><span class="sc-action-card-icon">📞</span><span class="sc-action-card-name">Contact Supplier</span></div>
-            <div class="sc-action-card-desc">${counts.overdue} overdue order${counts.overdue !== 1 ? 's' : ''}<br>${overdueUnits > 0 ? overdueUnits.toLocaleString() + ' units' : 'No overdue orders'}</div>
-            <span class="sc-action-card-btn">Contact Now</span>
-          </div>
-          <div class="sc-action-card sc-ac-orange">
-            <div class="sc-action-card-top"><span class="sc-action-card-icon">✉️</span><span class="sc-action-card-name">Notify Supplier</span></div>
-            <div class="sc-action-card-desc">${counts.urgent} order${counts.urgent !== 1 ? 's' : ''} due soon<br>${urgentUnits > 0 ? urgentUnits.toLocaleString() + ' units' : 'No urgent orders'}</div>
-            <span class="sc-action-card-btn">Notify Now</span>
-          </div>
-          <div class="sc-action-card sc-ac-green">
-            <div class="sc-action-card-top"><span class="sc-action-card-icon">🚚</span><span class="sc-action-card-name">Create Shipment</span></div>
-            <div class="sc-action-card-desc">${counts.overdue + counts.urgent} shipment${(counts.overdue + counts.urgent) !== 1 ? 's' : ''} pending</div>
-            <span class="sc-action-card-btn">Create</span>
-          </div>
-          <div class="sc-action-card sc-ac-blue">
-            <div class="sc-action-card-top"><span class="sc-action-card-icon">📄</span><span class="sc-action-card-name">Export Purchase Plan</span></div>
-            <div class="sc-action-card-desc">Download full plan</div>
-            <span class="sc-action-card-btn">Export</span>
-          </div>
-        </div>
-      </div>
     </div>`;
 
   // ── how-it-works — comprehensive calc docs ────────────────────
@@ -1737,13 +1719,91 @@ function renderSupplyChain() {
       </div>
     </div>`;
 
-  // Action board is now embedded in summaryHTML (overview row)
+  // ── action board (list-style, below table) ────────────────────
+  const overdueRows = rows.filter(r => r.status === 'overdue');
+  const urgentRows  = rows.filter(r => r.status === 'urgent');
+  const ontrackRows = rows.filter(r => r.status === 'ontrack');
+  const naRows      = rows.filter(r => r.status === 'na');
+
+  let abRows = '';
+  overdueRows.forEach(r => {
+    const daysOver = Math.abs(Math.round(r.notifyDaysFrom));
+    abRows += `<div class="sc-ab-row sc-ab-overdue">
+      <div class="sc-ab-left">
+        <div class="sc-ab-title">🔥 OVERDUE — Contact Mr. Wang TODAY</div>
+        <div class="sc-ab-detail"><b>${r.sku}</b>${r.prod.brand ? ' ('+r.prod.brand+')' : ''} — ${daysOver}d overdue, order <b>${r.orderQty.toLocaleString()} units</b></div>
+      </div>
+      <span class="sc-ab-btn sc-ab-btn-red">CONTACT NOW</span>
+    </div>
+    <div class="sc-ab-row sc-ab-air">
+      <div class="sc-ab-left">
+        <div class="sc-ab-title">✈ Ship by Air Recommended</div>
+        <div class="sc-ab-detail"><b>${r.sku}</b> — sea freight no longer arrives before stockout. Use air freight as a bridge to cover the gap.</div>
+      </div>
+      <span class="sc-ab-btn sc-ab-btn-orange">AIR FREIGHT</span>
+    </div>`;
+  });
+  urgentRows.forEach(r => {
+    abRows += `<div class="sc-ab-row sc-ab-urgent">
+      <div class="sc-ab-left">
+        <div class="sc-ab-title">⚡ URGENT — Notify Within 14 Days</div>
+        <div class="sc-ab-detail"><b>${r.sku}</b>${r.prod.brand ? ' ('+r.prod.brand+')' : ''} — notify in ${Math.round(r.notifyDaysFrom)}d, order <b>${r.orderQty.toLocaleString()} units</b></div>
+      </div>
+      <span class="sc-ab-btn sc-ab-btn-orange">URGENT ACTION</span>
+    </div>`;
+  });
+  if (ontrackRows.length > 0) {
+    const detail = ontrackRows.map(r =>
+      `<b>${r.sku}</b>${r.prod.brand ? ' ('+r.prod.brand+')' : ''} — ${Math.round(r.daysOfSupply)}d supply, notify by ${fmt(r.notifyDate)}`
+    ).join(' &nbsp;|&nbsp; ');
+    abRows += `<div class="sc-ab-row sc-ab-ontrack">
+      <div class="sc-ab-left">
+        <div class="sc-ab-title">✅ ON TRACK — Monitor Regularly</div>
+        <div class="sc-ab-detail">${detail}</div>
+      </div>
+      <span class="sc-ab-btn sc-ab-btn-green">ON TRACK</span>
+    </div>`;
+  }
+  if (naRows.length > 0) {
+    const detail = naRows.map(r =>
+      `<b>${r.sku}</b> — no 30-day sales data. Fix suppressed listings or wait for sales to establish velocity.`
+    ).join(' ');
+    abRows += `<div class="sc-ab-row sc-ab-na">
+      <div class="sc-ab-left">
+        <div class="sc-ab-title">— No Velocity Data</div>
+        <div class="sc-ab-detail">${detail}</div>
+      </div>
+      <span class="sc-ab-btn sc-ab-btn-gray">CHECK LISTING</span>
+    </div>`;
+  }
+  if (!abRows) abRows = `<div style="padding:16px;color:var(--text-muted);font-size:13px;text-align:center;">✅ All SKUs on track — no immediate actions needed.</div>`;
+
+  const actionBoardHTML = `
+    <div class="sc-calc-docs" style="margin-top:16px;">
+      <div class="sc-calc-docs-title" onclick="toggleActionBoard()">
+        📋 Action Board
+        <span style="background:#e2e8f0;color:#475569;font-size:11px;padding:2px 8px;border-radius:12px;font-weight:700;margin-left:6px;">${counts.overdue + counts.urgent} need action</span>
+        <span class="sc-calc-chevron" id="sc-ab-chevron">▼</span>
+      </div>
+      <div id="sc-ab-body">${abRows}</div>
+    </div>`;
+
   document.getElementById('sc-content').innerHTML =
-    summaryHTML + legendHTML + tableHTML + howHTML;
+    summaryHTML + legendHTML + tableHTML + actionBoardHTML + howHTML;
 }
 
 // ── Inventory Sub-tab Switching ─────────────────────────────────
 let currentInvPanel = 'stock';
+function toggleActionBoard() {
+  const body    = document.getElementById('sc-ab-body');
+  const chevron = document.getElementById('sc-ab-chevron');
+  if (!body) return;
+  const hidden = body.style.display === 'none';
+  body.style.display  = hidden ? '' : 'none';
+  chevron.textContent = hidden ? '▼' : '▶';
+  if (hidden) chevron.classList.remove('collapsed');
+  else        chevron.classList.add('collapsed');
+}
 function toggleCalcDocs() {
   const body     = document.getElementById('sc-calc-body');
   const chevron  = document.getElementById('sc-calc-chevron');
