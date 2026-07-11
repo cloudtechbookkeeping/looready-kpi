@@ -135,9 +135,10 @@ def update_html(data):
         ", ssub:'Not yet available', asub:'Not yet available'" +
         ", sesub:'Not yet available', isub:'Range 570-686'," +
         " acosColor:'#6b7280', skuUnits:" + sku_units_js_30d +
+        ", days30d:" + str(days_30d) +
         " }, /* 30D_KPI_PLACEHOLDER */"
     )
-    placeholder_30d = "'30d': { revenue:'--', units:'--', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'--', usub:'--', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':'--','LR-CS-10':'--','LR-CS-30':'--','LR-TSC-5PACK':'--','LR-CS-120':'--'} }, /* 30D_KPI_PLACEHOLDER */"
+    placeholder_30d = "'30d': { revenue:'--', units:'--', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'--', usub:'--', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':'--','LR-CS-10':'--','LR-CS-30':'--','LR-TSC-5PACK':'--','LR-CS-120':'--'}, days30d:30 }, /* 30D_KPI_PLACEHOLDER */"
     n5 = 1 if placeholder_30d in html else 0
     html = html.replace(placeholder_30d, thirtyday_obj)
 

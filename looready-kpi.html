@@ -428,6 +428,68 @@ body {
 
 /* ── FOOTER NOTE ──────────────────────────────────────────── */
 .footnote { font-size: 10px; color: var(--text-muted); margin-top: 8px; }
+
+/* ── SUPPLY CHAIN ─────────────────────────────────────────── */
+.sc-summary-cards {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 20px;
+}
+.sc-card {
+  background: var(--surface); border-radius: var(--radius);
+  padding: 18px 20px; border-top: 4px solid var(--border); box-shadow: var(--shadow);
+}
+.sc-card-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .4px; color: var(--text-muted); margin-bottom: 8px; }
+.sc-card-value { font-size: 36px; font-weight: 800; line-height: 1; margin-bottom: 6px; }
+.sc-card-sub   { font-size: 11px; color: var(--text-secondary); }
+.sc-card-red    { border-top-color: var(--red);    } .sc-card-red    .sc-card-value { color: var(--red);    }
+.sc-card-orange { border-top-color: var(--orange); } .sc-card-orange .sc-card-value { color: var(--orange); }
+.sc-card-yellow { border-top-color: var(--yellow); } .sc-card-yellow .sc-card-value { color: var(--yellow); }
+.sc-card-green  { border-top-color: var(--green);  } .sc-card-green  .sc-card-value { color: var(--green);  }
+
+.sc-how { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: var(--radius); padding: 14px 18px; margin-bottom: 16px; font-size: 12px; color: #334155; }
+.sc-how h4 { font-size: 12px; font-weight: 700; color: #1e3a8a; margin-bottom: 8px; }
+.sc-how ul { margin-left: 18px; line-height: 1.9; }
+.sc-how b  { color: #1e293b; }
+
+.sc-legend { background: var(--surface); border-radius: var(--radius); padding: 11px 16px; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; box-shadow: var(--shadow); font-size: 11.5px; }
+.sc-leg-title { font-weight: 700; color: var(--text-primary); }
+.sc-leg-desc  { color: var(--text-muted); font-size: 11px; margin-right: 2px; }
+.sc-pill { display: inline-block; padding: 3px 9px; border-radius: 20px; font-size: 10.5px; font-weight: 700; white-space: nowrap; }
+.sc-pill-overdue { background: #fee2e2; color: #b91c1c; }
+.sc-pill-urgent  { background: #ffedd5; color: #c2410c; }
+.sc-pill-soon    { background: #fef9c3; color: #a16207; }
+.sc-pill-ontrack { background: #d1fae5; color: #047857; }
+.sc-pill-na      { background: #e2e8f0; color: #475569; }
+
+.sc-table { width: 100%; border-collapse: collapse; background: var(--surface); font-size: 12px; min-width: 1150px; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
+.sc-table thead th { background: #1e293b; color: #fff; font-size: 10px; text-transform: uppercase; letter-spacing: .02em; padding: 10px 10px; text-align: left; font-weight: 700; }
+.sc-table tbody td { padding: 11px 10px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+.sc-table tbody tr:nth-child(odd) { background: #fbfcfe; }
+.sc-table tbody tr:hover { background: #f0f5ff; }
+
+.sc-sku-key   { font-weight: 700; font-size: 11px; }
+.sc-sku-short { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+.sc-air-flag  { display: inline-block; background: #e0e7ff; color: #4338ca; border-radius: 4px; padding: 2px 6px; font-size: 9px; font-weight: 800; margin-top: 4px; }
+.sc-days      { font-weight: 700; }
+.sc-days-red  { color: var(--red); } .sc-days-orange { color: var(--orange); } .sc-days-green { color: var(--green); }
+.sc-notify-date { font-weight: 700; font-size: 12px; }
+.sc-notify-sub  { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+.sc-overdue-cell { color: var(--red); } .sc-urgent-cell { color: var(--orange); } .sc-ontrack-cell { color: var(--green); }
+
+.sc-action-board  { margin-top: 20px; }
+.sc-action-row    { border-radius: var(--radius); padding: 14px 18px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border: 1px solid; }
+.sc-action-row.red    { background: #fef2f2; border-color: #fecaca; }
+.sc-action-row.orange { background: #fff7ed; border-color: #fed7aa; }
+.sc-action-row.yellow { background: #fefce8; border-color: #fef08a; }
+.sc-action-row.green  { background: #f0fdf4; border-color: #bbf7d0; }
+.sc-action-row.gray   { background: #f8fafc; border-color: #e2e8f0; }
+.sc-action-row h4  { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+.sc-action-row .det { font-size: 11.5px; color: var(--text-secondary); }
+.sc-action-row .sc-right { font-size: 11px; font-weight: 700; white-space: nowrap; padding-left: 16px; text-align: right; }
+.sc-action-row.red    .sc-right { color: #b91c1c; }
+.sc-action-row.orange .sc-right { color: #c2410c; }
+.sc-action-row.yellow .sc-right { color: #a16207; }
+.sc-action-row.green  .sc-right { color: #047857; }
+.sc-action-row.gray   .sc-right { color: var(--text-muted); }
 </style>
 </head>
 <body>
@@ -457,6 +519,9 @@ body {
     </button>
     <button class="nav-btn" onclick="switchSection('inventory', this)">
       <span class="nav-icon">📦</span> Inventory
+    </button>
+    <button class="nav-btn" onclick="switchSection('supply-chain', this)">
+      <span class="nav-icon">🔗</span> Supply Chain
     </button>
   </nav>
 
@@ -1151,6 +1216,16 @@ body {
 
 </div><!-- /section-inventory -->
 
+
+<!-- ══════════════ SUPPLY CHAIN SECTION ══════════════ -->
+<div id="section-supply-chain" class="section">
+  <div class="updated-line" style="margin-bottom:20px;">Supply chain planner · 120-day lead cycle (60d production + 60d shipping) · Auto-calculated from live inventory &amp; 30-day sales velocity</div>
+  <div id="sc-content">
+    <div style="color:var(--text-muted);font-size:13px;padding:20px 0;">Loading supply chain data…</div>
+  </div>
+</div><!-- /section-supply-chain -->
+
+
 </div><!-- /page -->
 
 
@@ -1160,7 +1235,7 @@ const inventoryData = { /* INVENTORY_PLACEHOLDER */ };
 
 // ── Tab Switching Data ──────────────────────────────────────────
 const tabData = {
-  '30d': { revenue:'--', units:'--', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'--', usub:'--', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':'--','LR-CS-10':'--','LR-CS-30':'--','LR-TSC-5PACK':'--','LR-CS-120':'--'} }, /* 30D_KPI_PLACEHOLDER */
+  '30d': { revenue:'--', units:'--', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'--', usub:'--', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':'--','LR-CS-10':'--','LR-CS-30':'--','LR-TSC-5PACK':'--','LR-CS-120':'--'}, days30d:30 }, /* 30D_KPI_PLACEHOLDER */
   '7d':  { revenue:'--', units:'--', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'--', usub:'--', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':'--','LR-CS-10':'--','LR-CS-30':'--','LR-TSC-5PACK':'--','LR-CS-120':'--'} }, /* 7D_KPI_PLACEHOLDER */
   'today': { revenue:'--', units:'--', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'--', usub:'--', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':'--','LR-CS-10':'--','LR-CS-30':'--','LR-TSC-5PACK':'--','LR-CS-120':'--'} }, /* TODAY_KPI_PLACEHOLDER */
   'lifetime': { revenue:'$439,795', units:'20,748', spend:'$226,449', acos:'51.5%', sessions:'187,331', ipi:'628',
@@ -1185,10 +1260,12 @@ function switchSection(name, btn) {
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
   document.getElementById('section-' + name).classList.add('active');
   currentSection = name;
-  // Show/hide date sub-nav (Inventory doesn't need it)
-  document.getElementById('date-subnav').style.display = name === 'inventory' ? 'none' : '';
+  // Show/hide date sub-nav (Inventory and Supply Chain don't need it)
+  const noDateNav = name === 'inventory' || name === 'supply-chain';
+  document.getElementById('date-subnav').style.display = noDateNav ? 'none' : '';
   document.getElementById('custom-date-panel').style.display = 'none';
   if (name === 'inventory') renderInventory();
+  if (name === 'supply-chain') renderSupplyChain();
 }
 
 // ── Date Tab Switching ──────────────────────────────────────────
@@ -1321,6 +1398,269 @@ function renderInventory() {
       </div>
     </div>`;
   }).join('');
+}
+
+// ── Supply Chain ─────────────────────────────────────────────────
+function renderSupplyChain() {
+  const inv  = inventoryData;
+  const d30  = tabData['30d'];
+  const days30d   = (d30 && typeof d30.days30d === 'number' && d30.days30d > 0) ? d30.days30d : 30;
+  const skuUnits30 = (d30 && d30.skuUnits) ? d30.skuUnits : {};
+  const LEAD = 120; // 60 production + 60 shipping
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const fmt = d => {
+    if (!d || isNaN(d.getTime())) return '--';
+    return d.toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'});
+  };
+
+  const skuProducts = {
+    'LR-TSC-30PACK': { fullName:'Toilet Seat Covers XL 30-Pack (18×22")', shortName:'30-Pack XL' },
+    'LR-CS-10':      { fullName:'Toilet Seat Covers Regular 10-Pack (16×19")', shortName:'10-Pack' },
+    'LR-CS-30':      { fullName:'Toilet Seat Covers Regular 30-Pack (16×19")', shortName:'30-Pack Reg.' },
+    'LR-TSC-5PACK':  { fullName:'Toilet Seat Covers XL 5-Pack (18×22")', shortName:'5-Pack XL' },
+    'LR-CS-120':     { fullName:'Toilet Seat Covers Regular 120-Pack (16×19")', shortName:'120-Pack' },
+  };
+
+  const statusCfg = {
+    overdue: { label:'🔥 Overdue',   pillCls:'sc-pill-overdue', dayCls:'sc-days-red',    notifyCls:'sc-overdue-cell', rowColor:'red'    },
+    urgent:  { label:'⚡ Urgent',    pillCls:'sc-pill-urgent',  dayCls:'sc-days-orange', notifyCls:'sc-urgent-cell',  rowColor:'orange'  },
+    soon:    { label:'🕐 Soon',      pillCls:'sc-pill-soon',    dayCls:'',               notifyCls:'',                rowColor:'yellow'  },
+    ontrack: { label:'✅ On Track',  pillCls:'sc-pill-ontrack', dayCls:'sc-days-green',  notifyCls:'sc-ontrack-cell', rowColor:'green'   },
+    na:      { label:'— N/A',       pillCls:'sc-pill-na',      dayCls:'',               notifyCls:'',                rowColor:'gray'    },
+  };
+
+  // ── per-SKU calculations ──────────────────────────────────────
+  const rows = skuMeta.map(s => {
+    const sku  = s.key;
+    const prod = skuProducts[sku] || { fullName: sku, shortName: sku };
+    const fba  = (inv[sku] || {}).fba || {};
+    const awd  = (inv[sku] || {}).awd || {};
+
+    const fbaOnHand  = typeof fba.fulfillable   === 'number' ? fba.fulfillable   : 0;
+    const fbaInbound = typeof fba.inbound        === 'number' ? fba.inbound        : 0;
+    const awdOnHand  = typeof awd.onhand         === 'number' ? awd.onhand         : 0;
+    const awdInbound = typeof awd.inbound        === 'number' ? awd.inbound        : 0;
+    const totalCombined = fbaOnHand + fbaInbound + awdOnHand + awdInbound;
+
+    const raw30 = skuUnits30[sku];
+    const units30 = typeof raw30 === 'number' ? raw30 : 0;
+    const velocity = units30 > 0 && days30d > 0 ? units30 / days30d : 0;
+
+    let status = 'na', daysOfSupply = null, notifyDaysFrom = null;
+    let notifyDate = null, stockoutDate = null, orderQty = 0;
+    let arrivalEarly = null, arrivalLate = null;
+
+    if (velocity > 0) {
+      daysOfSupply   = totalCombined / velocity;
+      notifyDaysFrom = daysOfSupply - LEAD;
+      notifyDate     = new Date(today.getTime() + notifyDaysFrom * 86400000);
+      stockoutDate   = new Date(today.getTime() + daysOfSupply  * 86400000);
+      orderQty       = Math.ceil(velocity * LEAD);
+      arrivalEarly   = new Date(notifyDate.getTime() + 100 * 86400000);
+      arrivalLate    = new Date(notifyDate.getTime() + 120 * 86400000);
+
+      if      (notifyDaysFrom <= 0)  status = 'overdue';
+      else if (notifyDaysFrom <= 14) status = 'urgent';
+      else if (notifyDaysFrom <= 45) status = 'soon';
+      else                           status = 'ontrack';
+    }
+
+    return { sku, s, prod, fbaOnHand, fbaInbound, awdOnHand, awdInbound, totalCombined,
+             velocity, daysOfSupply, notifyDaysFrom, notifyDate, stockoutDate,
+             orderQty, arrivalEarly, arrivalLate, status };
+  });
+
+  // ── summary counts ────────────────────────────────────────────
+  const counts = { overdue:0, urgent:0, soon:0, ontrack:0, na:0 };
+  rows.forEach(r => counts[r.status]++);
+
+  // ── no data guard ─────────────────────────────────────────────
+  const hasInv = inv && Object.keys(inv).length > 0;
+  const hasVel = rows.some(r => r.velocity > 0);
+
+  if (!hasInv || !hasVel) {
+    document.getElementById('sc-content').innerHTML = `
+      <div style="background:var(--surface);border-radius:var(--radius);padding:24px;text-align:center;color:var(--text-muted);font-size:13px;border:1px solid var(--border);">
+        ⏳ Supply chain data will be available after the next hourly SP-API update.
+      </div>`;
+    return;
+  }
+
+  // ── summary cards ─────────────────────────────────────────────
+  const summaryHTML = `
+    <div class="sc-summary-cards">
+      <div class="sc-card sc-card-red">
+        <div class="sc-card-label">🔥 Overdue — Contact Now</div>
+        <div class="sc-card-value">${counts.overdue}</div>
+        <div class="sc-card-sub">SKU${counts.overdue !== 1 ? 's' : ''} past due</div>
+      </div>
+      <div class="sc-card sc-card-orange">
+        <div class="sc-card-label">⚡ Urgent — &lt;14 Days</div>
+        <div class="sc-card-value">${counts.urgent}</div>
+        <div class="sc-card-sub">SKU${counts.urgent !== 1 ? 's' : ''} nearly overdue</div>
+      </div>
+      <div class="sc-card sc-card-yellow">
+        <div class="sc-card-label">🕐 Soon — 15–45 Days</div>
+        <div class="sc-card-value">${counts.soon}</div>
+        <div class="sc-card-sub">SKU${counts.soon !== 1 ? 's' : ''} to plan</div>
+      </div>
+      <div class="sc-card sc-card-green">
+        <div class="sc-card-label">✅ On Track — 45+ Days</div>
+        <div class="sc-card-value">${counts.ontrack}</div>
+        <div class="sc-card-sub">SKU${counts.ontrack !== 1 ? 's' : ''} well covered</div>
+      </div>
+    </div>`;
+
+  // ── how-it-works banner ───────────────────────────────────────
+  const howHTML = `
+    <div class="sc-how">
+      <h4>📋 How dates &amp; quantities are calculated</h4>
+      <ul>
+        <li><b>Sales Velocity</b> = units sold in last ${days30d} days ÷ ${days30d} (30-day rolling average).</li>
+        <li><b>Days of Supply</b> = (FBA on-hand + FBA inbound + AWD on-hand + AWD inbound) ÷ daily velocity.</li>
+        <li><b>Notify Mr. Wang By</b> = Today + (Days of Supply − 120). Negative = already overdue.</li>
+        <li><b>Order Qty</b> = velocity × 120 days (full lead cycle to cover next reorder).</li>
+        <li><b>Arrival Window</b> = Notify Date + 100 days (earliest) to + 120 days (latest).</li>
+        <li><b>Status tiers:</b> Overdue ≤ 0 days · Urgent 1–14 days · Soon 15–45 days · On Track 45+ days.</li>
+      </ul>
+    </div>`;
+
+  // ── legend ────────────────────────────────────────────────────
+  const legendHTML = `
+    <div class="sc-legend">
+      <span class="sc-leg-title">Urgency:</span>
+      <span class="sc-pill sc-pill-overdue">🔥 Overdue</span><span class="sc-leg-desc">Past due — contact manufacturer now</span>
+      <span class="sc-pill sc-pill-urgent">⚡ Urgent</span><span class="sc-leg-desc">Within 14 days — ship by air</span>
+      <span class="sc-pill sc-pill-soon">🕐 Soon</span><span class="sc-leg-desc">15–45 days — start planning</span>
+      <span class="sc-pill sc-pill-ontrack">✅ On Track</span><span class="sc-leg-desc">45+ days to notify</span>
+      <span class="sc-pill sc-pill-na">— N/A</span><span class="sc-leg-desc">No velocity data</span>
+    </div>`;
+
+  // ── per-SKU table ─────────────────────────────────────────────
+  const tableBodyHTML = rows.map(r => {
+    const cfg = statusCfg[r.status];
+    const daysLabel      = r.daysOfSupply !== null ? Math.round(r.daysOfSupply) + ' days' : '--';
+    const notifyLabel    = r.notifyDate ? fmt(r.notifyDate) : '--';
+    const notifySubLabel = r.notifyDaysFrom !== null
+      ? (r.notifyDaysFrom <= 0
+          ? Math.abs(Math.round(r.notifyDaysFrom)) + 'd overdue'
+          : 'in ' + Math.round(r.notifyDaysFrom) + ' days')
+      : '--';
+    const arrLabel  = (r.arrivalEarly && r.arrivalLate) ? fmt(r.arrivalEarly) + ' – ' + fmt(r.arrivalLate) : '--';
+    const stkLabel  = r.stockoutDate ? fmt(r.stockoutDate) : '--';
+    const velLabel  = r.velocity > 0 ? r.velocity.toFixed(1) + '/d' : '--';
+    const airBadge  = r.status === 'overdue' ? '<div class="sc-air-flag">✈ Ship by Air</div>' : '';
+
+    return `<tr>
+      <td>
+        <div class="sc-sku-key" style="color:${r.s.color};">${r.sku}</div>
+        <div class="sc-sku-short">${r.prod.shortName}</div>
+        ${airBadge}
+      </td>
+      <td><span class="sc-pill ${cfg.pillCls}">${cfg.label}</span></td>
+      <td style="font-weight:700;">${velLabel}</td>
+      <td>${r.fbaOnHand.toLocaleString()}</td>
+      <td>${r.awdOnHand.toLocaleString()}</td>
+      <td>${(r.fbaInbound + r.awdInbound).toLocaleString()}</td>
+      <td style="font-weight:700;color:var(--text-primary);">${r.totalCombined.toLocaleString()}</td>
+      <td><span class="sc-days ${cfg.dayCls}">${daysLabel}</span></td>
+      <td>
+        <div class="sc-notify-date ${cfg.notifyCls}">${notifyLabel}</div>
+        <div class="sc-notify-sub">${notifySubLabel}</div>
+      </td>
+      <td style="font-weight:700;color:var(--blue);">${r.orderQty > 0 ? r.orderQty.toLocaleString() + ' units' : '--'}</td>
+      <td style="font-size:11px;">${arrLabel}</td>
+      <td style="font-size:11px;">${stkLabel}</td>
+    </tr>`;
+  }).join('');
+
+  const tableHTML = `
+    <div class="card mb-20">
+      <div class="card-header">
+        <div class="card-title"><span class="dot" style="background:var(--blue);"></span>Per-SKU Supply Chain Planner</div>
+        <span class="card-badge" style="background:var(--blue-light);color:var(--blue);border-color:var(--blue-light);">120-Day Lead Cycle · Live Calc</span>
+      </div>
+      <div class="card-body" style="padding-bottom:0;">
+        <div class="table-scroll">
+          <table class="sc-table">
+            <thead><tr>
+              <th>SKU</th><th>Status</th><th>Velocity (30d avg)</th>
+              <th>FBA On-Hand</th><th>AWD On-Hand</th><th>Total Inbound</th><th>Combined Total</th>
+              <th>Days of Supply</th><th>Notify Mr. Wang By</th>
+              <th>Order Qty (120d)</th><th>Est. Arrival Window</th><th>Stockout Date</th>
+            </tr></thead>
+            <tbody>${tableBodyHTML}</tbody>
+          </table>
+        </div>
+      </div>
+    </div>`;
+
+  // ── action board ──────────────────────────────────────────────
+  const actionRows = [];
+  const overdueSkus  = rows.filter(r => r.status === 'overdue');
+  const urgentSkus   = rows.filter(r => r.status === 'urgent');
+  const soonSkus     = rows.filter(r => r.status === 'soon');
+  const ontrackSkus  = rows.filter(r => r.status === 'ontrack');
+
+  if (overdueSkus.length > 0) {
+    const det = overdueSkus.map(r =>
+      `<b>${r.sku}</b> (${r.prod.shortName}) — ${Math.abs(Math.round(r.notifyDaysFrom))}d overdue, order <b>${r.orderQty.toLocaleString()} units</b>`
+    ).join(' &nbsp;|&nbsp; ');
+    actionRows.push(`<div class="sc-action-row red">
+      <div><h4>🔥 OVERDUE — Contact Mr. Wang TODAY</h4><div class="det">${det}</div></div>
+      <div class="sc-right">CONTACT<br>NOW</div>
+    </div>`);
+    actionRows.push(`<div class="sc-action-row orange">
+      <div><h4>✈ Ship by Air Recommended</h4><div class="det">${overdueSkus.map(r=>`<b>${r.sku}</b>`).join(', ')} — sea freight no longer arrives before stockout. Use air freight as a bridge to cover the gap.</div></div>
+      <div class="sc-right">AIR<br>FREIGHT</div>
+    </div>`);
+  }
+  if (urgentSkus.length > 0) {
+    const det = urgentSkus.map(r =>
+      `<b>${r.sku}</b> (${r.prod.shortName}) — notify in ${Math.round(r.notifyDaysFrom)}d, order <b>${r.orderQty.toLocaleString()} units</b>`
+    ).join(' &nbsp;|&nbsp; ');
+    actionRows.push(`<div class="sc-action-row orange">
+      <div><h4>⚡ URGENT — Notify Within 14 Days</h4><div class="det">${det}</div></div>
+      <div class="sc-right">URGENT<br>ACTION</div>
+    </div>`);
+  }
+  if (soonSkus.length > 0) {
+    const det = soonSkus.map(r =>
+      `<b>${r.sku}</b> (${r.prod.shortName}) — notify by ${fmt(r.notifyDate)} (in ${Math.round(r.notifyDaysFrom)} days)`
+    ).join(' &nbsp;|&nbsp; ');
+    actionRows.push(`<div class="sc-action-row yellow">
+      <div><h4>🕐 SOON — Schedule Order</h4><div class="det">${det}</div></div>
+      <div class="sc-right">PLAN<br>ORDER</div>
+    </div>`);
+  }
+  if (ontrackSkus.length > 0) {
+    const det = ontrackSkus.map(r =>
+      `<b>${r.sku}</b> (${r.prod.shortName}) — ${Math.round(r.daysOfSupply)}d supply, notify by ${fmt(r.notifyDate)}`
+    ).join(' &nbsp;|&nbsp; ');
+    actionRows.push(`<div class="sc-action-row green">
+      <div><h4>✅ ON TRACK — Monitor Regularly</h4><div class="det">${det}</div></div>
+      <div class="sc-right">ON<br>TRACK</div>
+    </div>`);
+  }
+  const naSkus = rows.filter(r => r.status === 'na');
+  if (naSkus.length > 0) {
+    actionRows.push(`<div class="sc-action-row gray">
+      <div><h4>— No Velocity Data</h4><div class="det">${naSkus.map(r=>`<b>${r.sku}</b>`).join(', ')} — no 30-day sales data. Fix suppressed listings or wait for sales to establish velocity.</div></div>
+      <div class="sc-right">CHECK<br>LISTING</div>
+    </div>`);
+  }
+
+  const actionBoardHTML = `
+    <div class="sc-action-board">
+      <div class="section-label">Action Board</div>
+      ${actionRows.join('')}
+    </div>`;
+
+  document.getElementById('sc-content').innerHTML =
+    summaryHTML + howHTML + legendHTML + tableHTML + actionBoardHTML;
 }
 
 // ── Custom Range ────────────────────────────────────────────────
