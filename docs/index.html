@@ -429,6 +429,19 @@ body {
 /* ── FOOTER NOTE ──────────────────────────────────────────── */
 .footnote { font-size: 10px; color: var(--text-muted); margin-top: 8px; }
 
+/* ── INVENTORY SUB-TABS ───────────────────────────────────── */
+.inv-subnav {
+  display: flex; gap: 4px; margin-bottom: 20px;
+  background: var(--surface); border-radius: var(--radius);
+  padding: 5px; border: 1px solid var(--border); width: fit-content;
+}
+.inv-tab {
+  padding: 7px 18px; border-radius: 8px; font-size: 13px; font-weight: 600;
+  color: var(--text-secondary); cursor: pointer; transition: all .15s; white-space: nowrap;
+}
+.inv-tab:hover { background: var(--bg); color: var(--text-primary); }
+.inv-tab.active { background: var(--nav-bg); color: #fff; font-weight: 700; }
+
 /* ── SUPPLY CHAIN ─────────────────────────────────────────── */
 .sc-summary-cards {
   display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 20px;
@@ -520,9 +533,6 @@ body {
     <button class="nav-btn" onclick="switchSection('inventory', this)">
       <span class="nav-icon">📦</span> Inventory
     </button>
-    <button class="nav-btn" onclick="switchSection('supply-chain', this)">
-      <span class="nav-icon">🔗</span> Supply Chain
-    </button>
   </nav>
 
   <div class="sidebar-footer">
@@ -530,7 +540,7 @@ body {
       <div class="live-dot"></div>
       <div>
         <span class="live-label">Live</span>
-        <span class="live-time">Updated July 11, 2026<br>5:08 PM ET</span>
+        <span class="live-time">Updated July 11, 2026<br>5:20 PM ET</span>
       </div>
     </div>
   </div>
@@ -562,7 +572,7 @@ body {
 <!-- ══════════════ DASHBOARD SECTION ══════════════ -->
 <div id="section-dashboard" class="section active">
 
-  <div class="updated-line">Data snapshot: July 11, 2026 5:08 PM ET · SP-API live pull</div>
+  <div class="updated-line">Data snapshot: July 11, 2026 5:20 PM ET · SP-API live pull</div>
 
   <!-- KPI Cards -->
   <div class="kpi-grid" id="kpi-cards">
@@ -1170,60 +1180,68 @@ body {
 <!-- ══════════════ INVENTORY SECTION ══════════════ -->
 <div id="section-inventory" class="section">
 
-  <div class="updated-line" style="margin-bottom:20px;">Inventory snapshot · FBA + AWD combined · IPI Score: 628</div>
-
-  <!-- Total Inventory -->
-  <div class="card mb-20">
-    <div class="card-header">
-      <div class="card-title">
-        <span class="dot" style="background:var(--purple);"></span>
-        Total Inventory
-      </div>
-      <span class="card-badge" style="background:var(--purple-light);color:var(--purple);border-color:var(--purple-light);">FBA + AWD Combined</span>
-    </div>
-    <div class="card-body">
-      <div class="inv-grid" id="total-grid"></div>
-    </div>
+  <!-- Inventory sub-tabs -->
+  <div class="inv-subnav">
+    <div class="inv-tab active" onclick="switchInvTab('stock', this)">📦 Inventory</div>
+    <div class="inv-tab" onclick="switchInvTab('supply-chain', this)">🔗 Supply Chain</div>
   </div>
 
-  <!-- FBA Inventory -->
-  <div class="card mb-20">
-    <div class="card-header">
-      <div class="card-title">
-        <span class="dot" style="background:var(--blue);"></span>
-        FBA Inventory
-      </div>
-      <span class="card-badge" style="background:var(--blue-light);color:var(--blue);border-color:var(--blue-light);">Fulfillment by Amazon</span>
-    </div>
-    <div class="card-body">
-      <div class="inv-grid" id="fba-grid"></div>
-    </div>
-  </div>
+  <!-- ── Stock panel ── -->
+  <div id="inv-panel-stock">
+    <div class="updated-line" style="margin-bottom:20px;">Inventory snapshot · FBA + AWD combined · IPI Score: 628</div>
 
-  <!-- AWD Inventory -->
-  <div class="card mb-20">
-    <div class="card-header">
-      <div class="card-title">
-        <span class="dot" style="background:var(--green);"></span>
-        AWD Inventory
+    <!-- Total Inventory -->
+    <div class="card mb-20">
+      <div class="card-header">
+        <div class="card-title">
+          <span class="dot" style="background:var(--purple);"></span>
+          Total Inventory
+        </div>
+        <span class="card-badge" style="background:var(--purple-light);color:var(--purple);border-color:var(--purple-light);">FBA + AWD Combined</span>
       </div>
-      <span class="card-badge" style="background:var(--green-light);color:var(--green);border-color:var(--green-light);">Amazon Warehousing &amp; Distribution</span>
+      <div class="card-body">
+        <div class="inv-grid" id="total-grid"></div>
+      </div>
     </div>
-    <div class="card-body">
-      <div class="inv-grid" id="awd-grid"></div>
+
+    <!-- FBA Inventory -->
+    <div class="card mb-20">
+      <div class="card-header">
+        <div class="card-title">
+          <span class="dot" style="background:var(--blue);"></span>
+          FBA Inventory
+        </div>
+        <span class="card-badge" style="background:var(--blue-light);color:var(--blue);border-color:var(--blue-light);">Fulfillment by Amazon</span>
+      </div>
+      <div class="card-body">
+        <div class="inv-grid" id="fba-grid"></div>
+      </div>
     </div>
-  </div>
+
+    <!-- AWD Inventory -->
+    <div class="card mb-20">
+      <div class="card-header">
+        <div class="card-title">
+          <span class="dot" style="background:var(--green);"></span>
+          AWD Inventory
+        </div>
+        <span class="card-badge" style="background:var(--green-light);color:var(--green);border-color:var(--green-light);">Amazon Warehousing &amp; Distribution</span>
+      </div>
+      <div class="card-body">
+        <div class="inv-grid" id="awd-grid"></div>
+      </div>
+    </div>
+  </div><!-- /inv-panel-stock -->
+
+  <!-- ── Supply Chain panel ── -->
+  <div id="inv-panel-supply-chain" style="display:none;">
+    <div class="updated-line" style="margin-bottom:20px;">Supply chain planner · 120-day lead cycle (60d production + 60d shipping) · Auto-calculated from live inventory &amp; 30-day sales velocity</div>
+    <div id="sc-content">
+      <div style="color:var(--text-muted);font-size:13px;padding:20px 0;">Loading supply chain data…</div>
+    </div>
+  </div><!-- /inv-panel-supply-chain -->
 
 </div><!-- /section-inventory -->
-
-
-<!-- ══════════════ SUPPLY CHAIN SECTION ══════════════ -->
-<div id="section-supply-chain" class="section">
-  <div class="updated-line" style="margin-bottom:20px;">Supply chain planner · 120-day lead cycle (60d production + 60d shipping) · Auto-calculated from live inventory &amp; 30-day sales velocity</div>
-  <div id="sc-content">
-    <div style="color:var(--text-muted);font-size:13px;padding:20px 0;">Loading supply chain data…</div>
-  </div>
-</div><!-- /section-supply-chain -->
 
 
 </div><!-- /page -->
@@ -1231,13 +1249,13 @@ body {
 
 <script>
 // ── Inventory Data ──────────────────────────────────────────────
-const inventoryData = {'LR-TSC-30PACK':{fba:{fulfillable:888,inbound:339,reserved:426,researching:0,unfulfillable:4},awd:{onhand:1110,inbound:1825,outbound:0}},'LR-CS-10':{fba:{fulfillable:486,inbound:0,reserved:1315,researching:0,unfulfillable:2},awd:{onhand:0,inbound:2052,outbound:0}},'LR-CS-30':{fba:{fulfillable:539,inbound:27,reserved:400,researching:2,unfulfillable:6},awd:{onhand:1107,inbound:3996,outbound:0}},'LR-TSC-5PACK':{fba:{fulfillable:174,inbound:0,reserved:35,researching:0,unfulfillable:0},awd:{onhand:1200,inbound:0,outbound:0}},'LR-CS-120':{fba:{fulfillable:151,inbound:0,reserved:0,researching:0,unfulfillable:0},awd:{onhand:48,inbound:300,outbound:0}}};
+const inventoryData = {'LR-TSC-30PACK':{fba:{fulfillable:893,inbound:339,reserved:421,researching:0,unfulfillable:4},awd:{onhand:1110,inbound:1825,outbound:0}},'LR-CS-10':{fba:{fulfillable:486,inbound:0,reserved:1314,researching:0,unfulfillable:2},awd:{onhand:0,inbound:2052,outbound:0}},'LR-CS-30':{fba:{fulfillable:539,inbound:27,reserved:400,researching:2,unfulfillable:6},awd:{onhand:1107,inbound:3996,outbound:0}},'LR-TSC-5PACK':{fba:{fulfillable:174,inbound:0,reserved:35,researching:0,unfulfillable:0},awd:{onhand:1200,inbound:0,outbound:0}},'LR-CS-120':{fba:{fulfillable:151,inbound:0,reserved:0,researching:0,unfulfillable:0},awd:{onhand:48,inbound:300,outbound:0}}};
 
 // ── Tab Switching Data ──────────────────────────────────────────
 const tabData = {
   '30d': { revenue:'$41,552.64', units:'2699', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Last 30 Days · SP-API live', usub:'2200 orders . 2699 units', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':960,'LR-CS-10':957,'LR-CS-30':400,'LR-TSC-5PACK':135,'LR-CS-120':0}, days30d:29 }, /* 30D_KPI_PLACEHOLDER */
   '7d':  { revenue:'$7,284.66', units:'420', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Last 7 Days · SP-API live', usub:'398 orders . 420 units', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':161,'LR-CS-10':195,'LR-CS-30':42,'LR-TSC-5PACK':22,'LR-CS-120':0} }, /* 7D_KPI_PLACEHOLDER */
-  'today': { revenue:'$1,136.49', units:'72', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Today July 11, 2026 5:08 PM ET . SP-API live', usub:'66 orders . 95 units . Fees $423.60', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':19,'LR-CS-10':40,'LR-CS-30':9,'LR-TSC-5PACK':4,'LR-CS-120':0} }, /* TODAY_KPI_PLACEHOLDER */
+  'today': { revenue:'$1,170.14', units:'74', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Today July 11, 2026 5:20 PM ET . SP-API live', usub:'68 orders . 95 units . Fees $423.60', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':19,'LR-CS-10':41,'LR-CS-30':10,'LR-TSC-5PACK':4,'LR-CS-120':0} }, /* TODAY_KPI_PLACEHOLDER */
   'lifetime': { revenue:'$439,795', units:'20,748', spend:'$226,449', acos:'51.5%', sessions:'187,331', ipi:'628',
                rsub:'Lifetime Ad Sales (all campaigns)', usub:'Lifetime ad purchases', ssub:'Lifetime total spend', asub:'Lifetime avg ACOS', sesub:'Lifetime ad clicks', isub:'Range 570–686',
                acosColor:'#d97706' },
@@ -1260,12 +1278,10 @@ function switchSection(name, btn) {
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
   document.getElementById('section-' + name).classList.add('active');
   currentSection = name;
-  // Show/hide date sub-nav (Inventory and Supply Chain don't need it)
-  const noDateNav = name === 'inventory' || name === 'supply-chain';
-  document.getElementById('date-subnav').style.display = noDateNav ? 'none' : '';
+  // Show/hide date sub-nav (Inventory doesn't need it)
+  document.getElementById('date-subnav').style.display = name === 'inventory' ? 'none' : '';
   document.getElementById('custom-date-panel').style.display = 'none';
-  if (name === 'inventory') renderInventory();
-  if (name === 'supply-chain') renderSupplyChain();
+  if (name === 'inventory') switchInvTab(currentInvPanel, null);
 }
 
 // ── Date Tab Switching ──────────────────────────────────────────
@@ -1661,6 +1677,24 @@ function renderSupplyChain() {
 
   document.getElementById('sc-content').innerHTML =
     summaryHTML + howHTML + legendHTML + tableHTML + actionBoardHTML;
+}
+
+// ── Inventory Sub-tab Switching ─────────────────────────────────
+let currentInvPanel = 'stock';
+function switchInvTab(panel, el) {
+  currentInvPanel = panel;
+  document.querySelectorAll('.inv-tab').forEach(t => t.classList.remove('active'));
+  if (el) el.classList.add('active');
+  else {
+    // Restore active state on tab element matching current panel
+    document.querySelectorAll('.inv-tab').forEach(t => {
+      if (t.getAttribute('onclick').includes("'" + panel + "'")) t.classList.add('active');
+    });
+  }
+  document.getElementById('inv-panel-stock').style.display        = panel === 'stock'         ? '' : 'none';
+  document.getElementById('inv-panel-supply-chain').style.display = panel === 'supply-chain'  ? '' : 'none';
+  if (panel === 'stock')        renderInventory();
+  if (panel === 'supply-chain') renderSupplyChain();
 }
 
 // ── Custom Range ────────────────────────────────────────────────
