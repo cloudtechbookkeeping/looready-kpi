@@ -1699,18 +1699,19 @@ function renderSupplyChain() {
         ${airBadge}
       </td>
       <td><span class="sc-pill ${cfg.pillCls}">${cfg.label}</span></td>
-      <td><span class="sc-days ${cfg.dayCls}">${daysLabel}</span></td>
-      <td style="font-size:11px;font-weight:700;color:var(--text-primary);">${stkLabel}</td>
       <td style="font-weight:700;">${velLabel}</td>
       <td>${r.fbaOnHand.toLocaleString()}</td>
       <td>${r.awdOnHand.toLocaleString()}</td>
       <td>${(r.fbaInbound + r.awdInbound).toLocaleString()}</td>
+      <td style="font-weight:700;">${(r.fbaOnHand + r.awdOnHand + r.fbaInbound + r.awdInbound).toLocaleString()}</td>
+      <td><span class="sc-days ${cfg.dayCls}">${daysLabel}</span></td>
       <td>
         <div class="sc-notify-date ${cfg.notifyCls}">${notifyLabel}</div>
         <div class="sc-notify-sub">${notifySubLabel}</div>
       </td>
       <td style="font-weight:700;color:var(--blue);">${r.orderQty > 0 ? r.orderQty.toLocaleString() + ' units' : '--'}</td>
       <td style="font-size:11px;">${arrLabel}</td>
+      <td style="font-size:11px;font-weight:700;color:var(--text-primary);">${stkLabel}</td>
       <td><span class="sc-row-btn ${rowBtnClass}">${rowBtnLabel}</span></td>
     </tr>`;
   }).join('');
@@ -1725,10 +1726,10 @@ function renderSupplyChain() {
         <div class="table-scroll">
           <table class="sc-table">
             <thead><tr>
-              <th>SKU</th><th>Status</th><th>Days of Supply</th><th>Stockout Date</th><th>Velocity (30d avg)</th>
-              <th>FBA On-Hand</th><th>AWD On-Hand</th><th>Total Inbound</th>
-              <th>Notify Mr. Wang By</th><th>Order Qty (120d)</th>
-              <th>Est. Arrival Window</th><th>Action</th>
+              <th>SKU</th><th>Status</th><th>Velocity (30d avg)</th>
+              <th>FBA On-Hand</th><th>AWD On-Hand</th><th>Total Inbound</th><th>Combined Total</th>
+              <th>Days of Supply</th><th>Notify Mr. Wang By</th><th>Order Qty (120d)</th>
+              <th>Est. Arrival Window</th><th>Stockout Date</th><th>Action</th>
             </tr></thead>
             <tbody>${tableBodyHTML}</tbody>
           </table>
