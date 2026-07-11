@@ -1669,8 +1669,7 @@ function renderSupplyChain() {
     return `<tr>
       <td>
         <div class="sc-sku-key" style="color:${r.s.color};">${r.sku}</div>
-        <div class="sc-sku-short">${r.prod.brand || ''}</div>
-        <div class="sc-sku-short" style="font-size:9px;color:var(--text-muted);">Supplier: ${r.prod.supplier || 'UAC Logistics'}</div>
+        <div class="sc-sku-short">${r.prod.shortName || ''}</div>
         ${airBadge}
       </td>
       <td><span class="sc-pill ${cfg.pillCls}">${cfg.label}</span></td>
