@@ -1487,11 +1487,15 @@ function renderSupplyChain() {
     const fba  = (inv[sku] || {}).fba || {};
     const awd  = (inv[sku] || {}).awd || {};
 
-    const fbaOnHand  = typeof fba.fulfillable   === 'number' ? fba.fulfillable   : 0;
-    const fbaInbound = typeof fba.inbound        === 'number' ? fba.inbound        : 0;
-    const awdOnHand  = typeof awd.onhand         === 'number' ? awd.onhand         : 0;
-    const awdInbound = typeof awd.inbound        === 'number' ? awd.inbound        : 0;
-    const totalCombined = fbaOnHand + fbaInbound + awdOnHand + awdInbound;
+    const fbaOnHand    = typeof fba.fulfillable    === 'number' ? fba.fulfillable    : 0;
+    const fbaReserved  = typeof fba.reserved       === 'number' ? fba.reserved       : 0;
+    const fbaResearch  = typeof fba.researching    === 'number' ? fba.researching    : 0;
+    const fbaUnfulfill = typeof fba.unfulfillable  === 'number' ? fba.unfulfillable  : 0;
+    const fbaInbound   = typeof fba.inbound        === 'number' ? fba.inbound        : 0;
+    const awdOnHand    = typeof awd.onhand         === 'number' ? awd.onhand         : 0;
+    const awdInbound   = typeof awd.inbound        === 'number' ? awd.inbound        : 0;
+    // Match Inventory tab grand total: fulfillable + reserved + researching + unfulfillable + inbound (FBA+AWD)
+    const totalCombined = fbaOnHand + fbaReserved + fbaResearch + fbaUnfulfill + fbaInbound + awdOnHand + awdInbound;
 
     const raw30 = skuUnits30[sku];
     const units30 = typeof raw30 === 'number' ? raw30 : 0;
