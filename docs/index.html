@@ -470,12 +470,12 @@ body {
 .sc-action-section { width: 100%; margin-bottom: 20px; }
 .sc-action-title { font-size: 13px; font-weight: 700; color: var(--text-primary); margin-bottom: 10px; }
 .sc-action-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-.sc-action-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 14px; box-shadow: var(--shadow); }
+.sc-action-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 14px; box-shadow: var(--shadow); display: flex; flex-direction: column; }
 .sc-action-card-top { display: flex; align-items: center; gap: 8px; margin-bottom: 3px; }
 .sc-action-card-icon { font-size: 16px; }
 .sc-action-card-name { font-size: 11.5px; font-weight: 700; color: var(--text-primary); }
-.sc-action-card-desc { font-size: 10.5px; color: var(--text-muted); margin-bottom: 7px; line-height: 1.4; }
-.sc-action-card-btn { display: block; width: 100%; padding: 5px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; border: 1px solid; text-align: center; box-sizing: border-box; }
+.sc-action-card-desc { font-size: 10.5px; color: var(--text-muted); margin-bottom: 7px; line-height: 1.4; flex: 1; }
+.sc-action-card-btn { display: block; width: 100%; padding: 5px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; border: 1px solid; text-align: center; box-sizing: border-box; margin-top: auto; }
 .sc-ac-red    .sc-action-card-btn { background:#fee2e2; border-color:#fca5a5; color:#b91c1c; }
 .sc-ac-orange .sc-action-card-btn { background:#ffedd5; border-color:#fdba74; color:#c2410c; }
 .sc-ac-green  .sc-action-card-btn { background:#d1fae5; border-color:#6ee7b7; color:#047857; }
@@ -490,7 +490,10 @@ body {
 
 /* Calculation docs */
 .sc-calc-docs { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin-top: 20px; box-shadow: var(--shadow); }
-.sc-calc-docs-title { font-size: 14px; font-weight: 700; color: var(--text-primary); margin-bottom: 16px; padding-bottom: 10px; border-bottom: 2px solid var(--border); display: flex; align-items: center; gap: 8px; }
+.sc-calc-docs-title { font-size: 14px; font-weight: 700; color: var(--text-primary); margin-bottom: 16px; padding-bottom: 10px; border-bottom: 2px solid var(--border); display: flex; align-items: center; gap: 8px; cursor: pointer; user-select: none; }
+.sc-calc-docs-title:hover { color: var(--blue); }
+.sc-calc-chevron { margin-left: auto; font-size: 11px; color: var(--text-muted); transition: transform 0.2s; }
+.sc-calc-chevron.collapsed { transform: rotate(-90deg); }
 .sc-calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
 .sc-calc-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 14px; }
 .sc-calc-card-title { font-size: 11px; font-weight: 700; color: var(--text-primary); margin-bottom: 10px; border-bottom: 1px solid #e2e8f0; padding-bottom: 7px; }
@@ -563,7 +566,7 @@ body {
       <div class="live-dot"></div>
       <div>
         <span class="live-label">Live</span>
-        <span class="live-time">Updated July 11, 2026<br>6:50 PM ET</span>
+        <span class="live-time">Updated July 11, 2026<br>7:00 PM ET</span>
       </div>
     </div>
   </div>
@@ -595,7 +598,7 @@ body {
 <!-- ══════════════ DASHBOARD SECTION ══════════════ -->
 <div id="section-dashboard" class="section active">
 
-  <div class="updated-line">Data snapshot: July 11, 2026 6:50 PM ET · SP-API live pull</div>
+  <div class="updated-line">Data snapshot: July 11, 2026 7:00 PM ET · SP-API live pull</div>
 
   <!-- KPI Cards -->
   <div class="kpi-grid" id="kpi-cards">
@@ -1272,13 +1275,13 @@ body {
 
 <script>
 // ── Inventory Data ──────────────────────────────────────────────
-const inventoryData = {'LR-TSC-30PACK':{fba:{fulfillable:889,inbound:339,reserved:425,researching:0,unfulfillable:4},awd:{onhand:1110,inbound:1825,outbound:0}},'LR-CS-10':{fba:{fulfillable:490,inbound:0,reserved:1307,researching:0,unfulfillable:2},awd:{onhand:0,inbound:2052,outbound:0}},'LR-CS-30':{fba:{fulfillable:540,inbound:27,reserved:399,researching:2,unfulfillable:6},awd:{onhand:1107,inbound:3996,outbound:0}},'LR-TSC-5PACK':{fba:{fulfillable:174,inbound:0,reserved:34,researching:0,unfulfillable:0},awd:{onhand:1200,inbound:0,outbound:0}},'LR-CS-120':{fba:{fulfillable:151,inbound:0,reserved:0,researching:0,unfulfillable:0},awd:{onhand:48,inbound:300,outbound:0}}};
+const inventoryData = {'LR-TSC-30PACK':{fba:{fulfillable:889,inbound:339,reserved:425,researching:0,unfulfillable:4},awd:{onhand:1110,inbound:1825,outbound:0}},'LR-CS-10':{fba:{fulfillable:488,inbound:0,reserved:1309,researching:0,unfulfillable:2},awd:{onhand:0,inbound:2052,outbound:0}},'LR-CS-30':{fba:{fulfillable:540,inbound:27,reserved:399,researching:2,unfulfillable:6},awd:{onhand:1107,inbound:3996,outbound:0}},'LR-TSC-5PACK':{fba:{fulfillable:174,inbound:0,reserved:34,researching:0,unfulfillable:0},awd:{onhand:1200,inbound:0,outbound:0}},'LR-CS-120':{fba:{fulfillable:151,inbound:0,reserved:0,researching:0,unfulfillable:0},awd:{onhand:48,inbound:300,outbound:0}}};
 
 // ── Tab Switching Data ──────────────────────────────────────────
 const tabData = {
   '30d': { revenue:'$41,552.64', units:'2699', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Last 30 Days · SP-API live', usub:'2200 orders . 2699 units', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':960,'LR-CS-10':957,'LR-CS-30':400,'LR-TSC-5PACK':135,'LR-CS-120':0}, days30d:29 }, /* 30D_KPI_PLACEHOLDER */
   '7d':  { revenue:'$7,284.66', units:'420', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Last 7 Days · SP-API live', usub:'398 orders . 420 units', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':161,'LR-CS-10':195,'LR-CS-30':42,'LR-TSC-5PACK':22,'LR-CS-120':0} }, /* 7D_KPI_PLACEHOLDER */
-  'today': { revenue:'$1,206.75', units:'78', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Today July 11, 2026 6:50 PM ET . SP-API live', usub:'72 orders . 95 units . Fees $423.60', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':19,'LR-CS-10':44,'LR-CS-30':10,'LR-TSC-5PACK':5,'LR-CS-120':0} }, /* TODAY_KPI_PLACEHOLDER */
+  'today': { revenue:'$1,206.75', units:'78', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Today July 11, 2026 7:00 PM ET . SP-API live', usub:'72 orders . 95 units . Fees $423.60', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':19,'LR-CS-10':44,'LR-CS-30':10,'LR-TSC-5PACK':5,'LR-CS-120':0} }, /* TODAY_KPI_PLACEHOLDER */
   'lifetime': { revenue:'$439,795', units:'20,748', spend:'$226,449', acos:'51.5%', sessions:'187,331', ipi:'628',
                rsub:'Lifetime Ad Sales (all campaigns)', usub:'Lifetime ad purchases', ssub:'Lifetime total spend', asub:'Lifetime avg ACOS', sesub:'Lifetime ad clicks', isub:'Range 570–686',
                acosColor:'#d97706' },
@@ -1600,8 +1603,11 @@ function renderSupplyChain() {
   // ── how-it-works — comprehensive calc docs ────────────────────
   const howHTML = `
     <div class="sc-calc-docs">
-      <div class="sc-calc-docs-title">📋 How Calculations Work — Full Reference</div>
-      <div class="sc-calc-grid">
+      <div class="sc-calc-docs-title" onclick="toggleCalcDocs()">
+        📋 How Calculations Work — Full Reference
+        <span class="sc-calc-chevron" id="sc-calc-chevron">▼</span>
+      </div>
+      <div id="sc-calc-body" class="sc-calc-grid">
 
         <div class="sc-calc-card">
           <div class="sc-calc-card-title">⏱ Lead Time Cycle</div>
@@ -1737,6 +1743,17 @@ function renderSupplyChain() {
 
 // ── Inventory Sub-tab Switching ─────────────────────────────────
 let currentInvPanel = 'stock';
+function toggleCalcDocs() {
+  const body     = document.getElementById('sc-calc-body');
+  const chevron  = document.getElementById('sc-calc-chevron');
+  if (!body) return;
+  const hidden = body.style.display === 'none';
+  body.style.display    = hidden ? '' : 'none';
+  chevron.textContent   = hidden ? '▼' : '▶';
+  if (hidden) chevron.classList.remove('collapsed');
+  else        chevron.classList.add('collapsed');
+}
+
 function switchInvTab(panel, el) {
   currentInvPanel = panel;
   document.querySelectorAll('.inv-tab').forEach(t => t.classList.remove('active'));
