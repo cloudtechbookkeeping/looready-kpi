@@ -1677,7 +1677,7 @@ function renderSupplyChain() {
       <td>${r.fbaOnHand.toLocaleString()}</td>
       <td>${r.awdOnHand.toLocaleString()}</td>
       <td>${(r.fbaInbound + r.awdInbound).toLocaleString()}</td>
-      <td style="font-weight:700;">${(r.fbaOnHand + r.awdOnHand + r.fbaInbound + r.awdInbound).toLocaleString()}</td>
+      <td style="font-weight:700;">${r.totalCombined.toLocaleString()}</td>
       <td><span class="sc-days ${cfg.dayCls}">${daysLabel}</span></td>
       <td>
         <div class="sc-notify-date ${cfg.notifyCls}">${notifyLabel}</div>
