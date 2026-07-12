@@ -1494,8 +1494,10 @@ function renderSupplyChain() {
     const fbaInbound   = typeof fba.inbound        === 'number' ? fba.inbound        : 0;
     const awdOnHand    = typeof awd.onhand         === 'number' ? awd.onhand         : 0;
     const awdInbound   = typeof awd.inbound        === 'number' ? awd.inbound        : 0;
+    // FBA total (all statuses, excluding inbound)
+    const fbaTotal = fbaOnHand + fbaReserved + fbaResearch + fbaUnfulfill;
     // Match Inventory tab grand total: fulfillable + reserved + researching + unfulfillable + inbound (FBA+AWD)
-    const totalCombined = fbaOnHand + fbaReserved + fbaResearch + fbaUnfulfill + fbaInbound + awdOnHand + awdInbound;
+    const totalCombined = fbaTotal + fbaInbound + awdOnHand + awdInbound;
 
     const raw30 = skuUnits30[sku];
     const units30 = typeof raw30 === 'number' ? raw30 : 0;
@@ -1520,7 +1522,7 @@ function renderSupplyChain() {
       else                           status = 'ontrack';
     }
 
-    return { sku, s, prod, fbaOnHand, fbaInbound, awdOnHand, awdInbound, totalCombined,
+    return { sku, s, prod, fbaOnHand, fbaTotal, fbaInbound, awdOnHand, awdInbound, totalCombined,
              velocity, daysOfSupply, notifyDaysFrom, notifyDate, stockoutDate,
              orderQty, arrivalEarly, arrivalLate, status };
   });
@@ -1674,7 +1676,7 @@ function renderSupplyChain() {
       </td>
       <td><span class="sc-pill ${cfg.pillCls}">${cfg.label}</span></td>
       <td style="font-weight:700;">${velLabel}</td>
-      <td>${r.fbaOnHand.toLocaleString()}</td>
+      <td>${r.fbaTotal.toLocaleString()}</td>
       <td>${r.awdOnHand.toLocaleString()}</td>
       <td>${(r.fbaInbound + r.awdInbound).toLocaleString()}</td>
       <td style="font-weight:700;">${r.totalCombined.toLocaleString()}</td>
@@ -1701,7 +1703,7 @@ function renderSupplyChain() {
           <table class="sc-table">
             <thead><tr>
               <th>SKU</th><th>Status</th><th>Velocity (30d avg)</th>
-              <th>FBA On-Hand</th><th>AWD On-Hand</th><th>Total Inbound</th><th>Combined Total</th>
+              <th>FBA Total</th><th>AWD On-Hand</th><th>Total Inbound</th><th>Combined Total</th>
               <th>Days of Supply</th><th>Notify Mr. Wang By</th><th>Order Qty (120d)</th>
               <th>Est. Arrival Window</th><th>Stockout Date</th><th>Action</th>
             </tr></thead>
