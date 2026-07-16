@@ -1746,30 +1746,24 @@ function renderSupplyChain() {
       <span class="sc-ab-btn sc-ab-btn-orange">URGENT ACTION</span>
     </div>`;
   });
-  if (ontrackRows.length > 0) {
-    const detail = ontrackRows.map(r =>
-      `<b>${r.sku}</b>${r.prod.brand ? ' ('+r.prod.brand+')' : ''} — ${Math.round(r.daysOfSupply)}d supply, notify by ${fmt(r.notifyDate)}`
-    ).join(' &nbsp;|&nbsp; ');
+  ontrackRows.forEach(r => {
     abRows += `<div class="sc-ab-row sc-ab-ontrack">
       <div class="sc-ab-left">
         <div class="sc-ab-title">✅ ON TRACK — Monitor Regularly</div>
-        <div class="sc-ab-detail">${detail}</div>
+        <div class="sc-ab-detail"><b>${r.sku}</b> (${r.prod.shortName || ''}) — ${Math.round(r.daysOfSupply)}d supply, notify by ${fmt(r.notifyDate)}</div>
       </div>
       <span class="sc-ab-btn sc-ab-btn-green">ON TRACK</span>
     </div>`;
-  }
-  if (naRows.length > 0) {
-    const detail = naRows.map(r =>
-      `<b>${r.sku}</b> — no 30-day sales data. Fix suppressed listings or wait for sales to establish velocity.`
-    ).join(' ');
+  });
+  naRows.forEach(r => {
     abRows += `<div class="sc-ab-row sc-ab-na">
       <div class="sc-ab-left">
         <div class="sc-ab-title">— No Velocity Data</div>
-        <div class="sc-ab-detail">${detail}</div>
+        <div class="sc-ab-detail"><b>${r.sku}</b> (${r.prod.shortName || ''}) — no 30-day sales data. Fix suppressed listings or wait for sales to establish velocity.</div>
       </div>
       <span class="sc-ab-btn sc-ab-btn-gray">CHECK LISTING</span>
     </div>`;
-  }
+  });
   if (!abRows) abRows = `<div style="padding:16px;color:var(--text-muted);font-size:13px;text-align:center;">✅ All SKUs on track — no immediate actions needed.</div>`;
 
   const actionBoardHTML = `
