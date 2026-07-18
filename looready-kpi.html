@@ -21,7 +21,7 @@
   --border: #dce8f0;
   --text-primary: #0d1e2e;
   --text-secondary: #527080;
-  --text-muted: #8eaabb;
+  --text-muted: #8eaabb;h
 
   /* ── Semantic palette (logo-derived) ── */
   --green:       #66bc46;  --green-light:  #eef8e8;
@@ -1465,11 +1465,11 @@ function renderSupplyChain() {
   };
 
   const skuProducts = {
-    'LR-TSC-30PACK': { fullName:'Toilet Seat Covers XL 30-Pack (18×22")', shortName:'30-Pack XL',   brand:'SPARKC', supplier:'UAC Logistics' },
-    'LR-CS-10':      { fullName:'Toilet Seat Covers Regular 10-Pack (16×19")', shortName:'10-Pack',  brand:'SPARKC', supplier:'UAC Logistics' },
-    'LR-CS-30':      { fullName:'Toilet Seat Covers Regular 30-Pack (16×19")', shortName:'30-Pack Reg.', brand:'SPARKC', supplier:'UAC Logistics' },
-    'LR-TSC-5PACK':  { fullName:'Toilet Seat Covers XL 5-Pack (18×22")', shortName:'5-Pack XL',     brand:'SPARKC', supplier:'UAC Logistics' },
-    'LR-CS-120':     { fullName:'Toilet Seat Covers Regular 120-Pack (16×19")', shortName:'120-Pack', brand:'SPARKC', supplier:'UAC Logistics' },
+    'LR-TSC-30PACK': { fullName:'Toilet Seat Covers XL 30-Pack (18×22")', shortName:'30-Pack XL',   brand:'SPARKC', supplier:'UAC Logistics', targetVelocity:'26.0/d', phase2Qty:3000, phase2Ships:'Jun 21', phase2Note:null },
+    'LR-CS-10':      { fullName:'Toilet Seat Covers Regular 10-Pack (16×19")', shortName:'10-Pack',  brand:'SPARKC', supplier:'UAC Logistics', targetVelocity:'40/d',   phase2Qty:2000, phase2Ships:'Jun 21', phase2Note:null },
+    'LR-CS-30':      { fullName:'Toilet Seat Covers Regular 30-Pack (16×19")', shortName:'30-Pack Reg.', brand:'SPARKC', supplier:'UAC Logistics', targetVelocity:'40/d', phase2Qty:4000, phase2Ships:'Jun 21', phase2Note:null },
+    'LR-TSC-5PACK':  { fullName:'Toilet Seat Covers XL 5-Pack (18×22")', shortName:'5-Pack XL',     brand:'SPARKC', supplier:'UAC Logistics', targetVelocity:'~4.8/d', phase2Qty:0,    phase2Ships:null,     phase2Note:'in production' },
+    'LR-CS-120':     { fullName:'Toilet Seat Covers Regular 120-Pack (16×19")', shortName:'120-Pack', brand:'SPARKC', supplier:'UAC Logistics', targetVelocity:null,     phase2Qty:300,  phase2Ships:'Jun 21', phase2Note:null },
   };
 
   const statusCfg = {
@@ -1676,6 +1676,15 @@ function renderSupplyChain() {
       </td>
       <td><span class="sc-pill ${cfg.pillCls}">${cfg.label}</span></td>
       <td style="font-weight:700;">${velLabel}</td>
+      <td style="font-weight:700;color:var(--blue);">${r.prod.targetVelocity || '—'}</td>
+      <td style="text-align:center;">
+        ${r.prod.phase2Qty > 0
+          ? `<div style="font-weight:700;font-size:13px;color:#7c3aed;">${r.prod.phase2Qty.toLocaleString()}</div><div style="font-size:10px;color:var(--text-muted);">ships ${r.prod.phase2Ships}</div>`
+          : r.prod.phase2Note
+            ? `<div style="font-weight:700;font-size:13px;color:#9ca3af;">0</div><div style="font-size:10px;color:#9ca3af;">${r.prod.phase2Note}</div>`
+            : `<div style="color:var(--text-muted);">—</div>`
+        }
+      </td>
       <td>${r.fbaTotal.toLocaleString()}</td>
       <td>${r.awdOnHand.toLocaleString()}</td>
       <td>${(r.fbaInbound + r.awdInbound).toLocaleString()}</td>
@@ -1703,6 +1712,7 @@ function renderSupplyChain() {
           <table class="sc-table">
             <thead><tr>
               <th>SKU</th><th>Status</th><th>Velocity (30d avg)</th>
+              <th>Target Velocity</th><th style="background:#ede9fe;color:#6d28d9;">Phase 2 (In Production)</th>
               <th>FBA Total</th><th>AWD On-Hand</th><th>Total Inbound</th><th>Combined Total</th>
               <th>Days of Supply</th><th>Notify Mr. Wang By</th><th>Order Qty (120d)</th>
               <th>Est. Arrival Window</th><th>Stockout Date</th><th>Action</th>
@@ -1968,3 +1978,4 @@ new Chart(iCtx, {
 </div><!-- /main-area -->
 </body>
 </html>
+TESTMARKER123
