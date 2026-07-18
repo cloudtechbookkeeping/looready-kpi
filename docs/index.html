@@ -21,7 +21,7 @@
   --border: #dce8f0;
   --text-primary: #0d1e2e;
   --text-secondary: #527080;
-  --text-muted: #8eaabb;
+  --text-muted: #8eaabb;h
 
   /* ── Semantic palette (logo-derived) ── */
   --green:       #66bc46;  --green-light:  #eef8e8;
@@ -573,7 +573,7 @@ body {
       <div class="live-dot"></div>
       <div>
         <span class="live-label">Live</span>
-        <span class="live-time">Updated July 18, 2026<br>5:22 AM ET</span>
+        <span class="live-time">Updated July 18, 2026<br>5:58 AM ET</span>
       </div>
     </div>
   </div>
@@ -605,7 +605,7 @@ body {
 <!-- ══════════════ DASHBOARD SECTION ══════════════ -->
 <div id="section-dashboard" class="section active">
 
-  <div class="updated-line">Data snapshot: July 18, 2026 5:22 AM ET · SP-API live pull</div>
+  <div class="updated-line">Data snapshot: July 18, 2026 5:58 AM ET · SP-API live pull</div>
 
   <!-- KPI Cards -->
   <div class="kpi-grid" id="kpi-cards">
@@ -1281,13 +1281,13 @@ body {
 
 <script>
 // ── Inventory Data ──────────────────────────────────────────────
-const inventoryData = {'LR-TSC-30PACK':{fba:{fulfillable:1047,inbound:200,reserved:281,researching:0,unfulfillable:2},awd:{onhand:1035,inbound:1825,outbound:0}},'LR-CS-10':{fba:{fulfillable:543,inbound:0,reserved:1043,researching:6,unfulfillable:4},awd:{onhand:0,inbound:2052,outbound:0}},'LR-CS-30':{fba:{fulfillable:533,inbound:0,reserved:355,researching:1,unfulfillable:7},awd:{onhand:1080,inbound:3996,outbound:0}},'LR-TSC-5PACK':{fba:{fulfillable:164,inbound:0,reserved:19,researching:3,unfulfillable:1},awd:{onhand:1200,inbound:0,outbound:0}},'LR-CS-120':{fba:{fulfillable:149,inbound:0,reserved:0,researching:0,unfulfillable:0},awd:{onhand:48,inbound:300,outbound:0}}};
+const inventoryData = {'LR-TSC-30PACK':{fba:{fulfillable:1047,inbound:200,reserved:281,researching:0,unfulfillable:2},awd:{onhand:1035,inbound:1825,outbound:0}},'LR-CS-10':{fba:{fulfillable:546,inbound:0,reserved:1039,researching:6,unfulfillable:4},awd:{onhand:0,inbound:2052,outbound:0}},'LR-CS-30':{fba:{fulfillable:533,inbound:0,reserved:353,researching:1,unfulfillable:7},awd:{onhand:1080,inbound:3996,outbound:0}},'LR-TSC-5PACK':{fba:{fulfillable:164,inbound:0,reserved:19,researching:3,unfulfillable:1},awd:{onhand:1200,inbound:0,outbound:0}},'LR-CS-120':{fba:{fulfillable:149,inbound:0,reserved:0,researching:0,unfulfillable:0},awd:{onhand:48,inbound:300,outbound:0}}};
 
 // ── Tab Switching Data ──────────────────────────────────────────
 const tabData = {
   '30d': { revenue:'$41,398.81', units:'2658', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Last 30 Days · SP-API live', usub:'2200 orders . 2658 units', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':983,'LR-CS-10':979,'LR-CS-30':372,'LR-TSC-5PACK':121,'LR-CS-120':0}, days30d:29 }, /* 30D_KPI_PLACEHOLDER */
   '7d':  { revenue:'$9,787.08', units:'542', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Last 7 Days · SP-API live', usub:'487 orders . 542 units', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':212,'LR-CS-10':228,'LR-CS-30':81,'LR-TSC-5PACK':21,'LR-CS-120':0} }, /* 7D_KPI_PLACEHOLDER */
-  'today': { revenue:'$1,248.68', units:'60', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Today July 18, 2026 5:22 AM ET . SP-API live', usub:'55 orders . 70 units . Fees $496.07', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':30,'LR-CS-10':15,'LR-CS-30':13,'LR-TSC-5PACK':2,'LR-CS-120':0} }, /* TODAY_KPI_PLACEHOLDER */
+  'today': { revenue:'$1,248.68', units:'60', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Today July 18, 2026 5:58 AM ET . SP-API live', usub:'55 orders . 70 units . Fees $496.07', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':30,'LR-CS-10':15,'LR-CS-30':13,'LR-TSC-5PACK':2,'LR-CS-120':0} }, /* TODAY_KPI_PLACEHOLDER */
   'lifetime': { revenue:'$439,795', units:'20,748', spend:'$226,449', acos:'51.5%', sessions:'187,331', ipi:'628',
                rsub:'Lifetime Ad Sales (all campaigns)', usub:'Lifetime ad purchases', ssub:'Lifetime total spend', asub:'Lifetime avg ACOS', sesub:'Lifetime ad clicks', isub:'Range 570–686',
                acosColor:'#d97706' },
@@ -1465,11 +1465,11 @@ function renderSupplyChain() {
   };
 
   const skuProducts = {
-    'LR-TSC-30PACK': { fullName:'Toilet Seat Covers XL 30-Pack (18×22")', shortName:'30-Pack XL',   brand:'SPARKC', supplier:'UAC Logistics' },
-    'LR-CS-10':      { fullName:'Toilet Seat Covers Regular 10-Pack (16×19")', shortName:'10-Pack',  brand:'SPARKC', supplier:'UAC Logistics' },
-    'LR-CS-30':      { fullName:'Toilet Seat Covers Regular 30-Pack (16×19")', shortName:'30-Pack Reg.', brand:'SPARKC', supplier:'UAC Logistics' },
-    'LR-TSC-5PACK':  { fullName:'Toilet Seat Covers XL 5-Pack (18×22")', shortName:'5-Pack XL',     brand:'SPARKC', supplier:'UAC Logistics' },
-    'LR-CS-120':     { fullName:'Toilet Seat Covers Regular 120-Pack (16×19")', shortName:'120-Pack', brand:'SPARKC', supplier:'UAC Logistics' },
+    'LR-TSC-30PACK': { fullName:'Toilet Seat Covers XL 30-Pack (18×22")', shortName:'30-Pack XL',   brand:'SPARKC', supplier:'UAC Logistics', targetVelocity:'26.0/d', phase2Qty:3000, phase2Ships:'Jun 21', phase2Note:null },
+    'LR-CS-10':      { fullName:'Toilet Seat Covers Regular 10-Pack (16×19")', shortName:'10-Pack',  brand:'SPARKC', supplier:'UAC Logistics', targetVelocity:'40/d',   phase2Qty:2000, phase2Ships:'Jun 21', phase2Note:null },
+    'LR-CS-30':      { fullName:'Toilet Seat Covers Regular 30-Pack (16×19")', shortName:'30-Pack Reg.', brand:'SPARKC', supplier:'UAC Logistics', targetVelocity:'40/d', phase2Qty:4000, phase2Ships:'Jun 21', phase2Note:null },
+    'LR-TSC-5PACK':  { fullName:'Toilet Seat Covers XL 5-Pack (18×22")', shortName:'5-Pack XL',     brand:'SPARKC', supplier:'UAC Logistics', targetVelocity:'~4.8/d', phase2Qty:0,    phase2Ships:null,     phase2Note:'in production' },
+    'LR-CS-120':     { fullName:'Toilet Seat Covers Regular 120-Pack (16×19")', shortName:'120-Pack', brand:'SPARKC', supplier:'UAC Logistics', targetVelocity:null,     phase2Qty:300,  phase2Ships:'Jun 21', phase2Note:null },
   };
 
   const statusCfg = {
@@ -1676,6 +1676,15 @@ function renderSupplyChain() {
       </td>
       <td><span class="sc-pill ${cfg.pillCls}">${cfg.label}</span></td>
       <td style="font-weight:700;">${velLabel}</td>
+      <td style="font-weight:700;color:var(--blue);">${r.prod.targetVelocity || '—'}</td>
+      <td style="text-align:center;">
+        ${r.prod.phase2Qty > 0
+          ? `<div style="font-weight:700;font-size:13px;color:#7c3aed;">${r.prod.phase2Qty.toLocaleString()}</div><div style="font-size:10px;color:var(--text-muted);">ships ${r.prod.phase2Ships}</div>`
+          : r.prod.phase2Note
+            ? `<div style="font-weight:700;font-size:13px;color:#9ca3af;">0</div><div style="font-size:10px;color:#9ca3af;">${r.prod.phase2Note}</div>`
+            : `<div style="color:var(--text-muted);">—</div>`
+        }
+      </td>
       <td>${r.fbaTotal.toLocaleString()}</td>
       <td>${r.awdOnHand.toLocaleString()}</td>
       <td>${(r.fbaInbound + r.awdInbound).toLocaleString()}</td>
@@ -1703,6 +1712,7 @@ function renderSupplyChain() {
           <table class="sc-table">
             <thead><tr>
               <th>SKU</th><th>Status</th><th>Velocity (30d avg)</th>
+              <th>Target Velocity</th><th style="background:#ede9fe;color:#6d28d9;">Phase 2 (In Production)</th>
               <th>FBA Total</th><th>AWD On-Hand</th><th>Total Inbound</th><th>Combined Total</th>
               <th>Days of Supply</th><th>Notify Mr. Wang By</th><th>Order Qty (120d)</th>
               <th>Est. Arrival Window</th><th>Stockout Date</th><th>Action</th>
@@ -1968,3 +1978,4 @@ new Chart(iCtx, {
 </div><!-- /main-area -->
 </body>
 </html>
+TESTMARKER123
