@@ -1,6 +1,6 @@
 {
   "date": "2026-07-18",
-  "pulled_at": "2026-07-18T09:56:30.508704",
+  "pulled_at": "2026-07-18T10:21:15.294113",
   "orders_today": 55,
   "revenue_today": 1248.68,
   "units_ordered": 70,
@@ -23,9 +23,9 @@
       "unfulfillable": 0
     },
     "3Z-3J64-NT0U": {
-      "fulfillable": 1047,
+      "fulfillable": 1046,
       "inbound": 200,
-      "reserved": 281,
+      "reserved": 282,
       "researching": 0,
       "unfulfillable": 2
     },
@@ -65,9 +65,9 @@
       "unfulfillable": 7
     },
     "LR-TSC-30PACK": {
-      "fulfillable": 1047,
+      "fulfillable": 1046,
       "inbound": 200,
-      "reserved": 281,
+      "reserved": 282,
       "researching": 0,
       "unfulfillable": 2
     },
