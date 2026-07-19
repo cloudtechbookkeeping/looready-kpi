@@ -1961,8 +1961,8 @@ if (inventoryData && Object.keys(inventoryData).length > 0) {
   var _ihs = [["LR-TSC-30PACK","ihs-30pack"],["LR-CS-10","ihs-cs10"],["LR-CS-30","ihs-cs30"],["LR-TSC-5PACK","ihs-5pack"],["LR-CS-120","ihs-cs120"]];
   for (var _i = 0; _i < _ihs.length; _i++) {
     var _el = document.getElementById(_ihs[_i][1]);
-    var _d = inventoryData[_ihs[_i][0]];
-    if (_el && _d) _el.textContent = _d.fba.toLocaleString() + " units";
+    var _d = (inventoryData[_ihs[_i][0]] || {}).fba || {};
+    if (_el && _d.fulfillable !== undefined) _el.textContent = _d.fulfillable.toLocaleString() + " units";
   }
 }
 
@@ -1970,9 +1970,9 @@ const iCtx = document.getElementById('inventoryChart').getContext('2d');
 new Chart(iCtx, {
   type: 'bar',
   data: {
-    labels: Object.values(inventoryData).map(function(s){return s.name})],
-    datasets: [{ label: 'FBA Units', data: Object.values(inventoryData).map(function(s){return s.fba}),
-      backgroundColor: Object.values(inventoryData).map(function(s){return s.color}),
+    labels: skuMeta.map(function(s){return s.name})],
+    datasets: [{ label: 'FBA Units', data: skuMeta.map(function(s){return (inventoryData[s.key]&&inventoryData[s.key].fba)?inventoryData[s.key].fba.fulfillable:0}),
+      backgroundColor: skuMeta.map(function(s){return s.color}),
       borderRadius: 5, borderSkipped: false }]
   },
   options: {
