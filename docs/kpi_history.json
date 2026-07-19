@@ -1082,14 +1082,14 @@
   },
   {
     "date": "2026-07-19",
-    "revenue": 905.77,
-    "orders": 50,
+    "revenue": 976.32,
+    "orders": 54,
     "units": 79,
     "sku_units": {
       "LR-CS-30": 9,
-      "LR-TSC-30PACK": 16,
-      "LR-CS-10": 23,
-      "LR-TSC-5PACK": 5
+      "LR-TSC-30PACK": 18,
+      "LR-CS-10": 24,
+      "LR-TSC-5PACK": 6
     }
   }
 ]
