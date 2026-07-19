@@ -825,23 +825,23 @@ body {
         </div>
         <div class="mini-stat">
           <span class="mini-stat-label">LR-TSC-30PACK</span>
-          <span class="mini-stat-val">856 units</span>
+          <span class="mini-stat-val" id="ihs-30pack">856 units</span>
         </div>
         <div class="mini-stat">
           <span class="mini-stat-label">LR-CS-10</span>
-          <span class="mini-stat-val">702 units</span>
+          <span class="mini-stat-val" id="ihs-cs10">702 units</span>
         </div>
         <div class="mini-stat">
           <span class="mini-stat-label">LR-CS-30</span>
-          <span class="mini-stat-val">304 units</span>
+          <span class="mini-stat-val" id="ihs-cs30">304 units</span>
         </div>
         <div class="mini-stat">
           <span class="mini-stat-label">LR-TSC-5PACK</span>
-          <span class="mini-stat-val">228 units</span>
+          <span class="mini-stat-val" id="ihs-5pack">228 units</span>
         </div>
         <div class="mini-stat">
           <span class="mini-stat-label">LR-CS-120 ⚠️</span>
-          <span class="mini-stat-val red">152 (Suppressed)</span>
+          <span class="mini-stat-val" id="ihs-cs120">149 units/span>
         </div>
         <div style="margin-top:12px;padding:10px 12px;background:#fff7ed;border-radius:8px;border:1px solid #fed7aa;font-size:11px;color:#92400e;">
           ⚠️ LR-CS-120 is Search Suppressed. Fix listing to unlock $69.99 inventory.
@@ -1956,13 +1956,23 @@ new Chart(document.getElementById('profitDonut').getContext('2d'), { type: 'doug
 new Chart(document.getElementById('profitDonutSales').getContext('2d'), { type: 'doughnut', data: donutData, options: donutOpts });
 
 // ── Inventory Bar Chart ─────────────────────────────────────────
+// Sync Inventory Health stats from inventoryData
+if (inventoryData && Object.keys(inventoryData).length > 0) {
+  var _ihs = [["LR-TSC-30PACK","ihs-30pack"],["LR-CS-10","ihs-cs10"],["LR-CS-30","ihs-cs30"],["LR-TSC-5PACK","ihs-5pack"],["LR-CS-120","ihs-cs120"]];
+  for (var _i = 0; _i < _ihs.length; _i++) {
+    var _el = document.getElementById(_ihs[_i][1]);
+    var _d = inventoryData[_ihs[_i][0]];
+    if (_el && _d) _el.textContent = _d.fba.toLocaleString() + " units";
+  }
+}
+
 const iCtx = document.getElementById('inventoryChart').getContext('2d');
 new Chart(iCtx, {
   type: 'bar',
   data: {
-    labels: ['30-Pack','10-Pack','CS-30','5-Pack','120-Pack'],
-    datasets: [{ label: 'FBA Units', data: [856,702,304,228,152],
-      backgroundColor: ['#66bc46','#2688c9','#8b5cf6','#f59e0b','#ef4444'],
+    labels: Object.values(inventoryData).map(function(s){return s.name})],
+    datasets: [{ label: 'FBA Units', data: Object.values(inventoryData).map(function(s){return s.fba}),
+      backgroundColor: Object.values(inventoryData).map(function(s){return s.color}),
       borderRadius: 5, borderSkipped: false }]
   },
   options: {
