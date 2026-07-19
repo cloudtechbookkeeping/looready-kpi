@@ -607,58 +607,6 @@ body {
 
   <div class="updated-line">Data snapshot: June 9, 2026 12:00 PM ET · SP-API live pull</div>
 
-  <!-- KPI Cards -->
-  <div class="kpi-grid" id="kpi-cards">
-    <div class="kpi-card revenue">
-      <div class="kpi-accent"></div>
-      <div class="kpi-icon">💰</div>
-      <div class="kpi-label">Revenue</div>
-      <div class="kpi-value" id="kv-revenue">$35,210</div>
-      <div class="kpi-sub" id="ks-revenue">Last 30 days · All products</div>
-      <div class="kpi-chip up">▲ Organic + PPC</div>
-    </div>
-    <div class="kpi-card revenue">
-      <div class="kpi-accent"></div>
-      <div class="kpi-icon">📦</div>
-      <div class="kpi-label">Units Sold</div>
-      <div class="kpi-value" id="kv-units">2,045</div>
-      <div class="kpi-sub" id="ks-units">Avg 68/day</div>
-      <div class="kpi-chip up">▲ 48 B2B</div>
-    </div>
-    <div class="kpi-card ads">
-      <div class="kpi-accent"></div>
-      <div class="kpi-icon">🎯</div>
-      <div class="kpi-label">Ad Spend</div>
-      <div class="kpi-value small" id="kv-spend">$226,449</div>
-      <div class="kpi-sub" id="ks-spend">Lifetime total</div>
-      <div class="kpi-chip warn">⚡ 1 out of budget</div>
-    </div>
-    <div class="kpi-card ads">
-      <div class="kpi-accent"></div>
-      <div class="kpi-icon">📊</div>
-      <div class="kpi-label">ACOS</div>
-      <div class="kpi-value" id="kv-acos">51.5%</div>
-      <div class="kpi-sub" id="ks-acos">Lifetime avg</div>
-      <div class="kpi-chip warn">Target &lt;35%</div>
-    </div>
-    <div class="kpi-card traffic">
-      <div class="kpi-accent"></div>
-      <div class="kpi-icon">👥</div>
-      <div class="kpi-label">Sessions</div>
-      <div class="kpi-value" id="kv-sessions">11,104</div>
-      <div class="kpi-sub" id="ks-sessions">Last 30 days</div>
-      <div class="kpi-chip up">▲ 17.39% CVR</div>
-    </div>
-    <div class="kpi-card inventory">
-      <div class="kpi-accent"></div>
-      <div class="kpi-icon">🏆</div>
-      <div class="kpi-label">IPI Score</div>
-      <div class="kpi-value" id="kv-ipi">628</div>
-      <div class="kpi-sub" id="ks-ipi">Range 570–686</div>
-      <div class="kpi-chip up">▲ Healthy</div>
-    </div>
-  </div>
-
   <!-- Key Insights Row -->
   <div class="insights-row">
     <div class="insight-chip">
@@ -690,20 +638,6 @@ body {
       <span class="ic-icon">⚠️</span>
       <span class="ic-label">LR-CS-120 Suppressed</span>
       <span class="ic-val" style="color:var(--red);">Fix listing</span>
-    </div>
-  </div>
-
-  <!-- SKU Breakdown -->
-  <div class="card mb-20">
-    <div class="card-header">
-      <div class="card-title">
-        <span class="dot" style="background:var(--blue);"></span>
-        Units Sold by SKU
-      </div>
-      <span class="card-badge" id="sku-tab-label">Last 30 Days</span>
-    </div>
-    <div class="card-body">
-      <div class="sku-grid" id="sku-grid"></div>
     </div>
   </div>
 
@@ -921,6 +855,72 @@ body {
 
 <!-- ══════════════ SALES SECTION ══════════════ -->
 <div id="section-sales" class="section">
+
+  <!-- KPI Cards -->
+  <div class="kpi-grid" id="kpi-cards">
+    <div class="kpi-card revenue">
+      <div class="kpi-accent"></div>
+      <div class="kpi-icon">💰</div>
+      <div class="kpi-label">Revenue</div>
+      <div class="kpi-value" id="kv-revenue">$35,210</div>
+      <div class="kpi-sub" id="ks-revenue">Last 30 days · All products</div>
+      <div class="kpi-chip up">▲ Organic + PPC</div>
+    </div>
+    <div class="kpi-card revenue">
+      <div class="kpi-accent"></div>
+      <div class="kpi-icon">📦</div>
+      <div class="kpi-label">Units Sold</div>
+      <div class="kpi-value" id="kv-units">2,045</div>
+      <div class="kpi-sub" id="ks-units">Avg 68/day</div>
+      <div class="kpi-chip up">▲ 48 B2B</div>
+    </div>
+    <div class="kpi-card ads">
+      <div class="kpi-accent"></div>
+      <div class="kpi-icon">🎯</div>
+      <div class="kpi-label">Ad Spend</div>
+      <div class="kpi-value small" id="kv-spend">$226,449</div>
+      <div class="kpi-sub" id="ks-spend">Lifetime total</div>
+      <div class="kpi-chip warn">⚡ 1 out of budget</div>
+    </div>
+    <div class="kpi-card ads">
+      <div class="kpi-accent"></div>
+      <div class="kpi-icon">📊</div>
+      <div class="kpi-label">ACOS</div>
+      <div class="kpi-value" id="kv-acos">51.5%</div>
+      <div class="kpi-sub" id="ks-acos">Lifetime avg</div>
+      <div class="kpi-chip warn">Target &lt;35%</div>
+    </div>
+    <div class="kpi-card traffic">
+      <div class="kpi-accent"></div>
+      <div class="kpi-icon">👥</div>
+      <div class="kpi-label">Sessions</div>
+      <div class="kpi-value" id="kv-sessions">11,104</div>
+      <div class="kpi-sub" id="ks-sessions">Last 30 days</div>
+      <div class="kpi-chip up">▲ 17.39% CVR</div>
+    </div>
+    <div class="kpi-card inventory">
+      <div class="kpi-accent"></div>
+      <div class="kpi-icon">🏆</div>
+      <div class="kpi-label">IPI Score</div>
+      <div class="kpi-value" id="kv-ipi">628</div>
+      <div class="kpi-sub" id="ks-ipi">Range 570–686</div>
+      <div class="kpi-chip up">▲ Healthy</div>
+    </div>
+  </div>
+
+  <!-- SKU Breakdown -->
+  <div class="card mb-20">
+    <div class="card-header">
+      <div class="card-title">
+        <span class="dot" style="background:var(--blue);"></span>
+        Units Sold by SKU
+      </div>
+      <span class="card-badge" id="sku-tab-label">Last 30 Days</span>
+    </div>
+    <div class="card-body">
+      <div class="sku-grid" id="sku-grid"></div>
+    </div>
+  </div>
 
   <div class="updated-line" style="margin-bottom:20px;">Sales Analysis · United States &amp; United Kingdom · FBA</div>
 
