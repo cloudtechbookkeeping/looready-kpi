@@ -1970,7 +1970,7 @@ const iCtx = document.getElementById('inventoryChart').getContext('2d');
 new Chart(iCtx, {
   type: 'bar',
   data: {
-    labels: skuMeta.map(function(s){return s.name})],
+    labels: skuMeta.map(function(s){return s.name}),
     datasets: [{ label: 'FBA Units', data: skuMeta.map(function(s){return (inventoryData[s.key]&&inventoryData[s.key].fba)?inventoryData[s.key].fba.fulfillable:0}),
       backgroundColor: skuMeta.map(function(s){return s.color}),
       borderRadius: 5, borderSkipped: false }]
