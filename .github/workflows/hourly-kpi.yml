@@ -37,5 +37,5 @@ jobs:
           sed -i "s|targetVelocity:'26.0/d'|targetVelocity:'35/d'|g" /tmp/live.html
           sed -i "s|targetVelocity:'~4.8/d'|targetVelocity:'5/d'|g" /tmp/live.html
           grep -o "targetVelocity:'[^']*'" /tmp/live.html
-          curl -s -T /tmp/live.html --user "u133013644:${FTP_PASS}" "ftp://145.79.209.123/public_html/looreadykpi/index.html"
+          python3 -c "import ftplib,io,os; d=open('/tmp/live.html','rb').read(); f=ftplib.FTP(); f.connect('145.79.209.123',21,timeout=30); f.login('u133013644',os.environ['FTP_PASS']); f.storbinary('STOR /public_html/looreadykpi/index.html',io.BytesIO(d)); f.quit(); print('done',len(d))" "u133013644:${FTP_PASS}" "ftp://145.79.209.123/public_html/looreadykpi/index.html"
           echo "Done"
