@@ -573,7 +573,7 @@ body {
       <div class="live-dot"></div>
       <div>
         <span class="live-label">Live</span>
-        <span class="live-time">Updated July 20, 2026<br>3:51 AM ET</span>
+        <span class="live-time">Updated July 20, 2026<br>4:17 AM ET</span>
       </div>
     </div>
   </div>
@@ -605,7 +605,7 @@ body {
 <!-- ══════════════ DASHBOARD SECTION ══════════════ -->
 <div id="section-dashboard" class="section active">
 
-  <div class="updated-line">Data snapshot: July 20, 2026 3:51 AM ET · SP-API live pull</div>
+  <div class="updated-line">Data snapshot: July 20, 2026 4:17 AM ET · SP-API live pull</div>
 
   <!-- Key Insights Row -->
   <div class="insights-row">
@@ -1281,13 +1281,13 @@ body {
 
 <script>
 // ── Inventory Data ──────────────────────────────────────────────
-const inventoryData = {'LR-TSC-30PACK':{fba:{fulfillable:1069,inbound:175,reserved:236,researching:0,unfulfillable:2},awd:{onhand:935,inbound:1825,outbound:0}},'LR-CS-10':{fba:{fulfillable:532,inbound:0,reserved:982,researching:6,unfulfillable:6},awd:{onhand:0,inbound:2052,outbound:0}},'LR-CS-30':{fba:{fulfillable:566,inbound:0,reserved:304,researching:3,unfulfillable:6},awd:{onhand:1080,inbound:3996,outbound:0}},'LR-TSC-5PACK':{fba:{fulfillable:154,inbound:0,reserved:16,researching:3,unfulfillable:2},awd:{onhand:1200,inbound:0,outbound:0}},'LR-CS-120':{fba:{fulfillable:149,inbound:0,reserved:0,researching:0,unfulfillable:0},awd:{onhand:48,inbound:300,outbound:0}}};
+const inventoryData = {'LR-TSC-30PACK':{fba:{fulfillable:1071,inbound:175,reserved:233,researching:0,unfulfillable:2},awd:{onhand:935,inbound:1825,outbound:0}},'LR-CS-10':{fba:{fulfillable:532,inbound:0,reserved:981,researching:6,unfulfillable:6},awd:{onhand:0,inbound:2052,outbound:0}},'LR-CS-30':{fba:{fulfillable:566,inbound:0,reserved:304,researching:3,unfulfillable:6},awd:{onhand:1080,inbound:3996,outbound:0}},'LR-TSC-5PACK':{fba:{fulfillable:154,inbound:0,reserved:16,researching:3,unfulfillable:2},awd:{onhand:1200,inbound:0,outbound:0}},'LR-CS-120':{fba:{fulfillable:149,inbound:0,reserved:0,researching:0,unfulfillable:0},awd:{onhand:48,inbound:300,outbound:0}}};
 
 // ── Tab Switching Data ──────────────────────────────────────────
 const tabData = {
   '30d': { revenue:'$41,516.68', units:'2605', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Last 30 Days · SP-API live', usub:'2200 orders . 2605 units', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':972,'LR-CS-10':952,'LR-CS-30':372,'LR-TSC-5PACK':123,'LR-CS-120':0}, days30d:29 }, /* 30D_KPI_PLACEHOLDER */
   '7d':  { revenue:'$9,048.15', units:'495', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Last 7 Days · SP-API live', usub:'453 orders . 495 units', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':200,'LR-CS-10':199,'LR-CS-30':73,'LR-TSC-5PACK':23,'LR-CS-120':0} }, /* 7D_KPI_PLACEHOLDER */
-  'today': { revenue:'$689.43', units:'35', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Today July 20, 2026 3:51 AM ET . SP-API live', usub:'31 orders . 73 units . Fees $467.78', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':17,'LR-CS-10':11,'LR-CS-30':4,'LR-TSC-5PACK':3,'LR-CS-120':0} }, /* TODAY_KPI_PLACEHOLDER */
+  'today': { revenue:'$689.43', units:'35', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Today July 20, 2026 4:17 AM ET . SP-API live', usub:'31 orders . 73 units . Fees $467.78', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':17,'LR-CS-10':11,'LR-CS-30':4,'LR-TSC-5PACK':3,'LR-CS-120':0} }, /* TODAY_KPI_PLACEHOLDER */
   'lifetime': { revenue:'$439,795', units:'20,748', spend:'$226,449', acos:'51.5%', sessions:'187,331', ipi:'628',
                rsub:'Lifetime Ad Sales (all campaigns)', usub:'Lifetime ad purchases', ssub:'Lifetime total spend', asub:'Lifetime avg ACOS', sesub:'Lifetime ad clicks', isub:'Range 570–686',
                acosColor:'#d97706' },
@@ -1465,10 +1465,10 @@ function renderSupplyChain() {
   };
 
   const skuProducts = {
-    'LR-TSC-30PACK': { fullName:'Toilet Seat Covers XL 30-Pack (18×22")', shortName:'30-Pack XL',   brand:'SPARKC', supplier:'UAC Logistics', targetVelocity:'26.0/d', phase2Qty:3000, phase2Ships:'Jun 21', phase2Note:null },
+    'LR-TSC-30PACK': { fullName:'Toilet Seat Covers XL 30-Pack (18×22")', shortName:'30-Pack XL',   brand:'SPARKC', supplier:'UAC Logistics', targetVelocity:'35/d', phase2Qty:3000, phase2Ships:'Jun 21', phase2Note:null },
     'LR-CS-10':      { fullName:'Toilet Seat Covers Regular 10-Pack (16×19")', shortName:'10-Pack',  brand:'SPARKC', supplier:'UAC Logistics', targetVelocity:'40/d',   phase2Qty:2000, phase2Ships:'Jun 21', phase2Note:null },
     'LR-CS-30':      { fullName:'Toilet Seat Covers Regular 30-Pack (16×19")', shortName:'30-Pack Reg.', brand:'SPARKC', supplier:'UAC Logistics', targetVelocity:'40/d', phase2Qty:4000, phase2Ships:'Jun 21', phase2Note:null },
-    'LR-TSC-5PACK':  { fullName:'Toilet Seat Covers XL 5-Pack (18×22")', shortName:'5-Pack XL',     brand:'SPARKC', supplier:'UAC Logistics', targetVelocity:'~4.8/d', phase2Qty:0,    phase2Ships:null,     phase2Note:'in production' },
+    'LR-TSC-5PACK':  { fullName:'Toilet Seat Covers XL 5-Pack (18×22")', shortName:'5-Pack XL',     brand:'SPARKC', supplier:'UAC Logistics', targetVelocity:'5/d', phase2Qty:0,    phase2Ships:null,     phase2Note:'in production' },
     'LR-CS-120':     { fullName:'Toilet Seat Covers Regular 120-Pack (16×19")', shortName:'120-Pack', brand:'SPARKC', supplier:'UAC Logistics', targetVelocity:null,     phase2Qty:300,  phase2Ships:'Jun 21', phase2Note:null },
   };
 
