@@ -49,21 +49,19 @@ jobs:
           set -ex
 
           # Download live HTML
-          curl -L -s -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36" \
-            -o /tmp/live.html \
+          curl -L -s -A "Mozilla/5.0" -o /tmp/live.html \
             "http://looreadykpi.cloudtechbookkeeping.com/"
           echo "Downloaded: $(wc -c < /tmp/live.html) bytes"
-          echo "Velocity matches before patch:"
+
+          # Patch target velocities (sed uses different delimiters to avoid / conflicts)
+          sed -i "s|targetVelocity:'26\.0/d'|targetVelocity:'35/d'|g" /tmp/live.html
+          sed -i "s|targetVelocity:'~4\.8/d'|targetVelocity:'5/d'|g" /tmp/live.html
+
+          echo "Velocities after patch:"
           grep -o "targetVelocity:'[^']*'" /tmp/live.html || echo "none found"
 
-          # Patch target velocities
-          sed -i "s/targetVelocity:'26\.0\/d'/targetVelocity:'35\/d'/g" /tmp/live.html
-          sed -i "s/targetVelocity:'~4\.8\/d'/targetVelocity:'5\/d'/g" /tmp/live.html
-
-          echo "Velocity matches after patch:"
-          grep -o "targetVelocity:'[^']*'" /tmp/live.html || echo "none found"
-
-          # FTP upload
+          # FTP upload — use --user to safely pass password with special chars
           curl -s -T /tmp/live.html \
-            "ftp://u133013644:${FTP_PASS}@145.79.209.123/public_html/looreadykpi/index.html"
+            --user "u133013644:${FTP_PASS}" \
+            "ftp://145.79.209.123/public_html/looreadykpi/index.html"
           echo "FTP upload complete"
