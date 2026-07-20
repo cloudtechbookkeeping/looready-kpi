@@ -1,67 +1,41 @@
 name: LooReady Hourly KPI Update
-
 on:
   schedule:
-    - cron: '0 * * * *'   # Every hour, every day
-  workflow_dispatch:        # Also allows manual trigger from GitHub UI
-
+    - cron: '0 * * * *'
+  workflow_dispatch:
 permissions:
-  contents: write           # Needed to commit docs/index.html back to repo
-
+  contents: write
 jobs:
   update-kpi:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-
-      - name: Install dependencies
-        run: pip install requests
-
-      - name: Pull Amazon KPI data
+      - run: pip install requests
+      - name: Pull KPI data
         env:
           AMAZON_CLIENT_ID: ${{ secrets.AMAZON_CLIENT_ID }}
           AMAZON_CLIENT_SECRET: ${{ secrets.AMAZON_CLIENT_SECRET }}
           AMAZON_REFRESH_TOKEN: ${{ secrets.AMAZON_REFRESH_TOKEN }}
         run: python sp_api_pull.py
-
-      - name: Build dashboard HTML
-        run: python build_dashboard.py
-
-      - name: Commit and push updated dashboard
+      - run: python build_dashboard.py
+      - name: Commit dashboard
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add docs/index.html docs/status.json docs/kpi_history.json kpi_data/
           git diff --cached --quiet || git commit -m "Dashboard: $(date -u '+%B %-d %Y %H:%M UTC')"
           git push
-
       - name: Patch velocities and deploy to Hostinger
         env:
           FTP_PASS: ${{ secrets.FTP_PASS }}
         run: |
-          set -ex
-
-          # Download live HTML
-          curl -L -s -A "Mozilla/5.0" -o /tmp/live.html \
-            "http://looreadykpi.cloudtechbookkeeping.com/"
-          echo "Downloaded: $(wc -c < /tmp/live.html) bytes"
-
-          # Patch target velocities (sed uses different delimiters to avoid / conflicts)
-          sed -i "s|targetVelocity:'26\.0/d'|targetVelocity:'35/d'|g" /tmp/live.html
-          sed -i "s|targetVelocity:'~4\.8/d'|targetVelocity:'5/d'|g" /tmp/live.html
-
-          echo "Velocities after patch:"
-          grep -o "targetVelocity:'[^']*'" /tmp/live.html || echo "none found"
-
-          # FTP upload — use --user to safely pass password with special chars
-          curl -s -T /tmp/live.html \
-            --user "u133013644:${FTP_PASS}" \
-            "ftp://145.79.209.123/public_html/looreadykpi/index.html"
-          echo "FTP upload complete"
+          set -e
+          curl -L -s -A "Mozilla/5.0" -o /tmp/live.html "http://looreadykpi.cloudtechbookkeeping.com/"
+          sed -i "s|targetVelocity:'26.0/d'|targetVelocity:'35/d'|g" /tmp/live.html
+          sed -i "s|targetVelocity:'~4.8/d'|targetVelocity:'5/d'|g" /tmp/live.html
+          grep -o "targetVelocity:'[^']*'" /tmp/live.html
+          curl -s -T /tmp/live.html --user "u133013644:${FTP_PASS}" "ftp://145.79.209.123/public_html/looreadykpi/index.html"
+          echo "Done"
