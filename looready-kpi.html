@@ -1454,7 +1454,7 @@ function renderSupplyChain() {
   const d30  = tabData['30d'];
   const days30d   = (d30 && typeof d30.days30d === 'number' && d30.days30d > 0) ? d30.days30d : 30;
   const skuUnits30 = (d30 && d30.skuUnits) ? d30.skuUnits : {};
-  const LEAD = 120; // 60 production + 60 shipping
+  const LEAD = 125; // 60 production + 60 shipping
 
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -1598,7 +1598,7 @@ function renderSupplyChain() {
 
         <div class="sc-calc-card">
           <div class="sc-calc-card-title">⏱ Lead Time Cycle</div>
-          <div class="sc-calc-formula">Total Lead = 120 days<br>= 60d production<br>+ 60d shipping (China → US/UK)</div>
+          <div class="sc-calc-formula">Total LEAD = 125 days<br>= 60d production<br>+ 60d shipping (China → US/UK)</div>
           <div class="sc-calc-note">Minimum time from placing order with Mr. Wang to goods arriving at FBA/AWD warehouse. All status and date calculations are anchored to this 120-day cycle.</div>
         </div>
 
@@ -1628,8 +1628,8 @@ function renderSupplyChain() {
 
         <div class="sc-calc-card">
           <div class="sc-calc-card-title">🛒 Order Quantity</div>
-          <div class="sc-calc-formula">Order Qty =<br>Velocity × 120 days</div>
-          <div class="sc-calc-note">Units needed to cover one full 120-day lead cycle. Ensures stock lasts through the entire production + shipping period until the next order arrives.</div>
+          <div class="sc-calc-formula">Order Qty =<br>Velocity × 125 days</div>
+          <div class="sc-calc-note">Units needed to cover one full 125-Day Lead Cycle. Ensures stock lasts through the entire production + shipping period until the next order arrives.</div>
         </div>
 
         <div class="sc-calc-card">
@@ -1697,7 +1697,7 @@ function renderSupplyChain() {
     <div class="card mb-20">
       <div class="card-header">
         <div class="card-title"><span class="dot" style="background:var(--blue);"></span>Per-SKU Supply Chain Planner</div>
-        <span class="card-badge" style="background:var(--blue-light);color:var(--blue);border-color:var(--blue-light);">120-Day Lead Cycle · Live Calc</span>
+        <span class="card-badge" style="background:var(--blue-light);color:var(--blue);border-color:var(--blue-light);">125-Day Lead Cycle · Live Calc</span>
       </div>
       <div class="card-body" style="padding-bottom:0;">
         <div class="table-scroll">
@@ -1706,7 +1706,7 @@ function renderSupplyChain() {
               <th>SKU</th><th>Status</th><th>Velocity (30d avg)</th>
               <th>Target Velocity</th>
               <th>FBA Total</th><th>AWD On-Hand</th><th>Total Inbound</th><th>Combined Total</th>
-              <th>Days of Supply</th><th>Notify Mr. Wang By</th><th>Order Qty (120d)</th>
+              <th>Days of Supply</th><th>Notify Mr. Wang By</th><th>Order Qty (125d)</th>
               <th>Est. Arrival Window</th><th>Stockout Date</th><th>Action</th>
             </tr></thead>
             <tbody>${tableBodyHTML}</tbody>
