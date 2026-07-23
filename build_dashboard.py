@@ -164,6 +164,27 @@ def update_html(data):
     n6 = 1 if placeholder_inv in html else 0
     html = html.replace(placeholder_inv, inv_js)
 
+    # 7. Write inventory totals directly into mini-stat HTML elements
+    inv_el_map = [
+        ('LR-TSC-30PACK', 'inv-30pack',  False),
+        ('LR-CS-10',      'inv-cs10',    False),
+        ('LR-CS-30',      'inv-cs30',    False),
+        ('LR-TSC-5PACK',  'inv-5pack',   False),
+        ('LR-CS-120',     'inv-cs120',   True),
+    ]
+    for sku, el_id, suppressed in inv_el_map:
+        fba = fba_inv.get(sku, {})
+        awd = awd_inv.get(sku, {})
+        total = (fba.get('fulfillable', 0) + fba.get('inbound', 0) +
+                 fba.get('reserved', 0) + fba.get('researching', 0) +
+                 fba.get('unfulfillable', 0) + awd.get('onhand', 0) + awd.get('inbound', 0))
+        new_text  = f"{total:,} (Suppressed)" if suppressed else f"{total:,} units"
+        old_text  = "-- (Suppressed)"         if suppressed else "-- units"
+        old_frag  = f'id="{el_id}">{old_text}'
+        new_frag  = f'id="{el_id}">{new_text}'
+        html = html.replace(old_frag, new_frag)
+        print(f"inv {el_id}: {old_text} -> {new_text}")
+
     print("n1=" + str(n1) + " n2=" + str(n2) + " n3=" + str(n3) + " n4=" + str(n4) + " n5=" + str(n5) + " n6=" + str(n6))
     if n1 == 0 or n2 == 0 or n3 == 0 or n4 == 0 or n5 == 0 or n6 == 0:
         print("WARNING: one or more patterns did not match!")
