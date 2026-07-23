@@ -1342,6 +1342,11 @@ function renderProfitBreakdown(tab) {
   });
   // Update donut center
   document.querySelectorAll('.donut-center-val').forEach(function(el){ el.textContent = '~' + margin + '%'; });
+  // Update profit donut chart segments
+  if (typeof profitDonutChart !== 'undefined' && profitDonutChart) {
+    profitDonutChart.data.datasets[0].data = [Math.max(0, netProfit), fees, fba, adSpend];
+    profitDonutChart.update('none');
+  }
 }
 
 }
@@ -1927,7 +1932,7 @@ const donutOpts = {
   cutout: '70%',
   plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => ' $' + c.parsed.toLocaleString() } } }
 };
-new Chart(document.getElementById('profitDonut').getContext('2d'), { type: 'doughnut', data: donutData, options: donutOpts });
+var profitDonutChart = new Chart(document.getElementById('profitDonut').getContext('2d'), { type: 'doughnut', data: donutData, options: donutOpts });
 new Chart(document.getElementById('profitDonutSales').getContext('2d'), { type: 'doughnut', data: donutData, options: donutOpts });
 
 // ── Inventory Bar Chart ─────────────────────────────────────────
