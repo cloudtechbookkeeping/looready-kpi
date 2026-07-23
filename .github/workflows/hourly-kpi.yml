@@ -33,7 +33,7 @@ jobs:
           FTP_PASS: ${{ secrets.FTP_PASS }}
         run: |
           set -e
-          curl -L -s -A "Mozilla/5.0" -o /tmp/live.html "http://looreadykpi.cloudtechbookkeeping.com/"
+          cp docs/index.html /tmp/live.html
           sed -i "s|targetVelocity:'26.0/d'|targetVelocity:'35/d'|g" /tmp/live.html
           sed -i "s|targetVelocity:'~4.8/d'|targetVelocity:'5/d'|g" /tmp/live.html
           grep -o "targetVelocity:'[^']*'" /tmp/live.html
