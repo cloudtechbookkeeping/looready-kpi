@@ -1315,6 +1315,8 @@ function renderSkuBreakdown(tab) {
   }).join('');
 
 // ── Profit Breakdown (dynamic) ──────────────────────────────────
+}
+
 function renderProfitBreakdown(tab) {
   var d = tabData[tab] || {};
   var rev = parseFloat((d.revenue || '0').replace(/[$,]/g, '')) || 0;
@@ -1347,8 +1349,6 @@ function renderProfitBreakdown(tab) {
     profitDonutChart.data.datasets[0].data = [Math.max(0, netProfit), fees, fba, adSpend];
     profitDonutChart.update('none');
   }
-}
-
 }
 
 // ── Inventory ───────────────────────────────────────────────────
@@ -1925,7 +1925,7 @@ chartConfig(document.getElementById('revenueChartSales').getContext('2d'));
 // ── Profit Donut ────────────────────────────────────────────────
 const donutData = {
   labels: ['Net Profit ~47%','Amazon Fees 15%','FBA Fulfillment 17%','Ad Spend 20%'],
-  datasets: [{ data: [16743, 5282, 6135, 7050], backgroundColor: ['#66bc46','#f59e0b','#2688c9','#ec4899'], borderWidth: 0, hoverOffset: 4 }]
+  datasets: [{ data: (function(){var _r=parseFloat((tabData['30d'].revenue||'0').replace(/[$,]/g,''))||0;var _u=parseInt((String(tabData['30d'].units||'0')).replace(/[,]/g,''))||0;var _f=Math.round(_r*.15),_b=_u*3,_a=Math.round(_r*.2);var _n=Math.round(_r-_f-_b-_a);return[Math.max(0,_n),_f,_b,_a];})(), backgroundColor: ['#66bc46','#f59e0b','#2688c9','#ec4899'], borderWidth: 0, hoverOffset: 4 }]
 };
 const donutOpts = {
   responsive: true, maintainAspectRatio: false,
@@ -1933,6 +1933,8 @@ const donutOpts = {
   plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => ' $' + c.parsed.toLocaleString() } } }
 };
 var profitDonutChart = new Chart(document.getElementById('profitDonut').getContext('2d'), { type: 'doughnut', data: donutData, options: donutOpts });
+renderProfitBreakdown('30d'); // refresh profit display after chart init
+
 new Chart(document.getElementById('profitDonutSales').getContext('2d'), { type: 'doughnut', data: donutData, options: donutOpts });
 
 // ── Inventory Bar Chart ─────────────────────────────────────────
