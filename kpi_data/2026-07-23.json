@@ -1,6 +1,6 @@
 {
   "date": "2026-07-23",
-  "pulled_at": "2026-07-23T17:16:38.015862",
+  "pulled_at": "2026-07-23T17:30:30.176536",
   "orders_today": 56,
   "revenue_today": 1051.04,
   "units_ordered": 71,
@@ -58,9 +58,9 @@
       "unfulfillable": 0
     },
     "LR-CS-30": {
-      "fulfillable": 687,
+      "fulfillable": 686,
       "inbound": 0,
-      "reserved": 139,
+      "reserved": 140,
       "researching": 4,
       "unfulfillable": 6
     },
