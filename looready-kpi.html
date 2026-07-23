@@ -1998,7 +1998,7 @@ new Chart(iCtx, {
 // ── Dashboard Supply Chain Health ────────────────────────────────────
 (function() {
   const LEAD = 120;
-  const d30 = kpiData && kpiData['30d'];
+  const d30 = tabData && tabData['30d'];
   const days30d = (d30 && typeof d30.days30d === 'number' && d30.days30d > 0) ? d30.days30d : 30;
   const skuUnits30 = (d30 && d30.skuUnits) ? d30.skuUnits : {};
   const inv = inventoryData || {};
