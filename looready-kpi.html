@@ -1859,6 +1859,8 @@ async function applyCustomRange() {
 }
 
 // ── Init SKU ────────────────────────────────────────────────────
+// Initialize KPI cards and UI with real data from tabData
+switchTab(document.querySelector('.date-tab.active'), '30d');
 renderSkuBreakdown('30d');
 renderProfitBreakdown('30d');
 
