@@ -573,7 +573,7 @@ body {
       <div class="live-dot"></div>
       <div>
         <span class="live-label">Live</span>
-        <span class="live-time">Updated July 23, 2026<br>1:00 PM ET</span>
+        <span class="live-time">Updated July 23, 2026<br>1:18 PM ET</span>
       </div>
     </div>
   </div>
@@ -583,7 +583,7 @@ body {
 <div class="main-area">
 
 <!-- ════════════════════ DATE SUB-NAV (Dashboard + Sales only) ════════════════════ -->
-<div class="date-subnav" id="date-subnav">
+<div class="date-subnav" id="date-subnav" style="display:none;">
   <div class="date-tab active" onclick="switchTab(this,'30d')">Last 30 Days</div>
   <div class="date-tab" onclick="switchTab(this,'7d')">Last 7 Days</div>
   <div class="date-tab" onclick="switchTab(this,'today')">Today</div>
@@ -605,325 +605,7 @@ body {
 <!-- ══════════════ DASHBOARD SECTION ══════════════ -->
 <div id="section-dashboard" class="section active">
 
-  <div class="updated-line">Data snapshot: July 23, 2026 1:00 PM ET · SP-API live pull</div>
-
-  <!-- Key Insights Row -->
-  <div class="insights-row">
-    <div class="insight-chip">
-      <span class="ic-icon">🏆</span>
-      <span class="ic-label">Buy Box</span>
-      <span class="ic-val">100%</span>
-    </div>
-    <div class="insight-chip">
-      <span class="ic-icon">⭐</span>
-      <span class="ic-label">Seller Rating</span>
-      <span class="ic-val">4.75 / 5.0</span>
-    </div>
-    <div class="insight-chip">
-      <span class="ic-icon">💳</span>
-      <span class="ic-label">Payments Balance</span>
-      <span class="ic-val" style="color:var(--green);">$6,301.70</span>
-    </div>
-    <div class="insight-chip">
-      <span class="ic-icon">🔄</span>
-      <span class="ic-label">CVR</span>
-      <span class="ic-val">17.39%</span>
-    </div>
-    <div class="insight-chip">
-      <span class="ic-icon">📦</span>
-      <span class="ic-label">Active SKUs</span>
-      <span class="ic-val">4 / 5</span>
-    </div>
-    <div class="insight-chip">
-      <span class="ic-icon">⚠️</span>
-      <span class="ic-label">LR-CS-120 Suppressed</span>
-      <span class="ic-val" style="color:var(--red);">Fix listing</span>
-    </div>
-  </div>
-
-  <!-- 1st + 2nd: Profit Breakdown + Inventory Health -->
-  <div class="grid-2-eq mb-20">
-    <div class="card">
-      <div class="card-header">
-        <div class="card-title">
-          <span class="dot" style="background:var(--purple);"></span>
-          Profit Breakdown
-        </div>
-        <span class="card-badge">30-Day Est.</span>
-      </div>
-      <div class="card-body">
-        <div class="donut-wrap">
-          <canvas id="profitDonut" width="180" height="180"></canvas>
-          <div class="donut-center">
-            <div class="donut-center-val">~47%</div>
-            <div class="donut-center-label">Est. Margin</div>
-          </div>
-        </div>
-        <div style="margin-top:4px;">
-          <div class="profit-row">
-            <div class="profit-dot" style="background:#10b981;"></div>
-            <div class="profit-label">Gross Revenue</div>
-            <div class="profit-amount">$35,210<span class="profit-pct">100%</span></div>
-          </div>
-          <div class="profit-row">
-            <div class="profit-dot" style="background:#f59e0b;"></div>
-            <div class="profit-label">Amazon Fees (~15%)</div>
-            <div class="profit-amount" style="color:var(--orange);">-$5,282<span class="profit-pct">15%</span></div>
-          </div>
-          <div class="profit-row">
-            <div class="profit-dot" style="background:#3b82f6;"></div>
-            <div class="profit-label">Est. FBA Fulfillment</div>
-            <div class="profit-amount" style="color:var(--blue);">-$6,135<span class="profit-pct">~$3/unit</span></div>
-          </div>
-          <div class="profit-row">
-            <div class="profit-dot" style="background:#ec4899;"></div>
-            <div class="profit-label">Ad Spend (prorated)</div>
-            <div class="profit-amount" style="color:#ec4899;">-$7,050<span class="profit-pct">20%</span></div>
-          </div>
-          <div class="profit-row" style="border-top:2px solid var(--border);margin-top:4px;padding-top:10px;">
-            <div class="profit-dot" style="background:var(--purple);"></div>
-            <div class="profit-label"><strong>Est. Net Profit</strong></div>
-            <div class="profit-amount" style="color:var(--purple);font-size:15px;font-weight:800;">~$16,743<span class="profit-pct">~47%</span></div>
-          </div>
-        </div>
-        <p class="footnote">* COGS not in Seller Central. Add via Sellerboard for exact profit.</p>
-      </div>
-    </div>
-
-    <!-- Inventory Health -->
-    <div class="card">
-      <div class="card-header">
-        <div class="card-title">
-          <span class="dot" style="background:var(--purple);"></span>
-          Inventory Health
-        </div>
-        <span class="card-badge">IPI: 628 â</span>
-      </div>
-      <div class="card-body" style="padding: 16px 20px;">
-        <div class="chart-wrap sm" style="margin-bottom:12px;">
-          <canvas id="inventoryChart"></canvas>
-        </div>
-        <div class="mini-stat">
-          <span class="mini-stat-label">LR-TSC-30PACK</span>
-          <span class="mini-stat-val" id="inv-30pack">4,179 units</span>
-        </div>
-        <div class="mini-stat">
-          <span class="mini-stat-label">LR-CS-10</span>
-          <span class="mini-stat-val" id="inv-cs10">3,466 units</span>
-        </div>
-        <div class="mini-stat">
-          <span class="mini-stat-label">LR-CS-30</span>
-          <span class="mini-stat-val" id="inv-cs30">5,912 units</span>
-        </div>
-        <div class="mini-stat">
-          <span class="mini-stat-label">LR-TSC-5PACK</span>
-          <span class="mini-stat-val" id="inv-5pack">1,361 units</span>
-        </div>
-        <div class="mini-stat">
-          <span class="mini-stat-label">LR-CS-120 â ï¸</span>
-          <span class="mini-stat-val red" id="inv-cs120">497 (Suppressed)</span>
-        </div>
-        <div style="margin-top:12px;padding:10px 12px;background:#fff7ed;border-radius:8px;border:1px solid #fed7aa;font-size:11px;color:#92400e;">
-          â ï¸ LR-CS-120 is Search Suppressed. Fix listing to unlock $69.99 inventory.
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 3rd + 4th: Supply Chain Health + Advertising -->
-  <div class="grid-2-eq mb-20">
-    <div class="card">
-      <div class="card-header">
-        <div class="card-title">
-          <span class="dot" style="background:var(--red);"></span>
-          Supply Chain Health
-        </div>
-        <span class="card-badge" id="dash-sc-badge" style="cursor:pointer;" onclick="switchSection('inventory');setTimeout(function(){switchInvTab('supply-chain',document.querySelector('.inv-tab:nth-child(2)'))},150);">Supply Chain ↗</span>
-      </div>
-      <div class="card-body" style="padding:16px 20px;" id="dash-sc-health">
-        <div style="color:var(--text-muted);font-size:12px;text-align:center;padding:8px 0;">Loading supply chain dataâ¦</div>
-      </div>
-    </div>
-
-    <!-- Ads Summary -->
-    <div class="card">
-      <div class="card-header">
-        <div class="card-title">
-          <span class="dot" style="background:var(--orange);"></span>
-          Advertising
-        </div>
-        <span class="card-badge" id="ads-badge">Last 30 Days Â· US+UK</span>
-      </div>
-      <div class="card-body" style="padding: 16px 20px;">
-        <div class="mini-stat">
-          <span class="mini-stat-label">Ad Spend</span>
-          <span class="mini-stat-val orange" id="ad-spend-val">$19,846</span>
-        </div>
-        <div class="mini-stat">
-          <span class="mini-stat-label">Ad Sales</span>
-          <span class="mini-stat-val green" id="ad-sales-val">$20,567</span>
-        </div>
-        <div class="mini-stat">
-          <span class="mini-stat-label">ROAS</span>
-          <span class="mini-stat-val" id="ad-roas-val">1.04Ã</span>
-        </div>
-        <div class="mini-stat">
-          <span class="mini-stat-label">ACOS</span>
-          <span class="mini-stat-val red" id="ad-acos-val">96.5%</span>
-        </div>
-        <div class="mini-stat">
-          <span class="mini-stat-label">Clicks</span>
-          <span class="mini-stat-val" id="ad-clicks-val">10,492</span>
-        </div>
-        <div class="mini-stat">
-          <span class="mini-stat-label">CPC</span>
-          <span class="mini-stat-val" id="ad-cpc-val">$1.89</span>
-        </div>
-        <div class="mini-stat">
-          <span class="mini-stat-label">Purchases</span>
-          <span class="mini-stat-val" id="ad-orders-val">1,357</span>
-        </div>
-        <div class="mini-stat">
-          <span class="mini-stat-label">CTR</span>
-          <span class="mini-stat-val" id="ad-ctr-val">0.84%</span>
-        </div>
-        <div style="margin-top:12px;">
-          <div style="font-size:10px;color:var(--text-muted);margin-bottom:5px;" id="acos-label">30-Day ACOS (96.5% â Very High â ï¸)</div>
-          <div class="acos-meter">
-            <span style="font-size:10px;color:var(--green);">0%</span>
-            <div class="acos-bar"><div class="acos-fill" id="acos-fill-bar" style="width:96.5%;"></div></div>
-            <span style="font-size:10px;color:var(--red);">100%</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 5th + 6th: Traffic & Conversion + Revenue Trend -->
-  <div class="grid-2-eq">
-    <!-- Traffic Summary -->
-    <div class="card">
-      <div class="card-header">
-        <div class="card-title">
-          <span class="dot" style="background:var(--blue);"></span>
-          Traffic &amp; Conversion
-        </div>
-        <span class="card-badge">Last 30 Days</span>
-      </div>
-      <div class="card-body" style="padding: 16px 20px;">
-        <div class="mini-stat">
-          <span class="mini-stat-label">Sessions</span>
-          <span class="mini-stat-val">11,104</span>
-        </div>
-        <div class="mini-stat">
-          <span class="mini-stat-label">Conversion Rate</span>
-          <span class="mini-stat-val green">17.39%</span>
-        </div>
-        <div class="mini-stat">
-          <span class="mini-stat-label">Page Views</span>
-          <span class="mini-stat-val">14,268</span>
-        </div>
-        <div class="mini-stat">
-          <span class="mini-stat-label">Order Items</span>
-          <span class="mini-stat-val">1,841</span>
-        </div>
-        <div class="mini-stat">
-          <span class="mini-stat-label">Avg Selling Price</span>
-          <span class="mini-stat-val">$18.48</span>
-        </div>
-        <div class="mini-stat">
-          <span class="mini-stat-label">B2B Sessions</span>
-          <span class="mini-stat-val blue">219</span>
-        </div>
-        <div class="mini-stat">
-          <span class="mini-stat-label">B2B CVR</span>
-          <span class="mini-stat-val">11.26%</span>
-        </div>
-        <div class="mini-stat">
-          <span class="mini-stat-label">Buy Box %</span>
-          <span class="mini-stat-val green">100% ð</span>
-        </div>
-        <div class="mini-stat">
-          <span class="mini-stat-label">Promo Sales (7d)</span>
-          <span class="mini-stat-val">$1,552.45</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Revenue Trend -->
-    <div class="card">
-      <div class="card-header">
-        <div class="card-title">
-          <span class="dot" style="background:var(--green);"></span>
-          Revenue Trend â Last 30 Days
-        </div>
-        <span class="card-badge">Apr 29 â May 28</span>
-      </div>
-      <div class="card-body">
-        <div class="chart-wrap lg">
-          <canvas id="revenueChart"></canvas>
-        </div>
-      </div>
-    </div>
-  </div>
-
-</div><!-- /section-dashboard -->
-
-
-<!-- ══════════════ SALES SECTION ══════════════ -->
-<div id="section-sales" class="section">
-
-  <!-- KPI Cards -->
-  <div class="kpi-grid" id="kpi-cards">
-    <div class="kpi-card revenue">
-      <div class="kpi-accent"></div>
-      <div class="kpi-icon">💰</div>
-      <div class="kpi-label">Revenue</div>
-      <div class="kpi-value" id="kv-revenue">$35,210</div>
-      <div class="kpi-sub" id="ks-revenue">Last 30 days · All products</div>
-      <div class="kpi-chip up">▲ Organic + PPC</div>
-    </div>
-    <div class="kpi-card revenue">
-      <div class="kpi-accent"></div>
-      <div class="kpi-icon">📦</div>
-      <div class="kpi-label">Units Sold</div>
-      <div class="kpi-value" id="kv-units">2,045</div>
-      <div class="kpi-sub" id="ks-units">Avg 68/day</div>
-      <div class="kpi-chip up">▲ 48 B2B</div>
-    </div>
-    <div class="kpi-card ads">
-      <div class="kpi-accent"></div>
-      <div class="kpi-icon">🎯</div>
-      <div class="kpi-label">Ad Spend</div>
-      <div class="kpi-value small" id="kv-spend">$226,449</div>
-      <div class="kpi-sub" id="ks-spend">Lifetime total</div>
-      <div class="kpi-chip warn">⚡ 1 out of budget</div>
-    </div>
-    <div class="kpi-card ads">
-      <div class="kpi-accent"></div>
-      <div class="kpi-icon">📊</div>
-      <div class="kpi-label">ACOS</div>
-      <div class="kpi-value" id="kv-acos">51.5%</div>
-      <div class="kpi-sub" id="ks-acos">Lifetime avg</div>
-      <div class="kpi-chip warn">Target &lt;35%</div>
-    </div>
-    <div class="kpi-card traffic">
-      <div class="kpi-accent"></div>
-      <div class="kpi-icon">👥</div>
-      <div class="kpi-label">Sessions</div>
-      <div class="kpi-value" id="kv-sessions">11,104</div>
-      <div class="kpi-sub" id="ks-sessions">Last 30 days</div>
-      <div class="kpi-chip up">▲ 17.39% CVR</div>
-    </div>
-    <div class="kpi-card inventory">
-      <div class="kpi-accent"></div>
-      <div class="kpi-icon">🏆</div>
-      <div class="kpi-label">IPI Score</div>
-      <div class="kpi-value" id="kv-ipi">628</div>
-      <div class="kpi-sub" id="ks-ipi">Range 570–686</div>
-      <div class="kpi-chip up">▲ Healthy</div>
-    </div>
-  </div>
+  <div class="updated-line">Data snapshot: July 23, 2026 1:18 PM ET · SP-API live pull</div>
 
   <!-- SKU Breakdown -->
   <div class="card mb-20">
@@ -1298,13 +980,13 @@ body {
 
 <script>
 // ── Inventory Data ──────────────────────────────────────────────
-const inventoryData = {'LR-TSC-30PACK':{fba:{fulfillable:1064,inbound:180,reserved:282,researching:0,unfulfillable:3},awd:{onhand:825,inbound:1825,outbound:0}},'LR-CS-10':{fba:{fulfillable:998,inbound:0,reserved:403,researching:7,unfulfillable:6},awd:{onhand:0,inbound:2052,outbound:0}},'LR-CS-30':{fba:{fulfillable:688,inbound:0,reserved:138,researching:4,unfulfillable:6},awd:{onhand:1080,inbound:3996,outbound:0}},'LR-TSC-5PACK':{fba:{fulfillable:140,inbound:0,reserved:167,researching:3,unfulfillable:1},awd:{onhand:1050,inbound:0,outbound:0}},'LR-CS-120':{fba:{fulfillable:141,inbound:0,reserved:8,researching:0,unfulfillable:0},awd:{onhand:48,inbound:300,outbound:0}}};
+const inventoryData = {'LR-TSC-30PACK':{fba:{fulfillable:1061,inbound:180,reserved:285,researching:0,unfulfillable:3},awd:{onhand:825,inbound:1825,outbound:0}},'LR-CS-10':{fba:{fulfillable:996,inbound:0,reserved:405,researching:7,unfulfillable:6},awd:{onhand:0,inbound:2052,outbound:0}},'LR-CS-30':{fba:{fulfillable:687,inbound:0,reserved:139,researching:4,unfulfillable:6},awd:{onhand:1080,inbound:3996,outbound:0}},'LR-TSC-5PACK':{fba:{fulfillable:139,inbound:0,reserved:168,researching:3,unfulfillable:1},awd:{onhand:1050,inbound:0,outbound:0}},'LR-CS-120':{fba:{fulfillable:141,inbound:0,reserved:8,researching:0,unfulfillable:0},awd:{onhand:48,inbound:300,outbound:0}}};
 
 // ── Tab Switching Data ──────────────────────────────────────────
 const tabData = {
   '30d': { revenue:'$41,736.33', units:'2592', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Last 30 Days · SP-API live', usub:'2200 orders . 2592 units', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':959,'LR-CS-10':929,'LR-CS-30':359,'LR-TSC-5PACK':121,'LR-CS-120':0}, days30d:29 }, /* 30D_KPI_PLACEHOLDER */
   '7d':  { revenue:'$8,359.67', units:'449', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Last 7 Days · SP-API live', usub:'412 orders . 449 units', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':187,'LR-CS-10':168,'LR-CS-30':66,'LR-TSC-5PACK':28,'LR-CS-120':0} }, /* 7D_KPI_PLACEHOLDER */
-  'today': { revenue:'$1,051.04', units:'58', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Today July 23, 2026 1:00 PM ET . SP-API live', usub:'56 orders . 71 units . Fees $641.02', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':20,'LR-CS-10':25,'LR-CS-30':10,'LR-TSC-5PACK':3,'LR-CS-120':0} }, /* TODAY_KPI_PLACEHOLDER */
+  'today': { revenue:'$1,051.04', units:'58', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Today July 23, 2026 1:18 PM ET . SP-API live', usub:'56 orders . 71 units . Fees $641.02', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':20,'LR-CS-10':25,'LR-CS-30':10,'LR-TSC-5PACK':3,'LR-CS-120':0} }, /* TODAY_KPI_PLACEHOLDER */
   'lifetime': { revenue:'$439,795', units:'20,748', spend:'$226,449', acos:'51.5%', sessions:'187,331', ipi:'628',
                rsub:'Lifetime Ad Sales (all campaigns)', usub:'Lifetime ad purchases', ssub:'Lifetime total spend', asub:'Lifetime avg ACOS', sesub:'Lifetime ad clicks', isub:'Range 570–686',
                acosColor:'#d97706' },
@@ -1328,7 +1010,7 @@ function switchSection(name, btn) {
   document.getElementById('section-' + name).classList.add('active');
   currentSection = name;
   // Show/hide date sub-nav (Inventory doesn't need it)
-  document.getElementById('date-subnav').style.display = name === 'inventory' ? 'none' : '';
+  document.getElementById('date-subnav').style.display = name === 'sales' ? '' : 'none';
   document.getElementById('custom-date-panel').style.display = 'none';
   if (name === 'inventory') switchInvTab(currentInvPanel, null);
 }
