@@ -1954,7 +1954,8 @@ if (inventoryData && Object.keys(inventoryData).length > 0) {
   for (var _i = 0; _i < _ihs.length; _i++) {
     var _el = document.getElementById(_ihs[_i][1]);
     var _d = (inventoryData[_ihs[_i][0]] || {}).fba || {};
-    if (_el) _el.textContent = ((_d.fulfillable||0)+(_d.reserved||0)+(_d.researching||0)+(_d.unfulfillable||0)).toLocaleString() + " units";
+    var _awd = (inventoryData[_ihs[_i][0]] || {}).awd || {};
+    if (_el) _el.textContent = ((_d.fulfillable||0)+(_d.inbound||0)+(_d.reserved||0)+(_d.researching||0)+(_d.unfulfillable||0)+(_awd.onhand||0)+(_awd.inbound||0)).toLocaleString() + " units";
   }
 }
 
@@ -1963,7 +1964,7 @@ new Chart(iCtx, {
   type: 'bar',
   data: {
     labels: skuMeta.map(function(s){return s.name}),
-    datasets: [{ label: 'FBA Units', data: skuMeta.map(function(s){var f=(inventoryData[s.key]&&inventoryData[s.key].fba)?inventoryData[s.key].fba:{};return (f.fulfillable||0)+(f.reserved||0)+(f.researching||0)+(f.unfulfillable||0)}),
+    datasets: [{ label: 'FBA Units', data: skuMeta.map(function(s){var f=(inventoryData[s.key]&&inventoryData[s.key].fba)?inventoryData[s.key].fba:{};var a=(inventoryData[s.key]&&inventoryData[s.key].awd)?inventoryData[s.key].awd:{};return (f.fulfillable||0)+(f.inbound||0)+(f.reserved||0)+(f.researching||0)+(f.unfulfillable||0)+(a.onhand||0)+(a.inbound||0)}),
       backgroundColor: skuMeta.map(function(s){return s.color}),
       borderRadius: 5, borderSkipped: false }]
   },
