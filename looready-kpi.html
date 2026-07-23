@@ -1286,6 +1286,7 @@ function switchTab(el, tab) {
   _s('ks-revenue',d.rsub); _s('ks-units',d.usub); _s('ks-spend',d.ssub);
   _s('ks-acos',d.asub); _s('ks-sessions',d.sesub); _s('ks-ipi',d.isub);
   renderSkuBreakdown(tab);
+  renderProfitBreakdown(tab);
 }
 
 function openCustomRange(el) {
@@ -1312,6 +1313,37 @@ function renderSkuBreakdown(tab) {
       <div style="font-size:10px;color:var(--text-muted);margin-top:4px;">${s.name} · units</div>
     </div>`;
   }).join('');
+
+// ── Profit Breakdown (dynamic) ──────────────────────────────────
+function renderProfitBreakdown(tab) {
+  var d = tabData[tab] || {};
+  var rev = parseFloat((d.revenue || '0').replace(/[$,]/g, '')) || 0;
+  var units = parseInt((String(d.units || '0')).replace(/[,]/g, '')) || 0;
+  if (rev <= 0) return;
+  var fees     = Math.round(rev * 0.15);
+  var fba      = units * 3;
+  var adSpend  = Math.round(rev * 0.20);
+  var netProfit = Math.round(rev - fees - fba - adSpend);
+  var margin   = Math.round(netProfit / rev * 100);
+  var fmt = function(n){ return '$' + Math.abs(n).toLocaleString('en-US', {minimumFractionDigits:0, maximumFractionDigits:0}); };
+  // Update all profit-row groups (each card has 5 rows)
+  var rows = Array.from(document.querySelectorAll('.profit-row'));
+  rows.forEach(function(row, i) {
+    var idx = i % 5;
+    var amtEl = row.querySelector('.profit-amount');
+    var pctEl = row.querySelector('.profit-pct');
+    if (!amtEl) return;
+    var txt = ['', '', '', '', ''];
+    var pct = ['100%', '15%', '~$3/unit', '20%', '~' + margin + '%'];
+    var vals = [fmt(rev), '-'+fmt(fees), '-'+fmt(fba), '-'+fmt(adSpend), '~'+fmt(netProfit)];
+    // Set text node (first child before the span)
+    amtEl.childNodes[0].textContent = vals[idx];
+    if (pctEl) pctEl.textContent = pct[idx];
+  });
+  // Update donut center
+  document.querySelectorAll('.donut-center-val').forEach(function(el){ el.textContent = '~' + margin + '%'; });
+}
+
 }
 
 // ── Inventory ───────────────────────────────────────────────────
