@@ -573,7 +573,7 @@ body {
       <div class="live-dot"></div>
       <div>
         <span class="live-label">Live</span>
-        <span class="live-time">Updated July 23, 2026<br>1:51 PM ET</span>
+        <span class="live-time">Updated July 23, 2026<br>2:06 PM ET</span>
       </div>
     </div>
   </div>
@@ -605,7 +605,7 @@ body {
 <!-- ══════════════ DASHBOARD SECTION ══════════════ -->
 <div id="section-dashboard" class="section active">
 
-  <div class="updated-line">Data snapshot: July 23, 2026 1:51 PM ET · SP-API live pull</div>
+  <div class="updated-line">Data snapshot: July 23, 2026 2:06 PM ET · SP-API live pull</div>
 
   <!-- 1st + 2nd: Profit Breakdown + Inventory Health -->
   <div class="grid-2-eq mb-20">
@@ -675,7 +675,7 @@ body {
         </div>
         <div class="mini-stat">
           <span class="mini-stat-label">LR-CS-10</span>
-          <span class="mini-stat-val" id="inv-cs10">3,466 units</span>
+          <span class="mini-stat-val" id="inv-cs10">3,465 units</span>
         </div>
         <div class="mini-stat">
           <span class="mini-stat-label">LR-CS-30</span>
@@ -683,7 +683,7 @@ body {
         </div>
         <div class="mini-stat">
           <span class="mini-stat-label">LR-TSC-5PACK</span>
-          <span class="mini-stat-val" id="inv-5pack">1,361 units</span>
+          <span class="mini-stat-val" id="inv-5pack">1,360 units</span>
         </div>
         <div class="mini-stat">
           <span class="mini-stat-label">LR-CS-120 ⚠️</span>
@@ -1238,13 +1238,13 @@ body {
 
 <script>
 // ── Inventory Data ──────────────────────────────────────────────
-const inventoryData = {'LR-TSC-30PACK':{fba:{fulfillable:1061,inbound:180,reserved:285,researching:0,unfulfillable:3},awd:{onhand:825,inbound:1825,outbound:0}},'LR-CS-10':{fba:{fulfillable:996,inbound:0,reserved:405,researching:7,unfulfillable:6},awd:{onhand:0,inbound:2052,outbound:0}},'LR-CS-30':{fba:{fulfillable:685,inbound:0,reserved:141,researching:4,unfulfillable:6},awd:{onhand:1080,inbound:3996,outbound:0}},'LR-TSC-5PACK':{fba:{fulfillable:139,inbound:0,reserved:168,researching:3,unfulfillable:1},awd:{onhand:1050,inbound:0,outbound:0}},'LR-CS-120':{fba:{fulfillable:141,inbound:0,reserved:8,researching:0,unfulfillable:0},awd:{onhand:48,inbound:300,outbound:0}}};
+const inventoryData = {'LR-TSC-30PACK':{fba:{fulfillable:1061,inbound:180,reserved:285,researching:0,unfulfillable:3},awd:{onhand:825,inbound:1825,outbound:0}},'LR-CS-10':{fba:{fulfillable:1012,inbound:0,reserved:388,researching:7,unfulfillable:6},awd:{onhand:0,inbound:2052,outbound:0}},'LR-CS-30':{fba:{fulfillable:685,inbound:0,reserved:141,researching:4,unfulfillable:6},awd:{onhand:1080,inbound:3996,outbound:0}},'LR-TSC-5PACK':{fba:{fulfillable:138,inbound:0,reserved:168,researching:3,unfulfillable:1},awd:{onhand:1050,inbound:0,outbound:0}},'LR-CS-120':{fba:{fulfillable:141,inbound:0,reserved:8,researching:0,unfulfillable:0},awd:{onhand:48,inbound:300,outbound:0}}};
 
 // ── Tab Switching Data ──────────────────────────────────────────
 const tabData = {
   '30d': { revenue:'$41,736.33', units:'2592', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Last 30 Days · SP-API live', usub:'2200 orders . 2592 units', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':959,'LR-CS-10':929,'LR-CS-30':359,'LR-TSC-5PACK':121,'LR-CS-120':0}, days30d:29 }, /* 30D_KPI_PLACEHOLDER */
   '7d':  { revenue:'$8,359.67', units:'449', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Last 7 Days · SP-API live', usub:'412 orders . 449 units', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':187,'LR-CS-10':168,'LR-CS-30':66,'LR-TSC-5PACK':28,'LR-CS-120':0} }, /* 7D_KPI_PLACEHOLDER */
-  'today': { revenue:'$1,051.04', units:'58', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Today July 23, 2026 1:51 PM ET . SP-API live', usub:'56 orders . 71 units . Fees $641.02', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':20,'LR-CS-10':25,'LR-CS-30':10,'LR-TSC-5PACK':3,'LR-CS-120':0} }, /* TODAY_KPI_PLACEHOLDER */
+  'today': { revenue:'$1,058.52', units:'59', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Today July 23, 2026 2:06 PM ET . SP-API live', usub:'57 orders . 71 units . Fees $641.02', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':20,'LR-CS-10':25,'LR-CS-30':10,'LR-TSC-5PACK':4,'LR-CS-120':0} }, /* TODAY_KPI_PLACEHOLDER */
   'lifetime': { revenue:'$439,795', units:'20,748', spend:'$226,449', acos:'51.5%', sessions:'187,331', ipi:'628',
                rsub:'Lifetime Ad Sales (all campaigns)', usub:'Lifetime ad purchases', ssub:'Lifetime total spend', asub:'Lifetime avg ACOS', sesub:'Lifetime ad clicks', isub:'Range 570–686',
                acosColor:'#d97706' },
@@ -1286,6 +1286,7 @@ function switchTab(el, tab) {
   _s('ks-revenue',d.rsub); _s('ks-units',d.usub); _s('ks-spend',d.ssub);
   _s('ks-acos',d.asub); _s('ks-sessions',d.sesub); _s('ks-ipi',d.isub);
   renderSkuBreakdown(tab);
+  renderProfitBreakdown(tab);
 }
 
 function openCustomRange(el) {
@@ -1312,6 +1313,37 @@ function renderSkuBreakdown(tab) {
       <div style="font-size:10px;color:var(--text-muted);margin-top:4px;">${s.name} · units</div>
     </div>`;
   }).join('');
+
+// ── Profit Breakdown (dynamic) ──────────────────────────────────
+function renderProfitBreakdown(tab) {
+  var d = tabData[tab] || {};
+  var rev = parseFloat((d.revenue || '0').replace(/[$,]/g, '')) || 0;
+  var units = parseInt((String(d.units || '0')).replace(/[,]/g, '')) || 0;
+  if (rev <= 0) return;
+  var fees     = Math.round(rev * 0.15);
+  var fba      = units * 3;
+  var adSpend  = Math.round(rev * 0.20);
+  var netProfit = Math.round(rev - fees - fba - adSpend);
+  var margin   = Math.round(netProfit / rev * 100);
+  var fmt = function(n){ return '$' + Math.abs(n).toLocaleString('en-US', {minimumFractionDigits:0, maximumFractionDigits:0}); };
+  // Update all profit-row groups (each card has 5 rows)
+  var rows = Array.from(document.querySelectorAll('.profit-row'));
+  rows.forEach(function(row, i) {
+    var idx = i % 5;
+    var amtEl = row.querySelector('.profit-amount');
+    var pctEl = row.querySelector('.profit-pct');
+    if (!amtEl) return;
+    var txt = ['', '', '', '', ''];
+    var pct = ['100%', '15%', '~$3/unit', '20%', '~' + margin + '%'];
+    var vals = [fmt(rev), '-'+fmt(fees), '-'+fmt(fba), '-'+fmt(adSpend), '~'+fmt(netProfit)];
+    // Set text node (first child before the span)
+    amtEl.childNodes[0].textContent = vals[idx];
+    if (pctEl) pctEl.textContent = pct[idx];
+  });
+  // Update donut center
+  document.querySelectorAll('.donut-center-val').forEach(function(el){ el.textContent = '~' + margin + '%'; });
+}
+
 }
 
 // ── Inventory ───────────────────────────────────────────────────
