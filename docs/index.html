@@ -573,7 +573,7 @@ body {
       <div class="live-dot"></div>
       <div>
         <span class="live-label">Live</span>
-        <span class="live-time">Updated July 23, 2026<br>2:51 AM ET</span>
+        <span class="live-time">Updated July 23, 2026<br>3:09 AM ET</span>
       </div>
     </div>
   </div>
@@ -605,7 +605,7 @@ body {
 <!-- ══════════════ DASHBOARD SECTION ══════════════ -->
 <div id="section-dashboard" class="section active">
 
-  <div class="updated-line">Data snapshot: July 23, 2026 2:51 AM ET · SP-API live pull</div>
+  <div class="updated-line">Data snapshot: July 23, 2026 3:09 AM ET · SP-API live pull</div>
 
   <!-- Key Insights Row -->
   <div class="insights-row">
@@ -847,6 +847,20 @@ body {
           ⚠️ LR-CS-120 is Search Suppressed. Fix listing to unlock $69.99 inventory.
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- Supply Chain Health Summary -->
+  <div class="card" style="margin-top:20px;">
+    <div class="card-header">
+      <div class="card-title">
+        <span class="dot" style="background:var(--red);"></span>
+        Supply Chain Health
+      </div>
+      <span class="card-badge" style="cursor:pointer;" onclick="switchSection('inventory');setTimeout(function(){switchInvTab('supply-chain',document.querySelector('.inv-tab:nth-child(2)'))},150);">Inventory → Supply Chain ↗</span>
+    </div>
+    <div class="card-body" style="padding:16px 20px;" id="dash-sc-health">
+      <div style="color:var(--text-muted);font-size:12px;text-align:center;padding:8px 0;">Loading supply chain data…</div>
     </div>
   </div>
 
@@ -1281,13 +1295,13 @@ body {
 
 <script>
 // ── Inventory Data ──────────────────────────────────────────────
-const inventoryData = {'LR-TSC-30PACK':{fba:{fulfillable:1040,inbound:235,reserved:261,researching:0,unfulfillable:3},awd:{onhand:825,inbound:1825,outbound:0}},'LR-CS-10':{fba:{fulfillable:959,inbound:0,reserved:469,researching:6,unfulfillable:6},awd:{onhand:0,inbound:2052,outbound:0}},'LR-CS-30':{fba:{fulfillable:677,inbound:0,reserved:154,researching:4,unfulfillable:7},awd:{onhand:1080,inbound:3996,outbound:0}},'LR-TSC-5PACK':{fba:{fulfillable:141,inbound:0,reserved:168,researching:3,unfulfillable:2},awd:{onhand:1050,inbound:0,outbound:0}},'LR-CS-120':{fba:{fulfillable:149,inbound:0,reserved:0,researching:0,unfulfillable:0},awd:{onhand:48,inbound:300,outbound:0}}};
+const inventoryData = {'LR-TSC-30PACK':{fba:{fulfillable:1040,inbound:205,reserved:290,researching:0,unfulfillable:3},awd:{onhand:825,inbound:1825,outbound:0}},'LR-CS-10':{fba:{fulfillable:959,inbound:0,reserved:469,researching:6,unfulfillable:6},awd:{onhand:0,inbound:2052,outbound:0}},'LR-CS-30':{fba:{fulfillable:677,inbound:0,reserved:154,researching:4,unfulfillable:7},awd:{onhand:1080,inbound:3996,outbound:0}},'LR-TSC-5PACK':{fba:{fulfillable:141,inbound:0,reserved:168,researching:3,unfulfillable:2},awd:{onhand:1050,inbound:0,outbound:0}},'LR-CS-120':{fba:{fulfillable:149,inbound:0,reserved:0,researching:0,unfulfillable:0},awd:{onhand:48,inbound:300,outbound:0}}};
 
 // ── Tab Switching Data ──────────────────────────────────────────
 const tabData = {
   '30d': { revenue:'$41,736.33', units:'2592', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Last 30 Days · SP-API live', usub:'2200 orders . 2592 units', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':959,'LR-CS-10':929,'LR-CS-30':359,'LR-TSC-5PACK':121,'LR-CS-120':0}, days30d:29 }, /* 30D_KPI_PLACEHOLDER */
   '7d':  { revenue:'$8,359.67', units:'449', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Last 7 Days · SP-API live', usub:'412 orders . 449 units', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':187,'LR-CS-10':168,'LR-CS-30':66,'LR-TSC-5PACK':28,'LR-CS-120':0} }, /* 7D_KPI_PLACEHOLDER */
-  'today': { revenue:'$728.53', units:'39', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Today July 23, 2026 2:51 AM ET . SP-API live', usub:'37 orders . 71 units . Fees $641.02', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':14,'LR-CS-10':16,'LR-CS-30':7,'LR-TSC-5PACK':2,'LR-CS-120':0} }, /* TODAY_KPI_PLACEHOLDER */
+  'today': { revenue:'$728.53', units:'39', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Today July 23, 2026 3:09 AM ET . SP-API live', usub:'37 orders . 71 units . Fees $641.02', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':14,'LR-CS-10':16,'LR-CS-30':7,'LR-TSC-5PACK':2,'LR-CS-120':0} }, /* TODAY_KPI_PLACEHOLDER */
   'lifetime': { revenue:'$439,795', units:'20,748', spend:'$226,449', acos:'51.5%', sessions:'187,331', ipi:'628',
                rsub:'Lifetime Ad Sales (all campaigns)', usub:'Lifetime ad purchases', ssub:'Lifetime total spend', asub:'Lifetime avg ACOS', sesub:'Lifetime ad clicks', isub:'Range 570–686',
                acosColor:'#d97706' },
@@ -1977,6 +1991,50 @@ new Chart(iCtx, {
     }
   }
 });
+
+// ── Dashboard Supply Chain Health Bars ──────────────────────────
+(function() {
+  var LEAD = 120;
+  var today = new Date(); today.setHours(0,0,0,0);
+  var d30 = kpiData && kpiData['30d'];
+  var days30d = (d30 && typeof d30.days30d === 'number' && d30.days30d > 0) ? d30.days30d : 30;
+  var skuUnits30 = (d30 && d30.skuUnits) ? d30.skuUnits : {};
+  var inv = inventoryData || {};
+  var SKUS = ['LR-TSC-30PACK','LR-CS-10','LR-CS-30','LR-TSC-5PACK','LR-CS-120'];
+  var counts = { overdue:0, urgent:0, soon:0, ontrack:0 };
+  SKUS.forEach(function(sku) {
+    var fba = (inv[sku] || {}).fba || {};
+    var awd = (inv[sku] || {}).awd || {};
+    var tot = (fba.fulfillable||0)+(fba.inbound||0)+(fba.reserved||0)+(fba.researching||0)+(fba.unfulfillable||0)+(awd.onhand||0)+(awd.inbound||0);
+    var u30 = typeof skuUnits30[sku] === 'number' ? skuUnits30[sku] : 0;
+    var vel = (u30 > 0 && days30d > 0) ? u30/days30d : 0;
+    var st  = 'ontrack';
+    if (vel > 0) { var ni = (tot/vel) - LEAD; if (ni<=0) st='overdue'; else if (ni<=14) st='urgent'; else if (ni<=45) st='soon'; }
+    counts[st]++;
+  });
+  var total = SKUS.length;
+  var bars = [
+    { key:'overdue', label:'Overdue',  color:'#ef4444', bg:'#fee2e2', icon:'🔥', desc:'Need immediate action' },
+    { key:'urgent',  label:'Urgent',   color:'#f59e0b', bg:'#fef3c7', icon:'⚡', desc:'Notify within 14 days' },
+    { key:'soon',    label:'Soon',     color:'#eab308', bg:'#fefce8', icon:'🕐', desc:'Plan ahead' },
+    { key:'ontrack', label:'On Track', color:'#22c55e', bg:'#dcfce7', icon:'✅', desc:'Healthy supply' },
+  ];
+  var html = '<div style="margin-bottom:10px;font-size:11px;color:var(--text-muted);">120-day lead time · ' + total + ' SKUs</div>';
+  bars.forEach(function(b) {
+    var n   = counts[b.key] || 0;
+    var pct = total > 0 ? Math.round(n / total * 100) : 0;
+    html += '<div style="margin-bottom:12px;">';
+    html += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;">';
+    html += '<span style="font-size:12px;font-weight:600;color:' + b.color + ';">' + b.icon + ' ' + b.label + '<span style="font-weight:400;color:var(--text-muted);margin-left:6px;font-size:11px;">· ' + b.desc + '</span></span>';
+    html += '<span style="font-size:13px;font-weight:700;color:' + b.color + ';">' + n + '</span>';
+    html += '</div>';
+    html += '<div style="background:' + b.bg + ';border-radius:6px;height:10px;overflow:hidden;">';
+    html += '<div style="background:' + b.color + ';height:10px;border-radius:6px;width:' + pct + '%;transition:width .4s;"></div>';
+    html += '</div></div>';
+  });
+  var el = document.getElementById('dash-sc-health');
+  if (el) el.innerHTML = html;
+})();
 </script>
 </div><!-- /main-area -->
 </body>
