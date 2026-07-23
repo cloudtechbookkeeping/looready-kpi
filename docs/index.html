@@ -573,7 +573,7 @@ body {
       <div class="live-dot"></div>
       <div>
         <span class="live-label">Live</span>
-        <span class="live-time">Updated July 23, 2026<br>1:32 PM ET</span>
+        <span class="live-time">Updated July 23, 2026<br>1:40 PM ET</span>
       </div>
     </div>
   </div>
@@ -605,7 +605,7 @@ body {
 <!-- ══════════════ DASHBOARD SECTION ══════════════ -->
 <div id="section-dashboard" class="section active">
 
-  <div class="updated-line">Data snapshot: July 23, 2026 1:32 PM ET · SP-API live pull</div>
+  <div class="updated-line">Data snapshot: July 23, 2026 1:40 PM ET · SP-API live pull</div>
 
   <!-- 1st + 2nd: Profit Breakdown + Inventory Health -->
   <div class="grid-2-eq mb-20">
@@ -827,7 +827,6 @@ body {
     </div>
   </div>
 
-  <div class="updated-line" style="margin-bottom:20px;">Sales Analysis · United States &amp; United Kingdom · FBA</div>
 
   <!-- Revenue chart full width -->
   <div class="card mb-20">
@@ -1192,7 +1191,7 @@ const inventoryData = {'LR-TSC-30PACK':{fba:{fulfillable:1061,inbound:180,reserv
 const tabData = {
   '30d': { revenue:'$41,736.33', units:'2592', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Last 30 Days · SP-API live', usub:'2200 orders . 2592 units', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':959,'LR-CS-10':929,'LR-CS-30':359,'LR-TSC-5PACK':121,'LR-CS-120':0}, days30d:29 }, /* 30D_KPI_PLACEHOLDER */
   '7d':  { revenue:'$8,359.67', units:'449', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Last 7 Days · SP-API live', usub:'412 orders . 449 units', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':187,'LR-CS-10':168,'LR-CS-30':66,'LR-TSC-5PACK':28,'LR-CS-120':0} }, /* 7D_KPI_PLACEHOLDER */
-  'today': { revenue:'$1,051.04', units:'58', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Today July 23, 2026 1:32 PM ET . SP-API live', usub:'56 orders . 71 units . Fees $641.02', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':20,'LR-CS-10':25,'LR-CS-30':10,'LR-TSC-5PACK':3,'LR-CS-120':0} }, /* TODAY_KPI_PLACEHOLDER */
+  'today': { revenue:'$1,051.04', units:'58', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Today July 23, 2026 1:40 PM ET . SP-API live', usub:'56 orders . 71 units . Fees $641.02', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':20,'LR-CS-10':25,'LR-CS-30':10,'LR-TSC-5PACK':3,'LR-CS-120':0} }, /* TODAY_KPI_PLACEHOLDER */
   'lifetime': { revenue:'$439,795', units:'20,748', spend:'$226,449', acos:'51.5%', sessions:'187,331', ipi:'628',
                rsub:'Lifetime Ad Sales (all campaigns)', usub:'Lifetime ad purchases', ssub:'Lifetime total spend', asub:'Lifetime avg ACOS', sesub:'Lifetime ad clicks', isub:'Range 570–686',
                acosColor:'#d97706' },
@@ -1228,18 +1227,11 @@ function switchTab(el, tab) {
   document.getElementById('custom-date-panel').style.display = 'none';
   const d = tabData[tab];
   if (!d) return;
-  document.getElementById('kv-revenue').textContent  = d.revenue;
-  document.getElementById('kv-units').textContent    = d.units;
-  document.getElementById('kv-spend').textContent    = d.spend;
-  document.getElementById('kv-acos').textContent     = d.acos;
-  document.getElementById('kv-sessions').textContent = d.sessions;
-  document.getElementById('kv-ipi').textContent      = d.ipi;
-  document.getElementById('ks-revenue').textContent  = d.rsub;
-  document.getElementById('ks-units').textContent    = d.usub;
-  document.getElementById('ks-spend').textContent    = d.ssub;
-  document.getElementById('ks-acos').textContent     = d.asub;
-  document.getElementById('ks-sessions').textContent = d.sesub;
-  document.getElementById('ks-ipi').textContent      = d.isub;
+  function _s(id,v){var e=document.getElementById(id);if(e)e.textContent=v;}
+  _s('kv-revenue',d.revenue); _s('kv-units',d.units); _s('kv-spend',d.spend);
+  _s('kv-acos',d.acos); _s('kv-sessions',d.sessions); _s('kv-ipi',d.ipi);
+  _s('ks-revenue',d.rsub); _s('ks-units',d.usub); _s('ks-spend',d.ssub);
+  _s('ks-acos',d.asub); _s('ks-sessions',d.sesub); _s('ks-ipi',d.isub);
   renderSkuBreakdown(tab);
 }
 
