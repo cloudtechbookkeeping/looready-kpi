@@ -573,7 +573,7 @@ body {
       <div class="live-dot"></div>
       <div>
         <span class="live-label">Live</span>
-        <span class="live-time">Updated July 23, 2026<br>11:07 AM ET</span>
+        <span class="live-time">Updated July 23, 2026<br>12:46 PM ET</span>
       </div>
     </div>
   </div>
@@ -605,7 +605,7 @@ body {
 <!-- ══════════════ DASHBOARD SECTION ══════════════ -->
 <div id="section-dashboard" class="section active">
 
-  <div class="updated-line">Data snapshot: July 23, 2026 11:07 AM ET · SP-API live pull</div>
+  <div class="updated-line">Data snapshot: July 23, 2026 12:46 PM ET · SP-API live pull</div>
 
   <!-- Key Insights Row -->
   <div class="insights-row">
@@ -705,15 +705,15 @@ body {
         </div>
         <div class="mini-stat">
           <span class="mini-stat-label">LR-TSC-30PACK</span>
-          <span class="mini-stat-val" id="inv-30pack">4,181 units</span>
+          <span class="mini-stat-val" id="inv-30pack">4,179 units</span>
         </div>
         <div class="mini-stat">
           <span class="mini-stat-label">LR-CS-10</span>
-          <span class="mini-stat-val" id="inv-cs10">3,468 units</span>
+          <span class="mini-stat-val" id="inv-cs10">3,467 units</span>
         </div>
         <div class="mini-stat">
           <span class="mini-stat-label">LR-CS-30</span>
-          <span class="mini-stat-val" id="inv-cs30">5,914 units</span>
+          <span class="mini-stat-val" id="inv-cs30">5,912 units</span>
         </div>
         <div class="mini-stat">
           <span class="mini-stat-label">LR-TSC-5PACK</span>
@@ -738,7 +738,7 @@ body {
           <span class="dot" style="background:var(--red);"></span>
           Supply Chain Health
         </div>
-        <span class="card-badge" style="cursor:pointer;" onclick="switchSection('inventory');setTimeout(function(){switchInvTab('supply-chain',document.querySelector('.inv-tab:nth-child(2)'))},150);">Inventory â Supply Chain â</span>
+        <span class="card-badge" id="dash-sc-badge" style="cursor:pointer;" onclick="switchSection('inventory');setTimeout(function(){switchInvTab('supply-chain',document.querySelector('.inv-tab:nth-child(2)'))},150);">Supply Chain ↗</span>
       </div>
       <div class="card-body" style="padding:16px 20px;" id="dash-sc-health">
         <div style="color:var(--text-muted);font-size:12px;text-align:center;padding:8px 0;">Loading supply chain dataâ¦</div>
@@ -1298,13 +1298,13 @@ body {
 
 <script>
 // ── Inventory Data ──────────────────────────────────────────────
-const inventoryData = {'LR-TSC-30PACK':{fba:{fulfillable:1067,inbound:205,reserved:256,researching:0,unfulfillable:3},awd:{onhand:825,inbound:1825,outbound:0}},'LR-CS-10':{fba:{fulfillable:1004,inbound:0,reserved:400,researching:6,unfulfillable:6},awd:{onhand:0,inbound:2052,outbound:0}},'LR-CS-30':{fba:{fulfillable:685,inbound:0,reserved:143,researching:4,unfulfillable:6},awd:{onhand:1080,inbound:3996,outbound:0}},'LR-TSC-5PACK':{fba:{fulfillable:140,inbound:0,reserved:167,researching:3,unfulfillable:1},awd:{onhand:1050,inbound:0,outbound:0}},'LR-CS-120':{fba:{fulfillable:141,inbound:0,reserved:8,researching:0,unfulfillable:0},awd:{onhand:48,inbound:300,outbound:0}}};
+const inventoryData = {'LR-TSC-30PACK':{fba:{fulfillable:1064,inbound:180,reserved:282,researching:0,unfulfillable:3},awd:{onhand:825,inbound:1825,outbound:0}},'LR-CS-10':{fba:{fulfillable:998,inbound:0,reserved:404,researching:7,unfulfillable:6},awd:{onhand:0,inbound:2052,outbound:0}},'LR-CS-30':{fba:{fulfillable:682,inbound:0,reserved:144,researching:4,unfulfillable:6},awd:{onhand:1080,inbound:3996,outbound:0}},'LR-TSC-5PACK':{fba:{fulfillable:140,inbound:0,reserved:167,researching:3,unfulfillable:1},awd:{onhand:1050,inbound:0,outbound:0}},'LR-CS-120':{fba:{fulfillable:141,inbound:0,reserved:8,researching:0,unfulfillable:0},awd:{onhand:48,inbound:300,outbound:0}}};
 
 // ── Tab Switching Data ──────────────────────────────────────────
 const tabData = {
   '30d': { revenue:'$41,736.33', units:'2592', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Last 30 Days · SP-API live', usub:'2200 orders . 2592 units', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':959,'LR-CS-10':929,'LR-CS-30':359,'LR-TSC-5PACK':121,'LR-CS-120':0}, days30d:29 }, /* 30D_KPI_PLACEHOLDER */
   '7d':  { revenue:'$8,359.67', units:'449', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Last 7 Days · SP-API live', usub:'412 orders . 449 units', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':187,'LR-CS-10':168,'LR-CS-30':66,'LR-TSC-5PACK':28,'LR-CS-120':0} }, /* 7D_KPI_PLACEHOLDER */
-  'today': { revenue:'$1,005.21', units:'55', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Today July 23, 2026 11:07 AM ET . SP-API live', usub:'53 orders . 71 units . Fees $641.02', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':19,'LR-CS-10':23,'LR-CS-30':10,'LR-TSC-5PACK':3,'LR-CS-120':0} }, /* TODAY_KPI_PLACEHOLDER */
+  'today': { revenue:'$1,041.57', units:'57', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Today July 23, 2026 12:46 PM ET . SP-API live', usub:'55 orders . 71 units . Fees $641.02', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':20,'LR-CS-10':24,'LR-CS-30':10,'LR-TSC-5PACK':3,'LR-CS-120':0} }, /* TODAY_KPI_PLACEHOLDER */
   'lifetime': { revenue:'$439,795', units:'20,748', spend:'$226,449', acos:'51.5%', sessions:'187,331', ipi:'628',
                rsub:'Lifetime Ad Sales (all campaigns)', usub:'Lifetime ad purchases', ssub:'Lifetime total spend', asub:'Lifetime avg ACOS', sesub:'Lifetime ad clicks', isub:'Range 570–686',
                acosColor:'#d97706' },
@@ -1995,50 +1995,113 @@ new Chart(iCtx, {
   }
 });
 
-// ── Dashboard Supply Chain Health Bars ──────────────────────────
+// ── Dashboard Supply Chain Health ────────────────────────────────────
 (function() {
-  var LEAD = 125;
-  var today = new Date(); today.setHours(0,0,0,0);
-  var d30 = (typeof tabData !== 'undefined') ? (tabData['30d'] || {}) : {};
-  var days30d = (d30 && typeof d30.days30d === 'number' && d30.days30d > 0) ? d30.days30d : 30;
-  var skuUnits30 = (d30 && d30.skuUnits) ? d30.skuUnits : {};
-  var inv = (typeof inventoryData !== 'undefined') ? inventoryData : {};
-  var SKUS = ['LR-TSC-30PACK','LR-CS-10','LR-CS-30','LR-TSC-5PACK','LR-CS-120'];
-  var counts = { overdue:0, urgent:0, soon:0, ontrack:0 };
+  const LEAD = 120;
+  const d30 = kpiData && kpiData['30d'];
+  const days30d = (d30 && typeof d30.days30d === 'number' && d30.days30d > 0) ? d30.days30d : 30;
+  const skuUnits30 = (d30 && d30.skuUnits) ? d30.skuUnits : {};
+  const inv = inventoryData || {};
+  const SKUS = ['LR-TSC-30PACK','LR-CS-10','LR-CS-30','LR-TSC-5PACK','LR-CS-120'];
+  const counts = { overdue:0, urgent:0, soon:0, ontrack:0 };
   SKUS.forEach(function(sku) {
-    var fba = (inv[sku] || {}).fba || {};
-    var awd = (inv[sku] || {}).awd || {};
-    var tot = (fba.fulfillable||0)+(fba.inbound||0)+(fba.reserved||0)+(fba.researching||0)+(fba.unfulfillable||0)+(awd.onhand||0)+(awd.inbound||0);
-    var u30 = typeof skuUnits30[sku] === 'number' ? skuUnits30[sku] : 0;
-    var vel = (u30 > 0 && days30d > 0) ? u30/days30d : 0;
-    var st  = 'ontrack';
-    if (vel > 0) { var ni = (tot/vel) - LEAD; if (ni<=0) st='overdue'; else if (ni<=14) st='urgent'; else if (ni<=45) st='soon'; }
-    counts[st]++;
+    const fba = (inv[sku] || {}).fba || {};
+    const awd = (inv[sku] || {}).awd || {};
+    const total = (fba.fulfillable||0)+(fba.inbound||0)+(fba.reserved||0)+(fba.researching||0)+(fba.unfulfillable||0)+(awd.onhand||0)+(awd.inbound||0);
+    const vel = (typeof skuUnits30[sku]==='number' && skuUnits30[sku]>0 && days30d>0) ? skuUnits30[sku]/days30d : 0;
+    let status = 'ontrack';
+    if (vel > 0) {
+      const notifyIn = (total/vel) - LEAD;
+      if      (notifyIn <= 0)  status = 'overdue';
+      else if (notifyIn <= 14) status = 'urgent';
+      else if (notifyIn <= 45) status = 'soon';
+    }
+    counts[status]++;
   });
-  var total = SKUS.length;
-  var bars = [
+  const N = SKUS.length;
+  const healthPct = N > 0 ? Math.round(counts.ontrack / N * 100) : 0;
+  const healthColor = healthPct >= 60 ? '#22c55e' : healthPct >= 40 ? '#f59e0b' : '#ef4444';
+  const healthLabel = healthPct >= 60 ? 'Healthy' : healthPct >= 40 ? 'At Risk' : 'Critical';
+  var badge = document.getElementById('dash-sc-badge');
+  if (badge) badge.innerHTML = 'Score: <strong style="color:' + healthColor + ';">' + healthPct + '%</strong> · <span style="color:' + healthColor + ';">' + healthLabel + '</span>';
+  var ROWS = [
     { key:'overdue', label:'Overdue',  color:'#ef4444', bg:'#fee2e2', icon:'🔥', desc:'Need immediate action' },
     { key:'urgent',  label:'Urgent',   color:'#f59e0b', bg:'#fef3c7', icon:'⚡', desc:'Notify within 14 days' },
     { key:'soon',    label:'Soon',     color:'#eab308', bg:'#fefce8', icon:'🕐', desc:'Plan ahead' },
-    { key:'ontrack', label:'On Track', color:'#22c55e', bg:'#dcfce7', icon:'✅', desc:'Healthy supply' },
+    { key:'ontrack', label:'On Track', color:'#22c55e', bg:'#dcfce7', icon:'✓',  desc:'Healthy supply' },
   ];
-  var html = '<div style="margin-bottom:10px;font-size:11px;color:var(--text-muted);">120-day lead time · ' + total + ' SKUs</div>';
-  bars.forEach(function(b) {
-    var n   = counts[b.key] || 0;
-    var pct = total > 0 ? Math.round(n / total * 100) : 0;
-    html += '<div style="margin-bottom:12px;">';
-    html += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;">';
-    html += '<span style="font-size:12px;font-weight:600;color:' + b.color + ';">' + b.icon + ' ' + b.label + '<span style="font-weight:400;color:var(--text-muted);margin-left:6px;font-size:11px;">· ' + b.desc + '</span></span>';
-    html += '<span style="font-size:13px;font-weight:700;color:' + b.color + ';">' + n + '</span>';
-    html += '</div>';
-    html += '<div style="background:' + b.bg + ';border-radius:6px;height:10px;overflow:hidden;">';
-    html += '<div style="background:' + b.color + ';height:10px;border-radius:6px;width:' + pct + '%;transition:width .4s;"></div>';
-    html += '</div></div>';
+  function rowHtml(b) {
+    var n = counts[b.key] || 0;
+    var pct = N > 0 ? Math.round(n / N * 100) : 0;
+    var skuLabel = n === 1 ? '1 SKU' : n + ' SKUs';
+    var dot = pct > 0 ? '<span style="position:absolute;right:-5px;top:50%;transform:translateY(-50%);width:10px;height:10px;border-radius:50%;background:' + b.color + ';border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.15);display:block;"></span>' : '';
+    return '<div style="display:flex;align-items:center;gap:14px;padding:13px 0;border-bottom:1px solid var(--border);">'
+      + '<div style="width:42px;height:42px;border-radius:50%;background:' + b.bg + ';display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:19px;">' + b.icon + '</div>'
+      + '<div style="flex:1;min-width:0;">'
+        + '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:7px;">'
+          + '<div><span style="font-size:13px;font-weight:700;color:' + b.color + ';">' + b.label + '</span>'
+          + '<span style="font-size:11px;color:var(--text-muted);margin-left:6px;">' + b.desc + '</span></div>'
+          + '<div style="display:flex;align-items:center;gap:14px;flex-shrink:0;margin-left:10px;">'
+            + '<span style="font-size:12px;color:var(--text-muted);font-weight:500;">' + skuLabel + '</span>'
+            + '<span style="font-size:13px;font-weight:700;color:' + b.color + ';min-width:34px;text-align:right;">' + pct + '%</span>'
+          + '</div>'
+        + '</div>'
+        + '<div style="background:#f1f5f9;border-radius:999px;height:8px;position:relative;">'
+          + '<div style="background:' + b.color + ';height:8px;border-radius:999px;width:' + pct + '%;position:relative;">' + dot + '</div>'
+        + '</div>'
+      + '</div></div>';
+  }
+  var R = 26, SW = 10, CX = 36, CY = 36;
+  var C = 2 * Math.PI * R;
+  var donutOrder = [
+    { key:'ontrack', color:'#22c55e' },
+    { key:'urgent',  color:'#f59e0b' },
+    { key:'overdue', color:'#ef4444' },
+    { key:'soon',    color:'#eab308' },
+  ];
+  var cumDash = 0;
+  var svgSegs = '<circle cx="' + CX + '" cy="' + CY + '" r="' + R + '" fill="none" stroke="#e2e8f0" stroke-width="' + SW + '"/>';
+  donutOrder.forEach(function(s) {
+    var n = counts[s.key] || 0;
+    if (n === 0) return;
+    var dash = (n / N) * C;
+    var gap  = C - dash;
+    svgSegs += '<circle cx="' + CX + '" cy="' + CY + '" r="' + R + '" fill="none" stroke="' + s.color + '" stroke-width="' + SW + '"'
+      + ' stroke-dasharray="' + dash.toFixed(2) + ' ' + gap.toFixed(2) + '"'
+      + ' stroke-dashoffset="' + (C/4 - cumDash).toFixed(2) + '"'
+      + ' transform="rotate(-90 ' + CX + ' ' + CY + ')"/>';
+    cumDash += dash;
   });
+  var legendItems = [
+    { key:'ontrack', label:'On Track', color:'#22c55e' },
+    { key:'urgent',  label:'Urgent',   color:'#f59e0b' },
+    { key:'overdue', label:'Overdue',  color:'#ef4444' },
+    { key:'soon',    label:'Soon',     color:'#eab308' },
+  ].map(function(s) {
+    var n = counts[s.key] || 0;
+    var pct = N > 0 ? Math.round(n / N * 100) : 0;
+    return '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;">'
+      + '<div style="display:flex;align-items:center;gap:6px;">'
+        + '<span style="width:8px;height:8px;border-radius:50%;background:' + s.color + ';display:inline-block;flex-shrink:0;"></span>'
+        + '<span style="font-size:11px;color:var(--text-muted);">' + s.label + '</span>'
+      + '</div>'
+      + '<span style="font-size:11px;font-weight:600;color:#374151;margin-left:16px;">' + pct + '% (' + n + (n===1?' SKU':' SKUs') + ')</span>'
+    + '</div>';
+  }).join('');
+  var summaryHtml = '<div style="display:flex;align-items:center;gap:16px;background:#f8fafc;border-radius:12px;padding:14px 16px;margin-top:6px;">'
+    + '<div style="width:44px;height:44px;border-radius:50%;background:#ede9fe;display:flex;align-items:center;justify-content:center;flex-shrink:0;">'
+      + '<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><polyline points="2,14 7,8 11,11 18,4" stroke="#7c3aed" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/><polyline points="14,4 18,4 18,8" stroke="#7c3aed" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>'
+    + '</div>'
+    + '<div style="flex:1;"><div style="font-size:13px;font-weight:700;color:#1e293b;margin-bottom:2px;">Overall Summary</div>'
+      + '<div style="font-size:11px;color:var(--text-muted);">' + counts.ontrack + ' of ' + N + ' SKUs are on track</div>'
+    + '</div>'
+    + '<svg width="72" height="72" viewBox="0 0 72 72" style="flex-shrink:0;">' + svgSegs + '</svg>'
+    + '<div style="min-width:120px;">' + legendItems + '</div>'
+  + '</div>';
+  var html = ROWS.map(rowHtml).join('') + summaryHtml;
   var el = document.getElementById('dash-sc-health');
   if (el) el.innerHTML = html;
-})();
-</script>
+})();</script>
 </div><!-- /main-area -->
 </body>
 </html>
