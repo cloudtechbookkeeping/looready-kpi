@@ -573,7 +573,7 @@ body {
       <div class="live-dot"></div>
       <div>
         <span class="live-label">Live</span>
-        <span class="live-time">Updated July 23, 2026<br>3:11 PM ET</span>
+        <span class="live-time">Updated July 23, 2026<br>3:34 PM ET</span>
       </div>
     </div>
   </div>
@@ -605,7 +605,7 @@ body {
 <!-- ══════════════ DASHBOARD SECTION ══════════════ -->
 <div id="section-dashboard" class="section active">
 
-  <div class="updated-line">Data snapshot: July 23, 2026 3:11 PM ET · SP-API live pull</div>
+  <div class="updated-line">Data snapshot: July 23, 2026 3:34 PM ET · SP-API live pull</div>
 
   <!-- 1st + 2nd: Profit Breakdown + Inventory Health -->
   <div class="grid-2-eq mb-20">
@@ -1238,13 +1238,13 @@ body {
 
 <script>
 // ── Inventory Data ──────────────────────────────────────────────
-const inventoryData = {'LR-TSC-30PACK':{fba:{fulfillable:1063,inbound:230,reserved:282,researching:0,unfulfillable:3},awd:{onhand:825,inbound:1825,outbound:0}},'LR-CS-10':{fba:{fulfillable:1012,inbound:0,reserved:385,researching:7,unfulfillable:6},awd:{onhand:0,inbound:2052,outbound:0}},'LR-CS-30':{fba:{fulfillable:685,inbound:0,reserved:141,researching:4,unfulfillable:6},awd:{onhand:1080,inbound:3996,outbound:0}},'LR-TSC-5PACK':{fba:{fulfillable:138,inbound:0,reserved:168,researching:3,unfulfillable:1},awd:{onhand:1050,inbound:0,outbound:0}},'LR-CS-120':{fba:{fulfillable:141,inbound:0,reserved:8,researching:0,unfulfillable:0},awd:{onhand:48,inbound:300,outbound:0}}};
+const inventoryData = {'LR-TSC-30PACK':{fba:{fulfillable:1067,inbound:230,reserved:278,researching:0,unfulfillable:3},awd:{onhand:825,inbound:1825,outbound:0}},'LR-CS-10':{fba:{fulfillable:1012,inbound:0,reserved:385,researching:7,unfulfillable:6},awd:{onhand:0,inbound:2052,outbound:0}},'LR-CS-30':{fba:{fulfillable:685,inbound:0,reserved:141,researching:4,unfulfillable:6},awd:{onhand:1080,inbound:3996,outbound:0}},'LR-TSC-5PACK':{fba:{fulfillable:138,inbound:0,reserved:168,researching:3,unfulfillable:1},awd:{onhand:1050,inbound:0,outbound:0}},'LR-CS-120':{fba:{fulfillable:141,inbound:0,reserved:8,researching:0,unfulfillable:0},awd:{onhand:48,inbound:300,outbound:0}}};
 
 // ── Tab Switching Data ──────────────────────────────────────────
 const tabData = {
   '30d': { revenue:'$41,736.33', units:'2592', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Last 30 Days · SP-API live', usub:'2200 orders . 2592 units', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':959,'LR-CS-10':929,'LR-CS-30':359,'LR-TSC-5PACK':121,'LR-CS-120':0}, days30d:29 }, /* 30D_KPI_PLACEHOLDER */
   '7d':  { revenue:'$8,359.67', units:'449', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Last 7 Days · SP-API live', usub:'412 orders . 449 units', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':187,'LR-CS-10':168,'LR-CS-30':66,'LR-TSC-5PACK':28,'LR-CS-120':0} }, /* 7D_KPI_PLACEHOLDER */
-  'today': { revenue:'$1,095.51', units:'62', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Today July 23, 2026 3:11 PM ET . SP-API live', usub:'58 orders . 71 units . Fees $641.02', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':20,'LR-CS-10':28,'LR-CS-30':10,'LR-TSC-5PACK':4,'LR-CS-120':0} }, /* TODAY_KPI_PLACEHOLDER */
+  'today': { revenue:'$1,095.51', units:'62', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Today July 23, 2026 3:34 PM ET . SP-API live', usub:'58 orders . 71 units . Fees $641.02', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':20,'LR-CS-10':28,'LR-CS-30':10,'LR-TSC-5PACK':4,'LR-CS-120':0} }, /* TODAY_KPI_PLACEHOLDER */
   'lifetime': { revenue:'$439,795', units:'20,748', spend:'$226,449', acos:'51.5%', sessions:'187,331', ipi:'628',
                rsub:'Lifetime Ad Sales (all campaigns)', usub:'Lifetime ad purchases', ssub:'Lifetime total spend', asub:'Lifetime avg ACOS', sesub:'Lifetime ad clicks', isub:'Range 570–686',
                acosColor:'#d97706' },
@@ -1315,6 +1315,8 @@ function renderSkuBreakdown(tab) {
   }).join('');
 
 // ── Profit Breakdown (dynamic) ──────────────────────────────────
+}
+
 function renderProfitBreakdown(tab) {
   var d = tabData[tab] || {};
   var rev = parseFloat((d.revenue || '0').replace(/[$,]/g, '')) || 0;
@@ -1347,8 +1349,6 @@ function renderProfitBreakdown(tab) {
     profitDonutChart.data.datasets[0].data = [Math.max(0, netProfit), fees, fba, adSpend];
     profitDonutChart.update('none');
   }
-}
-
 }
 
 // ── Inventory ───────────────────────────────────────────────────
@@ -1925,7 +1925,7 @@ chartConfig(document.getElementById('revenueChartSales').getContext('2d'));
 // ── Profit Donut ────────────────────────────────────────────────
 const donutData = {
   labels: ['Net Profit ~47%','Amazon Fees 15%','FBA Fulfillment 17%','Ad Spend 20%'],
-  datasets: [{ data: [16743, 5282, 6135, 7050], backgroundColor: ['#66bc46','#f59e0b','#2688c9','#ec4899'], borderWidth: 0, hoverOffset: 4 }]
+  datasets: [{ data: (function(){var _r=parseFloat((tabData['30d'].revenue||'0').replace(/[$,]/g,''))||0;var _u=parseInt((String(tabData['30d'].units||'0')).replace(/[,]/g,''))||0;var _f=Math.round(_r*.15),_b=_u*3,_a=Math.round(_r*.2);var _n=Math.round(_r-_f-_b-_a);return[Math.max(0,_n),_f,_b,_a];})(), backgroundColor: ['#66bc46','#f59e0b','#2688c9','#ec4899'], borderWidth: 0, hoverOffset: 4 }]
 };
 const donutOpts = {
   responsive: true, maintainAspectRatio: false,
@@ -1933,6 +1933,8 @@ const donutOpts = {
   plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => ' $' + c.parsed.toLocaleString() } } }
 };
 var profitDonutChart = new Chart(document.getElementById('profitDonut').getContext('2d'), { type: 'doughnut', data: donutData, options: donutOpts });
+renderProfitBreakdown('30d'); // refresh profit display after chart init
+
 new Chart(document.getElementById('profitDonutSales').getContext('2d'), { type: 'doughnut', data: donutData, options: donutOpts });
 
 // ── Inventory Bar Chart ─────────────────────────────────────────
