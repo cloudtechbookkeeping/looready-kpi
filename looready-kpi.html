@@ -641,23 +641,8 @@ body {
     </div>
   </div>
 
-  <!-- Revenue Chart + Profit Breakdown -->
-  <div class="grid-2 mb-20">
-    <div class="card">
-      <div class="card-header">
-        <div class="card-title">
-          <span class="dot" style="background:var(--green);"></span>
-          Revenue Trend — Last 30 Days
-        </div>
-        <span class="card-badge">Apr 29 – May 28</span>
-      </div>
-      <div class="card-body">
-        <div class="chart-wrap lg">
-          <canvas id="revenueChart"></canvas>
-        </div>
-      </div>
-    </div>
-
+  <!-- 1st + 2nd: Profit Breakdown + Inventory Health -->
+  <div class="grid-2-eq mb-20">
     <div class="card">
       <div class="card-header">
         <div class="card-title">
@@ -704,10 +689,62 @@ body {
         <p class="footnote">* COGS not in Seller Central. Add via Sellerboard for exact profit.</p>
       </div>
     </div>
+
+    <!-- Inventory Health -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">
+          <span class="dot" style="background:var(--purple);"></span>
+          Inventory Health
+        </div>
+        <span class="card-badge">IPI: 628 â</span>
+      </div>
+      <div class="card-body" style="padding: 16px 20px;">
+        <div class="chart-wrap sm" style="margin-bottom:12px;">
+          <canvas id="inventoryChart"></canvas>
+        </div>
+        <div class="mini-stat">
+          <span class="mini-stat-label">LR-TSC-30PACK</span>
+          <span class="mini-stat-val" id="inv-30pack">-- units</span>
+        </div>
+        <div class="mini-stat">
+          <span class="mini-stat-label">LR-CS-10</span>
+          <span class="mini-stat-val" id="inv-cs10">-- units</span>
+        </div>
+        <div class="mini-stat">
+          <span class="mini-stat-label">LR-CS-30</span>
+          <span class="mini-stat-val" id="inv-cs30">-- units</span>
+        </div>
+        <div class="mini-stat">
+          <span class="mini-stat-label">LR-TSC-5PACK</span>
+          <span class="mini-stat-val" id="inv-5pack">-- units</span>
+        </div>
+        <div class="mini-stat">
+          <span class="mini-stat-label">LR-CS-120 â ï¸</span>
+          <span class="mini-stat-val red" id="inv-cs120">-- (Suppressed)</span>
+        </div>
+        <div style="margin-top:12px;padding:10px 12px;background:#fff7ed;border-radius:8px;border:1px solid #fed7aa;font-size:11px;color:#92400e;">
+          â ï¸ LR-CS-120 is Search Suppressed. Fix listing to unlock $69.99 inventory.
+        </div>
+      </div>
+    </div>
   </div>
 
-  <!-- Dashboard bottom: Ads summary + Traffic summary + Inventory summary -->
-  <div class="grid-3">
+  <!-- 3rd + 4th: Supply Chain Health + Advertising -->
+  <div class="grid-2-eq mb-20">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">
+          <span class="dot" style="background:var(--red);"></span>
+          Supply Chain Health
+        </div>
+        <span class="card-badge" style="cursor:pointer;" onclick="switchSection('inventory');setTimeout(function(){switchInvTab('supply-chain',document.querySelector('.inv-tab:nth-child(2)'))},150);">Inventory â Supply Chain â</span>
+      </div>
+      <div class="card-body" style="padding:16px 20px;" id="dash-sc-health">
+        <div style="color:var(--text-muted);font-size:12px;text-align:center;padding:8px 0;">Loading supply chain dataâ¦</div>
+      </div>
+    </div>
+
     <!-- Ads Summary -->
     <div class="card">
       <div class="card-header">
@@ -715,7 +752,7 @@ body {
           <span class="dot" style="background:var(--orange);"></span>
           Advertising
         </div>
-        <span class="card-badge" id="ads-badge">Last 30 Days · US+UK</span>
+        <span class="card-badge" id="ads-badge">Last 30 Days Â· US+UK</span>
       </div>
       <div class="card-body" style="padding: 16px 20px;">
         <div class="mini-stat">
@@ -728,7 +765,7 @@ body {
         </div>
         <div class="mini-stat">
           <span class="mini-stat-label">ROAS</span>
-          <span class="mini-stat-val" id="ad-roas-val">1.04×</span>
+          <span class="mini-stat-val" id="ad-roas-val">1.04Ã</span>
         </div>
         <div class="mini-stat">
           <span class="mini-stat-label">ACOS</span>
@@ -751,7 +788,7 @@ body {
           <span class="mini-stat-val" id="ad-ctr-val">0.84%</span>
         </div>
         <div style="margin-top:12px;">
-          <div style="font-size:10px;color:var(--text-muted);margin-bottom:5px;" id="acos-label">30-Day ACOS (96.5% — Very High ⚠️)</div>
+          <div style="font-size:10px;color:var(--text-muted);margin-bottom:5px;" id="acos-label">30-Day ACOS (96.5% â Very High â ï¸)</div>
           <div class="acos-meter">
             <span style="font-size:10px;color:var(--green);">0%</span>
             <div class="acos-bar"><div class="acos-fill" id="acos-fill-bar" style="width:96.5%;"></div></div>
@@ -760,7 +797,10 @@ body {
         </div>
       </div>
     </div>
+  </div>
 
+  <!-- 5th + 6th: Traffic & Conversion + Revenue Trend -->
+  <div class="grid-2-eq">
     <!-- Traffic Summary -->
     <div class="card">
       <div class="card-header">
@@ -801,7 +841,7 @@ body {
         </div>
         <div class="mini-stat">
           <span class="mini-stat-label">Buy Box %</span>
-          <span class="mini-stat-val green">100% 🏆</span>
+          <span class="mini-stat-val green">100% ð</span>
         </div>
         <div class="mini-stat">
           <span class="mini-stat-label">Promo Sales (7d)</span>
@@ -810,57 +850,20 @@ body {
       </div>
     </div>
 
-    <!-- Inventory Summary -->
+    <!-- Revenue Trend -->
     <div class="card">
       <div class="card-header">
         <div class="card-title">
-          <span class="dot" style="background:var(--purple);"></span>
-          Inventory Health
+          <span class="dot" style="background:var(--green);"></span>
+          Revenue Trend â Last 30 Days
         </div>
-        <span class="card-badge">IPI: 628 ✓</span>
+        <span class="card-badge">Apr 29 â May 28</span>
       </div>
-      <div class="card-body" style="padding: 16px 20px;">
-        <div class="chart-wrap sm" style="margin-bottom:12px;">
-          <canvas id="inventoryChart"></canvas>
-        </div>
-        <div class="mini-stat">
-          <span class="mini-stat-label">LR-TSC-30PACK</span>
-          <span class="mini-stat-val" id="ihs-30pack">856 units</span>
-        </div>
-        <div class="mini-stat">
-          <span class="mini-stat-label">LR-CS-10</span>
-          <span class="mini-stat-val" id="ihs-cs10">702 units</span>
-        </div>
-        <div class="mini-stat">
-          <span class="mini-stat-label">LR-CS-30</span>
-          <span class="mini-stat-val" id="ihs-cs30">304 units</span>
-        </div>
-        <div class="mini-stat">
-          <span class="mini-stat-label">LR-TSC-5PACK</span>
-          <span class="mini-stat-val" id="ihs-5pack">228 units</span>
-        </div>
-        <div class="mini-stat">
-          <span class="mini-stat-label">LR-CS-120 ⚠️</span>
-          <span class="mini-stat-val" id="ihs-cs120">149 units/span>
-        </div>
-        <div style="margin-top:12px;padding:10px 12px;background:#fff7ed;border-radius:8px;border:1px solid #fed7aa;font-size:11px;color:#92400e;">
-          ⚠️ LR-CS-120 is Search Suppressed. Fix listing to unlock $69.99 inventory.
+      <div class="card-body">
+        <div class="chart-wrap lg">
+          <canvas id="revenueChart"></canvas>
         </div>
       </div>
-    </div>
-  </div>
-
-  <!-- Supply Chain Health Summary -->
-  <div class="card" style="margin-top:20px;">
-    <div class="card-header">
-      <div class="card-title">
-        <span class="dot" style="background:var(--red);"></span>
-        Supply Chain Health
-      </div>
-      <span class="card-badge" style="cursor:pointer;" onclick="switchSection('inventory');setTimeout(function(){switchInvTab('supply-chain',document.querySelector('.inv-tab:nth-child(2)'))},150);">Inventory → Supply Chain ↗</span>
-    </div>
-    <div class="card-body" style="padding:16px 20px;" id="dash-sc-health">
-      <div style="color:var(--text-muted);font-size:12px;text-align:center;padding:8px 0;">Loading supply chain data…</div>
     </div>
   </div>
 
