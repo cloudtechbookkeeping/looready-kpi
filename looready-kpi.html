@@ -1994,12 +1994,12 @@ new Chart(iCtx, {
 
 // ── Dashboard Supply Chain Health Bars ──────────────────────────
 (function() {
-  var LEAD = 120;
+  var LEAD = 125;
   var today = new Date(); today.setHours(0,0,0,0);
-  var d30 = kpiData && kpiData['30d'];
+  var d30 = (typeof tabData !== 'undefined') ? (tabData['30d'] || {}) : {};
   var days30d = (d30 && typeof d30.days30d === 'number' && d30.days30d > 0) ? d30.days30d : 30;
   var skuUnits30 = (d30 && d30.skuUnits) ? d30.skuUnits : {};
-  var inv = inventoryData || {};
+  var inv = (typeof inventoryData !== 'undefined') ? inventoryData : {};
   var SKUS = ['LR-TSC-30PACK','LR-CS-10','LR-CS-30','LR-TSC-5PACK','LR-CS-120'];
   var counts = { overdue:0, urgent:0, soon:0, ontrack:0 };
   SKUS.forEach(function(sku) {
