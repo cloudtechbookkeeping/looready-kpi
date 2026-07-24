@@ -613,6 +613,45 @@ body {
       <div class="card-header">
         <div class="card-title">
           <span class="dot" style="background:var(--purple);"></span>
+          Inventory Health
+        </div>
+        <span class="card-badge">IPI: 628 ✓</span>
+      </div>
+      <div class="card-body" style="padding: 16px 20px;">
+        <div class="chart-wrap sm" style="margin-bottom:12px;">
+          <canvas id="inventoryChart"></canvas>
+        </div>
+        <div class="mini-stat">
+          <span class="mini-stat-label">LR-TSC-30PACK</span>
+          <span class="mini-stat-val" id="inv-30pack">-- units</span>
+        </div>
+        <div class="mini-stat">
+          <span class="mini-stat-label">LR-CS-10</span>
+          <span class="mini-stat-val" id="inv-cs10">-- units</span>
+        </div>
+        <div class="mini-stat">
+          <span class="mini-stat-label">LR-CS-30</span>
+          <span class="mini-stat-val" id="inv-cs30">-- units</span>
+        </div>
+        <div class="mini-stat">
+          <span class="mini-stat-label">LR-TSC-5PACK</span>
+          <span class="mini-stat-val" id="inv-5pack">-- units</span>
+        </div>
+        <div class="mini-stat">
+          <span class="mini-stat-label">LR-CS-120 ⚠️</span>
+          <span class="mini-stat-val red" id="inv-cs120">-- (Suppressed)</span>
+        </div>
+        <div style="margin-top:12px;padding:10px 12px;background:#fff7ed;border-radius:8px;border:1px solid #fed7aa;font-size:11px;color:#92400e;">
+          ⚠️ LR-CS-120 is Search Suppressed. Fix listing to unlock $69.99 inventory.
+        </div>
+      </div>
+    </div>
+
+    <!-- Inventory Health -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">
+          <span class="dot" style="background:var(--purple);"></span>
           Profit Breakdown
         </div>
         <span class="card-badge">30-Day Est.</span>
@@ -653,45 +692,6 @@ body {
           </div>
         </div>
         <p class="footnote">* COGS not in Seller Central. Add via Sellerboard for exact profit.</p>
-      </div>
-    </div>
-
-    <!-- Inventory Health -->
-    <div class="card">
-      <div class="card-header">
-        <div class="card-title">
-          <span class="dot" style="background:var(--purple);"></span>
-          Inventory Health
-        </div>
-        <span class="card-badge">IPI: 628 ✓</span>
-      </div>
-      <div class="card-body" style="padding: 16px 20px;">
-        <div class="chart-wrap sm" style="margin-bottom:12px;">
-          <canvas id="inventoryChart"></canvas>
-        </div>
-        <div class="mini-stat">
-          <span class="mini-stat-label">LR-TSC-30PACK</span>
-          <span class="mini-stat-val" id="inv-30pack">-- units</span>
-        </div>
-        <div class="mini-stat">
-          <span class="mini-stat-label">LR-CS-10</span>
-          <span class="mini-stat-val" id="inv-cs10">-- units</span>
-        </div>
-        <div class="mini-stat">
-          <span class="mini-stat-label">LR-CS-30</span>
-          <span class="mini-stat-val" id="inv-cs30">-- units</span>
-        </div>
-        <div class="mini-stat">
-          <span class="mini-stat-label">LR-TSC-5PACK</span>
-          <span class="mini-stat-val" id="inv-5pack">-- units</span>
-        </div>
-        <div class="mini-stat">
-          <span class="mini-stat-label">LR-CS-120 ⚠️</span>
-          <span class="mini-stat-val red" id="inv-cs120">-- (Suppressed)</span>
-        </div>
-        <div style="margin-top:12px;padding:10px 12px;background:#fff7ed;border-radius:8px;border:1px solid #fed7aa;font-size:11px;color:#92400e;">
-          ⚠️ LR-CS-120 is Search Suppressed. Fix listing to unlock $69.99 inventory.
-        </div>
       </div>
     </div>
   </div>
