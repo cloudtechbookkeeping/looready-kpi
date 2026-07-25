@@ -539,10 +539,14 @@ body {
 
 /* == Sidebar collapse == */
 aside.sidebar {
-  position: relative;
   transition: width 0.3s ease, min-width 0.3s ease, padding 0.3s ease;
   overflow: hidden;
 }
+aside.sidebar.collapsed ~ .main-area {
+  margin-left: 0 !important;
+  transition: margin-left 0.3s ease;
+}
+.main-area { transition: margin-left 0.3s ease; }
 aside.sidebar.collapsed {
   width: 0 !important;
   min-width: 0 !important;
@@ -612,7 +616,7 @@ aside.sidebar.collapsed {
       <div class="live-dot"></div>
       <div>
         <span class="live-label">Live</span>
-        <span class="live-time">Updated July 25, 2026<br>2:32 AM ET</span>
+        <span class="live-time">Updated July 25, 2026<br>2:42 AM ET</span>
       </div>
     </div>
   </div>
@@ -645,7 +649,7 @@ aside.sidebar.collapsed {
 <!-- ══════════════ DASHBOARD SECTION ══════════════ -->
 <div id="section-dashboard" class="section active">
 
-  <div class="updated-line">Data snapshot: July 25, 2026 2:32 AM ET · SP-API live pull</div>
+  <div class="updated-line">Data snapshot: July 25, 2026 2:42 AM ET · SP-API live pull</div>
 
   <!-- 1st + 2nd: Profit Breakdown + Inventory Health -->
   <div class="grid-2-eq mb-20">
@@ -1284,7 +1288,7 @@ const inventoryData = {'LR-TSC-30PACK':{fba:{fulfillable:1093,inbound:231,reserv
 const tabData = {
   '30d': { revenue:'$40,417.70', units:'2432', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Last 30 Days · SP-API live', usub:'2111 orders . 2432 units', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':880,'LR-CS-10':908,'LR-CS-30':352,'LR-TSC-5PACK':120,'LR-CS-120':0}, days30d:29 }, /* 30D_KPI_PLACEHOLDER */
   '7d':  { revenue:'$9,147.12', units:'496', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Last 7 Days · SP-API live', usub:'465 orders . 496 units', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':194,'LR-CS-10':189,'LR-CS-30':77,'LR-TSC-5PACK':36,'LR-CS-120':0} }, /* 7D_KPI_PLACEHOLDER */
-  'today': { revenue:'$717.72', units:'41', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Today July 25, 2026 2:32 AM ET . SP-API live', usub:'41 orders . 68 units . Fees $399.04', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':13,'LR-CS-10':18,'LR-CS-30':7,'LR-TSC-5PACK':3,'LR-CS-120':0} }, /* TODAY_KPI_PLACEHOLDER */
+  'today': { revenue:'$717.72', units:'41', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Today July 25, 2026 2:42 AM ET . SP-API live', usub:'41 orders . 68 units . Fees $399.04', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':13,'LR-CS-10':18,'LR-CS-30':7,'LR-TSC-5PACK':3,'LR-CS-120':0} }, /* TODAY_KPI_PLACEHOLDER */
   'lifetime': { revenue:'$439,795', units:'20,748', spend:'$226,449', acos:'51.5%', sessions:'187,331', ipi:'628',
                rsub:'Lifetime Ad Sales (all campaigns)', usub:'Lifetime ad purchases', ssub:'Lifetime total spend', asub:'Lifetime avg ACOS', sesub:'Lifetime ad clicks', isub:'Range 570–686',
                acosColor:'#d97706' },
@@ -2137,58 +2141,63 @@ function toggleSidebar() {
 
 // == Dashboard drag-and-drop ==
 (function() {
-  var grid = document.querySelector('#section-dashboard .grid-2-eq');
-  if (!grid) return;
-  var cards = Array.prototype.slice.call(grid.querySelectorAll(':scope > .card'));
+  var grids = document.querySelectorAll('#section-dashboard .grid-2-eq');
+  if (!grids.length) return;
   var dragSrc = null;
-  var savedOrder = null;
-  try { savedOrder = JSON.parse(localStorage.getItem('dashCardOrder') || 'null'); } catch(e) {}
-  if (savedOrder && savedOrder.length) {
-    savedOrder.forEach(function(id) {
-      var el = grid.querySelector('[data-card-id="' + id + '"]');
-      if (el) grid.appendChild(el);
+
+  function initDragGrid(grid, gIdx) {
+    var cards = Array.prototype.slice.call(grid.querySelectorAll(':scope > .card'));
+    var savedOrder = null;
+    try { savedOrder = JSON.parse(localStorage.getItem('dashCardOrder_' + gIdx) || 'null'); } catch(e) {}
+    if (savedOrder && savedOrder.length) {
+      savedOrder.forEach(function(id) {
+        var el = grid.querySelector('[data-card-id="' + id + '"]');
+        if (el) grid.appendChild(el);
+      });
+    }
+    cards.forEach(function(card, i) {
+      if (!card.dataset.cardId) card.dataset.cardId = 'g' + gIdx + 'c' + i;
+      card.setAttribute('draggable', 'true');
+      var hdr = card.querySelector('.card-header') || card.querySelector('.card-he') || card.querySelector('h2') || card.querySelector('h3') || card.firstElementChild;
+      if (hdr && !hdr.querySelector('.drag-handle')) {
+        var handle = document.createElement('span');
+        handle.className = 'drag-handle';
+        handle.innerHTML = '&#8942;&#8942;';
+        handle.title = 'Drag to reorder';
+        hdr.insertBefore(handle, hdr.firstChild);
+      }
+      card.addEventListener('dragstart', function(e) {
+        dragSrc = card;
+        setTimeout(function() { card.classList.add('dragging'); }, 0);
+        e.dataTransfer.effectAllowed = 'move';
+      });
+      card.addEventListener('dragend', function() {
+        card.classList.remove('dragging');
+        var ov = grid.querySelectorAll('.drag-over');
+        for (var j = 0; j < ov.length; j++) ov[j].classList.remove('drag-over');
+        var order = Array.prototype.slice.call(grid.querySelectorAll('[data-card-id]')).map(function(el) { return el.dataset.cardId; });
+        localStorage.setItem('dashCardOrder_' + gIdx, JSON.stringify(order));
+      });
+      card.addEventListener('dragover', function(e) {
+        e.preventDefault();
+        if (dragSrc && dragSrc !== card) card.classList.add('drag-over');
+      });
+      card.addEventListener('dragleave', function() { card.classList.remove('drag-over'); });
+      card.addEventListener('drop', function(e) {
+        e.preventDefault();
+        card.classList.remove('drag-over');
+        if (dragSrc && dragSrc !== card) {
+          var par = card.parentNode;
+          var ch = Array.prototype.slice.call(par.children);
+          var si = ch.indexOf(dragSrc), di = ch.indexOf(card);
+          if (si < di) par.insertBefore(dragSrc, card.nextSibling);
+          else par.insertBefore(dragSrc, card);
+        }
+      });
     });
   }
-  cards.forEach(function(card, i) {
-    if (!card.dataset.cardId) card.dataset.cardId = 'card-' + i;
-    card.setAttribute('draggable', 'true');
-    var hdr = card.querySelector('.card-header') || card.querySelector('h2') || card.querySelector('h3');
-    if (hdr && !hdr.querySelector('.drag-handle')) {
-      var handle = document.createElement('span');
-      handle.className = 'drag-handle';
-      handle.innerHTML = '&#8942;&#8942;';
-      handle.title = 'Drag to reorder';
-      hdr.insertBefore(handle, hdr.firstChild);
-    }
-    card.addEventListener('dragstart', function(e) {
-      dragSrc = card;
-      setTimeout(function() { card.classList.add('dragging'); }, 0);
-      e.dataTransfer.effectAllowed = 'move';
-    });
-    card.addEventListener('dragend', function() {
-      card.classList.remove('dragging');
-      var ov = grid.querySelectorAll('.drag-over');
-      for (var j = 0; j < ov.length; j++) ov[j].classList.remove('drag-over');
-      var order = Array.prototype.slice.call(grid.querySelectorAll('[data-card-id]')).map(function(el) { return el.dataset.cardId; });
-      localStorage.setItem('dashCardOrder', JSON.stringify(order));
-    });
-    card.addEventListener('dragover', function(e) {
-      e.preventDefault();
-      if (dragSrc && dragSrc !== card) card.classList.add('drag-over');
-    });
-    card.addEventListener('dragleave', function() { card.classList.remove('drag-over'); });
-    card.addEventListener('drop', function(e) {
-      e.preventDefault();
-      card.classList.remove('drag-over');
-      if (dragSrc && dragSrc !== card) {
-        var par = card.parentNode;
-        var ch = Array.prototype.slice.call(par.children);
-        var si = ch.indexOf(dragSrc), di = ch.indexOf(card);
-        if (si < di) par.insertBefore(dragSrc, card.nextSibling);
-        else par.insertBefore(dragSrc, card);
-      }
-    });
-  });
+
+  for (var gi = 0; gi < grids.length; gi++) initDragGrid(grids[gi], gi);
 })();</script>
 </div><!-- /main-area -->
 </body>
