@@ -37,14 +37,5 @@ jobs:
           sed -i "s|targetVelocity:'26.0/d'|targetVelocity:'35/d'|g" /tmp/live.html
           sed -i "s|targetVelocity:'~4.8/d'|targetVelocity:'5/d'|g" /tmp/live.html
           grep -o "targetVelocity:'[^']*'" /tmp/live.html
-          python3 -c "
-import ftplib,io,os,time
-d=open('/tmp/live.html','rb').read()
-for i in range(3):
-  try:
-    f=ftplib.FTP(); f.connect('145.79.209.123',21,timeout=60); f.login('u133013644',os.environ['FTP_PASS']); f.storbinary('STOR /public_html/looreadykpi/index.html',io.BytesIO(d)); f.quit(); print('done',len(d)); break
-  except Exception as e:
-    print('attempt',i+1,'failed:',str(e))
-    if i<2: time.sleep(15)
-" || echo 'FTP failed, skipping'
+          python3 ftp_deploy.py || echo 'FTP failed, skipping'
           echo "Done"
