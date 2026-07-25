@@ -37,5 +37,19 @@ jobs:
           sed -i "s|targetVelocity:'26.0/d'|targetVelocity:'35/d'|g" /tmp/live.html
           sed -i "s|targetVelocity:'~4.8/d'|targetVelocity:'5/d'|g" /tmp/live.html
           grep -o "targetVelocity:'[^']*'" /tmp/live.html
-          python3 -c "import ftplib,io,os; d=open('/tmp/live.html','rb').read(); f=ftplib.FTP(); f.connect('145.79.209.123',21,timeout=30); f.login('u133013644',os.environ['FTP_PASS']); f.storbinary('STOR /public_html/looreadykpi/index.html',io.BytesIO(d)); f.quit(); print('done',len(d))" "u133013644:${FTP_PASS}" "ftp://145.79.209.123/public_html/looreadykpi/index.html" || echo 'FTP unavailable, continuing'
+          python3 - << 'PYEOF' || echo "FTP failed, skipping"
+import ftplib, io, os, time
+d = open('/tmp/live.html','rb').read()
+for attempt in range(3):
+    try:
+        f = ftplib.FTP(); f.connect('145.79.209.123', 21, timeout=60)
+        f.login('u133013644', os.environ['FTP_PASS'])
+        f.storbinary('STOR /public_html/looreadykpi/index.html', io.BytesIO(d))
+        f.quit(); print('done', len(d)); break
+    except Exception as e:
+        print(f'Attempt {attempt+1} failed: {e}')
+        if attempt < 2: time.sleep(15)
+else:
+    print('All FTP attempts failed')
+PYEOF
           echo "Done"
