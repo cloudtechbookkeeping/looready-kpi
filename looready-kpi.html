@@ -862,19 +862,19 @@ aside.sidebar.collapsed {
     </div>
     <div class="card-body" style="padding-top:12px;">
       <div class="perf-kpi-row">
-        <div class="perf-kpi-tile" data-ds="3" title="Click to show/hide on chart">
+        <div class="perf-kpi-tile" draggable="true" data-ds="3" title="Click to show/hide on chart">
           <div class="perf-kpi-label"><span class="perf-drag-handle" title="Drag to reorder">⠿</span><span class="perf-dot" style="background:#2688c9;"></span>CVR</div>
           <div class="perf-kpi-value" id="perf-cvr">--</div>
         </div>
-        <div class="perf-kpi-tile" data-ds="0" title="Click to show/hide on chart">
+        <div class="perf-kpi-tile" draggable="true" data-ds="0" title="Click to show/hide on chart">
           <div class="perf-kpi-label"><span class="perf-drag-handle" title="Drag to reorder">⠿</span><span class="perf-dot" style="background:#66bc46;"></span>Revenue</div>
           <div class="perf-kpi-value" id="perf-revenue">--</div>
         </div>
-        <div class="perf-kpi-tile" data-ds="1" title="Click to show/hide on chart">
+        <div class="perf-kpi-tile" draggable="true" data-ds="1" title="Click to show/hide on chart">
           <div class="perf-kpi-label"><span class="perf-drag-handle" title="Drag to reorder">⠿</span><span class="perf-dot" style="background:#8b5cf6;"></span>Units Sold</div>
           <div class="perf-kpi-value" id="perf-units">--</div>
         </div>
-                <div class="perf-kpi-tile" data-ds="4" title="Click to show/hide on chart">
+                <div class="perf-kpi-tile" draggable="true" data-ds="4" title="Click to show/hide on chart">
           <div class="perf-kpi-label"><span class="perf-drag-handle" title="Drag to reorder">⠿</span><span class="perf-dot" style="background:#f59e0b;"></span>ACOS</div>
           <div class="perf-kpi-value" id="perf-acos">--</div>
         </div>
@@ -2008,7 +2008,7 @@ const sess = [340,390,310,420,510,360,430,460,520,380,490,560,440,530,610,590];
   function bindTile(tile) {
     var handle = tile.querySelector('.perf-drag-handle');
     if (handle) {
-      handle.addEventListener('mousedown', function() { tile.setAttribute('draggable', 'true'); });
+      
     }
     tile.addEventListener('dragstart', function(e) {
       dragSrc = this;
