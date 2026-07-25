@@ -586,7 +586,11 @@ aside.sidebar.collapsed {
 .perf-kpi-tile:hover { border-color: #93c5fd; }
 .perf-kpi-label { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text-secondary); font-weight: 600; letter-spacing: 0.3px; text-transform: uppercase; }
 .perf-dot { width: 13px; height: 13px; border-radius: 3px; flex-shrink: 0; display: inline-block; }
-.perf-kpi-value { font-size: 28px; font-weight: 700; color: var(--text-primary); line-height: 1.1; }</style>
+.perf-kpi-value { font-size: 28px; font-weight: 700; color: var(--text-primary); line-height: 1.1; }
+.perf-drag-handle { font-size: 13px; color: #cbd5e1; cursor: grab; user-select: none; margin-right: 2px; }
+.perf-kpi-tile:hover .perf-drag-handle { color: #94a3b8; }
+.perf-kpi-tile.perf-dragging { opacity: 0.35; border-style: dashed; }
+.perf-kpi-tile.perf-drag-over { border-color: #2688c9; background: #eff6ff; }</style>
 </head>
 <body>
 
@@ -853,20 +857,20 @@ aside.sidebar.collapsed {
     </div>
     <div class="card-body" style="padding-top:12px;">
       <div class="perf-kpi-row">
-        <div class="perf-kpi-tile">
-          <div class="perf-kpi-label"><span class="perf-dot" style="background:#2688c9;"></span>CVR</div>
+        <div class="perf-kpi-tile" draggable="true">
+          <div class="perf-kpi-label"><span class="perf-drag-handle">⠿</span><span class="perf-dot" style="background:#2688c9;"></span>CVR</div>
           <div class="perf-kpi-value" id="perf-cvr">--</div>
         </div>
-        <div class="perf-kpi-tile">
-          <div class="perf-kpi-label"><span class="perf-dot" style="background:#66bc46;"></span>Revenue</div>
+        <div class="perf-kpi-tile" draggable="true">
+          <div class="perf-kpi-label"><span class="perf-drag-handle">⠿</span><span class="perf-dot" style="background:#66bc46;"></span>Revenue</div>
           <div class="perf-kpi-value" id="perf-revenue">--</div>
         </div>
-        <div class="perf-kpi-tile">
-          <div class="perf-kpi-label"><span class="perf-dot" style="background:#8b5cf6;"></span>Units Sold</div>
+        <div class="perf-kpi-tile" draggable="true">
+          <div class="perf-kpi-label"><span class="perf-drag-handle">⠿</span><span class="perf-dot" style="background:#8b5cf6;"></span>Units Sold</div>
           <div class="perf-kpi-value" id="perf-units">--</div>
         </div>
-        <div class="perf-kpi-tile">
-          <div class="perf-kpi-label"><span class="perf-dot" style="background:#f59e0b;"></span>ACOS</div>
+        <div class="perf-kpi-tile" draggable="true">
+          <div class="perf-kpi-label"><span class="perf-drag-handle">⠿</span><span class="perf-dot" style="background:#f59e0b;"></span>ACOS</div>
           <div class="perf-kpi-value" id="perf-acos">--</div>
         </div>
       </div>
@@ -1985,6 +1989,41 @@ const sess = [340,390,310,420,510,360,430,460,520,380,490,560,440,530,610,590];
       }
     }
   });
+})();
+
+// == Performance tiles drag-to-reorder ==
+(function() {
+  var row = document.querySelector('.perf-kpi-row');
+  if (!row) return;
+  var dragSrc = null;
+  function bindTile(tile) {
+    tile.addEventListener('dragstart', function(e) {
+      dragSrc = this;
+      e.dataTransfer.effectAllowed = 'move';
+      setTimeout(function() { dragSrc.classList.add('perf-dragging'); }, 0);
+    });
+    tile.addEventListener('dragend', function() {
+      this.classList.remove('perf-dragging');
+      row.querySelectorAll('.perf-kpi-tile').forEach(function(t) { t.classList.remove('perf-drag-over'); });
+    });
+    tile.addEventListener('dragover', function(e) {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      row.querySelectorAll('.perf-kpi-tile').forEach(function(t) { t.classList.remove('perf-drag-over'); });
+      if (this !== dragSrc) this.classList.add('perf-drag-over');
+    });
+    tile.addEventListener('dragleave', function() { this.classList.remove('perf-drag-over'); });
+    tile.addEventListener('drop', function(e) {
+      e.stopPropagation(); e.preventDefault();
+      if (dragSrc && dragSrc !== this) {
+        var tiles = Array.from(row.querySelectorAll('.perf-kpi-tile'));
+        var si = tiles.indexOf(dragSrc), ti = tiles.indexOf(this);
+        row.insertBefore(dragSrc, si < ti ? this.nextSibling : this);
+      }
+      this.classList.remove('perf-drag-over');
+    });
+  }
+  row.querySelectorAll('.perf-kpi-tile').forEach(bindTile);
 })();
 
 // == Revenue Chart (Sales tab) ==
