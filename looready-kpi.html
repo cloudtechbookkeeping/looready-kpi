@@ -591,7 +591,10 @@ aside.sidebar.collapsed {
 .perf-drag-handle:active { cursor: grabbing; }
 .perf-kpi-tile:hover .perf-drag-handle { color: #64748b; }
 .perf-kpi-tile.perf-dragging { opacity: 0.35; border-style: dashed; }
-.perf-kpi-tile.perf-drag-over { border-color: #2688c9; background: #eff6ff; }</style>
+.perf-kpi-tile.perf-drag-over { border-color: #2688c9; background: #eff6ff; }
+.perf-kpi-tile { cursor: pointer; }
+.perf-kpi-tile.perf-hidden { opacity: 0.38; }
+.perf-kpi-tile.perf-hidden .perf-kpi-value { text-decoration: line-through; }</style>
 </head>
 <body>
 
@@ -858,21 +861,25 @@ aside.sidebar.collapsed {
     </div>
     <div class="card-body" style="padding-top:12px;">
       <div class="perf-kpi-row">
-        <div class="perf-kpi-tile">
+        <div class="perf-kpi-tile" data-ds="3" title="Click to show/hide on chart">
           <div class="perf-kpi-label"><span class="perf-drag-handle" title="Drag to reorder">⠿</span><span class="perf-dot" style="background:#2688c9;"></span>CVR</div>
           <div class="perf-kpi-value" id="perf-cvr">--</div>
         </div>
-        <div class="perf-kpi-tile">
+        <div class="perf-kpi-tile" data-ds="0" title="Click to show/hide on chart">
           <div class="perf-kpi-label"><span class="perf-drag-handle" title="Drag to reorder">⠿</span><span class="perf-dot" style="background:#66bc46;"></span>Revenue</div>
           <div class="perf-kpi-value" id="perf-revenue">--</div>
         </div>
-        <div class="perf-kpi-tile">
+        <div class="perf-kpi-tile" data-ds="1" title="Click to show/hide on chart">
           <div class="perf-kpi-label"><span class="perf-drag-handle" title="Drag to reorder">⠿</span><span class="perf-dot" style="background:#8b5cf6;"></span>Units Sold</div>
           <div class="perf-kpi-value" id="perf-units">--</div>
         </div>
-        <div class="perf-kpi-tile">
+        <div class="perf-kpi-tile" data-ds="-1" title="ACOS not in trend chart">
           <div class="perf-kpi-label"><span class="perf-drag-handle" title="Drag to reorder">⠿</span><span class="perf-dot" style="background:#f59e0b;"></span>ACOS</div>
           <div class="perf-kpi-value" id="perf-acos">--</div>
+        </div>
+        <div class="perf-kpi-tile" data-ds="2" title="Click to show/hide on chart">
+          <div class="perf-kpi-label"><span class="perf-drag-handle" title="Drag to reorder">⠿</span><span class="perf-dot" style="background:transparent;border:2px dashed #2688c9;width:11px;height:11px;"></span>Sessions</div>
+          <div class="perf-kpi-value" id="perf-sessions">--</div>
         </div>
       </div>
       <div style="position:relative;height:260px;">
@@ -1961,13 +1968,14 @@ const sess = [340,390,310,420,510,360,430,460,520,380,490,560,440,530,610,590];
   el = document.getElementById('perf-revenue'); if (el) el.textContent = d.revenue || '--';
   el = document.getElementById('perf-units'); if (el) el.textContent = units > 0 ? units.toLocaleString() : (d.units || '--');
   el = document.getElementById('perf-acos'); if (el) el.textContent = acosVal;
+  el = document.getElementById('perf-sessions'); if (el) el.textContent = sessions > 0 ? sessions.toLocaleString() : '--';
   var revTotal = parseFloat((String(d.revenue||'0')).replace(/[$,]/g,'')) || 1;
   var ratio = units > 0 && revTotal > 0 ? units / revTotal : 0.06;
   var unitsTrend = rev.map(function(r) { return Math.round(r * ratio); });
   var cvrs = sess.map(function(s, i) { return s > 0 ? parseFloat((unitsTrend[i] / s * 100).toFixed(2)) : 0; });
   var ctx = document.getElementById('performanceChart');
   if (!ctx) return;
-  new Chart(ctx.getContext('2d'), {
+  window.__perfChart = new Chart(ctx.getContext('2d'), {
     type: 'line',
     data: {
       labels: days,
@@ -2032,6 +2040,18 @@ const sess = [340,390,310,420,510,360,430,460,520,380,490,560,440,530,610,590];
     });
   }
   row.querySelectorAll('.perf-kpi-tile').forEach(bindTile);
+  // Click tile to toggle chart dataset
+  row.querySelectorAll('.perf-kpi-tile').forEach(function(tile) {
+    tile.addEventListener('click', function(e) {
+      if (e.target.classList.contains('perf-drag-handle')) return;
+      var ds = parseInt(this.getAttribute('data-ds'));
+      if (isNaN(ds) || ds < 0 || !window.__perfChart) return;
+      var meta = window.__perfChart.getDatasetMeta(ds);
+      meta.hidden = !meta.hidden;
+      window.__perfChart.update();
+      this.classList.toggle('perf-hidden', !!meta.hidden);
+    });
+  });
 })();
 
 // == Revenue Chart (Sales tab) ==
