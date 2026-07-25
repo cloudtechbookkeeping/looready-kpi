@@ -579,7 +579,13 @@ aside.sidebar.collapsed {
 .drag-handle:active { cursor: grabbing; }
 .card.dragging { opacity: 0.4; outline: 2px dashed #ff9900; border-radius: 8px; }
 .card.drag-over { box-shadow: 0 -3px 0 0 #ff9900 inset; }
-</style>
+
+/* == Performance Card == */
+.perf-kpi-row { display: flex; gap: 40px; margin-bottom: 20px; flex-wrap: wrap; }
+.perf-kpi-tile { display: flex; flex-direction: column; gap: 4px; min-width: 120px; }
+.perf-kpi-label { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text-secondary); font-weight: 500; }
+.perf-dot { width: 14px; height: 14px; border-radius: 3px; flex-shrink: 0; display: inline-block; }
+.perf-kpi-value { font-size: 26px; font-weight: 700; color: var(--text-primary); padding-left: 22px; }</style>
 </head>
 <body>
 
@@ -833,19 +839,38 @@ aside.sidebar.collapsed {
       </div>
     </div>
 
-    <!-- Revenue Trend -->
-    <div class="card">
-      <div class="card-header">
-        <div class="card-title">
-          <span class="dot" style="background:var(--green);"></span>
-          Revenue Trend — Last 30 Days
-        </div>
-        <span class="card-badge">Apr 29 – May 28</span>
+  </div>
+
+  <!-- Performance -->
+  <div class="card" style="margin-top:20px;">
+    <div class="card-header">
+      <div class="card-title">
+        <span class="dot" style="background:var(--blue);"></span>
+        Performance
       </div>
-      <div class="card-body">
-        <div class="chart-wrap lg">
-          <canvas id="revenueChart"></canvas>
+      <span class="card-badge">Last 30 Days · All products</span>
+    </div>
+    <div class="card-body" style="padding-top:12px;">
+      <div class="perf-kpi-row">
+        <div class="perf-kpi-tile">
+          <div class="perf-kpi-label"><span class="perf-dot" style="background:#2688c9;"></span>CVR</div>
+          <div class="perf-kpi-value" id="perf-cvr">--</div>
         </div>
+        <div class="perf-kpi-tile">
+          <div class="perf-kpi-label"><span class="perf-dot" style="background:#66bc46;"></span>Revenue</div>
+          <div class="perf-kpi-value" id="perf-revenue">--</div>
+        </div>
+        <div class="perf-kpi-tile">
+          <div class="perf-kpi-label"><span class="perf-dot" style="background:#8b5cf6;"></span>Units Sold</div>
+          <div class="perf-kpi-value" id="perf-units">--</div>
+        </div>
+        <div class="perf-kpi-tile">
+          <div class="perf-kpi-label"><span class="perf-dot" style="background:#f59e0b;"></span>ACOS</div>
+          <div class="perf-kpi-value" id="perf-acos">--</div>
+        </div>
+      </div>
+      <div style="position:relative;height:260px;">
+        <canvas id="performanceChart"></canvas>
       </div>
     </div>
   </div>
@@ -1914,59 +1939,69 @@ const days = ['Apr 29','May 1','May 3','May 5','May 7','May 9','May 11','May 13'
 const rev  = [980,1240,1050,1380,1620,1180,1450,1520,1700,1250,1610,1830,1440,1750,2010,1950];
 const sess = [340,390,310,420,510,360,430,460,520,380,490,560,440,530,610,590];
 
-const chartConfig = (ctx, label) => new Chart(ctx, {
+// == Performance Chart (Dashboard) ==
+(function() {
+  var d = (tabData && tabData['30d']) || {};
+  var units = parseInt((String(d.units||'0')).replace(/[,]/g,'')) || 0;
+  var sessions = parseInt((String(d.sessions||'0')).replace(/[,]/g,'')) || 0;
+  var cvr = sessions > 0 ? ((units / sessions) * 100).toFixed(1) + '%' : '--';
+  var el;
+  el = document.getElementById('perf-cvr'); if (el) el.textContent = cvr;
+  el = document.getElementById('perf-revenue'); if (el) el.textContent = d.revenue || '--';
+  el = document.getElementById('perf-units'); if (el) el.textContent = units > 0 ? units.toLocaleString() : (d.units || '--');
+  el = document.getElementById('perf-acos'); if (el) el.textContent = d.acos || '--';
+  var revTotal = parseFloat((String(d.revenue||'0')).replace(/[$,]/g,'')) || 1;
+  var ratio = units > 0 && revTotal > 0 ? units / revTotal : 0.06;
+  var unitsTrend = rev.map(function(r) { return Math.round(r * ratio); });
+  var cvrs = sess.map(function(s, i) { return s > 0 ? parseFloat((unitsTrend[i] / s * 100).toFixed(2)) : 0; });
+  var ctx = document.getElementById('performanceChart');
+  if (!ctx) return;
+  new Chart(ctx.getContext('2d'), {
+    type: 'line',
+    data: {
+      labels: days,
+      datasets: [
+        { label: 'Revenue ($)', data: rev, borderColor: '#66bc46', backgroundColor: 'rgba(102,188,70,0.07)', borderWidth: 2, pointRadius: 2, fill: true, tension: 0.4, yAxisID: 'y' },
+        { label: 'Units Sold', data: unitsTrend, borderColor: '#8b5cf6', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 0, tension: 0.4, yAxisID: 'y1' },
+        { label: 'Sessions', data: sess, borderColor: '#2688c9', backgroundColor: 'transparent', borderWidth: 1.5, borderDash: [4,3], pointRadius: 0, tension: 0.4, yAxisID: 'y1' },
+        { label: 'CVR (%)', data: cvrs, borderColor: '#f59e0b', backgroundColor: 'transparent', borderWidth: 1.5, borderDash: [2,2], pointRadius: 0, tension: 0.4, yAxisID: 'y2' }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: { legend: { display: true, position: 'top', labels: { boxWidth: 10, font: { size: 10 } } } },
+      scales: {
+        x: { ticks: { font: { size: 9 }, maxRotation: 45 }, grid: { display: false } },
+        y: { position: 'left', ticks: { font: { size: 9 }, callback: function(v) { return '$' + v.toLocaleString(); } }, grid: { color: '#f3f4f6' } },
+        y1: { position: 'right', display: false },
+        y2: { display: false }
+      }
+    }
+  });
+})();
+
+// == Revenue Chart (Sales tab) ==
+const chartConfig = (ctx) => new Chart(ctx, {
   type: 'line',
   data: {
     labels: days,
     datasets: [
-      {
-        label: 'Revenue ($)',
-        data: rev,
-        borderColor: '#66bc46',
-        backgroundColor: 'rgba(102,188,70,.08)',
-        borderWidth: 2.5,
-        fill: true,
-        tension: 0.4,
-        pointRadius: 0,
-        pointHoverRadius: 5,
-        pointHoverBackgroundColor: '#66bc46',
-        yAxisID: 'y',
-      },
-      {
-        label: 'Sessions',
-        data: sess,
-        borderColor: '#2688c9',
-        backgroundColor: 'transparent',
-        borderWidth: 1.5,
-        borderDash: [4,3],
-        tension: 0.4,
-        pointRadius: 0,
-        pointHoverRadius: 4,
-        pointHoverBackgroundColor: '#2688c9',
-        yAxisID: 'y1',
-      }
+      { label: 'Revenue ($)', data: rev, borderColor: '#66bc46', backgroundColor: 'rgba(102,188,70,0.07)', borderWidth: 2, pointRadius: 2, fill: true, tension: 0.4, yAxisID: 'y' },
+      { label: 'Sessions', data: sess, borderColor: '#2688c9', backgroundColor: 'transparent', borderWidth: 1.5, borderDash: [4,3], pointRadius: 0, tension: 0.4, yAxisID: 'y1' }
     ]
   },
   options: {
     responsive: true, maintainAspectRatio: false,
     interaction: { mode: 'index', intersect: false },
-    plugins: {
-      legend: { position: 'top', labels: { font: { size: 11, family: 'Inter' }, padding: 12, boxWidth: 10 } },
-      tooltip: {
-        backgroundColor: '#0f172a', titleFont: { size: 11, family: 'Inter' },
-        bodyFont: { size: 11, family: 'Inter' }, padding: 10, cornerRadius: 8,
-        callbacks: { label: ctx => ctx.datasetIndex === 0 ? ' $' + ctx.parsed.y.toLocaleString() : ' ' + ctx.parsed.y.toLocaleString() + ' sessions' }
-      }
-    },
+    plugins: { legend: { display: true, position: 'top', labels: { boxWidth: 10, font: { size: 10 } } } },
     scales: {
-      x: { grid: { display: false }, ticks: { font: { size: 10, family: 'Inter' }, color: '#94a3b8', maxRotation: 0, maxTicksLimit: 8 } },
-      y:  { position: 'left',  grid: { color: '#f1f5f9' }, ticks: { font: { size: 10, family: 'Inter' }, color: '#94a3b8', callback: v => '$' + (v/1000).toFixed(1) + 'k' } },
-      y1: { position: 'right', grid: { display: false }, ticks: { font: { size: 10, family: 'Inter' }, color: '#2688c9' } },
+      x: { ticks: { font: { size: 9 }, maxRotation: 45 }, grid: { display: false } },
+      y: { position: 'left', ticks: { font: { size: 9 }, callback: function(v) { return '$' + v.toLocaleString(); } }, grid: { color: '#f3f4f6' } },
+      y1: { position: 'right', ticks: { font: { size: 9 } }, grid: { display: false } }
     }
   }
 });
-
-chartConfig(document.getElementById('revenueChart').getContext('2d'));
 chartConfig(document.getElementById('revenueChartSales').getContext('2d'));
 
 // ── Profit Donut ────────────────────────────────────────────────
