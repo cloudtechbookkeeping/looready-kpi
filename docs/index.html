@@ -587,8 +587,9 @@ aside.sidebar.collapsed {
 .perf-kpi-label { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text-secondary); font-weight: 600; letter-spacing: 0.3px; text-transform: uppercase; }
 .perf-dot { width: 13px; height: 13px; border-radius: 3px; flex-shrink: 0; display: inline-block; }
 .perf-kpi-value { font-size: 28px; font-weight: 700; color: var(--text-primary); line-height: 1.1; }
-.perf-drag-handle { font-size: 13px; color: #cbd5e1; cursor: grab; user-select: none; margin-right: 2px; }
-.perf-kpi-tile:hover .perf-drag-handle { color: #94a3b8; }
+.perf-drag-handle { font-size: 16px; color: #cbd5e1; cursor: grab; user-select: none; margin-right: 4px; line-height: 1; transition: color 0.15s; }
+.perf-drag-handle:active { cursor: grabbing; }
+.perf-kpi-tile:hover .perf-drag-handle { color: #64748b; }
 .perf-kpi-tile.perf-dragging { opacity: 0.35; border-style: dashed; }
 .perf-kpi-tile.perf-drag-over { border-color: #2688c9; background: #eff6ff; }</style>
 </head>
@@ -628,7 +629,7 @@ aside.sidebar.collapsed {
       <div class="live-dot"></div>
       <div>
         <span class="live-label">Live</span>
-        <span class="live-time">Updated July 25, 2026<br>3:56 PM ET</span>
+        <span class="live-time">Updated July 25, 2026<br>4:00 PM ET</span>
       </div>
     </div>
   </div>
@@ -661,7 +662,7 @@ aside.sidebar.collapsed {
 <!-- ══════════════ DASHBOARD SECTION ══════════════ -->
 <div id="section-dashboard" class="section active">
 
-  <div class="updated-line">Data snapshot: July 25, 2026 3:56 PM ET · SP-API live pull</div>
+  <div class="updated-line">Data snapshot: July 25, 2026 4:00 PM ET · SP-API live pull</div>
 
   <!-- 1st + 2nd: Profit Breakdown + Inventory Health -->
   <div class="grid-2-eq mb-20">
@@ -857,20 +858,20 @@ aside.sidebar.collapsed {
     </div>
     <div class="card-body" style="padding-top:12px;">
       <div class="perf-kpi-row">
-        <div class="perf-kpi-tile" draggable="true">
-          <div class="perf-kpi-label"><span class="perf-drag-handle">⠿</span><span class="perf-dot" style="background:#2688c9;"></span>CVR</div>
+        <div class="perf-kpi-tile">
+          <div class="perf-kpi-label"><span class="perf-drag-handle" title="Drag to reorder">⠿</span><span class="perf-dot" style="background:#2688c9;"></span>CVR</div>
           <div class="perf-kpi-value" id="perf-cvr">--</div>
         </div>
-        <div class="perf-kpi-tile" draggable="true">
-          <div class="perf-kpi-label"><span class="perf-drag-handle">⠿</span><span class="perf-dot" style="background:#66bc46;"></span>Revenue</div>
+        <div class="perf-kpi-tile">
+          <div class="perf-kpi-label"><span class="perf-drag-handle" title="Drag to reorder">⠿</span><span class="perf-dot" style="background:#66bc46;"></span>Revenue</div>
           <div class="perf-kpi-value" id="perf-revenue">--</div>
         </div>
-        <div class="perf-kpi-tile" draggable="true">
-          <div class="perf-kpi-label"><span class="perf-drag-handle">⠿</span><span class="perf-dot" style="background:#8b5cf6;"></span>Units Sold</div>
+        <div class="perf-kpi-tile">
+          <div class="perf-kpi-label"><span class="perf-drag-handle" title="Drag to reorder">⠿</span><span class="perf-dot" style="background:#8b5cf6;"></span>Units Sold</div>
           <div class="perf-kpi-value" id="perf-units">--</div>
         </div>
-        <div class="perf-kpi-tile" draggable="true">
-          <div class="perf-kpi-label"><span class="perf-drag-handle">⠿</span><span class="perf-dot" style="background:#f59e0b;"></span>ACOS</div>
+        <div class="perf-kpi-tile">
+          <div class="perf-kpi-label"><span class="perf-drag-handle" title="Drag to reorder">⠿</span><span class="perf-dot" style="background:#f59e0b;"></span>ACOS</div>
           <div class="perf-kpi-value" id="perf-acos">--</div>
         </div>
       </div>
@@ -1319,7 +1320,7 @@ const inventoryData = {'LR-TSC-30PACK':{fba:{fulfillable:1098,inbound:281,reserv
 const tabData = {
   '30d': { revenue:'$40,417.70', units:'2432', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Last 30 Days · SP-API live', usub:'2111 orders . 2432 units', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':880,'LR-CS-10':908,'LR-CS-30':352,'LR-TSC-5PACK':120,'LR-CS-120':0}, days30d:29 }, /* 30D_KPI_PLACEHOLDER */
   '7d':  { revenue:'$9,147.12', units:'496', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Last 7 Days · SP-API live', usub:'465 orders . 496 units', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':194,'LR-CS-10':189,'LR-CS-30':77,'LR-TSC-5PACK':36,'LR-CS-120':0} }, /* 7D_KPI_PLACEHOLDER */
-  'today': { revenue:'$1,185.76', units:'64', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Today July 25, 2026 3:56 PM ET . SP-API live', usub:'62 orders . 68 units . Fees $399.04', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':28,'LR-CS-10':26,'LR-CS-30':7,'LR-TSC-5PACK':3,'LR-CS-120':0} }, /* TODAY_KPI_PLACEHOLDER */
+  'today': { revenue:'$1,185.76', units:'64', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Today July 25, 2026 4:00 PM ET . SP-API live', usub:'62 orders . 68 units . Fees $399.04', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':28,'LR-CS-10':26,'LR-CS-30':7,'LR-TSC-5PACK':3,'LR-CS-120':0} }, /* TODAY_KPI_PLACEHOLDER */
   'lifetime': { revenue:'$439,795', units:'20,748', spend:'$226,449', acos:'51.5%', sessions:'187,331', ipi:'628',
                rsub:'Lifetime Ad Sales (all campaigns)', usub:'Lifetime ad purchases', ssub:'Lifetime total spend', asub:'Lifetime avg ACOS', sesub:'Lifetime ad clicks', isub:'Range 570–686',
                acosColor:'#d97706' },
@@ -1997,14 +1998,21 @@ const sess = [340,390,310,420,510,360,430,460,520,380,490,560,440,530,610,590];
   if (!row) return;
   var dragSrc = null;
   function bindTile(tile) {
+    var handle = tile.querySelector('.perf-drag-handle');
+    if (handle) {
+      handle.addEventListener('mousedown', function() { tile.setAttribute('draggable', 'true'); });
+    }
     tile.addEventListener('dragstart', function(e) {
       dragSrc = this;
       e.dataTransfer.effectAllowed = 'move';
-      setTimeout(function() { dragSrc.classList.add('perf-dragging'); }, 0);
+      e.dataTransfer.setData('text/plain', '');
+      setTimeout(function() { if (dragSrc) dragSrc.classList.add('perf-dragging'); }, 0);
     });
     tile.addEventListener('dragend', function() {
+      this.removeAttribute('draggable');
       this.classList.remove('perf-dragging');
       row.querySelectorAll('.perf-kpi-tile').forEach(function(t) { t.classList.remove('perf-drag-over'); });
+      dragSrc = null;
     });
     tile.addEventListener('dragover', function(e) {
       e.preventDefault();
