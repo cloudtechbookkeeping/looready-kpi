@@ -875,9 +875,10 @@ aside.sidebar.collapsed {
           <div class="perf-kpi-label"><span class="perf-drag-handle" title="Drag to reorder">⠿</span><span class="perf-dot" style="background:#8b5cf6;"></span>Units Sold</div>
           <div class="perf-kpi-value" id="perf-units">--</div>
         </div>
-        <div class="perf-kpi-tile perf-no-chart" data-ds="-1" title="ACOS · no daily trend line">
+                <div class="perf-kpi-tile" data-ds="4" title="Click to show/hide on chart">
           <div class="perf-kpi-label"><span class="perf-drag-handle" title="Drag to reorder">⠿</span><span class="perf-dot" style="background:#f59e0b;"></span>ACOS</div>
           <div class="perf-kpi-value" id="perf-acos">--</div>
+        </div>
         </div>
         </div>
       </div>
@@ -1981,7 +1982,8 @@ const sess = [340,390,310,420,510,360,430,460,520,380,490,560,440,530,610,590];
         { label: 'Revenue ($)', data: rev, borderColor: '#66bc46', backgroundColor: 'rgba(102,188,70,0.07)', borderWidth: 2, pointRadius: 2, fill: true, tension: 0.4, yAxisID: 'y' },
         { label: 'Units Sold', data: unitsTrend, borderColor: '#8b5cf6', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 0, tension: 0.4, yAxisID: 'y1' },
         { label: 'Sessions', data: sess, borderColor: '#2688c9', backgroundColor: 'transparent', borderWidth: 1.5, borderDash: [4,3], pointRadius: 0, tension: 0.4, yAxisID: 'y1' },
-        { label: 'CVR (%)', data: cvrs, borderColor: '#f59e0b', backgroundColor: 'transparent', borderWidth: 1.5, borderDash: [2,2], pointRadius: 0, tension: 0.4, yAxisID: 'y2' }
+        { label: 'CVR (%)', data: cvrs, borderColor: '#f59e0b', backgroundColor: 'transparent', borderWidth: 1.5, borderDash: [2,2], pointRadius: 0, tension: 0.4, yAxisID: 'y2' },
+        { label: 'ACOS (%)', data: days.map(function() { return parseFloat(acosVal) || 0; }), borderColor: '#f59e0b', backgroundColor: 'transparent', borderWidth: 1.5, borderDash: [5,4], pointRadius: 0, tension: 0, yAxisID: 'y3' }
       ]
     },
     options: {
@@ -1992,7 +1994,8 @@ const sess = [340,390,310,420,510,360,430,460,520,380,490,560,440,530,610,590];
         x: { ticks: { font: { size: 9 }, maxRotation: 45 }, grid: { display: false } },
         y: { position: 'left', ticks: { font: { size: 9 }, callback: function(v) { return '$' + v.toLocaleString(); } }, grid: { color: '#f3f4f6' } },
         y1: { position: 'right', display: false },
-        y2: { display: false }
+        y2: { display: false },
+        y3: { display: false, min: 0, max: 200 }
       }
     }
   });
