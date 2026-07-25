@@ -634,7 +634,7 @@ aside.sidebar.collapsed {
       <div class="live-dot"></div>
       <div>
         <span class="live-label">Live</span>
-        <span class="live-time">Updated July 25, 2026<br>4:16 PM ET</span>
+        <span class="live-time">Updated July 25, 2026<br>4:23 PM ET</span>
       </div>
     </div>
   </div>
@@ -667,7 +667,7 @@ aside.sidebar.collapsed {
 <!-- ══════════════ DASHBOARD SECTION ══════════════ -->
 <div id="section-dashboard" class="section active">
 
-  <div class="updated-line">Data snapshot: July 25, 2026 4:16 PM ET · SP-API live pull</div>
+  <div class="updated-line">Data snapshot: July 25, 2026 4:23 PM ET · SP-API live pull</div>
 
   <!-- 1st + 2nd: Profit Breakdown + Inventory Health -->
   <div class="grid-2-eq mb-20">
@@ -875,9 +875,10 @@ aside.sidebar.collapsed {
           <div class="perf-kpi-label"><span class="perf-drag-handle" title="Drag to reorder">⠿</span><span class="perf-dot" style="background:#8b5cf6;"></span>Units Sold</div>
           <div class="perf-kpi-value" id="perf-units">--</div>
         </div>
-        <div class="perf-kpi-tile perf-no-chart" data-ds="-1" title="ACOS · no daily trend line">
+                <div class="perf-kpi-tile" data-ds="4" title="Click to show/hide on chart">
           <div class="perf-kpi-label"><span class="perf-drag-handle" title="Drag to reorder">⠿</span><span class="perf-dot" style="background:#f59e0b;"></span>ACOS</div>
           <div class="perf-kpi-value" id="perf-acos">--</div>
+        </div>
         </div>
         </div>
       </div>
@@ -1326,7 +1327,7 @@ const inventoryData = {'LR-TSC-30PACK':{fba:{fulfillable:1098,inbound:281,reserv
 const tabData = {
   '30d': { revenue:'$40,417.70', units:'2432', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Last 30 Days · SP-API live', usub:'2111 orders . 2432 units', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':880,'LR-CS-10':908,'LR-CS-30':352,'LR-TSC-5PACK':120,'LR-CS-120':0}, days30d:29 }, /* 30D_KPI_PLACEHOLDER */
   '7d':  { revenue:'$9,147.12', units:'496', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Last 7 Days · SP-API live', usub:'465 orders . 496 units', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':194,'LR-CS-10':189,'LR-CS-30':77,'LR-TSC-5PACK':36,'LR-CS-120':0} }, /* 7D_KPI_PLACEHOLDER */
-  'today': { revenue:'$1,220.26', units:'66', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Today July 25, 2026 4:16 PM ET . SP-API live', usub:'64 orders . 68 units . Fees $399.04', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':29,'LR-CS-10':26,'LR-CS-30':7,'LR-TSC-5PACK':4,'LR-CS-120':0} }, /* TODAY_KPI_PLACEHOLDER */
+  'today': { revenue:'$1,220.26', units:'66', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'Today July 25, 2026 4:23 PM ET . SP-API live', usub:'64 orders . 68 units . Fees $399.04', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':29,'LR-CS-10':26,'LR-CS-30':7,'LR-TSC-5PACK':4,'LR-CS-120':0} }, /* TODAY_KPI_PLACEHOLDER */
   'lifetime': { revenue:'$439,795', units:'20,748', spend:'$226,449', acos:'51.5%', sessions:'187,331', ipi:'628',
                rsub:'Lifetime Ad Sales (all campaigns)', usub:'Lifetime ad purchases', ssub:'Lifetime total spend', asub:'Lifetime avg ACOS', sesub:'Lifetime ad clicks', isub:'Range 570–686',
                acosColor:'#d97706' },
@@ -1981,7 +1982,8 @@ const sess = [340,390,310,420,510,360,430,460,520,380,490,560,440,530,610,590];
         { label: 'Revenue ($)', data: rev, borderColor: '#66bc46', backgroundColor: 'rgba(102,188,70,0.07)', borderWidth: 2, pointRadius: 2, fill: true, tension: 0.4, yAxisID: 'y' },
         { label: 'Units Sold', data: unitsTrend, borderColor: '#8b5cf6', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 0, tension: 0.4, yAxisID: 'y1' },
         { label: 'Sessions', data: sess, borderColor: '#2688c9', backgroundColor: 'transparent', borderWidth: 1.5, borderDash: [4,3], pointRadius: 0, tension: 0.4, yAxisID: 'y1' },
-        { label: 'CVR (%)', data: cvrs, borderColor: '#f59e0b', backgroundColor: 'transparent', borderWidth: 1.5, borderDash: [2,2], pointRadius: 0, tension: 0.4, yAxisID: 'y2' }
+        { label: 'CVR (%)', data: cvrs, borderColor: '#f59e0b', backgroundColor: 'transparent', borderWidth: 1.5, borderDash: [2,2], pointRadius: 0, tension: 0.4, yAxisID: 'y2' },
+        { label: 'ACOS (%)', data: days.map(function() { return parseFloat(acosVal) || 0; }), borderColor: '#f59e0b', backgroundColor: 'transparent', borderWidth: 1.5, borderDash: [5,4], pointRadius: 0, tension: 0, yAxisID: 'y3' }
       ]
     },
     options: {
@@ -1992,7 +1994,8 @@ const sess = [340,390,310,420,510,360,430,460,520,380,490,560,440,530,610,590];
         x: { ticks: { font: { size: 9 }, maxRotation: 45 }, grid: { display: false } },
         y: { position: 'left', ticks: { font: { size: 9 }, callback: function(v) { return '$' + v.toLocaleString(); } }, grid: { color: '#f3f4f6' } },
         y1: { position: 'right', display: false },
-        y2: { display: false }
+        y2: { display: false },
+        y3: { display: false, min: 0, max: 200 }
       }
     }
   });
