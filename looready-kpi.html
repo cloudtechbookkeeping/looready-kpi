@@ -587,13 +587,7 @@ aside.sidebar.collapsed {
 .perf-kpi-label { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text-secondary); font-weight: 600; letter-spacing: 0.3px; text-transform: uppercase; }
 .perf-dot { width: 13px; height: 13px; border-radius: 3px; flex-shrink: 0; display: inline-block; }
 .perf-kpi-value { font-size: 26px; font-weight: 700; color: var(--text-primary); line-height: 1.15; margin-top: 2px; }
-.perf-drag-handle { font-size: 16px; color: #64748b; cursor: grab; user-select: none; margin-right: 4px; line-height: 1; transition: color 0.15s, transform 0.1s; flex-shrink: 0; }
-.perf-drag-handle:hover { color: #334155; transform: scale(1.2); }
-.perf-drag-handle:active { cursor: grabbing; color: #1e293b; }
-.perf-kpi-tile:hover .perf-drag-handle { color: #475569; }
-.perf-kpi-tile.perf-dragging { opacity: 0.35; border-style: dashed; transform: scale(0.98); }
-.perf-kpi-tile.perf-drag-over { border-color: #2688c9; background: #eff6ff; }
-.perf-kpi-tile { cursor: pointer; }
+.perf-kpi-tile:hover .perf-kpi-tile { cursor: pointer; }
 .perf-kpi-tile.perf-hidden { opacity: 0.38; }
 .perf-kpi-tile.perf-hidden .perf-kpi-value { text-decoration: line-through; }
 .perf-kpi-tile.perf-no-chart { cursor: default; }
@@ -865,20 +859,20 @@ aside.sidebar.collapsed {
     </div>
     <div class="card-body" style="padding-top:12px;">
       <div class="perf-kpi-row">
-        <div class="perf-kpi-tile" draggable="true" data-ds="3" title="Click to show/hide on chart">
-          <div class="perf-kpi-label"><span class="perf-drag-handle" title="Drag to reorder">⠿</span><span class="perf-dot" style="background:#2688c9;"></span>CVR</div>
+        <div class="perf-kpi-tile" data-ds="3" title="Click to show/hide on chart">
+          <div class="perf-kpi-label"><span class="perf-dot" style="background:#2688c9;"></span>CVR</div>
           <div class="perf-kpi-value" id="perf-cvr">--</div>
         </div>
-        <div class="perf-kpi-tile" draggable="true" data-ds="0" title="Click to show/hide on chart">
-          <div class="perf-kpi-label"><span class="perf-drag-handle" title="Drag to reorder">⠿</span><span class="perf-dot" style="background:#66bc46;"></span>Revenue</div>
+        <div class="perf-kpi-tile" data-ds="0" title="Click to show/hide on chart">
+          <div class="perf-kpi-label"><span class="perf-dot" style="background:#66bc46;"></span>Revenue</div>
           <div class="perf-kpi-value" id="perf-revenue">--</div>
         </div>
-        <div class="perf-kpi-tile" draggable="true" data-ds="1" title="Click to show/hide on chart">
-          <div class="perf-kpi-label"><span class="perf-drag-handle" title="Drag to reorder">⠿</span><span class="perf-dot" style="background:#8b5cf6;"></span>Units Sold</div>
+        <div class="perf-kpi-tile" data-ds="1" title="Click to show/hide on chart">
+          <div class="perf-kpi-label"><span class="perf-dot" style="background:#8b5cf6;"></span>Units Sold</div>
           <div class="perf-kpi-value" id="perf-units">--</div>
         </div>
-                <div class="perf-kpi-tile" draggable="true" data-ds="4" title="Click to show/hide on chart">
-          <div class="perf-kpi-label"><span class="perf-drag-handle" title="Drag to reorder">⠿</span><span class="perf-dot" style="background:#f59e0b;"></span>ACOS</div>
+                <div class="perf-kpi-tile" data-ds="4" title="Click to show/hide on chart">
+          <div class="perf-kpi-label"><span class="perf-dot" style="background:#f59e0b;"></span>ACOS</div>
           <div class="perf-kpi-value" id="perf-acos">--</div>
         </div>
         </div>
@@ -2000,46 +1994,7 @@ const sess = [340,390,310,420,510,360,430,460,520,380,490,560,440,530,610,590];
   });
 })();
 
-// == Performance tiles drag-to-reorder ==
-(function() {
-  var row = document.querySelector('.perf-kpi-row');
-  if (!row) return;
-  var dragSrc = null;
-  function bindTile(tile) {
-    var handle = tile.querySelector('.perf-drag-handle');
-    if (handle) {
-      
-    }
-    tile.addEventListener('dragstart', function(e) {
-      dragSrc = this;
-      e.dataTransfer.effectAllowed = 'move';
-      e.dataTransfer.setData('text/plain', '');
-      setTimeout(function() { if (dragSrc) dragSrc.classList.add('perf-dragging'); }, 0);
-    });
-    tile.addEventListener('dragend', function() {
-      this.removeAttribute('draggable');
-      this.classList.remove('perf-dragging');
-      row.querySelectorAll('.perf-kpi-tile').forEach(function(t) { t.classList.remove('perf-drag-over'); });
-      dragSrc = null;
-    });
-    tile.addEventListener('dragover', function(e) {
-      e.preventDefault();
-      e.dataTransfer.dropEffect = 'move';
-      row.querySelectorAll('.perf-kpi-tile').forEach(function(t) { t.classList.remove('perf-drag-over'); });
-      if (this !== dragSrc) this.classList.add('perf-drag-over');
-    });
-    tile.addEventListener('dragleave', function() { this.classList.remove('perf-drag-over'); });
-    tile.addEventListener('drop', function(e) {
-      e.stopPropagation(); e.preventDefault();
-      if (dragSrc && dragSrc !== this) {
-        var tiles = Array.from(row.querySelectorAll('.perf-kpi-tile'));
-        var si = tiles.indexOf(dragSrc), ti = tiles.indexOf(this);
-        row.insertBefore(dragSrc, si < ti ? this.nextSibling : this);
-      }
-      this.classList.remove('perf-drag-over');
-    });
-  }
-  row.querySelectorAll('.perf-kpi-tile').forEach(bindTile);
+
 
   // Apply colored top border from dot color
   row.querySelectorAll('.perf-kpi-tile').forEach(function(tile) {
@@ -2049,7 +2004,6 @@ const sess = [340,390,310,420,510,360,430,460,520,380,490,560,440,530,610,590];
   // Click tile to toggle chart dataset
   row.querySelectorAll('.perf-kpi-tile').forEach(function(tile) {
     tile.addEventListener('click', function(e) {
-      if (e.target.classList.contains('perf-drag-handle')) return;
       var ds = parseInt(this.getAttribute('data-ds'));
       if (isNaN(ds) || ds < 0 || !window.__perfChart) return;
       var meta = window.__perfChart.getDatasetMeta(ds);
