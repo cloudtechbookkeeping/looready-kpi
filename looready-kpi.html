@@ -581,12 +581,12 @@ aside.sidebar.collapsed {
 .card.drag-over { box-shadow: 0 -3px 0 0 #ff9900 inset; }
 
 /* == Performance Card == */
-.perf-kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 24px; }
-.perf-kpi-tile { display: flex; flex-direction: column; gap: 8px; flex: 1; min-width: 0; padding: 12px 16px; background: var(--bg-main, #f8fafc); border: 1.5px solid var(--border, #e2e8f0); border-radius: 10px; transition: border-color 0.15s; }
-.perf-kpi-tile:hover { border-color: #93c5fd; }
+.perf-kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 20px; }
+.perf-kpi-tile { display: flex; flex-direction: column; gap: 6px; min-width: 0; padding: 16px 20px; background: #ffffff; border: 1px solid var(--border, #e8edf3); border-top: 3px solid #e2e8f0; border-radius: 10px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); transition: box-shadow 0.15s, border-color 0.15s, transform 0.1s; }
+.perf-kpi-tile:hover { box-shadow: 0 4px 14px rgba(0,0,0,0.1); transform: translateY(-1px); }
 .perf-kpi-label { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text-secondary); font-weight: 600; letter-spacing: 0.3px; text-transform: uppercase; }
 .perf-dot { width: 13px; height: 13px; border-radius: 3px; flex-shrink: 0; display: inline-block; }
-.perf-kpi-value { font-size: 28px; font-weight: 700; color: var(--text-primary); line-height: 1.1; }
+.perf-kpi-value { font-size: 26px; font-weight: 700; color: var(--text-primary); line-height: 1.15; margin-top: 2px; }
 .perf-drag-handle { font-size: 16px; color: #64748b; cursor: grab; user-select: none; margin-right: 4px; line-height: 1; transition: color 0.15s; }
 .perf-drag-handle:active { cursor: grabbing; }
 .perf-kpi-tile:hover .perf-drag-handle { color: #334155; }
@@ -1982,7 +1982,7 @@ const sess = [340,390,310,420,510,360,430,460,520,380,490,560,440,530,610,590];
       datasets: [
         { label: 'Revenue ($)', data: rev, borderColor: '#66bc46', backgroundColor: 'rgba(102,188,70,0.07)', borderWidth: 2, pointRadius: 2, fill: true, tension: 0.4, yAxisID: 'y' },
         { label: 'Units Sold', data: unitsTrend, borderColor: '#8b5cf6', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 0, tension: 0.4, yAxisID: 'y1' },
-        { label: 'Sessions', data: sess, borderColor: '#2688c9', backgroundColor: 'transparent', borderWidth: 1.5, borderDash: [4,3], pointRadius: 0, tension: 0.4, yAxisID: 'y1' },
+        { label: 'Sessions', data: sess, borderColor: '#2688c9', backgroundColor: 'transparent', borderWidth: 1.5, borderDash: [4,3], pointRadius: 0, tension: 0.4, yAxisID: 'y1' , hidden: true },
         { label: 'CVR (%)', data: cvrs, borderColor: '#2688c9', backgroundColor: 'transparent', borderWidth: 1.5, borderDash: [2,2], pointRadius: 0, tension: 0.4, yAxisID: 'y2' },
         { label: 'ACOS (%)', data: days.map(function() { return parseFloat(acosVal) || 0; }), borderColor: '#f59e0b', backgroundColor: 'transparent', borderWidth: 1.5, borderDash: [5,4], pointRadius: 0, tension: 0, yAxisID: 'y3' }
       ]
@@ -2042,6 +2042,12 @@ const sess = [340,390,310,420,510,360,430,460,520,380,490,560,440,530,610,590];
     });
   }
   row.querySelectorAll('.perf-kpi-tile').forEach(bindTile);
+
+  // Apply colored top border from dot color
+  row.querySelectorAll('.perf-kpi-tile').forEach(function(tile) {
+    var dot = tile.querySelector('.perf-dot');
+    if (dot && dot.style.background) tile.style.borderTopColor = dot.style.background;
+  });
   // Click tile to toggle chart dataset
   row.querySelectorAll('.perf-kpi-tile').forEach(function(tile) {
     tile.addEventListener('click', function(e) {
