@@ -587,10 +587,11 @@ aside.sidebar.collapsed {
 .perf-kpi-label { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text-secondary); font-weight: 600; letter-spacing: 0.3px; text-transform: uppercase; }
 .perf-dot { width: 13px; height: 13px; border-radius: 3px; flex-shrink: 0; display: inline-block; }
 .perf-kpi-value { font-size: 26px; font-weight: 700; color: var(--text-primary); line-height: 1.15; margin-top: 2px; }
-.perf-drag-handle { font-size: 16px; color: #64748b; cursor: grab; user-select: none; margin-right: 4px; line-height: 1; transition: color 0.15s; }
-.perf-drag-handle:active { cursor: grabbing; }
-.perf-kpi-tile:hover .perf-drag-handle { color: #334155; }
-.perf-kpi-tile.perf-dragging { opacity: 0.35; border-style: dashed; }
+.perf-drag-handle { font-size: 16px; color: #64748b; cursor: grab; user-select: none; margin-right: 4px; line-height: 1; transition: color 0.15s, transform 0.1s; flex-shrink: 0; }
+.perf-drag-handle:hover { color: #334155; transform: scale(1.2); }
+.perf-drag-handle:active { cursor: grabbing; color: #1e293b; }
+.perf-kpi-tile:hover .perf-drag-handle { color: #475569; }
+.perf-kpi-tile.perf-dragging { opacity: 0.35; border-style: dashed; transform: scale(0.98); }
 .perf-kpi-tile.perf-drag-over { border-color: #2688c9; background: #eff6ff; }
 .perf-kpi-tile { cursor: pointer; }
 .perf-kpi-tile.perf-hidden { opacity: 0.38; }
@@ -883,7 +884,8 @@ aside.sidebar.collapsed {
         </div>
         </div>
       </div>
-            <div style="position:relative;height:260px;background:#fff;border:1px solid var(--border,#e8edf3);border-top:none;border-radius:0 0 12px 12px;padding:12px 8px 8px;box-sizing:border-box;">
+                        <div class="perf-drag-hint">⢿ Drag tiles to reorder · Click to toggle chart line</div>
+<div style="position:relative;height:260px;background:#fff;border:1px solid var(--border,#e8edf3);border-top:none;border-radius:0 0 12px 12px;padding:12px 8px 8px;box-sizing:border-box;">
         <canvas id="performanceChart"></canvas>
       </div>
 </div><!-- /section-dashboard -->
