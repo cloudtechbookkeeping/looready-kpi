@@ -1,4 +1,4 @@
-"""
+Z"""
 LooReady — Amazon SP-API KPI Pull
 Reads credentials from environment variables (set as GitHub Secrets).
 Saves daily JSON to kpi_data/YYYY-MM-DD.json
