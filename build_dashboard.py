@@ -215,6 +215,8 @@ def write_history():
                 "sku_units": d.get("sku_units", {}),
                 "acos":      d.get("acos"),
                 "ad_spend":  d.get("ad_spend"),
+                "ad_clicks": d.get("ad_clicks"),
+                "ad_orders": d.get("ad_orders"),
             })
         except Exception as e:
             print("Skipping " + str(path) + ": " + str(e))
