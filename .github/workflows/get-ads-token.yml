@@ -3,52 +3,48 @@ on:
   workflow_dispatch:
     inputs:
       auth_code:
-        description: 'Paste the "code" param from the redirect URL here (leave blank to just print the auth URL)'
+        description: 'Paste the code= value from the redirect URL (leave blank to print the auth URL)'
         required: false
         default: ''
-
 jobs:
   get-token:
     runs-on: ubuntu-latest
     steps:
-      - name: Step 1 — Print OAuth authorization URL
+      - name: Print OAuth URL
         env:
-          AMAZON_CLIENT_ID: ${{ secrets.AMAZON_CLIENT_ID }}
+          CID: ${{ secrets.AMAZON_CLIENT_ID }}
         run: |
-          echo "=============================="
-          echo "STEP 1: Open this URL in your browser to authorize:"
+          echo "Open this URL in your browser (logged into Amazon):"
           echo ""
-          echo "https://www.amazon.com/ap/oa?client_id=${AMAZON_CLIENT_ID}&scope=advertising%3A%3Acampaign_management&response_type=code&redirect_uri=https%3A%2F%2Flocalhost"
+          printf 'https://www.amazon.com/ap/oa?client_id=%s&scope=advertising%%3A%%3Acampaign_management&response_type=code&redirect_uri=https%%3A%%2F%%2Flocalhost\n' "${CID}"
           echo ""
-          echo "After authorizing, copy the 'code' parameter from the redirect URL"
-          echo "Then run this workflow again with that code as the input."
-          echo "=============================="
+          echo "Click Allow, then copy the code= value from the URL bar."
+          echo "Re-run this workflow with that code as input."
 
-      - name: Step 2 — Exchange auth code for refresh token
+      - name: Exchange code for refresh token
         if: ${{ inputs.auth_code != '' }}
         env:
-          AMAZON_CLIENT_ID: ${{ secrets.AMAZON_CLIENT_ID }}
-          AMAZON_CLIENT_SECRET: ${{ secrets.AMAZON_CLIENT_SECRET }}
-          AUTH_CODE: ${{ inputs.auth_code }}
+          CID: ${{ secrets.AMAZON_CLIENT_ID }}
+          CSEC: ${{ secrets.AMAZON_CLIENT_SECRET }}
+          CODE: ${{ inputs.auth_code }}
         run: |
-          echo "Exchanging auth code for tokens..."
-          python3 -c "
-import urllib.request, json, urllib.parse
-data = urllib.parse.urlencode({
-  'grant_type': 'authorization_code',
-  'code': '$AUTH_CODE',
-  'redirect_uri': 'https://localhost',
-  'client_id': '$AMAZON_CLIENT_ID',
-  'client_secret': '$AMAZON_CLIENT_SECRET',
-}).encode()
-req = urllib.request.Request('https://api.amazon.com/auth/o2/token', data=data)
-req.add_header('Content-Type', 'application/x-www-form-urlencoded')
-resp = urllib.request.urlopen(req)
-result = json.loads(resp.read())
-print('=== RESULT ===')
-print('refresh_token:', result.get('refresh_token', 'NOT_FOUND'))
-print('access_token length:', len(result.get('access_token', '')))
-print('expires_in:', result.get('expires_in'))
-print('==============')
-print('Copy the refresh_token above and add it as GitHub secret AMAZON_ADS_REFRESH_TOKEN')
-"
+          python3 << 'PYEOF'
+          import urllib.request, urllib.parse, json, os
+          data = urllib.parse.urlencode({
+            'grant_type': 'authorization_code',
+            'code': os.environ['CODE'],
+            'redirect_uri': 'https://localhost',
+            'client_id': os.environ['CID'],
+            'client_secret': os.environ['CSEC'],
+          }).encode()
+          req = urllib.request.Request('https://api.amazon.com/auth/o2/token', data=data)
+          req.add_header('Content-Type', 'application/x-www-form-urlencoded')
+          try:
+            resp = urllib.request.urlopen(req)
+            result = json.loads(resp.read())
+            print('refresh_token: ' + result.get('refresh_token', 'NOT_FOUND'))
+          except Exception as e:
+            import sys
+            print('ERROR: ' + str(e), file=sys.stderr)
+            sys.exit(1)
+          PYEOF
