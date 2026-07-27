@@ -1964,9 +1964,7 @@ renderProfitBreakdown('30d');
   var orders  = parseInt((String(d.usub||'0').match(/(\d[\d,]*)\s*orders/) || ['','0'])[1].replace(/,/g,'')) || 0;
   var sessions = parseInt((String(d.sessions||'0')).replace(/[,]/g,'')) || 0;
 
-  var cvr = sessions > 0
-    ? ((units / sessions) * 100).toFixed(1) + '%'
-    : (orders > 0 ? ((units / orders) * 100).toFixed(1) + '%' : '--');
+  var cvr = sessions > 0 ? ((units / sessions) * 100).toFixed(1) + '%' : '--';
 
   var acosBar = document.getElementById('acos-fill-bar');
   var acosVal = acosBar && parseFloat(acosBar.style.width) > 0
@@ -1983,7 +1981,7 @@ renderProfitBreakdown('30d');
     var labels = [], today = new Date();
     for (var i = 29; i >= 0; i--) {
       var dt = new Date(today); dt.setDate(dt.getDate() - i);
-      labels.push((dt.getMonth()+1) + '/' + dt.getDate());
+      labels.push(['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][dt.getMonth()] + ' ' + dt.getDate());
     }
     return labels;
   }
@@ -1999,7 +1997,7 @@ renderProfitBreakdown('30d');
           { label: 'Revenue ($)', data: revArr,   borderColor: '#66bc46', backgroundColor: 'rgba(102,188,70,0.07)', borderWidth: 2, pointRadius: 2, fill: true, tension: 0.4, yAxisID: 'y'  },
           { label: 'Units Sold',  data: unitsArr, borderColor: '#8b5cf6', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 0, tension: 0.4, yAxisID: 'y1' },
           { label: 'Sessions',   data: [],        borderColor: '#2688c9', backgroundColor: 'transparent', borderWidth: 1.5, borderDash: [4,3], pointRadius: 0, tension: 0.4, yAxisID: 'y1', hidden: true },
-          { label: 'CVR (%)',    data: cvrsArr,   borderColor: '#2688c9', backgroundColor: 'transparent', borderWidth: 1.5, borderDash: [4,3], pointRadius: 0, tension: 0.4, yAxisID: 'y2' }
+          { label: 'CVR (%)',    data: [],        borderColor: '#2688c9', backgroundColor: 'transparent', borderWidth: 1.5, borderDash: [4,3], pointRadius: 0, tension: 0.4, yAxisID: 'y2' }
         ]
       },
       options: {
@@ -2038,7 +2036,7 @@ renderProfitBreakdown('30d');
       var last30 = history.slice(-30);
       var days = last30.map(function(h) {
         var dt = new Date(h.date + 'T12:00:00Z');
-        return (dt.getMonth()+1) + '/' + dt.getDate();
+        return ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][dt.getMonth()] + ' ' + dt.getDate();
       });
       var revArr   = last30.map(function(h) { return Math.round(h.revenue || 0); });
       var unitsArr = last30.map(function(h) { return h.units   || 0; });
