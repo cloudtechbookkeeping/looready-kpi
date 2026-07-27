@@ -2102,28 +2102,48 @@ function expandPerfChart() {
 }
 
 
-// == Revenue Chart (Sales tab) ==
-const chartConfig = (ctx) => new Chart(ctx, {
-  type: 'line',
-  data: {
-    labels: days,
-    datasets: [
-      { label: 'Revenue ($)', data: rev, borderColor: '#66bc46', backgroundColor: 'rgba(102,188,70,0.07)', borderWidth: 2, pointRadius: 2, fill: true, tension: 0.4, yAxisID: 'y' },
-      { label: 'Sessions', data: sess, borderColor: '#2688c9', backgroundColor: 'transparent', borderWidth: 1.5, borderDash: [4,3], pointRadius: 0, tension: 0.4, yAxisID: 'y1' }
-    ]
-  },
-  options: {
-    responsive: true, maintainAspectRatio: false,
-    interaction: { mode: 'index', intersect: false },
-    plugins: { legend: { display: true, position: 'top', labels: { boxWidth: 10, font: { size: 10 } } } },
-    scales: {
-      x: { ticks: { font: { size: 9 }, maxRotation: 45 }, grid: { display: false } },
-      y: { position: 'left', ticks: { font: { size: 9 }, callback: function(v) { return '$' + v.toLocaleString(); } }, grid: { color: '#f3f4f6' } },
-      y1: { position: 'right', ticks: { font: { size: 9 } }, grid: { display: false } }
-    }
+// == Revenue Chart (Sales tab) — rolling 30-day dynamic ==
+(function() {
+  var MO = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  function buildSalesChart(days, rev, orders) {
+    var ctx = document.getElementById('revenueChartSales');
+    if (!ctx) return;
+    new Chart(ctx.getContext('2d'), {
+      type: 'line',
+      data: {
+        labels: days,
+        datasets: [
+          { label: 'Revenue ($)', data: rev, borderColor: '#66bc46', backgroundColor: 'rgba(102,188,70,0.07)', borderWidth: 2, pointRadius: 2, fill: true, tension: 0.4, yAxisID: 'y' },
+          { label: 'Orders', data: orders, borderColor: '#2688c9', backgroundColor: 'transparent', borderWidth: 1.5, borderDash: [4,3], pointRadius: 0, tension: 0.4, yAxisID: 'y1' }
+        ]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        interaction: { mode: 'index', intersect: false },
+        plugins: { legend: { display: true, position: 'top', labels: { boxWidth: 10, font: { size: 10 } } } },
+        scales: {
+          x: { ticks: { font: { size: 9 }, maxRotation: 45 }, grid: { display: false } },
+          y: { position: 'left', ticks: { font: { size: 9 }, callback: function(v) { return '$' + v.toLocaleString(); } }, grid: { color: '#f3f4f6' } },
+          y1: { position: 'right', ticks: { font: { size: 9 } }, grid: { display: false } }
+        }
+      }
+    });
   }
-});
-chartConfig(document.getElementById('revenueChartSales').getContext('2d'));
+  fetch('kpi_history.json')
+    .then(function(r) { return r.json(); })
+    .then(function(history) {
+      var last30 = history.slice(-30);
+      var days   = last30.map(function(h) { var dt = new Date(h.date+'T12:00:00Z'); return MO[dt.getMonth()]+' '+dt.getDate(); });
+      var rev    = last30.map(function(h) { return Math.round(h.revenue||0); });
+      var orders = last30.map(function(h) { return h.orders||0; });
+      buildSalesChart(days, rev, orders);
+    })
+    .catch(function() {
+      var labels = [], today = new Date();
+      for (var i = 29; i >= 0; i--) { var dt = new Date(today); dt.setDate(dt.getDate()-i); labels.push(MO[dt.getMonth()]+' '+dt.getDate()); }
+      buildSalesChart(labels, labels.map(function(){return 0;}), labels.map(function(){return 0;}));
+    });
+})();
 
 // ── Profit Donut ────────────────────────────────────────────────
 const donutData = {
