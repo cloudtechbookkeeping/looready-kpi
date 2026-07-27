@@ -1996,6 +1996,9 @@ const sess = [340,390,310,420,510,360,430,460,520,380,490,560,440,530,610,590];
 
 
 
+(function() {
+  var row = document.querySelector('.perf-kpi-row');
+  if (!row) return;
   // Apply colored top border from dot color
   row.querySelectorAll('.perf-kpi-tile').forEach(function(tile) {
     var dot = tile.querySelector('.perf-dot');
