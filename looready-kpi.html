@@ -420,6 +420,17 @@ body {
 .mini-stat-val.red    { color: var(--red); }
 .mini-stat-val.blue   { color: var(--blue); }
 
+/* ── COMPACT KPI TILES ─────────────────────────────────────── */
+.kpi-tile-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:8px; }
+@media (max-width:640px) { .kpi-tile-grid { grid-template-columns:1fr; } }
+.kpi-tile { background:#f8fafc; border:1px solid var(--border); border-radius:8px; padding:10px 12px; display:flex; flex-direction:column; gap:4px; }
+.kpi-tile-label { font-size:10px; font-weight:600; text-transform:uppercase; letter-spacing:0.4px; color:var(--text-secondary); }
+.kpi-tile-val { font-size:18px; font-weight:700; color:var(--text-primary); line-height:1.1; }
+.kpi-tile-val.green { color:var(--green); }
+.kpi-tile-val.orange { color:var(--orange); }
+.kpi-tile-val.red { color:var(--red); }
+.kpi-tile-val.blue { color:var(--blue); }
+
 /* ── DIVIDER ──────────────────────────────────────────────── */
 .divider { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
 
@@ -835,14 +846,16 @@ aside.sidebar.collapsed {
         <span class="card-badge">Last 30 Days</span>
       </div>
       <div class="card-body" style="padding: 16px 20px;">
-        <div class="mini-stat"><span class="mini-stat-label">Sessions</span><span class="mini-stat-val">11,104</span></div>
-        <div class="mini-stat"><span class="mini-stat-label">Conversion Rate</span><span class="mini-stat-val green">17.39%</span></div>
-        <div class="mini-stat"><span class="mini-stat-label">Page Views</span><span class="mini-stat-val">14,268</span></div>
-        <div class="mini-stat"><span class="mini-stat-label">Order Items</span><span class="mini-stat-val">1,841</span></div>
-        <div class="mini-stat"><span class="mini-stat-label">Avg Selling Price</span><span class="mini-stat-val">$18.48</span></div>
-        <div class="mini-stat"><span class="mini-stat-label">B2B Sessions</span><span class="mini-stat-val blue">219</span></div>
-        <div class="mini-stat"><span class="mini-stat-label">B2B CVR</span><span class="mini-stat-val">11.26%</span></div>
-        <div class="mini-stat"><span class="mini-stat-label">Buy Box %</span><span class="mini-stat-val green">100% 🏆</span></div>
+        <div class="kpi-tile-grid">
+          <div class="kpi-tile"><span class="kpi-tile-label">Sessions</span><span class="kpi-tile-val">11,104</span></div>
+          <div class="kpi-tile"><span class="kpi-tile-label">Conversion Rate</span><span class="kpi-tile-val green">17.39%</span></div>
+          <div class="kpi-tile"><span class="kpi-tile-label">Page Views</span><span class="kpi-tile-val">14,268</span></div>
+          <div class="kpi-tile"><span class="kpi-tile-label">Order Items</span><span class="kpi-tile-val">1,841</span></div>
+          <div class="kpi-tile"><span class="kpi-tile-label">Avg Selling Price</span><span class="kpi-tile-val">$18.48</span></div>
+          <div class="kpi-tile"><span class="kpi-tile-label">B2B Sessions</span><span class="kpi-tile-val blue">219</span></div>
+          <div class="kpi-tile"><span class="kpi-tile-label">B2B CVR</span><span class="kpi-tile-val">11.26%</span></div>
+          <div class="kpi-tile"><span class="kpi-tile-label">Buy Box %</span><span class="kpi-tile-val green">100% 🏆</span></div>
+        </div>
       </div>
     
 
