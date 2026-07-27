@@ -396,7 +396,7 @@ def get_ads_yesterday_metrics():
 
     hdrs = {
         "Amazon-Advertising-API-ClientId": CLIENT_ID,
-        "Amazon-Advertising-API-Scope":    profile_id,,
+        "Amazon-Advertising-API-Scope":    profile_id,
         "Authorization":                   f"Bearer {ads_token}",
     }
     for attempt in range(48):  # 4 minutes max (48 * 5s)
