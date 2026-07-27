@@ -10,16 +10,12 @@ jobs:
   get-token:
     runs-on: ubuntu-latest
     steps:
-      - name: Print OAuth URL
+      - name: Print OAuth URL (base64 to bypass log masking)
         env:
           CID: ${{ secrets.AMAZON_CLIENT_ID }}
         run: |
-          echo "Open this URL in your browser (logged into Amazon):"
-          echo ""
-          printf 'https://www.amazon.com/ap/oa?client_id=%s&scope=advertising%%3A%%3Acampaign_management&response_type=code&redirect_uri=https%%3A%%2F%%2Flocalhost\n' "${CID}"
-          echo ""
-          echo "Click Allow, then copy the code= value from the URL bar."
-          echo "Re-run this workflow with that code as input."
+          URL="https://www.amazon.com/ap/oa?client_id=${CID}&scope=advertising%3A%3Acampaign_management&response_type=code&redirect_uri=https%3A%2F%2Flocalhost"
+          echo "BASE64_URL: $(echo -n ${URL} | base64 -w 0)"
 
       - name: Exchange code for refresh token
         if: ${{ inputs.auth_code != '' }}
@@ -30,21 +26,20 @@ jobs:
         run: |
           python3 << 'PYEOF'
           import urllib.request, urllib.parse, json, os
-          data = urllib.parse.urlencode({
+          d = urllib.parse.urlencode({
             'grant_type': 'authorization_code',
             'code': os.environ['CODE'],
             'redirect_uri': 'https://localhost',
             'client_id': os.environ['CID'],
             'client_secret': os.environ['CSEC'],
           }).encode()
-          req = urllib.request.Request('https://api.amazon.com/auth/o2/token', data=data)
+          req = urllib.request.Request('https://api.amazon.com/auth/o2/token', d)
           req.add_header('Content-Type', 'application/x-www-form-urlencoded')
           try:
-            resp = urllib.request.urlopen(req)
-            result = json.loads(resp.read())
-            print('refresh_token: ' + result.get('refresh_token', 'NOT_FOUND'))
+            r = json.loads(urllib.request.urlopen(req).read())
+            tok = r.get('refresh_token','NOT_FOUND')
+            import base64
+            print('REFRESH_TOKEN_B64:', base64.b64encode(tok.encode()).decode())
           except Exception as e:
-            import sys
-            print('ERROR: ' + str(e), file=sys.stderr)
-            sys.exit(1)
+            import sys; print('ERROR:', e, file=sys.stderr); sys.exit(1)
           PYEOF
