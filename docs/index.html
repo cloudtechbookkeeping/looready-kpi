@@ -2380,6 +2380,24 @@ function toggleSidebar() {
   for (var gi = 0; gi < grids.length; gi++) initDragGrid(grids[gi], gi);
 })();</script>
 </div><!-- /main-area -->
+<script>
+/* Patch: remove empty Sessions/CVR datasets from performance chart */
+(function() {
+  var elapsed = 0, iv = setInterval(function() {
+    elapsed += 300;
+    var canvas = document.getElementById('performanceChart');
+    var chart = canvas && Chart.getChart && Chart.getChart(canvas);
+    if (!chart && elapsed < 8000) return;
+    clearInterval(iv);
+    if (!chart) return;
+    chart.data.datasets = chart.data.datasets.filter(function(d) {
+      return d.label === 'Revenue ($)' || d.label === 'Units Sold';
+    });
+    if (chart.options.scales && chart.options.scales.y2) chart.options.scales.y2.display = false;
+    chart.update('none');
+  }, 300);
+})();
+</script>
 </body>
 </html>
 
