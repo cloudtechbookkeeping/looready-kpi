@@ -1,4 +1,4 @@
-Z"""
+"""
 LooReady — Amazon SP-API KPI Pull
 Reads credentials from environment variables (set as GitHub Secrets).
 Saves daily JSON to kpi_data/YYYY-MM-DD.json
@@ -522,4 +522,3 @@ if __name__ == "__main__":
         print(f"\n❌ CRASH: {e}")
         traceback.print_exc()
         raise
-X
