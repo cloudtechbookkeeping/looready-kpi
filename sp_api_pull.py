@@ -19,6 +19,12 @@ REFRESH_TOKEN  = os.environ["AMAZON_REFRESH_TOKEN"]
 MARKETPLACE_ID = "ATVPDKIKX0DER"
 ENDPOINT       = "https://sellingpartnerapi-na.amazon.com"
 
+# Optional: Amazon Advertising API (for ACOS metrics)
+# Add AMAZON_ADS_REFRESH_TOKEN and AMAZON_ADS_PROFILE_ID as GitHub Secrets to enable
+ADS_REFRESH_TOKEN = os.environ.get("AMAZON_ADS_REFRESH_TOKEN", "")
+ADS_PROFILE_ID    = os.environ.get("AMAZON_ADS_PROFILE_ID", "")
+ADS_ENDPOINT      = "https://advertising-api.amazon.com"
+
 DATA_DIR = Path("kpi_data")
 DATA_DIR.mkdir(exist_ok=True)
 
@@ -330,6 +336,118 @@ def get_finance(token, days=1):
     return {"total_sales": round(total_sales, 2), "total_fees": round(total_fees, 2)}
 
 
+
+def get_ads_access_token():
+    """Get Advertising API access token using ads-specific refresh token."""
+    if not ADS_REFRESH_TOKEN:
+        return None
+    resp = requests.post(
+        "https://api.amazon.com/auth/o2/token",
+        data={
+            "grant_type":    "refresh_token",
+            "refresh_token": ADS_REFRESH_TOKEN,
+            "client_id":     CLIENT_ID,
+            "client_secret": CLIENT_SECRET,
+        }
+    )
+    if resp.status_code != 200:
+        print(f"\u26a0\ufe0f Ads token error {resp.status_code}: {resp.text[:200]}")
+        return None
+    return resp.json().get("access_token")
+
+
+def get_ads_yesterday_metrics():
+    """Fetch yesterday's ad spend, ad sales, ACOS from Amazon Advertising API v3.
+
+    Requires AMAZON_ADS_REFRESH_TOKEN and AMAZON_ADS_PROFILE_ID env vars.
+    Results cached in kpi_data/ads_YYYY-MM-DD.json to avoid re-requesting each hour.
+    Returns dict with ad_spend, ad_sales, acos, clicks, ad_orders — or None on failure.
+    """
+    if not ADS_REFRESH_TOKEN or not ADS_PROFILE_ID:
+        print("   \u26a0\ufe0f Ads credentials not set — skipping advertising metrics")
+        return None
+
+    yesterday = (datetime.date.today() - datetime.timedelta(days=1)).isoformat()
+    cache_path = DATA_DIR / f"ads_{yesterday}.json"
+    if cache_path.exists():
+        print(f"   \u26a1 Ads cache hit for {yesterday}")
+        with open(cache_path) as f:
+            return json.load(f)
+
+    ads_token = get_ads_access_token()
+    if not ads_token:
+        return None
+
+    hdrs = {
+        "Amazon-Advertising-API-ClientId": CLIENT_ID,
+        "Amazon-Advertising-API-Scope":    str(ADS_PROFILE_ID),
+        "Authorization":                   f"Bearer {ads_token}",
+        "Content-Type":                    "application/vnd.createasyncreportrequest.v3+json",
+    }
+    payload = {
+        "name":      f"LooReady-{yesterday}",
+        "startDate": yesterday,
+        "endDate":   yesterday,
+        "configuration": {
+            "adProduct":    "SPONSORED_PRODUCTS",
+            "groupBy":      ["campaign"],
+            "columns":      ["spend", "sales14d", "clicks", "impressions", "purchases14d"],
+            "reportTypeId": "spCampaigns",
+            "timeUnit":     "SUMMARY",
+            "format":       "GZIP_JSON",
+        },
+    }
+    resp = requests.post(f"{ADS_ENDPOINT}/reporting/reports", headers=hdrs, json=payload)
+    if resp.status_code not in (200, 202):
+        print(f"\u26a0\ufe0f Ads report request {resp.status_code}: {resp.text[:300]}")
+        return None
+
+    report_id = resp.json().get("reportId")
+    print(f"   \U0001f4dd Ads report ID: {report_id} — polling...")
+
+    poll_hdrs = {
+        "Amazon-Advertising-API-ClientId": CLIENT_ID,
+        "Amazon-Advertising-API-Scope":    str(ADS_PROFILE_ID),
+        "Authorization":                   f"Bearer {ads_token}",
+    }
+    for attempt in range(48):  # 4 minutes max (48 * 5s)
+        time.sleep(5)
+        status_resp = requests.get(
+            f"{ADS_ENDPOINT}/reporting/reports/{report_id}", headers=poll_hdrs
+        )
+        if status_resp.status_code != 200:
+            print(f"\u26a0\ufe0f Poll error {status_resp.status_code}")
+            break
+        rdata  = status_resp.json()
+        status = rdata.get("status")
+        if status == "COMPLETED":
+            dl_url = rdata.get("url")
+            if not dl_url:
+                break
+            import gzip
+            records = json.loads(gzip.decompress(requests.get(dl_url).content))
+            spend  = sum(r.get("spend", 0)       for r in records)
+            sales  = sum(r.get("sales14d", 0)     for r in records)
+            clicks = sum(r.get("clicks", 0)       for r in records)
+            orders = sum(r.get("purchases14d", 0) for r in records)
+            acos   = round(spend / sales * 100, 1) if sales > 0 else 0.0
+            result = {
+                "date":      yesterday,
+                "ad_spend":  round(spend, 2),
+                "ad_sales":  round(sales, 2),
+                "acos":      acos,
+                "clicks":    clicks,
+                "ad_orders": orders,
+            }
+            with open(cache_path, "w") as f:
+                json.dump(result, f, indent=2)
+            print(f"   \u2705 Ads: ${spend:,.2f} spend  ACOS {acos}%")
+            return result
+        elif status in ("FAILED", "CANCELLED"):
+            print(f"\u26a0\ufe0f Ads report {status}")
+            break
+    print("\u26a0\ufe0f Ads report timed out")
+    return None
 def main():
     today     = datetime.date.today().isoformat()
     save_path = DATA_DIR / f"{today}.json"
@@ -388,6 +506,19 @@ def main():
     kpi["orders_30d"]    = data_30d["orders_30d"]
     kpi["units_30d"]     = data_30d.get("units_30d", 0)
     kpi["days_30d"]      = data_30d["days_30d"]
+
+    print("\U0001f4e3 Pulling advertising metrics (yesterday)...")
+    ads = get_ads_yesterday_metrics()
+    if ads:
+        kpi["ad_spend"]  = ads["ad_spend"]
+        kpi["ad_sales"]  = ads["ad_sales"]
+        kpi["acos"]      = ads["acos"]
+        kpi["ad_clicks"] = ads["clicks"]
+        kpi["ad_orders"] = ads["ad_orders"]
+        print(f"   \u2705 ACOS: {ads['acos']}%")
+    else:
+        kpi["ad_spend"] = kpi["ad_sales"] = kpi["acos"] = None
+        kpi["ad_clicks"] = kpi["ad_orders"] = None
 
     with open(save_path, "w") as f:
         json.dump(kpi, f, indent=2, default=str)
