@@ -51,6 +51,10 @@ def update_html(data):
     revenue_30d  = "$" + f"{data.get('revenue_30d', 0):,.2f}"
     orders_30d   = data.get('orders_30d', 0)
     units_30d    = data.get('units_30d', 0)   # accurate total from sales metrics API
+    acos_val     = data.get("acos")
+    ad_spend_val = data.get("ad_spend")
+    acos_str     = (f"{acos_val:.1f}%" if acos_val is not None else "--")
+    spend_str    = ("$" + f"{ad_spend_val:,.2f}" if ad_spend_val is not None else "--")
     days_30d     = data.get('days_30d', 0)
 
     html = HTML_FILE.read_text(encoding="utf-8")
@@ -82,7 +86,7 @@ def update_html(data):
     today_obj = (
         "'today': { revenue:'" + revenue +
         "', units:'" + str(total_units) +
-        "', spend:'--', acos:'--', sessions:'--', ipi:'628'," +
+        "', spend:" + repr(spend_str) + ", acos:" + repr(acos_str) + ", sessions:'--', ipi:'628'," +
         " rsub:'Today " + today_str + " . SP-API live'" +
         ", usub:'" + str(orders) + " orders . " + str(units) +
         " units . Fees $" + f"{fees:,.2f}'" +
@@ -106,7 +110,7 @@ def update_html(data):
     sevenday_obj = (
         "'7d':  { revenue:'" + revenue_7d +
         "', units:'" + str(total_units_7d) +
-        "', spend:'--', acos:'--', sessions:'--', ipi:'628'," +
+        "', spend:" + repr(spend_str) + ", acos:" + repr(acos_str) + ", sessions:'--', ipi:'628'," +
         " rsub:'Last 7 Days · SP-API live'" +
         ", usub:'" + str(orders_7d) + " orders . " + str(total_units_7d) + " units'" +
         ", ssub:'Not yet available', asub:'Not yet available'" +
@@ -129,7 +133,7 @@ def update_html(data):
     thirtyday_obj = (
         "'30d': { revenue:'" + revenue_30d +
         "', units:'" + str(units_30d) +
-        "', spend:'--', acos:'--', sessions:'--', ipi:'628'," +
+        "', spend:" + repr(spend_str) + ", acos:" + repr(acos_str) + ", sessions:'--', ipi:'628'," +
         " rsub:'Last 30 Days · SP-API live'" +
         ", usub:'" + str(orders_30d) + " orders . " + str(units_30d) + " units'" +
         ", ssub:'Not yet available', asub:'Not yet available'" +
@@ -209,6 +213,8 @@ def write_history():
                 "orders":    d.get("orders_today", 0),
                 "units":     d.get("units_ordered", 0),
                 "sku_units": d.get("sku_units", {}),
+                "acos":      d.get("acos"),
+                "ad_spend":  d.get("ad_spend"),
             })
         except Exception as e:
             print("Skipping " + str(path) + ": " + str(e))
