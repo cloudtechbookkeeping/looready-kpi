@@ -604,7 +604,9 @@ aside.sidebar.collapsed {
 .perf-kpi-tile.perf-no-chart { cursor: default; }
 .perf-kpi-tile.perf-no-chart:hover { border-color: var(--border, #e2e8f0); }
 @media (max-width: 900px) { .perf-kpi-row { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 560px) { .perf-kpi-row { grid-template-columns: 1fr; } }</style>
+@media (max-width: 560px) { .perf-kpi-row { grid-template-columns: 1fr; } }/* Hide Traffic & Conversion card when Sales or Inventory tab is active */
+.page > .grid-2-eq:has(.section.active) > .card { display: none; }
+</style>
 </head>
 <body>
 
