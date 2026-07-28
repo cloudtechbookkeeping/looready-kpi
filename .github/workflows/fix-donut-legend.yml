@@ -8,11 +8,28 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Fix donut legend overlap
+      - name: Fix donut legend overlap in template and output
         run: |
-          sed -i 's/display: true, position:/display: false, position:/g' docs/index.html
+          python3 - <<'PYEOF'
+import re
+
+for fname in ['looready-kpi.html', 'docs/index.html']:
+    with open(fname, 'r', encoding='utf-8') as f:
+        content = f.read()
+    # Only target donutOpts (which uniquely contains cutout: '70%')
+    fixed = content.replace(
+        "cutout: '70%', plugins: { legend: { display: true",
+        "cutout: '70%', plugins: { legend: { display: false"
+    )
+    if fixed != content:
+        with open(fname, 'w', encoding='utf-8') as f:
+            f.write(fixed)
+        print(f'Fixed: {fname}')
+    else:
+        print(f'No change needed: {fname}')
+PYEOF
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add docs/index.html
-          git diff --staged --quiet || git commit -m "Fix: hide Chart.js legend on profit donut to stop overlap"
+          git add looready-kpi.html docs/index.html
+          git diff --staged --quiet || git commit -m "Fix: hide donut legend in template + output"
           git push
