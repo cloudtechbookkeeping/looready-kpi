@@ -2159,7 +2159,7 @@ const donutData = {
 const donutOpts = {
   responsive: true, maintainAspectRatio: false,
   cutout: '70%',
-  plugins: { legend: { display: true, position: 'top', labels: { boxWidth: 12, font: { size: 10 }, filter: function(item) { return item.text !== 'Sessions'; } } }, tooltip: { callbacks: { label: c => ' $' + c.parsed.toLocaleString() } } }
+  plugins: { legend: { display: false, position: 'top', labels: { boxWidth: 12, font: { size: 10 }, filter: function(item) { return item.text !== 'Sessions'; } } }, tooltip: { callbacks: { label: c => ' $' + c.parsed.toLocaleString() } } }
 };
 var profitDonutChart = new Chart(document.getElementById('profitDonut').getContext('2d'), { type: 'doughnut', data: donutData, options: donutOpts });
 renderProfitBreakdown('30d'); // refresh profit display after chart init
