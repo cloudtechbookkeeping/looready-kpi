@@ -1,6 +1,8 @@
 name: Fix Donut Legend
 on:
   workflow_dispatch:
+permissions:
+  contents: write
 jobs:
   fix:
     runs-on: ubuntu-latest
