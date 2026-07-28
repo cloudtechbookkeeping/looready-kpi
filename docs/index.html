@@ -2007,7 +2007,7 @@ renderProfitBreakdown('30d');
         responsive: true, maintainAspectRatio: false,
         interaction: { mode: 'index', intersect: false },
         plugins: {
-          legend: { display: true, position: 'top', labels: { boxWidth: 12, font: { size: 10 }, filter: function(item) { return item.text !== 'Sessions'; } } },
+          legend: { display: false, position: 'top', labels: { boxWidth: 12, font: { size: 10 }, filter: function(item) { return item.text !== 'Sessions'; } } },
           tooltip: {
             backgroundColor: 'rgba(15,23,42,0.88)', titleColor: '#e2e8f0', bodyColor: '#cbd5e1',
             padding: 10, cornerRadius: 8,
@@ -2126,7 +2126,7 @@ function expandPerfChart() {
       options: {
         responsive: true, maintainAspectRatio: false,
         interaction: { mode: 'index', intersect: false },
-        plugins: { legend: { display: true, position: 'top', labels: { boxWidth: 10, font: { size: 10 } } } },
+        plugins: { legend: { display: false, position: 'top', labels: { boxWidth: 10, font: { size: 10 } } } },
         scales: {
           x: { ticks: { font: { size: 9 }, maxRotation: 45 }, grid: { display: false } },
           y: { position: 'left', ticks: { font: { size: 9 }, callback: function(v) { return '$' + v.toLocaleString(); } }, grid: { color: '#f3f4f6' } },
@@ -2159,7 +2159,7 @@ const donutData = {
 const donutOpts = {
   responsive: true, maintainAspectRatio: false,
   cutout: '70%',
-  plugins: { legend: { display: true, position: 'top', labels: { boxWidth: 12, font: { size: 10 }, filter: function(item) { return item.text !== 'Sessions'; } } }, tooltip: { callbacks: { label: c => ' $' + c.parsed.toLocaleString() } } }
+  plugins: { legend: { display: false, position: 'top', labels: { boxWidth: 12, font: { size: 10 }, filter: function(item) { return item.text !== 'Sessions'; } } }, tooltip: { callbacks: { label: c => ' $' + c.parsed.toLocaleString() } } }
 };
 var profitDonutChart = new Chart(document.getElementById('profitDonut').getContext('2d'), { type: 'doughnut', data: donutData, options: donutOpts });
 renderProfitBreakdown('30d'); // refresh profit display after chart init
