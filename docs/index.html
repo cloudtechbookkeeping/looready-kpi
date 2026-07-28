@@ -1594,7 +1594,7 @@ function renderSupplyChain() {
       notifyDaysFrom = daysOfSupply - LEAD;
       notifyDate     = new Date(today.getTime() + notifyDaysFrom * 86400000);
       stockoutDate   = new Date(today.getTime() + daysOfSupply  * 86400000);
-      orderQty       = Math.ceil(velocity * LEAD);
+      orderQty       = Math.ceil(parseFloat(prod.targetVelocity) * LEAD);
       arrivalEarly   = new Date(notifyDate.getTime() + 100 * 86400000);
       arrivalLate    = new Date(notifyDate.getTime() + 120 * 86400000);
 
@@ -1785,7 +1785,7 @@ function renderSupplyChain() {
         <div class="table-scroll">
           <table class="sc-table">
             <thead><tr>
-              <th>SKU</th><th>Status</th><th>Velocity (30d avg)</th>
+              <th>SKU</th><th>Status</th><th>Actual Velocity</th>
               <th>Target Velocity</th>
               <th>FBA Total</th><th>AWD On-Hand</th><th>Total Inbound</th><th>Combined Total</th>
               <th>Days of Supply</th><th>Notify Mr. Wang By</th><th>Order Qty (125d)</th>
