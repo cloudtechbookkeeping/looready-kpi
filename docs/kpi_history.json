@@ -1670,14 +1670,14 @@
   },
   {
     "date": "2026-07-29",
-    "revenue": 1263.87,
-    "orders": 62,
+    "revenue": 1396.06,
+    "orders": 69,
     "units": 85,
     "sku_units": {
-      "LR-CS-10": 23,
-      "LR-TSC-5PACK": 9,
+      "LR-CS-10": 24,
+      "LR-TSC-5PACK": 11,
       "LR-CS-30": 6,
-      "LR-TSC-30PACK": 30
+      "LR-TSC-30PACK": 34
     },
     "acos": null,
     "ad_spend": null,
