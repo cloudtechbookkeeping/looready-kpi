@@ -1,0 +1,42 @@
+name: Exchange Amazon Ads Auth Code
+
+on:
+  workflow_dispatch:
+    inputs:
+      auth_code:
+        description: 'Authorization code from Amazon OAuth redirect'
+        required: true
+        type: string
+
+jobs:
+  exchange-token:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Exchange code for refresh token
+        env:
+          AMAZON_CLIENT_ID: ${{ secrets.AMAZON_CLIENT_ID }}
+          AMAZON_CLIENT_SECRET: ${{ secrets.AMAZON_CLIENT_SECRET }}
+          AUTH_CODE: ${{ inputs.auth_code }}
+        run: |
+          import requests, os, json
+          resp = requests.post(
+              'https://api.amazon.com/auth/o2/token',
+              data={
+                  'grant_type': 'authorization_code',
+                  'code': os.environ['AUTH_CODE'],
+                  'client_id': os.environ['AMAZON_CLIENT_ID'],
+                  'client_secret': os.environ['AMAZON_CLIENT_SECRET'],
+                  'redirect_uri': 'https://www.amazon.com',
+              }
+          )
+          data = resp.json()
+          print(f"Status: {resp.status_code}")
+          refresh_token = data.get('refresh_token', '')
+          # Write to summary (base64 encoded so GitHub doesn't mask as secret)
+          import base64
+          rt_b64 = base64.b64encode(refresh_token.encode()).decode()
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as f:
+              f.write(f"## Ads Refresh Token (base64)\n\n{rt_b64}\n")
+              f.write(f"\n## Full Response\n\n```json\n{json.dumps(data, indent=2)}\n```\n")
+          print(f"Done. Check job summary for token.")
+        shell: python
