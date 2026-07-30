@@ -550,7 +550,7 @@ def main():
     kpi["units_30d"]     = data_30d.get("units_30d", 0)
     kpi["days_30d"]      = data_30d["days_30d"]
 
-    print("\U0001f4e3     print("U0001f4e3 Pulling Ads API metrics (CVR, ACOS)...")
+    print("Pulling Ads API metrics (CVR, ACOS)...")
     try:
         ads_token = get_ads_token()
         if ads_token:
