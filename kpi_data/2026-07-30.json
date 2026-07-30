@@ -1,6 +1,6 @@
 {
   "date": "2026-07-30",
-  "pulled_at": "2026-07-30T19:52:25.424275",
+  "pulled_at": "2026-07-30T20:01:22.893575",
   "orders_today": 85,
   "revenue_today": 1929.9,
   "units_ordered": 95,
@@ -167,5 +167,5 @@
   "units_30d": 2260,
   "days_30d": 29,
   "ads_metrics": {},
-  "ads_debug": "no_profile"
+  "ads_debug": "profiles 401: {\"code\":\"UNAUTHORIZED\",\"details\":\"HTTP 401 Unauthorized\",\"requestId\":\"E5W3JY1TRV8SVWPE4P1R\"}"
 }
