@@ -389,7 +389,7 @@ def get_ads_profile_id(ads_token):
         }
     )
     if resp.status_code != 200:
-        print(f"⚠️ Ads profiles {resp.status_code}: {resp.text[:200]}")
+        raise Exception(f"profiles {resp.status_code}: {resp.text[:300]}")
         return None
     profiles = resp.json()
     for p in profiles:
