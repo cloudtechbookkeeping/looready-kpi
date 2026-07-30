@@ -1,0 +1,20 @@
+name: Generate Amazon Ads OAuth URL
+
+on:
+  workflow_dispatch:
+
+jobs:
+  generate-url:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Output OAuth URL to summary
+        env:
+          AMAZON_CLIENT_ID: ${{ secrets.AMAZON_CLIENT_ID }}
+        run: |
+          import base64, os
+          cid = os.environ['AMAZON_CLIENT_ID']
+          url = f"https://www.amazon.com/ap/oa?client_id={cid}&scope=advertising%3A%3Acampaign_management&response_type=code&redirect_uri=https%3A%2F%2Fwww.amazon.com&state=looready_ads"
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as f:
+              f.write(f"## Ads OAuth URL\n\n{url}\n")
+          print("URL written to summary")
+        shell: python
