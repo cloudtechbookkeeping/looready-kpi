@@ -51,10 +51,10 @@ def update_html(data):
     revenue_30d  = "$" + f"{data.get('revenue_30d', 0):,.2f}"
     orders_30d   = data.get('orders_30d', 0)
     units_30d    = data.get('units_30d', 0)   # accurate total from sales metrics API
-    acos_val     = data.get("acos")
-    ad_spend_val = data.get("ad_spend")
-    acos_str     = (f"{acos_val:.1f}%" if acos_val is not None else "--")
-    spend_str    = ("$" + f"{ad_spend_val:,.2f}" if ad_spend_val is not None else "--")
+    ads       = data.get('ads_metrics', {})
+    cvr_val   = (str(ads['cvr_30d']) + '%') if ads.get('cvr_30d') else '--'
+    acos_val  = (str(ads['acos_30d']) + '%') if ads.get('acos_30d') else '--'
+    acos_color = '#ef4444' if ads.get('acos_30d', 0) > 30 else '#10b981'
     days_30d     = data.get('days_30d', 0)
 
     html = HTML_FILE.read_text(encoding="utf-8")
@@ -86,16 +86,16 @@ def update_html(data):
     today_obj = (
         "'today': { revenue:'" + revenue +
         "', units:'" + str(total_units) +
-        "', spend:" + repr(spend_str) + ", acos:" + repr(acos_str) + ", sessions:'--', ipi:'628'," +
+        "', spend:'--', acos:'" + acos_val + "', cvr:'" + cvr_val + "', sessions:'--', ipi:'628'," +
         " rsub:'Today " + today_str + " . SP-API live'" +
         ", usub:'" + str(orders) + " orders . " + str(units) +
         " units . Fees $" + f"{fees:,.2f}'" +
         ", ssub:'Not yet available', asub:'Not yet available'" +
         ", sesub:'Not yet available', isub:'Range 570-686'," +
-        " acosColor:'#6b7280', skuUnits:" + sku_units_js +
+        " acosColor:'" + acos_color + "', skuUnits:" + sku_units_js +
         " }, /* TODAY_KPI_PLACEHOLDER */"
     )
-    placeholder = "'today': { revenue:'--', units:'--', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'--', usub:'--', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':'--','LR-CS-10':'--','LR-CS-30':'--','LR-TSC-5PACK':'--','LR-CS-120':'--'} }, /* TODAY_KPI_PLACEHOLDER */"
+    placeholder = "'today': { revenue:'--', units:'--', spend:'--', acos:'--', cvr:'--', sessions:'--', ipi:'628', rsub:'--', usub:'--', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':'--','LR-CS-10':'--','LR-CS-30':'--','LR-TSC-5PACK':'--','LR-CS-120':'--'} }, /* TODAY_KPI_PLACEHOLDER */"
     n3 = 1 if placeholder in html else 0
     html = html.replace(placeholder, today_obj)
 
@@ -110,15 +110,15 @@ def update_html(data):
     sevenday_obj = (
         "'7d':  { revenue:'" + revenue_7d +
         "', units:'" + str(total_units_7d) +
-        "', spend:" + repr(spend_str) + ", acos:" + repr(acos_str) + ", sessions:'--', ipi:'628'," +
+        "', spend:'--', acos:'" + acos_val + "', cvr:'" + cvr_val + "', sessions:'--', ipi:'628'," +
         " rsub:'Last 7 Days · SP-API live'" +
         ", usub:'" + str(orders_7d) + " orders . " + str(total_units_7d) + " units'" +
         ", ssub:'Not yet available', asub:'Not yet available'" +
         ", sesub:'Not yet available', isub:'Range 570-686'," +
-        " acosColor:'#6b7280', skuUnits:" + sku_units_js_7d +
+        " acosColor:'" + acos_color + "', skuUnits:" + sku_units_js_7d +
         " }, /* 7D_KPI_PLACEHOLDER */"
     )
-    placeholder_7d = "'7d':  { revenue:'--', units:'--', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'--', usub:'--', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':'--','LR-CS-10':'--','LR-CS-30':'--','LR-TSC-5PACK':'--','LR-CS-120':'--'} }, /* 7D_KPI_PLACEHOLDER */"
+    placeholder_7d = "'7d':  { revenue:'--', units:'--', spend:'--', acos:'--', cvr:'--', sessions:'--', ipi:'628', rsub:'--', usub:'--', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':'--','LR-CS-10':'--','LR-CS-30':'--','LR-TSC-5PACK':'--','LR-CS-120':'--'} }, /* 7D_KPI_PLACEHOLDER */"
     n4 = 1 if placeholder_7d in html else 0
     html = html.replace(placeholder_7d, sevenday_obj)
 
@@ -133,16 +133,16 @@ def update_html(data):
     thirtyday_obj = (
         "'30d': { revenue:'" + revenue_30d +
         "', units:'" + str(units_30d) +
-        "', spend:" + repr(spend_str) + ", acos:" + repr(acos_str) + ", sessions:'--', ipi:'628'," +
+        "', spend:'--', acos:'" + acos_val + "', cvr:'" + cvr_val + "', sessions:'--', ipi:'628'," +
         " rsub:'Last 30 Days · SP-API live'" +
         ", usub:'" + str(orders_30d) + " orders . " + str(units_30d) + " units'" +
         ", ssub:'Not yet available', asub:'Not yet available'" +
         ", sesub:'Not yet available', isub:'Range 570-686'," +
-        " acosColor:'#6b7280', skuUnits:" + sku_units_js_30d +
+        " acosColor:'" + acos_color + "', skuUnits:" + sku_units_js_30d +
         ", days30d:" + str(days_30d) +
         " }, /* 30D_KPI_PLACEHOLDER */"
     )
-    placeholder_30d = "'30d': { revenue:'--', units:'--', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'--', usub:'--', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':'--','LR-CS-10':'--','LR-CS-30':'--','LR-TSC-5PACK':'--','LR-CS-120':'--'}, days30d:30 }, /* 30D_KPI_PLACEHOLDER */"
+    placeholder_30d = "'30d': { revenue:'--', units:'--', spend:'--', acos:'--', cvr:'--', sessions:'--', ipi:'628', rsub:'--', usub:'--', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':'--','LR-CS-10':'--','LR-CS-30':'--','LR-TSC-5PACK':'--','LR-CS-120':'--'}, days30d:30 }, /* 30D_KPI_PLACEHOLDER */"
     n5 = 1 if placeholder_30d in html else 0
     html = html.replace(placeholder_30d, thirtyday_obj)
 
