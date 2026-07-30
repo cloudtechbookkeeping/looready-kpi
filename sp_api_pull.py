@@ -360,13 +360,16 @@ def get_ads_access_token():
 
 def get_ads_token():
     """Get Ads API access token (reuses SP-API creds or ADS_* env vars)."""
+    refresh_tok = os.environ.get("ADS_REFRESH_TOKEN") or os.environ.get("AMAZON_REFRESH_TOKEN") or REFRESH_TOKEN
+    client_id_  = os.environ.get("ADS_CLIENT_ID") or os.environ.get("AMAZON_CLIENT_ID") or CLIENT_ID
+    client_sec_ = os.environ.get("ADS_CLIENT_SECRET") or os.environ.get("AMAZON_CLIENT_SECRET") or CLIENT_SECRET
     resp = requests.post(
         "https://api.amazon.com/auth/o2/token",
         data={
             "grant_type":    "refresh_token",
-            "refresh_token": os.environ.get("ADS_REFRESH_TOKEN", REFRESH_TOKEN),
-            "client_id":     os.environ.get("ADS_CLIENT_ID", CLIENT_ID),
-            "client_secret": os.environ.get("ADS_CLIENT_SECRET", CLIENT_SECRET),
+            "refresh_token": refresh_tok,
+            "client_id":     client_id_,
+            "client_secret": client_sec_,
         }
     )
     if resp.status_code != 200:
