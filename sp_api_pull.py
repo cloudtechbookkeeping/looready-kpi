@@ -558,13 +558,17 @@ def main():
             if ads_profile:
                 ads_metrics = get_ads_cvr(ads_token, ads_profile)
                 kpi["ads_metrics"] = ads_metrics
+                kpi["ads_debug"] = "ok"
             else:
                 kpi["ads_metrics"] = {}
+                kpi["ads_debug"] = "no_profile"
         else:
             kpi["ads_metrics"] = {}
+            kpi["ads_debug"] = "no_token"
     except Exception as e:
         print(f"   ⚠️ Ads API error (non-fatal): {e}")
         kpi["ads_metrics"] = {}
+        kpi["ads_debug"] = str(e)
     with open(save_path, "w") as f:
         json.dump(kpi, f, indent=2, default=str)
     print(f"\n💾 Saved → {save_path}")
