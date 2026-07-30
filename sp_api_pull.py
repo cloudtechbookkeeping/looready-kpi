@@ -408,7 +408,7 @@ def get_ads_cvr(ads_token, profile_id):
     import gzip
 
     today_str = datetime.date.today().isoformat()
-    ads_cache = DATA_DIR / f"ads_{today_str}.json"
+    ads_cache = DATA_DIR / f"ads_cvr_{today_str}.json"
     if ads_cache.exists():
         print("   ⚡ Ads metrics cache hit")
         with open(ads_cache) as f:
