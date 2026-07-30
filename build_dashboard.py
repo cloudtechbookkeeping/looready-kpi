@@ -213,7 +213,7 @@ def write_history():
                 "orders":    d.get("orders_today", 0),
                 "units":     d.get("units_ordered", 0),
                 "sku_units": d.get("sku_units", {}),
-                "acos":      d.get("acos"),
+                "acos":      d.get("acos") or (d.get("ads_metrics") or {}).get("acos_30d"),
                 "cvr":       (d.get("ads_metrics") or {}).get("cvr_30d"),
                 "ad_spend":  d.get("ad_spend"),
                 "ad_clicks": d.get("ad_clicks"),
