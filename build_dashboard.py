@@ -52,8 +52,8 @@ def update_html(data):
     orders_30d   = data.get('orders_30d', 0)
     units_30d    = data.get('units_30d', 0)   # accurate total from sales metrics API
     ads       = data.get('ads_metrics', {})
-    cvr_val   = (str(ads['cvr_30d']) + '%') if ads.get('cvr_30d') else '--'
-    acos_val  = (str(ads['acos_30d']) + '%') if ads.get('acos_30d') else '--'
+    cvr_val   = (str(ads['cvr_30d']) + '%') if 'cvr_30d' in ads else '--'
+    acos_val  = (str(ads['acos_30d']) + '%') if 'acos_30d' in ads else '--'
     acos_color = '#ef4444' if ads.get('acos_30d', 0) > 30 else '#10b981'
     days_30d     = data.get('days_30d', 0)
 
