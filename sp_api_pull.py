@@ -358,85 +358,139 @@ def get_ads_access_token():
     return resp.json().get("access_token")
 
 
-def get_ads_yesterday_metrics():
-    """Fetch yesterday's ad spend, ad sales, ACOS from Amazon Advertising API v3.
-
-    Requires AMAZON_ADS_REFRESH_TOKEN and AMAZON_ADS_PROFILE_ID env vars.
-    Results cached in kpi_data/ads_YYYY-MM-DD.json to avoid re-requesting each hour.
-    Returns dict with ad_spend, ad_sales, acos, clicks, ad_orders — or None on failure.
-    """
-    ads_token = get_ads_access_token()
-    if not ads_token:
-        print("   ⚠️ Could not obtain Ads access token — skipping advertising metrics")
+def get_ads_token():
+    """Get Ads API access token (reuses SP-API creds or ADS_* env vars)."""
+    resp = requests.post(
+        "https://api.amazon.com/auth/o2/token",
+        data={
+            "grant_type":    "refresh_token",
+            "refresh_token": os.environ.get("ADS_REFRESH_TOKEN", REFRESH_TOKEN),
+            "client_id":     os.environ.get("ADS_CLIENT_ID", CLIENT_ID),
+            "client_secret": os.environ.get("ADS_CLIENT_SECRET", CLIENT_SECRET),
+        }
+    )
+    if resp.status_code != 200:
+        print(f"⚠️ Ads token {resp.status_code}: {resp.text[:200]}")
         return None
+    return resp.json().get("access_token")
 
-    # Auto-discover profile ID from /v2/profiles if AMAZON_ADS_PROFILE_ID not set
-    profile_id = ADS_PROFILE_ID
-    if not profile_id:
-        ph = {"Amazon-Advertising-API-ClientId": CLIENT_ID, "Authorization": f"Bearer {ads_token}"}
-        pr = requests.get(f"{ADS_ENDPOINT}/v2/profiles", headers=ph)
-        if pr.status_code != 200:
-            print(f"   ⚠️ Could not list Ads profiles ({pr.status_code}) — skipping")
-            return None
-        profs = pr.json()
-        us = next((p for p in profs if p.get("countryCode") == "US"), None)
-        chosen = us or (profs[0] if profs else None)
-        if not chosen:
-            print("   ⚠️ No Ads profiles found — skipping")
-            return None
-        profile_id = str(chosen["profileId"])
-        print(f"   U0001F50D Auto-discovered Ads profile: {profile_id} ({chosen.get('countryCode')})")
 
-    yesterday = (datetime.date.today() - datetime.timedelta(days=1)).isoformat()
-    cache_path = DATA_DIR / f"ads_{yesterday}.json"
-    if cache_path.exists():
-        print(f"   ⚡ Ads cache hit for {yesterday}")
-        with open(cache_path) as f:
+def get_ads_profile_id(ads_token):
+    """Auto-discover first US seller Ads profile ID."""
+    client_id = os.environ.get("ADS_CLIENT_ID", CLIENT_ID)
+    resp = requests.get(
+        f"{ADS_ENDPOINT}/v2/profiles",
+        headers={
+            "Amazon-Advertising-API-ClientId": client_id,
+            "Authorization": f"Bearer {ads_token}",
+        }
+    )
+    if resp.status_code != 200:
+        print(f"⚠️ Ads profiles {resp.status_code}: {resp.text[:200]}")
+        return None
+    profiles = resp.json()
+    for p in profiles:
+        if p.get("countryCode") == "US":
+            pid = str(p["profileId"])
+            print(f"   ✅ Ads profile: {pid} ({p.get('accountInfo', {}).get('name', '')})")
+            return pid
+    if profiles:
+        return str(profiles[0]["profileId"])
+    print("   ⚠️ No Ads profiles found")
+    return None
+
+
+def get_ads_cvr(ads_token, profile_id):
+    """Fetch 30-day CVR & ACOS via Ads API v3 reporting.
+    CVR  = ad_orders / clicks  × 100
+    ACOS = ad_spend  / ad_sales × 100
+    Results cached daily to avoid repeated report creation."""
+    import gzip
+
+    today_str = datetime.date.today().isoformat()
+    ads_cache = DATA_DIR / f"ads_{today_str}.json"
+    if ads_cache.exists():
+        print("   ⚡ Ads metrics cache hit")
+        with open(ads_cache) as f:
             return json.load(f)
 
-    hdrs = {
-        "Amazon-Advertising-API-ClientId": CLIENT_ID,
+    client_id = os.environ.get("ADS_CLIENT_ID", CLIENT_ID)
+    headers = {
+        "Amazon-Advertising-API-ClientId": client_id,
         "Amazon-Advertising-API-Scope":    profile_id,
         "Authorization":                   f"Bearer {ads_token}",
+        "Content-Type":                    "application/json",
     }
-    for attempt in range(48):  # 4 minutes max (48 * 5s)
-        time.sleep(5)
-        status_resp = requests.get(
-            f"{ADS_ENDPOINT}/reporting/reports/{report_id}", headers=poll_hdrs
-        )
-        if status_resp.status_code != 200:
-            print(f"\u26a0\ufe0f Poll error {status_resp.status_code}")
-            break
-        rdata  = status_resp.json()
+
+    end_date   = (datetime.date.today() - datetime.timedelta(days=1)).strftime("%Y-%m-%d")
+    start_date = (datetime.date.today() - datetime.timedelta(days=30)).strftime("%Y-%m-%d")
+
+    payload = {
+        "name": "LooReady-CVR",
+        "startDate": start_date,
+        "endDate":   end_date,
+        "configuration": {
+            "adProduct":    "SPONSORED_PRODUCTS",
+            "groupBy":      ["campaign"],
+            "columns":      ["clicks", "purchases30d", "spend", "sales30d", "impressions"],
+            "reportTypeId": "spCampaigns",
+            "timeUnit":     "SUMMARY",
+            "format":       "GZIP_JSON",
+        }
+    }
+    resp = requests.post(f"{ADS_ENDPOINT}/reporting/reports", headers=headers, json=payload)
+    if resp.status_code not in (200, 202):
+        print(f"⚠️ Ads report create {resp.status_code}: {resp.text[:300]}")
+        return {}
+
+    report_id = resp.json().get("reportId")
+    print(f"   U0001f4cb Ads report created: {report_id}")
+
+    # Poll until COMPLETED (up to ~5 min)
+    url = None
+    for attempt in range(30):
+        time.sleep(10)
+        poll = requests.get(f"{ADS_ENDPOINT}/reporting/reports/{report_id}", headers=headers)
+        if poll.status_code != 200:
+            continue
+        rdata  = poll.json()
         status = rdata.get("status")
+        print(f"   ⏳ [{attempt+1}/30] {status}")
         if status == "COMPLETED":
-            dl_url = rdata.get("url")
-            if not dl_url:
-                break
-            import gzip
-            records = json.loads(gzip.decompress(requests.get(dl_url).content))
-            spend  = sum(r.get("spend", 0)       for r in records)
-            sales  = sum(r.get("sales14d", 0)     for r in records)
-            clicks = sum(r.get("clicks", 0)       for r in records)
-            orders = sum(r.get("purchases14d", 0) for r in records)
-            acos   = round(spend / sales * 100, 1) if sales > 0 else 0.0
-            result = {
-                "date":      yesterday,
-                "ad_spend":  round(spend, 2),
-                "ad_sales":  round(sales, 2),
-                "acos":      acos,
-                "clicks":    clicks,
-                "ad_orders": orders,
-            }
-            with open(cache_path, "w") as f:
-                json.dump(result, f, indent=2)
-            print(f"   \u2705 Ads: ${spend:,.2f} spend  ACOS {acos}%")
-            return result
-        elif status in ("FAILED", "CANCELLED"):
-            print(f"\u26a0\ufe0f Ads report {status}")
+            url = rdata.get("url")
             break
-    print("\u26a0\ufe0f Ads report timed out")
-    return None
+        if status in ("FAILED", "CANCELLED"):
+            print(f"   ❌ Report {status}: {rdata}")
+            return {}
+
+    if not url:
+        print("   ⚠️ Ads report timed out")
+        return {}
+
+    # Download & parse gzipped JSON
+    dl   = requests.get(url)
+    rows = json.loads(gzip.decompress(dl.content))
+
+    total_clicks = sum(int(r.get("clicks", 0))       for r in rows)
+    total_orders = sum(int(r.get("purchases30d", 0))  for r in rows)
+    total_spend  = sum(float(r.get("spend", 0))       for r in rows)
+    total_sales  = sum(float(r.get("sales30d", 0))    for r in rows)
+
+    cvr  = round(total_orders / total_clicks  * 100, 2) if total_clicks  > 0 else 0
+    acos = round(total_spend  / total_sales   * 100, 2) if total_sales   > 0 else 0
+
+    result = {
+        "clicks_30d":    total_clicks,
+        "ad_orders_30d": total_orders,
+        "ad_spend_30d":  round(total_spend, 2),
+        "ad_sales_30d":  round(total_sales, 2),
+        "cvr_30d":       cvr,
+        "acos_30d":      acos,
+    }
+    print(f"   ✅ CVR={cvr}% | ACOS={acos}% | clicks={total_clicks:,} | orders={total_orders:,} | spend=${total_spend:,.2f}")
+    with open(ads_cache, "w") as f:
+        json.dump(result, f)
+    return result
 def main():
     today     = datetime.date.today().isoformat()
     save_path = DATA_DIR / f"{today}.json"
@@ -496,19 +550,21 @@ def main():
     kpi["units_30d"]     = data_30d.get("units_30d", 0)
     kpi["days_30d"]      = data_30d["days_30d"]
 
-    print("\U0001f4e3 Pulling advertising metrics (yesterday)...")
-    ads = get_ads_yesterday_metrics()
-    if ads:
-        kpi["ad_spend"]  = ads["ad_spend"]
-        kpi["ad_sales"]  = ads["ad_sales"]
-        kpi["acos"]      = ads["acos"]
-        kpi["ad_clicks"] = ads["clicks"]
-        kpi["ad_orders"] = ads["ad_orders"]
-        print(f"   \u2705 ACOS: {ads['acos']}%")
-    else:
-        kpi["ad_spend"] = kpi["ad_sales"] = kpi["acos"] = None
-        kpi["ad_clicks"] = kpi["ad_orders"] = None
-
+    print("\U0001f4e3     print("U0001f4e3 Pulling Ads API metrics (CVR, ACOS)...")
+    try:
+        ads_token = get_ads_token()
+        if ads_token:
+            ads_profile = get_ads_profile_id(ads_token)
+            if ads_profile:
+                ads_metrics = get_ads_cvr(ads_token, ads_profile)
+                kpi["ads_metrics"] = ads_metrics
+            else:
+                kpi["ads_metrics"] = {}
+        else:
+            kpi["ads_metrics"] = {}
+    except Exception as e:
+        print(f"   ⚠️ Ads API error (non-fatal): {e}")
+        kpi["ads_metrics"] = {}
     with open(save_path, "w") as f:
         json.dump(kpi, f, indent=2, default=str)
     print(f"\n💾 Saved → {save_path}")
