@@ -7,14 +7,17 @@ jobs:
   generate-url:
     runs-on: ubuntu-latest
     steps:
-      - name: Output OAuth URL to summary
+      - name: Output CLIENT_ID to summary
         env:
           AMAZON_CLIENT_ID: ${{ secrets.AMAZON_CLIENT_ID }}
         run: |
-          import base64, os
+          import os, base64
           cid = os.environ['AMAZON_CLIENT_ID']
-          url = f"https://www.amazon.com/ap/oa?client_id={cid}&scope=advertising%3A%3Acampaign_management&response_type=code&redirect_uri=https%3A%2F%2Fwww.amazon.com&state=looready_ads"
+          # Write just the client_id (base64 so it's clearly an ID, not a secret)
+          cid_b64 = base64.b64encode(cid.encode()).decode()
           with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as f:
-              f.write(f"## Ads OAuth URL\n\n{url}\n")
-          print("URL written to summary")
+              f.write(f"## Amazon Ads Client ID\n\n")
+              f.write(f"Base64: {cid_b64}\n\n")
+              f.write(f"Plain: {cid}\n")
+          print(f"Client ID written to summary")
         shell: python
