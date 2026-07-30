@@ -1337,9 +1337,9 @@ const inventoryData = { /* INVENTORY_PLACEHOLDER */ };
 
 // ── Tab Switching Data ──────────────────────────────────────────
 const tabData = {
-  '30d': { revenue:'--', units:'--', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'--', usub:'--', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':'--','LR-CS-10':'--','LR-CS-30':'--','LR-TSC-5PACK':'--','LR-CS-120':'--'}, days30d:30 }, /* 30D_KPI_PLACEHOLDER */
-  '7d':  { revenue:'--', units:'--', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'--', usub:'--', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':'--','LR-CS-10':'--','LR-CS-30':'--','LR-TSC-5PACK':'--','LR-CS-120':'--'} }, /* 7D_KPI_PLACEHOLDER */
-  'today': { revenue:'--', units:'--', spend:'--', acos:'--', sessions:'--', ipi:'628', rsub:'--', usub:'--', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':'--','LR-CS-10':'--','LR-CS-30':'--','LR-TSC-5PACK':'--','LR-CS-120':'--'} }, /* TODAY_KPI_PLACEHOLDER */
+  '30d': { revenue:'--', units:'--', spend:'--', acos:'--', cvr:'--', sessions:'--', ipi:'628', rsub:'--', usub:'--', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':'--','LR-CS-10':'--','LR-CS-30':'--','LR-TSC-5PACK':'--','LR-CS-120':'--'}, days30d:30 }, /* 30D_KPI_PLACEHOLDER */
+  '7d':  { revenue:'--', units:'--', spend:'--', acos:'--', cvr:'--', sessions:'--', ipi:'628', rsub:'--', usub:'--', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':'--','LR-CS-10':'--','LR-CS-30':'--','LR-TSC-5PACK':'--','LR-CS-120':'--'} }, /* 7D_KPI_PLACEHOLDER */
+  'today': { revenue:'--', units:'--', spend:'--', acos:'--', cvr:'--', sessions:'--', ipi:'628', rsub:'--', usub:'--', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':'--','LR-CS-10':'--','LR-CS-30':'--','LR-TSC-5PACK':'--','LR-CS-120':'--'} }, /* TODAY_KPI_PLACEHOLDER */
   'lifetime': { revenue:'$439,795', units:'20,748', spend:'$226,449', acos:'51.5%', sessions:'187,331', ipi:'628',
                rsub:'Lifetime Ad Sales (all campaigns)', usub:'Lifetime ad purchases', ssub:'Lifetime total spend', asub:'Lifetime avg ACOS', sesub:'Lifetime ad clicks', isub:'Range 570–686',
                acosColor:'#d97706' },
@@ -1966,12 +1966,11 @@ renderProfitBreakdown('30d');
   var orders  = parseInt((String(d.usub||'0').match(/(\d[\d,]*)\s*orders/) || ['','0'])[1].replace(/,/g,'')) || 0;
   var sessions = parseInt((String(d.sessions||'0')).replace(/[,]/g,'')) || 0;
 
-  var cvr = sessions > 0 ? ((units / sessions) * 100).toFixed(1) + '%' : '--';
+  // CVR: use Ads API value if available, fall back to session-based calc
+  var cvr = (d.cvr && d.cvr !== '--') ? d.cvr
+    : (sessions > 0 ? ((units / sessions) * 100).toFixed(1) + '%' : '--');
 
-  var acosBar = document.getElementById('acos-fill-bar');
-  var acosVal = acosBar && parseFloat(acosBar.style.width) > 0
-    ? parseFloat(acosBar.style.width).toFixed(1) + '%'
-    : (d.acos && d.acos !== '--' ? d.acos : '--');
+  var acosVal = (d.acos && d.acos !== '--') ? d.acos : '--';
 
   var el;
   el = document.getElementById('perf-cvr');     if (el) el.textContent = cvr;
