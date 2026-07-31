@@ -662,7 +662,7 @@ def main():
         kpi["cvr_30d"] = None
         kpi["sessions_30d"] = None
 
-        with open(save_path, "w") as f:
+    with open(save_path, "w") as f:
         json.dump(kpi, f, indent=2, default=str)
     print(f"\n💾 Saved → {save_path}")
     print("🎉 Pull complete!")
