@@ -1,0 +1,1 @@
+https://www.amazon.com/ap/oa?client_id=amzn1.application-oa2-client.d36a84cd93ac41e8b0f202157532b0a6&scope=advertising%3A%3Acampaign_management&response_type=code&redirect_uri=https%3A%2F%2Fwww.amazon.com&state=looready_ads
