@@ -192,6 +192,85 @@ def get_awd_inventory(token):
     return awd
 
 
+
+
+def get_cvr_30d(token):
+    """Get 30-day CVR and sessions from SP-API Sales & Traffic Report.
+    Returns (cvr_percent, total_sessions) or (None, None) on failure."""
+    import gzip as gz
+    today = datetime.date.today()
+    start = (today - datetime.timedelta(days=30)).isoformat() + "T00:00:00Z"
+    end = today.isoformat() + "T00:00:00Z"
+
+    # Create report
+    resp = requests.post(
+        ENDPOINT + "/reports/2021-06-30/reports",
+        headers={"x-amz-access-token": token, "content-type": "application/json"},
+        json={
+            "reportType": "GET_SALES_AND_TRAFFIC_REPORT",
+            "marketplaceIds": [MARKETPLACE_ID],
+            "dataStartTime": start,
+            "dataEndTime": end,
+            "reportOptions": {"dateGranularity": "DAY"},
+        }
+    )
+    if resp.status_code not in (200, 202):
+        print(f"⚠️ Traffic report create {resp.status_code}: {resp.text[:200]}")
+        return None, None
+
+    report_id = resp.json().get("reportId")
+    print(f"   📋 Traffic report ID: {report_id}")
+
+    # Poll for completion (max 5 minutes)
+    doc_id = None
+    for attempt in range(30):
+        time.sleep(10)
+        r = sp_request(token, "GET", f"/reports/2021-06-30/reports/{report_id}")
+        if r.status_code != 200:
+            continue
+        status_val = r.json().get("processingStatus")
+        if attempt % 3 == 0:
+            print(f"   ⏳ Report status: {status_val}")
+        if status_val == "DONE":
+            doc_id = r.json().get("reportDocumentId")
+            break
+        if status_val in ("FATAL", "CANCELLED"):
+            print(f"   ❌ Report {status_val}")
+            return None, None
+
+    if not doc_id:
+        print("   ❌ Traffic report timed out")
+        return None, None
+
+    # Get document URL
+    r = sp_request(token, "GET", f"/reports/2021-06-30/documents/{doc_id}")
+    if r.status_code != 200:
+        print(f"⚠️ Report doc {r.status_code}")
+        return None, None
+
+    doc_url = r.json().get("url")
+    compression = r.json().get("compressionAlgorithm", "")
+    raw = requests.get(doc_url).content
+    if compression == "GZIP":
+        raw = gz.decompress(raw)
+
+    data_rep = json.loads(raw.decode("utf-8"))
+
+    # Sum sessions and units across all days
+    total_sessions = 0
+    total_units = 0
+    for entry in data_rep.get("salesAndTrafficByDate", []):
+        total_sessions += entry.get("traffic", {}).get("sessions", 0) or 0
+        total_units += entry.get("sales", {}).get("unitsOrdered", 0) or 0
+
+    if total_sessions == 0:
+        print("   ⚠️ No sessions in traffic report")
+        return None, None
+
+    cvr = round((total_units / total_sessions) * 100, 2)
+    print(f"   ✅ CVR 30d: {cvr}% ({total_units} units / {total_sessions:,} sessions)")
+    return cvr, total_sessions
+
 def load_or_fetch_30d(token):
     """Fetch accurate 30d totals once per day and cache.
     Uses Orders API (summing OrderTotal.Amount) for revenue — matches Seller Central Account Activity.
@@ -572,7 +651,18 @@ def main():
         print(f"   ⚠️ Ads API error (non-fatal): {e}")
         kpi["ads_metrics"] = {}
         kpi["ads_debug"] = str(e)
-    with open(save_path, "w") as f:
+
+    print("📊 Pulling 30d CVR from Sales & Traffic report (no Ads API needed)...")
+    try:
+        cvr_30d, sessions_30d = get_cvr_30d(token)
+        kpi["cvr_30d"] = cvr_30d
+        kpi["sessions_30d"] = sessions_30d
+    except Exception as e:
+        print(f"   ⚠️ CVR pull failed: {e}")
+        kpi["cvr_30d"] = None
+        kpi["sessions_30d"] = None
+
+        with open(save_path, "w") as f:
         json.dump(kpi, f, indent=2, default=str)
     print(f"\n💾 Saved → {save_path}")
     print("🎉 Pull complete!")
