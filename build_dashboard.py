@@ -140,7 +140,7 @@ def update_html(data):
         " rsub:'Last 30 Days · SP-API live'" +
         ", usub:'" + str(orders_30d) + " orders . " + str(units_30d) + " units'" +
         ", ssub:'Not yet available', asub:'Not yet available'" +
-        ", sesub:'" + cvr_val + " CVR · " + sessions_val + " sessions', isub:'Range 570-686'," +
+        ", sesub:'" + (cvr_val + " CVR · " + sessions_val + " sessions" if cvr_30d_raw is not None else "Needs report access") + "', isub:'Range 570-686'," +
         " acosColor:'" + acos_color + "', skuUnits:" + sku_units_js_30d +
         ", days30d:" + str(days_30d) +
         " }, /* 30D_KPI_PLACEHOLDER */"
