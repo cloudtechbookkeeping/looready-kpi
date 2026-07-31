@@ -215,8 +215,9 @@ def get_cvr_30d(token):
         }
     )
     if resp.status_code not in (200, 202):
+        _err = f"create_{resp.status_code}:{resp.text[:400]}"
         print(f"⚠️ Traffic report create {resp.status_code}: {resp.text[:200]}")
-        return None, None
+        return None, None, _err
 
     report_id = resp.json().get("reportId")
     print(f"   📋 Traffic report ID: {report_id}")
@@ -236,17 +237,17 @@ def get_cvr_30d(token):
             break
         if status_val in ("FATAL", "CANCELLED"):
             print(f"   ❌ Report {status_val}")
-            return None, None
+            return None, None, f"report_{status_val}"
 
     if not doc_id:
         print("   ❌ Traffic report timed out")
-        return None, None
+        return None, None, "report_timeout"
 
     # Get document URL
     r = sp_request(token, "GET", f"/reports/2021-06-30/documents/{doc_id}")
     if r.status_code != 200:
         print(f"⚠️ Report doc {r.status_code}")
-        return None, None
+        return None, None, f"doc_{r.status_code}"
 
     doc_url = r.json().get("url")
     compression = r.json().get("compressionAlgorithm", "")
@@ -265,11 +266,11 @@ def get_cvr_30d(token):
 
     if total_sessions == 0:
         print("   ⚠️ No sessions in traffic report")
-        return None, None
+        return None, None, "no_sessions"
 
     cvr = round((total_units / total_sessions) * 100, 2)
     print(f"   ✅ CVR 30d: {cvr}% ({total_units} units / {total_sessions:,} sessions)")
-    return cvr, total_sessions
+    return cvr, total_sessions, None
 
 def load_or_fetch_30d(token):
     """Fetch accurate 30d totals once per day and cache.
@@ -654,13 +655,15 @@ def main():
 
     print("📊 Pulling 30d CVR from Sales & Traffic report (no Ads API needed)...")
     try:
-        cvr_30d, sessions_30d = get_cvr_30d(token)
+        cvr_30d, sessions_30d, cvr_debug = get_cvr_30d(token)
         kpi["cvr_30d"] = cvr_30d
         kpi["sessions_30d"] = sessions_30d
+        kpi["cvr_debug"] = cvr_debug
     except Exception as e:
         print(f"   ⚠️ CVR pull failed: {e}")
         kpi["cvr_30d"] = None
         kpi["sessions_30d"] = None
+        kpi["cvr_debug"] = str(e)
 
     with open(save_path, "w") as f:
         json.dump(kpi, f, indent=2, default=str)
