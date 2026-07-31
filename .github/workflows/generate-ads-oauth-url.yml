@@ -3,21 +3,32 @@ name: Generate Amazon Ads OAuth URL
 on:
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   generate-url:
     runs-on: ubuntu-latest
     steps:
-      - name: Output CLIENT_ID to summary
+      - uses: actions/checkout@v4
+
+      - name: Write OAuth URL to file and commit
         env:
           AMAZON_CLIENT_ID: ${{ secrets.AMAZON_CLIENT_ID }}
         run: |
-          import os, base64
+          python3 -c "
+          import os
           cid = os.environ['AMAZON_CLIENT_ID']
-          # Write just the client_id (base64 so it's clearly an ID, not a secret)
-          cid_b64 = base64.b64encode(cid.encode()).decode()
-          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as f:
-              f.write(f"## Amazon Ads Client ID\n\n")
-              f.write(f"Base64: {cid_b64}\n\n")
-              f.write(f"Plain: {cid}\n")
-          print(f"Client ID written to summary")
-        shell: python
+          url = 'https://www.amazon.com/ap/oa?client_id=' + cid + '&scope=advertising%3A%3Acampaign_management&response_type=code&redirect_uri=https%3A%2F%2Fwww.amazon.com&state=looready_ads'
+          with open('kpi_data/ads_oauth_url.txt', 'w') as f:
+              f.write(url)
+          print('Written')
+          "
+
+      - name: Commit OAuth URL file
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add kpi_data/ads_oauth_url.txt
+          git commit -m "temp: write Ads OAuth URL for authorization"
+          git push
