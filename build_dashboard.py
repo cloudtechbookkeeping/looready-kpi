@@ -52,7 +52,10 @@ def update_html(data):
     orders_30d   = data.get('orders_30d', 0)
     units_30d    = data.get('units_30d', 0)   # accurate total from sales metrics API
     ads       = data.get('ads_metrics', {})
-    cvr_val   = (str(ads['cvr_30d']) + '%') if 'cvr_30d' in ads else '--'
+    cvr_30d_raw = data.get('cvr_30d') or ads.get('cvr_30d')
+    cvr_val   = (str(cvr_30d_raw) + '%') if cvr_30d_raw is not None else '--'
+    sessions_30d_raw = data.get('sessions_30d')
+    sessions_val = f"{sessions_30d_raw:,}" if sessions_30d_raw else '--'
     acos_val  = (str(ads['acos_30d']) + '%') if 'acos_30d' in ads else '--'
     acos_color = '#ef4444' if ads.get('acos_30d', 0) > 30 else '#10b981'
     days_30d     = data.get('days_30d', 0)
@@ -133,11 +136,11 @@ def update_html(data):
     thirtyday_obj = (
         "'30d': { revenue:'" + revenue_30d +
         "', units:'" + str(units_30d) +
-        "', spend:'--', acos:'" + acos_val + "', cvr:'" + cvr_val + "', sessions:'--', ipi:'628'," +
+        "', spend:'--', acos:'" + acos_val + "', cvr:'" + cvr_val + "', sessions:'" + sessions_val + "', ipi:'628'," +
         " rsub:'Last 30 Days · SP-API live'" +
         ", usub:'" + str(orders_30d) + " orders . " + str(units_30d) + " units'" +
         ", ssub:'Not yet available', asub:'Not yet available'" +
-        ", sesub:'Not yet available', isub:'Range 570-686'," +
+        ", sesub:'" + cvr_val + " CVR · " + sessions_val + " sessions', isub:'Range 570-686'," +
         " acosColor:'" + acos_color + "', skuUnits:" + sku_units_js_30d +
         ", days30d:" + str(days_30d) +
         " }, /* 30D_KPI_PLACEHOLDER */"
