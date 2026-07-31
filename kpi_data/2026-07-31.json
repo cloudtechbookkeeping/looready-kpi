@@ -1,17 +1,17 @@
 {
   "date": "2026-07-31",
-  "pulled_at": "2026-07-31T04:26:04.239620",
-  "orders_today": 33,
-  "revenue_today": 649.38,
+  "pulled_at": "2026-07-31T07:53:02.363547",
+  "orders_today": 43,
+  "revenue_today": 872.97,
   "units_ordered": 92,
   "finance": {
     "total_sales": 1424.19,
     "total_fees": 559.43
   },
   "sku_units": {
-    "LR-TSC-30PACK": 16,
-    "LR-CS-30": 3,
-    "LR-CS-10": 12,
+    "LR-TSC-30PACK": 23,
+    "LR-CS-30": 4,
+    "LR-CS-10": 14,
     "LR-TSC-5PACK": 2
   },
   "fba_inventory": {
@@ -23,9 +23,9 @@
       "unfulfillable": 0
     },
     "3Z-3J64-NT0U": {
-      "fulfillable": 1006,
+      "fulfillable": 1010,
       "inbound": 264,
-      "reserved": 265,
+      "reserved": 252,
       "researching": 2,
       "unfulfillable": 3
     },
@@ -44,9 +44,9 @@
       "unfulfillable": 0
     },
     "LR-CS-10": {
-      "fulfillable": 1191,
+      "fulfillable": 1189,
       "inbound": 0,
-      "reserved": 45,
+      "reserved": 43,
       "researching": 10,
       "unfulfillable": 3
     },
@@ -58,23 +58,23 @@
       "unfulfillable": 0
     },
     "LR-CS-30": {
-      "fulfillable": 724,
+      "fulfillable": 725,
       "inbound": 2,
-      "reserved": 18,
+      "reserved": 16,
       "researching": 0,
       "unfulfillable": 4
     },
     "LR-TSC-30PACK": {
-      "fulfillable": 1006,
+      "fulfillable": 1010,
       "inbound": 264,
-      "reserved": 265,
+      "reserved": 252,
       "researching": 2,
       "unfulfillable": 3
     },
     "LR-TSC-5PACK": {
-      "fulfillable": 98,
+      "fulfillable": 99,
       "inbound": 0,
-      "reserved": 163,
+      "reserved": 162,
       "researching": 3,
       "unfulfillable": 1
     },
@@ -167,5 +167,5 @@
   "units_30d": 2253,
   "days_30d": 29,
   "ads_metrics": {},
-  "ads_debug": "profiles 401: {\"code\":\"UNAUTHORIZED\",\"details\":\"HTTP 401 Unauthorized\",\"requestId\":\"9JT5Z21B66QPS6T74VA0\"}"
+  "ads_debug": "profiles 401: {\"code\":\"UNAUTHORIZED\",\"details\":\"HTTP 401 Unauthorized\",\"requestId\":\"CG988HRGRMANS2JGP1V4\"}"
 }
