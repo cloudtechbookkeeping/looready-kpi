@@ -56,8 +56,9 @@ def update_html(data):
     cvr_val   = (str(cvr_30d_raw) + '%') if cvr_30d_raw is not None else '--'
     sessions_30d_raw = data.get('sessions_30d')
     sessions_val = f"{sessions_30d_raw:,}" if sessions_30d_raw else '--'
-    acos_val  = (str(ads['acos_30d']) + '%') if 'acos_30d' in ads else '--'
-    acos_color = '#ef4444' if ads.get('acos_30d', 0) > 30 else '#10b981'
+    acos_30d_raw = data.get('acos_30d') or ads.get('acos_30d')
+    acos_val  = (str(acos_30d_raw) + '%') if acos_30d_raw is not None else '--'
+    acos_color = '#ef4444' if (acos_30d_raw or 0) > 30 else '#10b981'
     days_30d     = data.get('days_30d', 0)
 
     html = HTML_FILE.read_text(encoding="utf-8")
