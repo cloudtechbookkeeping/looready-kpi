@@ -1,18 +1,18 @@
 {
   "date": "2026-08-01",
-  "pulled_at": "2026-08-01T19:15:53.013588",
-  "orders_today": 59,
-  "revenue_today": 1176.85,
+  "pulled_at": "2026-08-01T20:59:15.912036",
+  "orders_today": 63,
+  "revenue_today": 1287.84,
   "units_ordered": 72,
   "finance": {
     "total_sales": 951.36,
     "total_fees": 387.27
   },
   "sku_units": {
-    "LR-TSC-30PACK": 28,
-    "LR-CS-30": 8,
+    "LR-TSC-30PACK": 31,
+    "LR-CS-30": 9,
     "LR-TSC-5PACK": 4,
-    "LR-CS-10": 23
+    "LR-CS-10": 24
   },
   "fba_inventory": {
     "0N-C5DX-S7RX": {
@@ -23,9 +23,9 @@
       "unfulfillable": 0
     },
     "3Z-3J64-NT0U": {
-      "fulfillable": 982,
+      "fulfillable": 978,
       "inbound": 258,
-      "reserved": 299,
+      "reserved": 300,
       "researching": 3,
       "unfulfillable": 3
     },
@@ -44,9 +44,9 @@
       "unfulfillable": 0
     },
     "LR-CS-10": {
-      "fulfillable": 1161,
+      "fulfillable": 1157,
       "inbound": 0,
-      "reserved": 47,
+      "reserved": 50,
       "researching": 9,
       "unfulfillable": 4
     },
@@ -60,14 +60,14 @@
     "LR-CS-30": {
       "fulfillable": 711,
       "inbound": 2,
-      "reserved": 18,
+      "reserved": 20,
       "researching": 0,
       "unfulfillable": 4
     },
     "LR-TSC-30PACK": {
-      "fulfillable": 982,
+      "fulfillable": 978,
       "inbound": 258,
-      "reserved": 299,
+      "reserved": 300,
       "researching": 3,
       "unfulfillable": 3
     },
@@ -167,7 +167,7 @@
   "units_30d": 2253,
   "days_30d": 29,
   "ads_metrics": {},
-  "ads_debug": "profiles 401: {\"code\":\"UNAUTHORIZED\",\"details\":\"HTTP 401 Unauthorized\",\"requestId\":\"0RV63VMTT3NCNX78HKMN\"}",
+  "ads_debug": "profiles 401: {\"code\":\"UNAUTHORIZED\",\"details\":\"HTTP 401 Unauthorized\",\"requestId\":\"855DZX7ZV61NP5YGYQ65\"}",
   "cvr_30d": null,
   "sessions_30d": null,
   "cvr_debug": "create_403:{\n  \"errors\": [\n    {\n      \"code\": \"Unauthorized\",\n      \"message\": \"Access to the resource is forbidden\",\n      \"details\": \"\"\n    }\n  ]\n}",
