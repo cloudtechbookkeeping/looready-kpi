@@ -574,6 +574,50 @@ def get_ads_cvr(ads_token, profile_id):
     with open(ads_cache, "w") as f:
         json.dump(result, f)
     return result
+def get_ads_spend_30d(token):
+    """Get 30-day ad spend from Finance API ProductAdsPaymentEventList."""
+    today = datetime.date.today().isoformat()
+    cache_path = DATA_DIR / f"ads_spend_{today}.json"
+    if cache_path.exists():
+        print("   ⚡ Ad spend cache hit")
+        with open(cache_path) as f:
+            cached = json.load(f)
+        return cached.get("ads_spend_30d")
+    end   = datetime.datetime.utcnow()
+    start = end - datetime.timedelta(days=30)
+    total_spend = 0.0
+    next_tok = None
+    page = 0
+    while True:
+        params = {"PostedAfter": start.strftime("%Y-%m-%dT00:00:00Z"),
+                  "PostedBefore": end.strftime("%Y-%m-%dT00:00:00Z")}
+        if next_tok:
+            params = {"NextToken": next_tok}
+        r = sp_request(token, "GET", "/finances/v0/financialEvents", params)
+        if r.status_code != 200:
+            print(f"   ⚠️ Finance page {page} {r.status_code}: {r.text[:200]}")
+            break
+        payload = r.json().get("payload", {})
+        events  = payload.get("FinancialEvents", {})
+        ads_evts = events.get("ProductAdsPaymentEventList", [])
+        page += 1
+        page_spend = 0.0
+        for evt in ads_evts:
+            if evt.get("transactionType") == "charge":
+                amt = float((evt.get("transactionValue") or {}).get("CurrencyAmount", 0))
+                page_spend += abs(amt)
+        total_spend += page_spend
+        if page_spend or ads_evts:
+            print(f"   📊 Finance page {page}: {len(ads_evts)} ad events")
+        next_tok = payload.get("NextToken")
+        if not next_tok:
+            break
+        time.sleep(1)
+    print(f"   ✅ 30d ad spend: {total_spend:,.2f}")
+    with open(cache_path, "w") as f:
+        json.dump({"ads_spend_30d": round(total_spend, 2)}, f)
+    return round(total_spend, 2)
+
 def main():
     today     = datetime.date.today().isoformat()
     save_path = DATA_DIR / f"{today}.json"
@@ -664,6 +708,21 @@ def main():
         kpi["cvr_30d"] = None
         kpi["sessions_30d"] = None
         kpi["cvr_debug"] = str(e)
+    print("\ud83d\udce3 Pulling 30d ad spend from Finance API...")
+    try:
+        ads_spend = get_ads_spend_30d(token)
+        revenue_30d_val = kpi.get("revenue_30d") or 0
+        if ads_spend and revenue_30d_val > 0:
+            acos_30d = round((ads_spend / revenue_30d_val) * 100, 2)
+        else:
+            acos_30d = None
+        kpi["ads_spend_30d"] = ads_spend
+        kpi["acos_30d"] = acos_30d
+        print(f"   \u2705 ACOS 30d: {acos_30d}% (spend={ads_spend})")
+    except Exception as e:
+        print(f"   \u26a0\ufe0f ACOS pull failed: {e}")
+        kpi["ads_spend_30d"] = None
+        kpi["acos_30d"] = None
 
     with open(save_path, "w") as f:
         json.dump(kpi, f, indent=2, default=str)
