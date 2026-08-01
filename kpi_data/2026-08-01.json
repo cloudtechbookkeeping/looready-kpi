@@ -1,6 +1,6 @@
 {
   "date": "2026-08-01",
-  "pulled_at": "2026-08-01T11:20:31.869728",
+  "pulled_at": "2026-08-01T13:37:41.288629",
   "orders_today": 47,
   "revenue_today": 917.13,
   "units_ordered": 72,
@@ -23,9 +23,9 @@
       "unfulfillable": 0
     },
     "3Z-3J64-NT0U": {
-      "fulfillable": 987,
+      "fulfillable": 986,
       "inbound": 288,
-      "reserved": 274,
+      "reserved": 273,
       "researching": 3,
       "unfulfillable": 3
     },
@@ -44,9 +44,9 @@
       "unfulfillable": 0
     },
     "LR-CS-10": {
-      "fulfillable": 1169,
+      "fulfillable": 1167,
       "inbound": 0,
-      "reserved": 42,
+      "reserved": 44,
       "researching": 9,
       "unfulfillable": 4
     },
@@ -58,23 +58,23 @@
       "unfulfillable": 0
     },
     "LR-CS-30": {
-      "fulfillable": 714,
+      "fulfillable": 713,
       "inbound": 2,
-      "reserved": 17,
+      "reserved": 18,
       "researching": 0,
       "unfulfillable": 4
     },
     "LR-TSC-30PACK": {
-      "fulfillable": 987,
+      "fulfillable": 986,
       "inbound": 288,
-      "reserved": 274,
+      "reserved": 273,
       "researching": 3,
       "unfulfillable": 3
     },
     "LR-TSC-5PACK": {
-      "fulfillable": 247,
+      "fulfillable": 246,
       "inbound": 0,
-      "reserved": 11,
+      "reserved": 12,
       "researching": 3,
       "unfulfillable": 1
     },
@@ -138,7 +138,7 @@
       "outbound": 0
     },
     "LR-TSC-30PACK": {
-      "onhand": 650,
+      "onhand": 950,
       "inbound": 1825,
       "outbound": 0
     },
@@ -167,7 +167,7 @@
   "units_30d": 2253,
   "days_30d": 29,
   "ads_metrics": {},
-  "ads_debug": "profiles 401: {\"code\":\"UNAUTHORIZED\",\"details\":\"HTTP 401 Unauthorized\",\"requestId\":\"XV8V0BYGAE76BTG3KCJB\"}",
+  "ads_debug": "profiles 401: {\"code\":\"UNAUTHORIZED\",\"details\":\"HTTP 401 Unauthorized\",\"requestId\":\"RWJREVVP1B8Z46487X0W\"}",
   "cvr_30d": null,
   "sessions_30d": null,
   "cvr_debug": "create_403:{\n  \"errors\": [\n    {\n      \"code\": \"Unauthorized\",\n      \"message\": \"Access to the resource is forbidden\",\n      \"details\": \"\"\n    }\n  ]\n}",
