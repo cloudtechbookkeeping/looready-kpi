@@ -1,18 +1,18 @@
 {
   "date": "2026-08-01",
-  "pulled_at": "2026-08-01T09:09:23.501944",
-  "orders_today": 45,
-  "revenue_today": 883.42,
+  "pulled_at": "2026-08-01T10:38:26.877516",
+  "orders_today": 47,
+  "revenue_today": 917.13,
   "units_ordered": 72,
   "finance": {
     "total_sales": 951.36,
     "total_fees": 387.27
   },
   "sku_units": {
-    "LR-TSC-30PACK": 21,
+    "LR-TSC-30PACK": 22,
     "LR-CS-30": 6,
     "LR-TSC-5PACK": 2,
-    "LR-CS-10": 18
+    "LR-CS-10": 19
   },
   "fba_inventory": {
     "0N-C5DX-S7RX": {
@@ -23,9 +23,9 @@
       "unfulfillable": 0
     },
     "3Z-3J64-NT0U": {
-      "fulfillable": 989,
+      "fulfillable": 987,
       "inbound": 288,
-      "reserved": 273,
+      "reserved": 274,
       "researching": 3,
       "unfulfillable": 3
     },
@@ -46,7 +46,7 @@
     "LR-CS-10": {
       "fulfillable": 1171,
       "inbound": 0,
-      "reserved": 41,
+      "reserved": 40,
       "researching": 9,
       "unfulfillable": 4
     },
@@ -65,16 +65,16 @@
       "unfulfillable": 4
     },
     "LR-TSC-30PACK": {
-      "fulfillable": 989,
+      "fulfillable": 987,
       "inbound": 288,
-      "reserved": 273,
+      "reserved": 274,
       "researching": 3,
       "unfulfillable": 3
     },
     "LR-TSC-5PACK": {
       "fulfillable": 247,
       "inbound": 0,
-      "reserved": 12,
+      "reserved": 11,
       "researching": 3,
       "unfulfillable": 1
     },
@@ -167,8 +167,10 @@
   "units_30d": 2253,
   "days_30d": 29,
   "ads_metrics": {},
-  "ads_debug": "profiles 401: {\"code\":\"UNAUTHORIZED\",\"details\":\"HTTP 401 Unauthorized\",\"requestId\":\"T119FF6Q15VT8E4CXBEV\"}",
+  "ads_debug": "profiles 401: {\"code\":\"UNAUTHORIZED\",\"details\":\"HTTP 401 Unauthorized\",\"requestId\":\"SGG5HCGC5TF2C0W79GWH\"}",
   "cvr_30d": null,
   "sessions_30d": null,
-  "cvr_debug": "create_403:{\n  \"errors\": [\n    {\n      \"code\": \"Unauthorized\",\n      \"message\": \"Access to the resource is forbidden\",\n      \"details\": \"\"\n    }\n  ]\n}"
+  "cvr_debug": "create_403:{\n  \"errors\": [\n    {\n      \"code\": \"Unauthorized\",\n      \"message\": \"Access to the resource is forbidden\",\n      \"details\": \"\"\n    }\n  ]\n}",
+  "ads_spend_30d": 0.0,
+  "acos_30d": null
 }
