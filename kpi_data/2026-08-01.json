@@ -1,17 +1,17 @@
 {
   "date": "2026-08-01",
-  "pulled_at": "2026-08-01T13:37:41.288629",
-  "orders_today": 47,
-  "revenue_today": 917.13,
+  "pulled_at": "2026-08-01T15:04:13.156162",
+  "orders_today": 50,
+  "revenue_today": 977.6,
   "units_ordered": 72,
   "finance": {
     "total_sales": 951.36,
     "total_fees": 387.27
   },
   "sku_units": {
-    "LR-TSC-30PACK": 22,
+    "LR-TSC-30PACK": 24,
     "LR-CS-30": 6,
-    "LR-TSC-5PACK": 2,
+    "LR-TSC-5PACK": 3,
     "LR-CS-10": 19
   },
   "fba_inventory": {
@@ -23,9 +23,9 @@
       "unfulfillable": 0
     },
     "3Z-3J64-NT0U": {
-      "fulfillable": 986,
-      "inbound": 288,
-      "reserved": 273,
+      "fulfillable": 987,
+      "inbound": 258,
+      "reserved": 300,
       "researching": 3,
       "unfulfillable": 3
     },
@@ -44,9 +44,9 @@
       "unfulfillable": 0
     },
     "LR-CS-10": {
-      "fulfillable": 1167,
+      "fulfillable": 1165,
       "inbound": 0,
-      "reserved": 44,
+      "reserved": 47,
       "researching": 9,
       "unfulfillable": 4
     },
@@ -65,14 +65,14 @@
       "unfulfillable": 4
     },
     "LR-TSC-30PACK": {
-      "fulfillable": 986,
-      "inbound": 288,
-      "reserved": 273,
+      "fulfillable": 987,
+      "inbound": 258,
+      "reserved": 300,
       "researching": 3,
       "unfulfillable": 3
     },
     "LR-TSC-5PACK": {
-      "fulfillable": 246,
+      "fulfillable": 245,
       "inbound": 0,
       "reserved": 12,
       "researching": 3,
@@ -167,7 +167,7 @@
   "units_30d": 2253,
   "days_30d": 29,
   "ads_metrics": {},
-  "ads_debug": "profiles 401: {\"code\":\"UNAUTHORIZED\",\"details\":\"HTTP 401 Unauthorized\",\"requestId\":\"RWJREVVP1B8Z46487X0W\"}",
+  "ads_debug": "profiles 401: {\"code\":\"UNAUTHORIZED\",\"details\":\"HTTP 401 Unauthorized\",\"requestId\":\"QR4HVG0HK4XCSR1P3K7X\"}",
   "cvr_30d": null,
   "sessions_30d": null,
   "cvr_debug": "create_403:{\n  \"errors\": [\n    {\n      \"code\": \"Unauthorized\",\n      \"message\": \"Access to the resource is forbidden\",\n      \"details\": \"\"\n    }\n  ]\n}",
