@@ -708,7 +708,7 @@ def main():
         kpi["cvr_30d"] = None
         kpi["sessions_30d"] = None
         kpi["cvr_debug"] = str(e)
-    print("\ud83d\udce3 Pulling 30d ad spend from Finance API...")
+    print("📣 Pulling 30d ad spend from Finance API...")
     try:
         ads_spend = get_ads_spend_30d(token)
         revenue_30d_val = kpi.get("revenue_30d") or 0
