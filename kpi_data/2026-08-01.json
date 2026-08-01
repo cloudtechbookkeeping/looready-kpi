@@ -1,6 +1,6 @@
 {
   "date": "2026-08-01",
-  "pulled_at": "2026-08-01T11:07:24.083225",
+  "pulled_at": "2026-08-01T11:20:31.869728",
   "orders_today": 47,
   "revenue_today": 917.13,
   "units_ordered": 72,
@@ -44,9 +44,9 @@
       "unfulfillable": 0
     },
     "LR-CS-10": {
-      "fulfillable": 1171,
+      "fulfillable": 1169,
       "inbound": 0,
-      "reserved": 40,
+      "reserved": 42,
       "researching": 9,
       "unfulfillable": 4
     },
@@ -167,7 +167,7 @@
   "units_30d": 2253,
   "days_30d": 29,
   "ads_metrics": {},
-  "ads_debug": "profiles 401: {\"code\":\"UNAUTHORIZED\",\"details\":\"HTTP 401 Unauthorized\",\"requestId\":\"RZS6PPCWX3GWEATSAKKK\"}",
+  "ads_debug": "profiles 401: {\"code\":\"UNAUTHORIZED\",\"details\":\"HTTP 401 Unauthorized\",\"requestId\":\"XV8V0BYGAE76BTG3KCJB\"}",
   "cvr_30d": null,
   "sessions_30d": null,
   "cvr_debug": "create_403:{\n  \"errors\": [\n    {\n      \"code\": \"Unauthorized\",\n      \"message\": \"Access to the resource is forbidden\",\n      \"details\": \"\"\n    }\n  ]\n}",
