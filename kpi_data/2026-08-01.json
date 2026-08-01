@@ -1,18 +1,18 @@
 {
   "date": "2026-08-01",
-  "pulled_at": "2026-08-01T15:04:13.156162",
-  "orders_today": 50,
-  "revenue_today": 977.6,
+  "pulled_at": "2026-08-01T17:04:53.307484",
+  "orders_today": 56,
+  "revenue_today": 1132.07,
   "units_ordered": 72,
   "finance": {
     "total_sales": 951.36,
     "total_fees": 387.27
   },
   "sku_units": {
-    "LR-TSC-30PACK": 24,
-    "LR-CS-30": 6,
+    "LR-TSC-30PACK": 27,
+    "LR-CS-30": 8,
     "LR-TSC-5PACK": 3,
-    "LR-CS-10": 19
+    "LR-CS-10": 22
   },
   "fba_inventory": {
     "0N-C5DX-S7RX": {
@@ -23,9 +23,9 @@
       "unfulfillable": 0
     },
     "3Z-3J64-NT0U": {
-      "fulfillable": 987,
+      "fulfillable": 985,
       "inbound": 258,
-      "reserved": 300,
+      "reserved": 298,
       "researching": 3,
       "unfulfillable": 3
     },
@@ -44,9 +44,9 @@
       "unfulfillable": 0
     },
     "LR-CS-10": {
-      "fulfillable": 1165,
+      "fulfillable": 1161,
       "inbound": 0,
-      "reserved": 47,
+      "reserved": 48,
       "researching": 9,
       "unfulfillable": 4
     },
@@ -58,23 +58,23 @@
       "unfulfillable": 0
     },
     "LR-CS-30": {
-      "fulfillable": 713,
+      "fulfillable": 712,
       "inbound": 2,
-      "reserved": 18,
+      "reserved": 17,
       "researching": 0,
       "unfulfillable": 4
     },
     "LR-TSC-30PACK": {
-      "fulfillable": 987,
+      "fulfillable": 985,
       "inbound": 258,
-      "reserved": 300,
+      "reserved": 298,
       "researching": 3,
       "unfulfillable": 3
     },
     "LR-TSC-5PACK": {
-      "fulfillable": 245,
+      "fulfillable": 243,
       "inbound": 0,
-      "reserved": 12,
+      "reserved": 14,
       "researching": 3,
       "unfulfillable": 1
     },
@@ -138,7 +138,7 @@
       "outbound": 0
     },
     "LR-TSC-30PACK": {
-      "onhand": 950,
+      "onhand": 590,
       "inbound": 1825,
       "outbound": 0
     },
@@ -167,7 +167,7 @@
   "units_30d": 2253,
   "days_30d": 29,
   "ads_metrics": {},
-  "ads_debug": "profiles 401: {\"code\":\"UNAUTHORIZED\",\"details\":\"HTTP 401 Unauthorized\",\"requestId\":\"QR4HVG0HK4XCSR1P3K7X\"}",
+  "ads_debug": "profiles 401: {\"code\":\"UNAUTHORIZED\",\"details\":\"HTTP 401 Unauthorized\",\"requestId\":\"T63DQH4HB3Y0X2SXT7TH\"}",
   "cvr_30d": null,
   "sessions_30d": null,
   "cvr_debug": "create_403:{\n  \"errors\": [\n    {\n      \"code\": \"Unauthorized\",\n      \"message\": \"Access to the resource is forbidden\",\n      \"details\": \"\"\n    }\n  ]\n}",
