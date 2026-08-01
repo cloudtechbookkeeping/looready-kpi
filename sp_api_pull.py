@@ -575,9 +575,9 @@ def get_ads_cvr(ads_token, profile_id):
         json.dump(result, f)
     return result
 def get_ads_spend_30d(token):
-    """Get 30-day ad spend from Finance API ProductAdsPaymentEventList."""
+    """Get 30-day ad spend from Finance API ProductAdsPaymentEventList + ServiceFeeEventList."""
     today = datetime.date.today().isoformat()
-    cache_path = DATA_DIR / f"ads_spend_{today}.json"
+    cache_path = DATA_DIR / f"ads_spend_v2_{today}.json"
     if cache_path.exists():
         print("   ⚡ Ad spend cache hit")
         with open(cache_path) as f:
@@ -588,6 +588,7 @@ def get_ads_spend_30d(token):
     total_spend = 0.0
     next_tok = None
     page = 0
+    debug_sample = []
     while True:
         params = {"PostedAfter": start.strftime("%Y-%m-%dT00:00:00Z"),
                   "PostedBefore": end.strftime("%Y-%m-%dT00:00:00Z")}
@@ -599,23 +600,37 @@ def get_ads_spend_30d(token):
             break
         payload = r.json().get("payload", {})
         events  = payload.get("FinancialEvents", {})
+        if page == 0:
+            evt_keys = [k for k, v in events.items() if v]
+            print(f"   📋 Finance event types with data: {evt_keys}")
         ads_evts = events.get("ProductAdsPaymentEventList", [])
+        svc_evts = events.get("ServiceFeeEventList", [])
         page += 1
         page_spend = 0.0
         for evt in ads_evts:
-            if evt.get("transactionType") == "charge":
-                amt = float((evt.get("transactionValue") or {}).get("CurrencyAmount", 0))
+            tx_type = (evt.get("transactionType") or "").lower()
+            amt = float((evt.get("transactionValue") or {}).get("CurrencyAmount", 0))
+            if tx_type == "charge":
                 page_spend += abs(amt)
+            if page == 1 and len(debug_sample) < 3:
+                debug_sample.append({"type": evt.get("transactionType"), "amt": amt})
+        for evt in svc_evts:
+            desc = (evt.get("feeDescription") or evt.get("feeType") or "").lower()
+            if "advertis" in desc or "sponsored" in desc:
+                fee_amt = float((evt.get("feeAmount") or {}).get("CurrencyAmount", 0))
+                page_spend += abs(fee_amt)
+                if page == 1 and len(debug_sample) < 5:
+                    debug_sample.append({"source": "ServiceFee", "desc": desc, "amt": fee_amt})
         total_spend += page_spend
-        if page_spend or ads_evts:
-            print(f"   📊 Finance page {page}: {len(ads_evts)} ad events")
+        if ads_evts or page_spend:
+            print(f"   📊 Finance page {page}: {len(ads_evts)} ad events, spend={page_spend:.2f}")
         next_tok = payload.get("NextToken")
         if not next_tok:
             break
         time.sleep(1)
     print(f"   ✅ 30d ad spend: {total_spend:,.2f}")
     with open(cache_path, "w") as f:
-        json.dump({"ads_spend_30d": round(total_spend, 2)}, f)
+        json.dump({"ads_spend_30d": round(total_spend, 2), "debug_sample": debug_sample}, f)
     return round(total_spend, 2)
 
 def main():
