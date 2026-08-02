@@ -1,18 +1,18 @@
 {
   "date": "2026-08-02",
-  "pulled_at": "2026-08-02T07:33:34.519366",
-  "orders_today": 41,
-  "revenue_today": 938.43,
+  "pulled_at": "2026-08-02T10:01:10.804233",
+  "orders_today": 46,
+  "revenue_today": 1029.82,
   "units_ordered": 76,
   "finance": {
     "total_sales": 1382.27,
     "total_fees": 528.36
   },
   "sku_units": {
-    "LR-TSC-30PACK": 26,
-    "LR-CS-30": 5,
-    "LR-CS-10": 11,
-    "LR-TSC-5PACK": 3
+    "LR-TSC-30PACK": 28,
+    "LR-CS-30": 6,
+    "LR-CS-10": 12,
+    "LR-TSC-5PACK": 4
   },
   "fba_inventory": {
     "0N-C5DX-S7RX": {
@@ -24,8 +24,8 @@
     },
     "3Z-3J64-NT0U": {
       "fulfillable": 958,
-      "inbound": 257,
-      "reserved": 295,
+      "inbound": 256,
+      "reserved": 292,
       "researching": 3,
       "unfulfillable": 3
     },
@@ -44,9 +44,9 @@
       "unfulfillable": 0
     },
     "LR-CS-10": {
-      "fulfillable": 1153,
+      "fulfillable": 1154,
       "inbound": 0,
-      "reserved": 41,
+      "reserved": 38,
       "researching": 9,
       "unfulfillable": 4
     },
@@ -58,7 +58,7 @@
       "unfulfillable": 0
     },
     "LR-CS-30": {
-      "fulfillable": 710,
+      "fulfillable": 709,
       "inbound": 2,
       "reserved": 18,
       "researching": 0,
@@ -66,15 +66,15 @@
     },
     "LR-TSC-30PACK": {
       "fulfillable": 958,
-      "inbound": 257,
-      "reserved": 295,
+      "inbound": 256,
+      "reserved": 292,
       "researching": 3,
       "unfulfillable": 3
     },
     "LR-TSC-5PACK": {
-      "fulfillable": 242,
+      "fulfillable": 240,
       "inbound": 0,
-      "reserved": 12,
+      "reserved": 13,
       "researching": 3,
       "unfulfillable": 1
     },
@@ -167,7 +167,7 @@
   "units_30d": 2235,
   "days_30d": 29,
   "ads_metrics": {},
-  "ads_debug": "profiles 401: {\"code\":\"UNAUTHORIZED\",\"details\":\"HTTP 401 Unauthorized\",\"requestId\":\"KC58P7NH25PCZP1W5PJW\"}",
+  "ads_debug": "profiles 401: {\"code\":\"UNAUTHORIZED\",\"details\":\"HTTP 401 Unauthorized\",\"requestId\":\"HAYPXMEHV7M4M8QV2DCP\"}",
   "cvr_30d": null,
   "sessions_30d": null,
   "cvr_debug": "create_403:{\n  \"errors\": [\n    {\n      \"code\": \"Unauthorized\",\n      \"message\": \"Access to the resource is forbidden\",\n      \"details\": \"\"\n    }\n  ]\n}",
