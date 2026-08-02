@@ -1,17 +1,17 @@
 {
   "date": "2026-08-02",
-  "pulled_at": "2026-08-02T16:03:39.888617",
-  "orders_today": 51,
-  "revenue_today": 1283.79,
+  "pulled_at": "2026-08-02T18:02:29.412272",
+  "orders_today": 54,
+  "revenue_today": 1364.32,
   "units_ordered": 76,
   "finance": {
     "total_sales": 1382.27,
     "total_fees": 528.36
   },
   "sku_units": {
-    "LR-TSC-30PACK": 37,
+    "LR-TSC-30PACK": 40,
     "LR-CS-30": 6,
-    "LR-CS-10": 13,
+    "LR-CS-10": 15,
     "LR-TSC-5PACK": 4
   },
   "fba_inventory": {
@@ -23,9 +23,9 @@
       "unfulfillable": 0
     },
     "3Z-3J64-NT0U": {
-      "fulfillable": 953,
+      "fulfillable": 949,
       "inbound": 206,
-      "reserved": 338,
+      "reserved": 337,
       "researching": 3,
       "unfulfillable": 3
     },
@@ -44,9 +44,9 @@
       "unfulfillable": 0
     },
     "LR-CS-10": {
-      "fulfillable": 1149,
+      "fulfillable": 1148,
       "inbound": 0,
-      "reserved": 42,
+      "reserved": 41,
       "researching": 9,
       "unfulfillable": 4
     },
@@ -58,23 +58,23 @@
       "unfulfillable": 0
     },
     "LR-CS-30": {
-      "fulfillable": 707,
+      "fulfillable": 706,
       "inbound": 2,
-      "reserved": 19,
+      "reserved": 20,
       "researching": 0,
       "unfulfillable": 4
     },
     "LR-TSC-30PACK": {
-      "fulfillable": 953,
+      "fulfillable": 949,
       "inbound": 206,
-      "reserved": 338,
+      "reserved": 337,
       "researching": 3,
       "unfulfillable": 3
     },
     "LR-TSC-5PACK": {
-      "fulfillable": 240,
+      "fulfillable": 239,
       "inbound": 0,
-      "reserved": 13,
+      "reserved": 14,
       "researching": 3,
       "unfulfillable": 1
     },
@@ -167,7 +167,7 @@
   "units_30d": 2235,
   "days_30d": 29,
   "ads_metrics": {},
-  "ads_debug": "profiles 401: {\"code\":\"UNAUTHORIZED\",\"details\":\"HTTP 401 Unauthorized\",\"requestId\":\"H0YXQP08SNBQ97D16C3C\"}",
+  "ads_debug": "profiles 401: {\"code\":\"UNAUTHORIZED\",\"details\":\"HTTP 401 Unauthorized\",\"requestId\":\"J4XMTQT4HKNJCFWVPHSR\"}",
   "cvr_30d": null,
   "sessions_30d": null,
   "cvr_debug": "create_403:{\n  \"errors\": [\n    {\n      \"code\": \"Unauthorized\",\n      \"message\": \"Access to the resource is forbidden\",\n      \"details\": \"\"\n    }\n  ]\n}",
