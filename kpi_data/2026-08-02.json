@@ -1,17 +1,17 @@
 {
   "date": "2026-08-02",
-  "pulled_at": "2026-08-02T12:06:11.300515",
-  "orders_today": 46,
-  "revenue_today": 1029.82,
+  "pulled_at": "2026-08-02T14:38:18.457813",
+  "orders_today": 51,
+  "revenue_today": 1283.79,
   "units_ordered": 76,
   "finance": {
     "total_sales": 1382.27,
     "total_fees": 528.36
   },
   "sku_units": {
-    "LR-TSC-30PACK": 28,
+    "LR-TSC-30PACK": 37,
     "LR-CS-30": 6,
-    "LR-CS-10": 12,
+    "LR-CS-10": 13,
     "LR-TSC-5PACK": 4
   },
   "fba_inventory": {
@@ -23,9 +23,9 @@
       "unfulfillable": 0
     },
     "3Z-3J64-NT0U": {
-      "fulfillable": 955,
+      "fulfillable": 956,
       "inbound": 256,
-      "reserved": 295,
+      "reserved": 285,
       "researching": 3,
       "unfulfillable": 3
     },
@@ -44,9 +44,9 @@
       "unfulfillable": 0
     },
     "LR-CS-10": {
-      "fulfillable": 1152,
+      "fulfillable": 1150,
       "inbound": 0,
-      "reserved": 40,
+      "reserved": 41,
       "researching": 9,
       "unfulfillable": 4
     },
@@ -65,9 +65,9 @@
       "unfulfillable": 4
     },
     "LR-TSC-30PACK": {
-      "fulfillable": 955,
+      "fulfillable": 956,
       "inbound": 256,
-      "reserved": 295,
+      "reserved": 285,
       "researching": 3,
       "unfulfillable": 3
     },
@@ -167,7 +167,7 @@
   "units_30d": 2235,
   "days_30d": 29,
   "ads_metrics": {},
-  "ads_debug": "profiles 401: {\"code\":\"UNAUTHORIZED\",\"details\":\"HTTP 401 Unauthorized\",\"requestId\":\"XK519K4RB3YATF935Y85\"}",
+  "ads_debug": "profiles 401: {\"code\":\"UNAUTHORIZED\",\"details\":\"HTTP 401 Unauthorized\",\"requestId\":\"R9M7Z7N643RBCVPV640R\"}",
   "cvr_30d": null,
   "sessions_30d": null,
   "cvr_debug": "create_403:{\n  \"errors\": [\n    {\n      \"code\": \"Unauthorized\",\n      \"message\": \"Access to the resource is forbidden\",\n      \"details\": \"\"\n    }\n  ]\n}",
