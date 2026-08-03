@@ -1,18 +1,18 @@
 {
   "date": "2026-08-03",
-  "pulled_at": "2026-08-03T07:32:45.685775",
-  "orders_today": 40,
-  "revenue_today": 1141.51,
+  "pulled_at": "2026-08-03T11:30:51.235205",
+  "orders_today": 47,
+  "revenue_today": 1325.21,
   "units_ordered": 76,
   "finance": {
     "total_sales": 1159.28,
     "total_fees": 439.35
   },
   "sku_units": {
-    "LR-TSC-30PACK": 34,
-    "LR-CS-30": 7,
-    "LR-TSC-5PACK": 4,
-    "LR-CS-10": 6
+    "LR-TSC-30PACK": 38,
+    "LR-CS-30": 9,
+    "LR-TSC-5PACK": 5,
+    "LR-CS-10": 8
   },
   "fba_inventory": {
     "0N-C5DX-S7RX": {
@@ -25,7 +25,7 @@
     "3Z-3J64-NT0U": {
       "fulfillable": 933,
       "inbound": 209,
-      "reserved": 324,
+      "reserved": 319,
       "researching": 3,
       "unfulfillable": 3
     },
@@ -44,9 +44,9 @@
       "unfulfillable": 0
     },
     "LR-CS-10": {
-      "fulfillable": 1141,
+      "fulfillable": 1138,
       "inbound": 0,
-      "reserved": 35,
+      "reserved": 36,
       "researching": 9,
       "unfulfillable": 5
     },
@@ -58,23 +58,23 @@
       "unfulfillable": 0
     },
     "LR-CS-30": {
-      "fulfillable": 700,
+      "fulfillable": 699,
       "inbound": 2,
-      "reserved": 15,
+      "reserved": 14,
       "researching": 0,
       "unfulfillable": 4
     },
     "LR-TSC-30PACK": {
       "fulfillable": 933,
       "inbound": 209,
-      "reserved": 324,
+      "reserved": 319,
       "researching": 3,
       "unfulfillable": 3
     },
     "LR-TSC-5PACK": {
       "fulfillable": 235,
       "inbound": 0,
-      "reserved": 12,
+      "reserved": 11,
       "researching": 3,
       "unfulfillable": 1
     },
@@ -167,7 +167,7 @@
   "units_30d": 2254,
   "days_30d": 29,
   "ads_metrics": {},
-  "ads_debug": "profiles 401: {\"code\":\"UNAUTHORIZED\",\"details\":\"HTTP 401 Unauthorized\",\"requestId\":\"JNY15QJAKS3XS8EWPBSQ\"}",
+  "ads_debug": "profiles 401: {\"code\":\"UNAUTHORIZED\",\"details\":\"HTTP 401 Unauthorized\",\"requestId\":\"7M1TV8P91CX084V0P1RN\"}",
   "cvr_30d": null,
   "sessions_30d": null,
   "cvr_debug": "create_403:{\n  \"errors\": [\n    {\n      \"code\": \"Unauthorized\",\n      \"message\": \"Access to the resource is forbidden\",\n      \"details\": \"\"\n    }\n  ]\n}",
