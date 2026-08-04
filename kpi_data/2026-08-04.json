@@ -1,17 +1,17 @@
 {
   "date": "2026-08-04",
-  "pulled_at": "2026-08-04T05:53:21.271528",
-  "orders_today": 37,
-  "revenue_today": 833.41,
+  "pulled_at": "2026-08-04T08:45:29.573743",
+  "orders_today": 44,
+  "revenue_today": 980.46,
   "units_ordered": 70,
   "finance": {
     "total_sales": 955.45,
     "total_fees": 383.76
   },
   "sku_units": {
-    "LR-TSC-30PACK": 22,
-    "LR-CS-10": 8,
-    "LR-CS-30": 6,
+    "LR-TSC-30PACK": 25,
+    "LR-CS-10": 10,
+    "LR-CS-30": 8,
     "LR-TSC-5PACK": 3
   },
   "fba_inventory": {
@@ -23,9 +23,9 @@
       "unfulfillable": 0
     },
     "3Z-3J64-NT0U": {
-      "fulfillable": 901,
+      "fulfillable": 900,
       "inbound": 209,
-      "reserved": 324,
+      "reserved": 321,
       "researching": 4,
       "unfulfillable": 3
     },
@@ -44,9 +44,9 @@
       "unfulfillable": 0
     },
     "LR-CS-10": {
-      "fulfillable": 1117,
+      "fulfillable": 1115,
       "inbound": 0,
-      "reserved": 47,
+      "reserved": 46,
       "researching": 10,
       "unfulfillable": 5
     },
@@ -60,19 +60,19 @@
     "LR-CS-30": {
       "fulfillable": 683,
       "inbound": 1,
-      "reserved": 25,
+      "reserved": 22,
       "researching": 0,
       "unfulfillable": 4
     },
     "LR-TSC-30PACK": {
-      "fulfillable": 901,
+      "fulfillable": 900,
       "inbound": 209,
-      "reserved": 324,
+      "reserved": 321,
       "researching": 4,
       "unfulfillable": 3
     },
     "LR-TSC-5PACK": {
-      "fulfillable": 228,
+      "fulfillable": 227,
       "inbound": 0,
       "reserved": 12,
       "researching": 4,
@@ -167,7 +167,7 @@
   "units_30d": 2259,
   "days_30d": 29,
   "ads_metrics": {},
-  "ads_debug": "profiles 401: {\"code\":\"UNAUTHORIZED\",\"details\":\"HTTP 401 Unauthorized\",\"requestId\":\"0EZ81G6Z9C3QCXK5BSEG\"}",
+  "ads_debug": "profiles 401: {\"code\":\"UNAUTHORIZED\",\"details\":\"HTTP 401 Unauthorized\",\"requestId\":\"JWC1A34BBEMPJ0Q09Y0C\"}",
   "cvr_30d": null,
   "sessions_30d": null,
   "cvr_debug": "create_403:{\n  \"errors\": [\n    {\n      \"code\": \"Unauthorized\",\n      \"message\": \"Access to the resource is forbidden\",\n      \"details\": \"\"\n    }\n  ]\n}",
