@@ -59,16 +59,16 @@ def update_html(data):
     acos_30d_raw = data.get('acos_30d') or ads.get('acos_30d')
     acos_val  = (str(acos_30d_raw) + '%') if acos_30d_raw is not None else '--'
     acos_color = '#ef4444' if (acos_30d_raw or 0) > 30 else '#10b981'
-ads_spend_30d_raw = data.get('ads_spend_30d', 0)
-revenue_30d_raw = data.get('revenue_30d', 0)
-if ads_spend_30d_raw and ads_spend_30d_raw > 0:
-    roas_raw = round(revenue_30d_raw / ads_spend_30d_raw, 2)
-    roas_val = f"{roas_raw}x"
-    spend_val = "$" + f"{ads_spend_30d_raw:,.0f}"
-else:
-    roas_raw = None
-    roas_val = '--'
-    spend_val = '--'
+    ads_spend_30d_raw = data.get('ads_spend_30d', 0)
+    revenue_30d_raw = data.get('revenue_30d', 0)
+    if ads_spend_30d_raw and ads_spend_30d_raw > 0:
+        roas_raw = round(revenue_30d_raw / ads_spend_30d_raw, 2)
+        roas_val = f"{roas_raw}x"
+        spend_val = "$" + f"{ads_spend_30d_raw:,.0f}"
+    else:
+        roas_raw = None
+        roas_val = '--'
+        spend_val = '--'
     days_30d     = data.get('days_30d', 0)
 
     html = HTML_FILE.read_text(encoding="utf-8")
