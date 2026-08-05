@@ -59,6 +59,16 @@ def update_html(data):
     acos_30d_raw = data.get('acos_30d') or ads.get('acos_30d')
     acos_val  = (str(acos_30d_raw) + '%') if acos_30d_raw is not None else '--'
     acos_color = '#ef4444' if (acos_30d_raw or 0) > 30 else '#10b981'
+ads_spend_30d_raw = data.get('ads_spend_30d', 0)
+revenue_30d_raw = data.get('revenue_30d', 0)
+if ads_spend_30d_raw and ads_spend_30d_raw > 0:
+    roas_raw = round(revenue_30d_raw / ads_spend_30d_raw, 2)
+    roas_val = f"{roas_raw}x"
+    spend_val = "$" + f"{ads_spend_30d_raw:,.0f}"
+else:
+    roas_raw = None
+    roas_val = '--'
+    spend_val = '--'
     days_30d     = data.get('days_30d', 0)
 
     html = HTML_FILE.read_text(encoding="utf-8")
@@ -90,11 +100,11 @@ def update_html(data):
     today_obj = (
         "'today': { revenue:'" + revenue +
         "', units:'" + str(total_units) +
-        "', spend:'--', acos:'" + acos_val + "', cvr:'" + cvr_val + "', sessions:'--', ipi:'628'," +
+        "', spend:'" + spend_val + "', acos:'" + acos_val + "', cvr:'" + cvr_val + "', sessions:'--', ipi:'628'," +
         " rsub:'Today " + today_str + " . SP-API live'" +
         ", usub:'" + str(orders) + " orders . " + str(units) +
         " units . Fees $" + f"{fees:,.2f}'" +
-        ", ssub:'Not yet available', asub:'Not yet available'" +
+        ", ssub:'" + ("ROAS " + roas_val + " · 30d" if spend_val != '--' else "Not yet available") + "', asub:'Not yet available'" +
         ", sesub:'Not yet available', isub:'Range 570-686'," +
         " acosColor:'" + acos_color + "', skuUnits:" + sku_units_js +
         " }, /* TODAY_KPI_PLACEHOLDER */"
@@ -114,10 +124,10 @@ def update_html(data):
     sevenday_obj = (
         "'7d':  { revenue:'" + revenue_7d +
         "', units:'" + str(total_units_7d) +
-        "', spend:'--', acos:'" + acos_val + "', cvr:'" + cvr_val + "', sessions:'--', ipi:'628'," +
+        "', spend:'" + spend_val + "', acos:'" + acos_val + "', cvr:'" + cvr_val + "', sessions:'--', ipi:'628'," +
         " rsub:'Last 7 Days · SP-API live'" +
         ", usub:'" + str(orders_7d) + " orders . " + str(total_units_7d) + " units'" +
-        ", ssub:'Not yet available', asub:'Not yet available'" +
+        ", ssub:'" + ("ROAS " + roas_val + " · 30d" if spend_val != '--' else "Not yet available") + "', asub:'Not yet available'" +
         ", sesub:'Not yet available', isub:'Range 570-686'," +
         " acosColor:'" + acos_color + "', skuUnits:" + sku_units_js_7d +
         " }, /* 7D_KPI_PLACEHOLDER */"
@@ -137,11 +147,11 @@ def update_html(data):
     thirtyday_obj = (
         "'30d': { revenue:'" + revenue_30d +
         "', units:'" + str(units_30d) +
-        "', spend:'--', acos:'" + acos_val + "', cvr:'" + cvr_val + "', sessions:'" + sessions_val + "', ipi:'628'," +
+        "', spend:'" + spend_val + "', acos:'" + acos_val + "', cvr:'" + cvr_val + "', sessions:'" + sessions_val + "', ipi:'628'," +
         " rsub:'Last 30 Days · SP-API live'" +
         ", usub:'" + str(orders_30d) + " orders . " + str(units_30d) + " units'" +
-        ", ssub:'Not yet available', asub:'Not yet available'" +
-        ", sesub:'" + (cvr_val + " CVR · " + sessions_val + " sessions" if cvr_30d_raw is not None else "Needs report access") + "', isub:'Range 570-686'," +
+        ", ssub:'" + ("ROAS " + roas_val + " · 30d" if spend_val != '--' else "Not yet available") + "', asub:'Not yet available'" +
+        ", sesub:'" + (cvr_val + " CVR · " + sessions_val + " sessions" if cvr_30d_raw is not None else "ROAS " + roas_val + " · CVR needs Reports API") + "', isub:'Range 570-686'," +
         " acosColor:'" + acos_color + "', skuUnits:" + sku_units_js_30d +
         ", days30d:" + str(days_30d) +
         " }, /* 30D_KPI_PLACEHOLDER */"
