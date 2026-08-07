@@ -1,18 +1,18 @@
 {
   "date": "2026-08-07",
-  "pulled_at": "2026-08-07T03:52:45.415906",
-  "orders_today": 33,
-  "revenue_today": 650.55,
+  "pulled_at": "2026-08-07T05:43:45.914149",
+  "orders_today": 43,
+  "revenue_today": 821.82,
   "units_ordered": 79,
   "finance": {
     "total_sales": 1226.3,
     "total_fees": 462.16
   },
   "sku_units": {
-    "LR-CS-30": 8,
-    "LR-TSC-30PACK": 13,
-    "LR-TSC-5PACK": 2,
-    "LR-CS-10": 10
+    "LR-CS-30": 10,
+    "LR-TSC-30PACK": 16,
+    "LR-TSC-5PACK": 4,
+    "LR-CS-10": 13
   },
   "fba_inventory": {
     "0N-C5DX-S7RX": {
@@ -23,9 +23,9 @@
       "unfulfillable": 0
     },
     "3Z-3J64-NT0U": {
-      "fulfillable": 841,
+      "fulfillable": 842,
       "inbound": 244,
-      "reserved": 383,
+      "reserved": 377,
       "researching": 4,
       "unfulfillable": 6
     },
@@ -44,9 +44,9 @@
       "unfulfillable": 0
     },
     "LR-CS-10": {
-      "fulfillable": 1051,
+      "fulfillable": 1050,
       "inbound": 0,
-      "reserved": 40,
+      "reserved": 38,
       "researching": 6,
       "unfulfillable": 5
     },
@@ -58,23 +58,23 @@
       "unfulfillable": 0
     },
     "LR-CS-30": {
-      "fulfillable": 649,
+      "fulfillable": 648,
       "inbound": 0,
-      "reserved": 22,
+      "reserved": 21,
       "researching": 0,
       "unfulfillable": 4
     },
     "LR-TSC-30PACK": {
-      "fulfillable": 841,
+      "fulfillable": 842,
       "inbound": 244,
-      "reserved": 383,
+      "reserved": 377,
       "researching": 4,
       "unfulfillable": 6
     },
     "LR-TSC-5PACK": {
-      "fulfillable": 200,
+      "fulfillable": 196,
       "inbound": 0,
-      "reserved": 19,
+      "reserved": 21,
       "researching": 4,
       "unfulfillable": 1
     },
@@ -167,7 +167,7 @@
   "units_30d": 2292,
   "days_30d": 29,
   "ads_metrics": {},
-  "ads_debug": "profiles 401: {\"code\":\"UNAUTHORIZED\",\"details\":\"HTTP 401 Unauthorized\",\"requestId\":\"R80Y2R7CHCQVG7ACERH2\"}",
+  "ads_debug": "profiles 401: {\"code\":\"UNAUTHORIZED\",\"details\":\"HTTP 401 Unauthorized\",\"requestId\":\"7TM7Y8ARN1PQZ8TEH3XX\"}",
   "cvr_30d": null,
   "sessions_30d": null,
   "cvr_debug": "create_403:{\n  \"errors\": [\n    {\n      \"code\": \"Unauthorized\",\n      \"message\": \"Access to the resource is forbidden\",\n      \"details\": \"\"\n    }\n  ]\n}",
