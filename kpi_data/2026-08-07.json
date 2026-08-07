@@ -1,6 +1,6 @@
 {
   "date": "2026-08-07",
-  "pulled_at": "2026-08-07T20:46:29.750246",
+  "pulled_at": "2026-08-07T21:43:07.317086",
   "orders_today": 69,
   "revenue_today": 1373.59,
   "units_ordered": 79,
@@ -23,9 +23,9 @@
       "unfulfillable": 0
     },
     "3Z-3J64-NT0U": {
-      "fulfillable": 856,
+      "fulfillable": 857,
       "inbound": 154,
-      "reserved": 435,
+      "reserved": 434,
       "researching": 5,
       "unfulfillable": 6
     },
@@ -44,9 +44,9 @@
       "unfulfillable": 0
     },
     "LR-CS-10": {
-      "fulfillable": 1038,
+      "fulfillable": 1036,
       "inbound": 0,
-      "reserved": 45,
+      "reserved": 47,
       "researching": 5,
       "unfulfillable": 5
     },
@@ -58,23 +58,23 @@
       "unfulfillable": 0
     },
     "LR-CS-30": {
-      "fulfillable": 639,
+      "fulfillable": 638,
       "inbound": 0,
-      "reserved": 23,
+      "reserved": 24,
       "researching": 0,
       "unfulfillable": 4
     },
     "LR-TSC-30PACK": {
-      "fulfillable": 856,
+      "fulfillable": 857,
       "inbound": 154,
-      "reserved": 435,
+      "reserved": 434,
       "researching": 5,
       "unfulfillable": 6
     },
     "LR-TSC-5PACK": {
-      "fulfillable": 195,
+      "fulfillable": 194,
       "inbound": 0,
-      "reserved": 18,
+      "reserved": 19,
       "researching": 3,
       "unfulfillable": 1
     },
@@ -167,7 +167,7 @@
   "units_30d": 2292,
   "days_30d": 29,
   "ads_metrics": {},
-  "ads_debug": "profiles 401: {\"code\":\"UNAUTHORIZED\",\"details\":\"HTTP 401 Unauthorized\",\"requestId\":\"X8NGKGQ645DNP9ANPX5T\"}",
+  "ads_debug": "profiles 401: {\"code\":\"UNAUTHORIZED\",\"details\":\"HTTP 401 Unauthorized\",\"requestId\":\"36B6F9MGHAP195PXDM08\"}",
   "cvr_30d": null,
   "sessions_30d": null,
   "cvr_debug": "create_403:{\n  \"errors\": [\n    {\n      \"code\": \"Unauthorized\",\n      \"message\": \"Access to the resource is forbidden\",\n      \"details\": \"\"\n    }\n  ]\n}",
