@@ -1,17 +1,17 @@
 {
   "date": "2026-08-07",
-  "pulled_at": "2026-08-07T22:41:17.912370",
-  "orders_today": 72,
-  "revenue_today": 1434.01,
+  "pulled_at": "2026-08-07T23:37:21.561476",
+  "orders_today": 74,
+  "revenue_today": 1488.27,
   "units_ordered": 79,
   "finance": {
     "total_sales": 1226.3,
     "total_fees": 462.16
   },
   "sku_units": {
-    "LR-CS-30": 14,
+    "LR-CS-30": 16,
     "LR-TSC-30PACK": 32,
-    "LR-TSC-5PACK": 8,
+    "LR-TSC-5PACK": 9,
     "LR-CS-10": 20
   },
   "fba_inventory": {
@@ -23,9 +23,9 @@
       "unfulfillable": 0
     },
     "3Z-3J64-NT0U": {
-      "fulfillable": 855,
+      "fulfillable": 851,
       "inbound": 154,
-      "reserved": 434,
+      "reserved": 438,
       "researching": 5,
       "unfulfillable": 6
     },
@@ -44,9 +44,9 @@
       "unfulfillable": 0
     },
     "LR-CS-10": {
-      "fulfillable": 1033,
+      "fulfillable": 1032,
       "inbound": 0,
-      "reserved": 49,
+      "reserved": 50,
       "researching": 5,
       "unfulfillable": 5
     },
@@ -60,21 +60,21 @@
     "LR-CS-30": {
       "fulfillable": 638,
       "inbound": 0,
-      "reserved": 24,
+      "reserved": 22,
       "researching": 0,
       "unfulfillable": 4
     },
     "LR-TSC-30PACK": {
-      "fulfillable": 855,
+      "fulfillable": 851,
       "inbound": 154,
-      "reserved": 434,
+      "reserved": 438,
       "researching": 5,
       "unfulfillable": 6
     },
     "LR-TSC-5PACK": {
       "fulfillable": 194,
       "inbound": 0,
-      "reserved": 19,
+      "reserved": 18,
       "researching": 3,
       "unfulfillable": 1
     },
@@ -167,7 +167,7 @@
   "units_30d": 2292,
   "days_30d": 29,
   "ads_metrics": {},
-  "ads_debug": "profiles 401: {\"code\":\"UNAUTHORIZED\",\"details\":\"HTTP 401 Unauthorized\",\"requestId\":\"C4G16WP8GP60BA4RSZGG\"}",
+  "ads_debug": "profiles 401: {\"code\":\"UNAUTHORIZED\",\"details\":\"HTTP 401 Unauthorized\",\"requestId\":\"HKCWJY2MX86AJJKE4R79\"}",
   "cvr_30d": null,
   "sessions_30d": null,
   "cvr_debug": "create_403:{\n  \"errors\": [\n    {\n      \"code\": \"Unauthorized\",\n      \"message\": \"Access to the resource is forbidden\",\n      \"details\": \"\"\n    }\n  ]\n}",
