@@ -1,6 +1,6 @@
 {
   "date": "2026-08-07",
-  "pulled_at": "2026-08-07T10:56:46.108967",
+  "pulled_at": "2026-08-07T11:51:20.948117",
   "orders_today": 61,
   "revenue_today": 1254.67,
   "units_ordered": 79,
@@ -72,9 +72,9 @@
       "unfulfillable": 6
     },
     "LR-TSC-5PACK": {
-      "fulfillable": 195,
+      "fulfillable": 196,
       "inbound": 0,
-      "reserved": 20,
+      "reserved": 19,
       "researching": 4,
       "unfulfillable": 1
     },
@@ -167,7 +167,7 @@
   "units_30d": 2292,
   "days_30d": 29,
   "ads_metrics": {},
-  "ads_debug": "profiles 401: {\"code\":\"UNAUTHORIZED\",\"details\":\"HTTP 401 Unauthorized\",\"requestId\":\"WJ4327GDZ24QHZ5F1ZC6\"}",
+  "ads_debug": "profiles 401: {\"code\":\"UNAUTHORIZED\",\"details\":\"HTTP 401 Unauthorized\",\"requestId\":\"VDX8EGHMKRJAKE1BWQMJ\"}",
   "cvr_30d": null,
   "sessions_30d": null,
   "cvr_debug": "create_403:{\n  \"errors\": [\n    {\n      \"code\": \"Unauthorized\",\n      \"message\": \"Access to the resource is forbidden\",\n      \"details\": \"\"\n    }\n  ]\n}",
