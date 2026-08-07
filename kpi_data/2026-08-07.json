@@ -1,8 +1,8 @@
 {
   "date": "2026-08-07",
-  "pulled_at": "2026-08-07T13:14:06.931006",
-  "orders_today": 61,
-  "revenue_today": 1254.67,
+  "pulled_at": "2026-08-07T14:57:20.574398",
+  "orders_today": 65,
+  "revenue_today": 1322.98,
   "units_ordered": 79,
   "finance": {
     "total_sales": 1226.3,
@@ -10,8 +10,8 @@
   },
   "sku_units": {
     "LR-CS-30": 13,
-    "LR-TSC-30PACK": 28,
-    "LR-TSC-5PACK": 5,
+    "LR-TSC-30PACK": 30,
+    "LR-TSC-5PACK": 7,
     "LR-CS-10": 17
   },
   "fba_inventory": {
@@ -23,10 +23,10 @@
       "unfulfillable": 0
     },
     "3Z-3J64-NT0U": {
-      "fulfillable": 842,
+      "fulfillable": 841,
       "inbound": 244,
-      "reserved": 362,
-      "researching": 4,
+      "reserved": 360,
+      "researching": 5,
       "unfulfillable": 6
     },
     "DogSmall": {
@@ -44,9 +44,9 @@
       "unfulfillable": 0
     },
     "LR-CS-10": {
-      "fulfillable": 1048,
+      "fulfillable": 1049,
       "inbound": 0,
-      "reserved": 37,
+      "reserved": 36,
       "researching": 5,
       "unfulfillable": 5
     },
@@ -65,17 +65,17 @@
       "unfulfillable": 4
     },
     "LR-TSC-30PACK": {
-      "fulfillable": 842,
+      "fulfillable": 841,
       "inbound": 244,
-      "reserved": 362,
-      "researching": 4,
+      "reserved": 360,
+      "researching": 5,
       "unfulfillable": 6
     },
     "LR-TSC-5PACK": {
-      "fulfillable": 196,
+      "fulfillable": 198,
       "inbound": 0,
-      "reserved": 19,
-      "researching": 4,
+      "reserved": 16,
+      "researching": 3,
       "unfulfillable": 1
     },
     "LR-TSC-CS-10PACK": {
@@ -167,7 +167,7 @@
   "units_30d": 2292,
   "days_30d": 29,
   "ads_metrics": {},
-  "ads_debug": "profiles 401: {\"code\":\"UNAUTHORIZED\",\"details\":\"HTTP 401 Unauthorized\",\"requestId\":\"2BQ80WXZPV023C5J8E24\"}",
+  "ads_debug": "profiles 401: {\"code\":\"UNAUTHORIZED\",\"details\":\"HTTP 401 Unauthorized\",\"requestId\":\"4S96TY2X5ZR0WPF3JCYY\"}",
   "cvr_30d": null,
   "sessions_30d": null,
   "cvr_debug": "create_403:{\n  \"errors\": [\n    {\n      \"code\": \"Unauthorized\",\n      \"message\": \"Access to the resource is forbidden\",\n      \"details\": \"\"\n    }\n  ]\n}",
