@@ -439,10 +439,10 @@ def get_ads_access_token():
 
 
 def get_ads_token():
-    """Get Ads API access token (reuses SP-API creds or ADS_* env vars)."""
-    refresh_tok = os.environ.get("ADS_REFRESH_TOKEN") or os.environ.get("AMAZON_REFRESH_TOKEN") or REFRESH_TOKEN
-    client_id_  = os.environ.get("ADS_CLIENT_ID") or os.environ.get("AMAZON_CLIENT_ID") or CLIENT_ID
-    client_sec_ = os.environ.get("ADS_CLIENT_SECRET") or os.environ.get("AMAZON_CLIENT_SECRET") or CLIENT_SECRET
+    """Get Ads API access token using AMAZON_ADS_* credentials."""
+    refresh_tok = ADS_REFRESH_TOKEN or REFRESH_TOKEN
+    client_id_  = os.environ.get("AMAZON_ADS_CLIENT_ID") or CLIENT_ID
+    client_sec_ = os.environ.get("AMAZON_ADS_CLIENT_SECRET") or CLIENT_SECRET
     resp = requests.post(
         "https://api.amazon.com/auth/o2/token",
         data={
@@ -460,7 +460,7 @@ def get_ads_token():
 
 def get_ads_profile_id(ads_token):
     """Auto-discover first US seller Ads profile ID."""
-    client_id = os.environ.get("ADS_CLIENT_ID", CLIENT_ID)
+    client_id = os.environ.get("AMAZON_ADS_CLIENT_ID") or os.environ.get("ADS_CLIENT_ID", CLIENT_ID)
     resp = requests.get(
         f"{ADS_ENDPOINT}/v2/profiles",
         headers={
@@ -497,7 +497,7 @@ def get_ads_cvr(ads_token, profile_id):
         with open(ads_cache) as f:
             return json.load(f)
 
-    client_id = os.environ.get("ADS_CLIENT_ID", CLIENT_ID)
+    client_id = os.environ.get("AMAZON_ADS_CLIENT_ID") or os.environ.get("ADS_CLIENT_ID", CLIENT_ID)
     headers = {
         "Amazon-Advertising-API-ClientId": client_id,
         "Amazon-Advertising-API-Scope":    profile_id,
