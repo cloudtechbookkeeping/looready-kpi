@@ -26,7 +26,7 @@ jobs:
                   'code': os.environ['AUTH_CODE'],
                   'client_id': os.environ['AMAZON_CLIENT_ID'],
                   'client_secret': os.environ['AMAZON_CLIENT_SECRET'],
-                  'redirect_uri': 'https://www.amazon.com',
+                  'redirect_uri': 'https://developer.amazon.com/dashboard',
               }
           )
           data = resp.json()
