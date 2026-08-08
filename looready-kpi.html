@@ -1998,7 +1998,7 @@ renderProfitBreakdown('30d');
           { label: 'Revenue ($)', data: revArr,   borderColor: '#66bc46', backgroundColor: 'rgba(102,188,70,0.07)', borderWidth: 2, pointRadius: 2, fill: true, tension: 0.4, yAxisID: 'y'  },
           { label: 'Units Sold',  data: unitsArr, borderColor: '#8b5cf6', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 0, tension: 0.4, yAxisID: 'y1' },
           { label: 'Sessions',   data: [],        borderColor: '#2688c9', backgroundColor: 'transparent', borderWidth: 1.5, borderDash: [4,3], pointRadius: 0, tension: 0.4, yAxisID: 'y1', hidden: true },
-          { label: 'CVR (%)',    data: [],        borderColor: '#2688c9', backgroundColor: 'transparent', borderWidth: 1.5, borderDash: [4,3], pointRadius: 0, tension: 0.4, yAxisID: 'y2' },
+          { label: 'CVR (%)',    data: cvrsArr,   borderColor: '#2688c9', backgroundColor: 'rgba(38,136,201,0.06)', borderWidth: 2, pointRadius: 0, tension: 0.4, yAxisID: 'y2' },
           { label: 'ACOS (%)',   data: acosArr,   borderColor: '#f59e0b', backgroundColor: 'transparent', borderWidth: 2, borderDash: [4,3], pointRadius: 0, tension: 0.4, yAxisID: 'y2' }
         ]
       },
@@ -2043,10 +2043,7 @@ renderProfitBreakdown('30d');
       });
       var revArr   = last30.map(function(h) { return Math.round(h.revenue || 0); });
       var unitsArr = last30.map(function(h) { return h.units   || 0; });
-      var cvrsArr  = last30.map(function(h) {
-        var u = h.units || 0, o = h.orders || 0;
-        return o > 0 ? parseFloat((u / o * 100).toFixed(2)) : 0;
-      });
+      var cvrsArr  = last30.map(function(h) { return h.cvr != null ? parseFloat(h.cvr) : null; });
       var acosArr = last30.map(function(h) { return h.acos != null ? parseFloat(h.acos) : null; });
       buildChart(days, revArr, unitsArr, cvrsArr, acosArr);
     })
