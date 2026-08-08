@@ -31,6 +31,32 @@ def load_today_data():
 KNOWN_SKUS = ['LR-TSC-30PACK', 'LR-CS-10', 'LR-CS-30', 'LR-TSC-5PACK', 'LR-CS-120']
 
 
+def build_chart_data():
+    """Build chart data arrays from the last 30 kpi_data files for Performance chart."""
+    paths = sorted([p for p in DATA_DIR.glob("*.json") if "cache" not in p.stem])[-30:]
+    chart_days, chart_rev, chart_units, chart_cvr, chart_acos = [], [], [], [], []
+    for path in paths:
+        try:
+            with open(path) as f:
+                d = json.load(f)
+            if "date" not in d:
+                continue
+            dt = datetime.date.fromisoformat(d["date"])
+            chart_days.append(dt.strftime("%-m/%-d"))
+            chart_rev.append(round(d.get("revenue_today", 0), 2))
+            chart_units.append(d.get("units_ordered", 0))
+            ads = d.get("ads_metrics") or {}
+            cvr = ads.get("cvr_30d")
+            if cvr is None:
+                cvr = d.get("cvr_30d")
+            chart_cvr.append(round(float(cvr), 2) if cvr is not None else None)
+            acos = d.get("acos_30d")
+            chart_acos.append(round(float(acos), 2) if acos is not None else None)
+        except Exception as e:
+            print("Chart data skip " + str(path) + ": " + str(e))
+    return chart_days, chart_rev, chart_units, chart_cvr, chart_acos
+
+
 def update_html(data):
     # US Eastern time (handles DST automatically)
     import zoneinfo
@@ -203,9 +229,20 @@ def update_html(data):
         html = html.replace(old_frag, new_frag)
         print(f"inv {el_id}: {old_text} -> {new_text}")
 
-    print("n1=" + str(n1) + " n2=" + str(n2) + " n3=" + str(n3) + " n4=" + str(n4) + " n5=" + str(n5) + " n6=" + str(n6))
-    if n1 == 0 or n2 == 0 or n3 == 0 or n4 == 0 or n5 == 0 or n6 == 0:
-        print("WARNING: one or more patterns did not match!")
+    # 7. Performance chart data injection
+    chart_days, chart_rev, chart_units, chart_cvr, chart_acos = build_chart_data()
+    html = html.replace('[/* CHART_DAYS_PH */]',  json.dumps(chart_days))
+    html = html.replace('[/* CHART_REV_PH */]',   json.dumps(chart_rev))
+    html = html.replace('[/* CHART_UNITS_PH */]', json.dumps(chart_units))
+    html = html.replace('[/* CHART_CVR_PH */]',   json.dumps(chart_cvr))
+    html = html.replace('[/* CHART_ACOS_PH */]',  json.dumps(chart_acos))
+    if chart_days:
+        badge_range = chart_days[0] + ' – ' + chart_days[-1]
+        html = html.replace('id="perf-badge">Last 30 Days', 'id="perf-badge">' + badge_range)
+    n7 = html.count('[/* CHART')
+    print("n1=" + str(n1) + " n2=" + str(n2) + " n3=" + str(n3) + " n4=" + str(n4) + " n5=" + str(n5) + " n6=" + str(n6) + " chart_days=" + str(len(chart_days)) + " remaining_ph=" + str(n7))
+    if n1 == 0 or n2 == 0 or n3 == 0 or n4 == 0 or n5 == 0:
+        print("WARNING: one or more KPI patterns did not match!")
     return html, today_str, n1, n2, n3
 
 
