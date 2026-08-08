@@ -281,6 +281,35 @@ def write_history():
 def write_docs(html, status):
     DOCS_DIR.mkdir(exist_ok=True)
     index_path = DOCS_DIR / "index.html"
+    _cvr_js = (
+        "(function(){setTimeout(function(){" 
+        "var c=window.__perfChart;" 
+        "if(!c)try{Object.values(Chart.instances).forEach(function(i){" 
+        "if(i.canvas&&i.canvas.id==='performanceChart')c=i;});}catch(e){}" 
+        "if(!c)return;" 
+        "fetch('kpi_history.json').then(function(r){return r.json();})" 
+        ".then(function(h){" 
+        "var l=h.slice(-30);" 
+        "var cv=l.map(function(x){return x.cvr!=null?+x.cvr:null;});" 
+        "var ac=l.map(function(x){return x.acos!=null?+x.acos:null;});" 
+        "c.data.datasets=c.data.datasets.filter(function(d){" 
+        "return d.label.indexOf('CVR')<0&&d.label.indexOf('ACOS')<0;});" 
+        "c.data.datasets.push({label:'CVR (%)',data:cv,borderColor:'#2688c9'," 
+        "backgroundColor:'rgba(38,136,201,0.06)',borderWidth:2," 
+        "pointRadius:0,tension:0.4,yAxisID:'y2'});" 
+        "c.data.datasets.push({label:'ACOS (%)',data:ac,borderColor:'#f59e0b'," 
+        "backgroundColor:'rgba(245,158,11,0.06)',borderWidth:2," 
+        "pointRadius:0,tension:0.4,yAxisID:'y2'});" 
+        "if(c.options.scales&&!c.options.scales.y2)" 
+        "c.options.scales.y2={position:'right',display:true," 
+        "ticks:{font:{size:9},callback:function(v){return v+'%';}}," 
+        "grid:{display:false}};" 
+        "else if(c.options.scales&&c.options.scales.y2)" 
+        "c.options.scales.y2.display=true;" 
+        "c.update('none');});},1500);})();" 
+    )
+    html = html.replace('</body>', '<script>' + _cvr_js + '</script>\n</body>', 1)
+
     index_path.write_text(html, encoding="utf-8")
     print("Wrote docs/index.html (" + str(len(html)) + " chars)")
 
