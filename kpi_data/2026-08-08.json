@@ -1,18 +1,18 @@
 {
   "date": "2026-08-08",
-  "pulled_at": "2026-08-08T07:00:38.769918",
-  "orders_today": 38,
-  "revenue_today": 866.99,
+  "pulled_at": "2026-08-08T08:48:09.821585",
+  "orders_today": 45,
+  "revenue_today": 1015.07,
   "units_ordered": 82,
   "finance": {
     "total_sales": 1412.21,
     "total_fees": 537.5
   },
   "sku_units": {
-    "LR-TSC-30PACK": 22,
-    "LR-CS-10": 8,
-    "LR-TSC-5PACK": 4,
-    "LR-CS-30": 7
+    "LR-TSC-30PACK": 26,
+    "LR-CS-10": 9,
+    "LR-TSC-5PACK": 5,
+    "LR-CS-30": 8
   },
   "fba_inventory": {
     "0N-C5DX-S7RX": {
@@ -23,9 +23,9 @@
       "unfulfillable": 0
     },
     "3Z-3J64-NT0U": {
-      "fulfillable": 846,
+      "fulfillable": 848,
       "inbound": 154,
-      "reserved": 415,
+      "reserved": 409,
       "researching": 6,
       "unfulfillable": 7
     },
@@ -46,7 +46,7 @@
     "LR-CS-10": {
       "fulfillable": 1029,
       "inbound": 0,
-      "reserved": 48,
+      "reserved": 44,
       "researching": 5,
       "unfulfillable": 5
     },
@@ -58,21 +58,21 @@
       "unfulfillable": 0
     },
     "LR-CS-30": {
-      "fulfillable": 635,
+      "fulfillable": 634,
       "inbound": 0,
       "reserved": 19,
       "researching": 0,
       "unfulfillable": 4
     },
     "LR-TSC-30PACK": {
-      "fulfillable": 846,
+      "fulfillable": 848,
       "inbound": 154,
-      "reserved": 415,
+      "reserved": 409,
       "researching": 6,
       "unfulfillable": 7
     },
     "LR-TSC-5PACK": {
-      "fulfillable": 193,
+      "fulfillable": 192,
       "inbound": 0,
       "reserved": 17,
       "researching": 3,
@@ -167,7 +167,7 @@
   "units_30d": 2299,
   "days_30d": 29,
   "ads_metrics": {},
-  "ads_debug": "profiles 401: {\"code\":\"UNAUTHORIZED\",\"details\":\"HTTP 401 Unauthorized\",\"requestId\":\"KT9EXWTV3D1AYKMH607J\"}",
+  "ads_debug": "profiles 401: {\"code\":\"UNAUTHORIZED\",\"details\":\"HTTP 401 Unauthorized\",\"requestId\":\"BT6ZVMBDG7DN56MZ1NK3\"}",
   "cvr_30d": null,
   "sessions_30d": null,
   "cvr_debug": "create_403:{\n  \"errors\": [\n    {\n      \"code\": \"Unauthorized\",\n      \"message\": \"Access to the resource is forbidden\",\n      \"details\": \"\"\n    }\n  ]\n}",
