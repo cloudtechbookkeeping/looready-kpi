@@ -291,6 +291,31 @@ def write_docs(html, status):
     write_history()
 
 
+def backfill_history():
+    """Propagate most recent non-null cvr/acos backward through kpi_history.json."""
+    hist_path = DOCS_DIR / "kpi_history.json"
+    if not hist_path.exists():
+        return
+    with open(hist_path, encoding="utf-8") as f:
+        history = json.load(f)
+    last_cvr = next((h["cvr"] for h in reversed(history) if h.get("cvr") is not None), None)
+    last_acos = next((h["acos"] for h in reversed(history) if h.get("acos") is not None), None)
+    if last_cvr is None and last_acos is None:
+        return
+    changed = False
+    for h in history:
+        if last_cvr is not None and h.get("cvr") is None:
+            h["cvr"] = last_cvr
+            changed = True
+        if last_acos is not None and h.get("acos") is None:
+            h["acos"] = last_acos
+            changed = True
+    if changed:
+        with open(hist_path, "w", encoding="utf-8") as f:
+            json.dump(history, f)
+        print("Backfilled cvr/acos in kpi_history.json")
+
+
 if __name__ == "__main__":
     print("=== START ===")
     data = load_today_data()
@@ -299,6 +324,7 @@ if __name__ == "__main__":
         print("History-only mode: writing kpi_history.json without rebuilding index.html")
         DOCS_DIR.mkdir(exist_ok=True)
         write_history()
+        backfill_history()
         status = {"run": datetime.datetime.utcnow().isoformat(), "note": "history-only backfill run"}
         (DOCS_DIR / "status.json").write_text(json.dumps(status, indent=2), encoding="utf-8")
         print("=== DONE (history only) ===")
@@ -311,6 +337,7 @@ if __name__ == "__main__":
         }
         try:
             write_docs(html, status)
+            backfill_history()
         except Exception as e:
             print("ERROR: " + str(e))
             traceback.print_exc()
