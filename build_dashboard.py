@@ -282,34 +282,32 @@ def write_docs(html, status):
     DOCS_DIR.mkdir(exist_ok=True)
     index_path = DOCS_DIR / "index.html"
     _cvr_js = (
-        "(function(){setTimeout(function(){" 
-        "var c=window.__perfChart;" 
-        "if(!c)try{Object.values(Chart.instances).forEach(function(i){" 
-        "if(i.canvas&&i.canvas.id==='performanceChart')c=i;});}catch(e){}" 
-        "if(!c)return;" 
-        "fetch('kpi_history.json').then(function(r){return r.json();})" 
-        ".then(function(h){" 
-        "var l=h.slice(-30);" 
-        "var cv=l.map(function(x){return x.cvr!=null?+x.cvr:null;});" 
-        "var ac=l.map(function(x){return x.acos!=null?+x.acos:null;});" 
-        "c.data.datasets=c.data.datasets.filter(function(d){" 
-        "return d.label.indexOf('CVR')<0&&d.label.indexOf('ACOS')<0;});" 
-        "c.data.datasets.push({label:'CVR (%)',data:cv,borderColor:'#2688c9'," 
-        "backgroundColor:'rgba(38,136,201,0.06)',borderWidth:2," 
-        "pointRadius:0,tension:0.4,yAxisID:'y2'});" 
-        "c.data.datasets.push({label:'ACOS (%)',data:ac,borderColor:'#f59e0b'," 
-        "backgroundColor:'rgba(245,158,11,0.06)',borderWidth:2," 
-        "pointRadius:0,tension:0.4,yAxisID:'y2'});" 
-        "if(c.options.scales&&!c.options.scales.y2)" 
-        "c.options.scales.y2={position:'right',display:true," 
-        "ticks:{font:{size:9},callback:function(v){return v+'%';}}," 
-        "grid:{display:false}};" 
-        "else if(c.options.scales&&c.options.scales.y2)" 
-        "c.options.scales.y2.display=true;" 
-        "c.update('none');});},1500);})();" 
+        "(function(){setTimeout(function(){"
+        "var c=window.__perfChart;"
+        "if(!c)try{Object.values(Chart.instances).forEach(function(i){"
+        "if(i.canvas&&i.canvas.id==='performanceChart')c=i;});}catch(e){}"
+        "if(!c)return;"
+        "fetch('kpi_history.json').then(function(r){return r.json();})"
+        ".then(function(h){"
+        "var l=h.slice(-30);"
+        "var cv=l.map(function(x){return x.cvr!=null?+x.cvr:null;});"
+        "var ac=l.map(function(x){return x.acos!=null?+x.acos:null;});"
+        "c.data.datasets=c.data.datasets.filter(function(d){"
+        "return d.label.indexOf('CVR')<0&&d.label.indexOf('ACOS')<0;});"
+        "c.data.datasets.push({label:'CVR (%)',data:cv,borderColor:'#2688c9',"
+        "backgroundColor:'rgba(38,136,201,0.08)',borderWidth:2,pointRadius:2,"
+        "tension:0.4,yAxisID:'y2',spanGaps:true});"
+        "c.data.datasets.push({label:'ACOS (%)',data:ac,borderColor:'#f59e0b',"
+        "backgroundColor:'rgba(245,158,11,0.08)',borderWidth:2,pointRadius:2,"
+        "tension:0.4,yAxisID:'y3',spanGaps:true});"
+        "if(c.options.scales){"
+        "c.options.scales.y2={position:'right',display:true,min:0,suggestedMax:25,"
+        "ticks:{font:{size:9},color:'#2688c9',callback:function(v){return v+'%';}},grid:{display:false}};"
+        "c.options.scales.y3={position:'right',display:false,min:0,suggestedMax:200,"
+        "ticks:{font:{size:9},color:'#f59e0b',callback:function(v){return v+'%';}},grid:{display:false}};}"
+        "c.update('none');});},1500);})();"
     )
     html = html.replace('</body>', '<script>' + _cvr_js + '</script>\n</body>', 1)
-
     index_path.write_text(html, encoding="utf-8")
     print("Wrote docs/index.html (" + str(len(html)) + " chars)")
 
@@ -320,41 +318,34 @@ def write_docs(html, status):
     write_history()
 
 
-def backfill_history():
-    """Propagate most recent non-null cvr/acos backward through kpi_history.json."""
+def reset_historical_cvr_acos(cutoff="2026-08-08"):
+    """Null-out cvr/acos for history entries before cutoff (removes backfilled data)."""
     hist_path = DOCS_DIR / "kpi_history.json"
     if not hist_path.exists():
         return
     with open(hist_path, encoding="utf-8") as f:
         history = json.load(f)
-    last_cvr = next((h["cvr"] for h in reversed(history) if h.get("cvr") is not None), None)
-    last_acos = next((h["acos"] for h in reversed(history) if h.get("acos") is not None), None)
-    if last_cvr is None and last_acos is None:
-        return
     changed = False
     for h in history:
-        if last_cvr is not None and h.get("cvr") is None:
-            h["cvr"] = last_cvr
-            changed = True
-        if last_acos is not None and h.get("acos") is None:
-            h["acos"] = last_acos
-            changed = True
+        if h.get("date", "") < cutoff:
+            if h.get("cvr") is not None or h.get("acos") is not None:
+                h["cvr"] = None
+                h["acos"] = None
+                changed = True
     if changed:
         with open(hist_path, "w", encoding="utf-8") as f:
             json.dump(history, f)
-        print("Backfilled cvr/acos in kpi_history.json")
+        print("Reset cvr/acos to null for entries before " + cutoff)
 
 
 if __name__ == "__main__":
     print("=== START ===")
     data = load_today_data()
     if data is None:
-        # No today data — backfill run: just regenerate kpi_history.json
         print("History-only mode: writing kpi_history.json without rebuilding index.html")
         DOCS_DIR.mkdir(exist_ok=True)
         write_history()
-        backfill_history()
-        status = {"run": datetime.datetime.utcnow().isoformat(), "note": "history-only backfill run"}
+        status = {"run": datetime.datetime.utcnow().isoformat(), "note": "history-only run"}
         (DOCS_DIR / "status.json").write_text(json.dumps(status, indent=2), encoding="utf-8")
         print("=== DONE (history only) ===")
     else:
@@ -365,10 +356,10 @@ if __name__ == "__main__":
             "n1": n1, "n2": n2, "n3": n3,
         }
         try:
+            reset_historical_cvr_acos()
             write_docs(html, status)
-            backfill_history()
         except Exception as e:
             print("ERROR: " + str(e))
+            import traceback
             traceback.print_exc()
-            sys.exit(1)
-        print("=== DONE ===")
+    print("=== DONE ===")
