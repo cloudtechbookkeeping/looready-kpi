@@ -14,8 +14,8 @@ jobs:
     steps:
       - name: Exchange code for refresh token
         env:
-          AMAZON_CLIENT_ID: ${{ secrets.AMAZON_CLIENT_ID }}
-          AMAZON_CLIENT_SECRET: ${{ secrets.AMAZON_CLIENT_SECRET }}
+          AMAZON_ADS_CLIENT_ID: ${{ secrets.AMAZON_ADS_CLIENT_ID }}
+          AMAZON_ADS_CLIENT_SECRET: ${{ secrets.AMAZON_ADS_CLIENT_SECRET }}
           AUTH_CODE: ${{ inputs.auth_code }}
         run: |
           import requests, os, json
@@ -24,8 +24,8 @@ jobs:
               data={
                   'grant_type': 'authorization_code',
                   'code': os.environ['AUTH_CODE'],
-                  'client_id': os.environ['AMAZON_CLIENT_ID'],
-                  'client_secret': os.environ['AMAZON_CLIENT_SECRET'],
+                  'client_id': os.environ['AMAZON_ADS_CLIENT_ID'],
+                  'client_secret': os.environ['AMAZON_ADS_CLIENT_SECRET'],
                   'redirect_uri': 'https://developer.amazon.com/dashboard',
               }
           )
