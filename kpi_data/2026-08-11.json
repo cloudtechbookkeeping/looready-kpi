@@ -1,0 +1,183 @@
+{
+  "date": "2026-08-11",
+  "pulled_at": "2026-08-11T02:02:54.567552",
+  "orders_today": 34,
+  "revenue_today": 797.08,
+  "units_ordered": 103,
+  "finance": {
+    "total_sales": 1021.45,
+    "total_fees": 409.6
+  },
+  "sku_units": {
+    "LR-TSC-30PACK": 23,
+    "LR-TSC-5PACK": 3,
+    "LR-CS-10": 6,
+    "LR-CS-30": 5
+  },
+  "fba_inventory": {
+    "0N-C5DX-S7RX": {
+      "fulfillable": 0,
+      "inbound": 0,
+      "reserved": 0,
+      "researching": 0,
+      "unfulfillable": 0
+    },
+    "3Z-3J64-NT0U": {
+      "fulfillable": 767,
+      "inbound": 134,
+      "reserved": 872,
+      "researching": 5,
+      "unfulfillable": 7
+    },
+    "DogSmall": {
+      "fulfillable": 0,
+      "inbound": 0,
+      "reserved": 0,
+      "researching": 0,
+      "unfulfillable": 0
+    },
+    "JS-6SR9-1J8B": {
+      "fulfillable": 0,
+      "inbound": 0,
+      "reserved": 0,
+      "researching": 0,
+      "unfulfillable": 0
+    },
+    "LR-CS-10": {
+      "fulfillable": 966,
+      "inbound": 0,
+      "reserved": 918,
+      "researching": 4,
+      "unfulfillable": 6
+    },
+    "LR-CS-120": {
+      "fulfillable": 137,
+      "inbound": 0,
+      "reserved": 10,
+      "researching": 0,
+      "unfulfillable": 0
+    },
+    "LR-CS-30": {
+      "fulfillable": 587,
+      "inbound": 0,
+      "reserved": 55,
+      "researching": 0,
+      "unfulfillable": 5
+    },
+    "LR-TSC-30PACK": {
+      "fulfillable": 767,
+      "inbound": 134,
+      "reserved": 872,
+      "researching": 5,
+      "unfulfillable": 7
+    },
+    "LR-TSC-5PACK": {
+      "fulfillable": 23,
+      "inbound": 0,
+      "reserved": 169,
+      "researching": 3,
+      "unfulfillable": 1
+    },
+    "LR-TSC-CS-10PACK": {
+      "fulfillable": 0,
+      "inbound": 0,
+      "reserved": 0,
+      "researching": 0,
+      "unfulfillable": 0
+    },
+    "LR-TSC-CS-120PACK": {
+      "fulfillable": 0,
+      "inbound": 0,
+      "reserved": 0,
+      "researching": 0,
+      "unfulfillable": 0
+    },
+    "LR-TSC-CS-30PACK": {
+      "fulfillable": 0,
+      "inbound": 0,
+      "reserved": 0,
+      "researching": 0,
+      "unfulfillable": 0
+    },
+    "MX-Q396-ZY7L": {
+      "fulfillable": 0,
+      "inbound": 0,
+      "reserved": 0,
+      "researching": 0,
+      "unfulfillable": 0
+    },
+    "Stickered.MSKU.1770318071325": {
+      "fulfillable": 0,
+      "inbound": 0,
+      "reserved": 0,
+      "researching": 0,
+      "unfulfillable": 0
+    },
+    "Stickered.MSKU.1770326263517": {
+      "fulfillable": 0,
+      "inbound": 0,
+      "reserved": 0,
+      "researching": 0,
+      "unfulfillable": 0
+    }
+  },
+  "awd_inventory": {
+    "LR-CS-10": {
+      "onhand": 1296,
+      "inbound": 0,
+      "outbound": 0
+    },
+    "LR-CS-120": {
+      "onhand": 348,
+      "inbound": 0,
+      "outbound": 0
+    },
+    "LR-CS-30": {
+      "onhand": 5076,
+      "inbound": 0,
+      "outbound": 0
+    },
+    "LR-TSC-30PACK": {
+      "onhand": 1790,
+      "inbound": 0,
+      "outbound": 0
+    },
+    "LR-TSC-5PACK": {
+      "onhand": 1050,
+      "inbound": 0,
+      "outbound": 0
+    }
+  },
+  "sku_units_7d": {
+    "LR-TSC-30PACK": 261,
+    "LR-TSC-5PACK": 52,
+    "LR-CS-10": 130,
+    "LR-CS-30": 85
+  },
+  "revenue_7d": 10567.62,
+  "orders_7d": 501,
+  "sku_units_30d": {
+    "LR-CS-30": 340,
+    "LR-TSC-30PACK": 1022,
+    "LR-CS-10": 767,
+    "LR-TSC-5PACK": 165
+  },
+  "revenue_30d": 41299.29,
+  "orders_30d": 1990,
+  "units_30d": 2323,
+  "days_30d": 29,
+  "ads_metrics": {
+    "clicks_30d": 5695,
+    "ad_orders_30d": 643,
+    "ad_spend_30d": 10709.88,
+    "ad_sales_30d": 11403.09,
+    "cvr_30d": 11.29,
+    "acos_30d": 93.92
+  },
+  "ads_debug": "ok",
+  "cvr_30d": null,
+  "sessions_30d": null,
+  "cvr_debug": "create_403:{\n  \"errors\": [\n    {\n      \"code\": \"Unauthorized\",\n      \"message\": \"Access to the resource is forbidden\",\n      \"details\": \"\"\n    }\n  ]\n}",
+  "ads_spend_30d": 14743.89,
+  "acos_30d": 35.7
+}
