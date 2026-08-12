@@ -318,7 +318,8 @@ def write_docs(html, status):
         "t.setAttribute('data-ds',String(acosIdx));"
         "t.classList.remove('perf-no-chart');"
         "t.title='Click to show/hide on chart';}});"
-        "c.update('none');"
+        ""if(c.options.plugins&&c.options.plugins.legend)c.options.plugins.legend.display=false;"
+     c.update('none');"
         "}).catch(function(){});"
         "},1500);})();"
     )
