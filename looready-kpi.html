@@ -2122,7 +2122,7 @@ function expandPerfChart() {
       options: {
         responsive: true, maintainAspectRatio: false,
         interaction: { mode: 'index', intersect: false },
-        plugins: { legend: { display: true, position: 'top', labels: { boxWidth: 10, font: { size: 10 } } } },
+        plugins: { legend: { display: false, position: 'top', labels: { boxWidth: 10, font: { size: 10 } } } },
         scales: {
           x: { ticks: { font: { size: 9 }, maxRotation: 45 }, grid: { display: false } },
           y: { position: 'left', ticks: { font: { size: 9 }, callback: function(v) { return '$' + v.toLocaleString(); } }, grid: { color: '#f3f4f6' } },
