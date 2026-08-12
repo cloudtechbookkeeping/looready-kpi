@@ -645,7 +645,7 @@ aside.sidebar.collapsed {
       <div class="live-dot"></div>
       <div>
         <span class="live-label">Live</span>
-        <span class="live-time">Updated August 12, 2026<br>12:52 AM ET</span>
+        <span class="live-time">Updated August 12, 2026<br>2:19 AM ET</span>
       </div>
     </div>
   </div>
@@ -678,7 +678,7 @@ aside.sidebar.collapsed {
 <!-- ══════════════ DASHBOARD SECTION ══════════════ -->
 <div id="section-dashboard" class="section active">
 
-  <div class="updated-line">Data snapshot: August 12, 2026 12:52 AM ET · SP-API live pull</div>
+  <div class="updated-line">Data snapshot: August 12, 2026 2:19 AM ET · SP-API live pull</div>
 
   <!-- 1st + 2nd: Profit Breakdown + Inventory Health -->
   <div class="grid-2-eq mb-20">
@@ -696,15 +696,15 @@ aside.sidebar.collapsed {
         </div>
         <div class="mini-stat">
           <span class="mini-stat-label">LR-TSC-30PACK</span>
-          <span class="mini-stat-val" id="inv-30pack">3,497 units</span>
+          <span class="mini-stat-val" id="inv-30pack">3,464 units</span>
         </div>
         <div class="mini-stat">
           <span class="mini-stat-label">LR-CS-10</span>
-          <span class="mini-stat-val" id="inv-cs10">3,053 units</span>
+          <span class="mini-stat-val" id="inv-cs10">3,050 units</span>
         </div>
         <div class="mini-stat">
           <span class="mini-stat-label">LR-CS-30</span>
-          <span class="mini-stat-val" id="inv-cs30">5,687 units</span>
+          <span class="mini-stat-val" id="inv-cs30">5,683 units</span>
         </div>
         <div class="mini-stat">
           <span class="mini-stat-label">LR-TSC-5PACK</span>
@@ -1333,13 +1333,13 @@ aside.sidebar.collapsed {
 
 <script>
 // ── Inventory Data ──────────────────────────────────────────────
-const inventoryData = {'LR-TSC-30PACK':{fba:{fulfillable:771,inbound:125,reserved:878,researching:4,unfulfillable:9},awd:{onhand:1710,inbound:0,outbound:0}},'LR-CS-10':{fba:{fulfillable:943,inbound:0,reserved:910,researching:5,unfulfillable:7},awd:{onhand:1188,inbound:0,outbound:0}},'LR-CS-30':{fba:{fulfillable:573,inbound:0,reserved:59,researching:1,unfulfillable:5},awd:{onhand:5049,inbound:0,outbound:0}},'LR-TSC-5PACK':{fba:{fulfillable:20,inbound:0,reserved:170,researching:3,unfulfillable:1},awd:{onhand:900,inbound:0,outbound:0}},'LR-CS-120':{fba:{fulfillable:140,inbound:0,reserved:151,researching:0,unfulfillable:0},awd:{onhand:348,inbound:0,outbound:0}}};
+const inventoryData = {'LR-TSC-30PACK':{fba:{fulfillable:771,inbound:100,reserved:895,researching:4,unfulfillable:9},awd:{onhand:1685,inbound:0,outbound:0}},'LR-CS-10':{fba:{fulfillable:943,inbound:0,reserved:907,researching:5,unfulfillable:7},awd:{onhand:1188,inbound:0,outbound:0}},'LR-CS-30':{fba:{fulfillable:572,inbound:0,reserved:56,researching:1,unfulfillable:5},awd:{onhand:5049,inbound:0,outbound:0}},'LR-TSC-5PACK':{fba:{fulfillable:20,inbound:0,reserved:170,researching:3,unfulfillable:1},awd:{onhand:900,inbound:0,outbound:0}},'LR-CS-120':{fba:{fulfillable:140,inbound:0,reserved:151,researching:0,unfulfillable:0},awd:{onhand:348,inbound:0,outbound:0}}};
 
 // ── Tab Switching Data ──────────────────────────────────────────
 const tabData = {
   '30d': { revenue:'$41,568.00', units:'2320', spend:'$14,237', acos:'34.25%', cvr:'11.19%', sessions:'--', ipi:'628', rsub:'Last 30 Days · SP-API live', usub:'1994 orders . 2320 units', ssub:'ROAS 2.92x · 30d', asub:'Not yet available', sesub:'11.19% CVR · -- sessions', isub:'Range 570-686', acosColor:'#ef4444', skuUnits:{'LR-TSC-30PACK':1035,'LR-CS-10':747,'LR-CS-30':333,'LR-TSC-5PACK':168,'LR-CS-120':0}, days30d:29 }, /* 30D_KPI_PLACEHOLDER */
   '7d':  { revenue:'$10,439.97', units:'514', spend:'$14,237', acos:'34.25%', cvr:'11.19%', sessions:'--', ipi:'628', rsub:'Last 7 Days · SP-API live', usub:'487 orders . 514 units', ssub:'ROAS 2.92x · 30d', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#ef4444', skuUnits:{'LR-TSC-30PACK':268,'LR-CS-10':125,'LR-CS-30':78,'LR-TSC-5PACK':43,'LR-CS-120':0} }, /* 7D_KPI_PLACEHOLDER */
-  'today': { revenue:'$974.68', units:'46', spend:'$14,237', acos:'34.25%', cvr:'11.19%', sessions:'--', ipi:'628', rsub:'Today August 12, 2026 12:52 AM ET . SP-API live', usub:'39 orders . 95 units . Fees $633.74', ssub:'ROAS 2.92x · 30d', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#ef4444', skuUnits:{'LR-TSC-30PACK':30,'LR-CS-10':13,'LR-CS-30':3,'LR-TSC-5PACK':0,'LR-CS-120':0} }, /* TODAY_KPI_PLACEHOLDER */
+  'today': { revenue:'$1,131.89', units:'54', spend:'$14,237', acos:'34.25%', cvr:'11.19%', sessions:'--', ipi:'628', rsub:'Today August 12, 2026 2:19 AM ET . SP-API live', usub:'47 orders . 95 units . Fees $633.74', ssub:'ROAS 2.92x · 30d', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#ef4444', skuUnits:{'LR-TSC-30PACK':33,'LR-CS-10':16,'LR-CS-30':5,'LR-TSC-5PACK':0,'LR-CS-120':0} }, /* TODAY_KPI_PLACEHOLDER */
   'lifetime': { revenue:'$439,795', units:'20,748', spend:'$226,449', acos:'51.5%', sessions:'187,331', ipi:'628',
                rsub:'Lifetime Ad Sales (all campaigns)', usub:'Lifetime ad purchases', ssub:'Lifetime total spend', asub:'Lifetime avg ACOS', sesub:'Lifetime ad clicks', isub:'Range 570–686',
                acosColor:'#d97706' },
