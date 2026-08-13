@@ -1,6 +1,6 @@
 {
   "date": "2026-08-13",
-  "pulled_at": "2026-08-13T22:49:02.221946",
+  "pulled_at": "2026-08-13T23:46:35.407111",
   "orders_today": 75,
   "revenue_today": 1664.83,
   "units_ordered": 78,
@@ -44,9 +44,9 @@
       "unfulfillable": 0
     },
     "LR-CS-10": {
-      "fulfillable": 1068,
+      "fulfillable": 1070,
       "inbound": 0,
-      "reserved": 781,
+      "reserved": 779,
       "researching": 0,
       "unfulfillable": 8
     },
@@ -72,9 +72,9 @@
       "unfulfillable": 9
     },
     "LR-TSC-5PACK": {
-      "fulfillable": 162,
+      "fulfillable": 161,
       "inbound": 0,
-      "reserved": 20,
+      "reserved": 21,
       "researching": 3,
       "unfulfillable": 1
     },
