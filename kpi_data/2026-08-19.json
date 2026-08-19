@@ -1,6 +1,6 @@
 {
   "date": "2026-08-19",
-  "pulled_at": "2026-08-19T14:38:05.377271",
+  "pulled_at": "2026-08-19T15:36:01.759503",
   "orders_today": 53,
   "revenue_today": 1279.83,
   "units_ordered": 83,
@@ -25,8 +25,8 @@
     "3Z-3J64-NT0U": {
       "fulfillable": 776,
       "inbound": 80,
-      "reserved": 1170,
-      "researching": 5,
+      "reserved": 1171,
+      "researching": 4,
       "unfulfillable": 6
     },
     "DogSmall": {
@@ -44,9 +44,9 @@
       "unfulfillable": 0
     },
     "LR-CS-10": {
-      "fulfillable": 1097,
+      "fulfillable": 1095,
       "inbound": 1,
-      "reserved": 632,
+      "reserved": 634,
       "researching": 0,
       "unfulfillable": 3
     },
@@ -58,17 +58,17 @@
       "unfulfillable": 0
     },
     "LR-CS-30": {
-      "fulfillable": 500,
+      "fulfillable": 498,
       "inbound": 0,
-      "reserved": 88,
+      "reserved": 90,
       "researching": 1,
       "unfulfillable": 4
     },
     "LR-TSC-30PACK": {
       "fulfillable": 776,
       "inbound": 80,
-      "reserved": 1170,
-      "researching": 5,
+      "reserved": 1171,
+      "researching": 4,
       "unfulfillable": 6
     },
     "LR-TSC-5PACK": {
