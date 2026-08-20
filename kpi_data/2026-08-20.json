@@ -1,17 +1,17 @@
 {
   "date": "2026-08-20",
-  "pulled_at": "2026-08-20T08:44:11.191617",
-  "orders_today": 41,
-  "revenue_today": 925.57,
+  "pulled_at": "2026-08-20T09:38:43.270040",
+  "orders_today": 49,
+  "revenue_today": 1100.61,
   "units_ordered": 66,
   "finance": {
     "total_sales": 1728.13,
     "total_fees": 625.01
   },
   "sku_units": {
-    "LR-TSC-30PACK": 26,
-    "LR-CS-10": 11,
-    "LR-CS-30": 6
+    "LR-TSC-30PACK": 30,
+    "LR-CS-10": 13,
+    "LR-CS-30": 8
   },
   "fba_inventory": {
     "0N-C5DX-S7RX": {
@@ -24,7 +24,7 @@
     "3Z-3J64-NT0U": {
       "fulfillable": 756,
       "inbound": 160,
-      "reserved": 1184,
+      "reserved": 1180,
       "researching": 4,
       "unfulfillable": 6
     },
@@ -45,7 +45,7 @@
     "LR-CS-10": {
       "fulfillable": 1111,
       "inbound": 1,
-      "reserved": 606,
+      "reserved": 604,
       "researching": 0,
       "unfulfillable": 3
     },
@@ -59,14 +59,14 @@
     "LR-CS-30": {
       "fulfillable": 488,
       "inbound": 0,
-      "reserved": 92,
+      "reserved": 90,
       "researching": 1,
       "unfulfillable": 4
     },
     "LR-TSC-30PACK": {
       "fulfillable": 756,
       "inbound": 160,
-      "reserved": 1184,
+      "reserved": 1180,
       "researching": 4,
       "unfulfillable": 6
     },
