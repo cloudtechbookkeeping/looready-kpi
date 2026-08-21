@@ -1,6 +1,6 @@
 {
   "date": "2026-08-21",
-  "pulled_at": "2026-08-21T12:56:02.327081",
+  "pulled_at": "2026-08-21T13:50:50.254837",
   "orders_today": 71,
   "revenue_today": 1482.06,
   "units_ordered": 102,
@@ -44,11 +44,11 @@
       "unfulfillable": 0
     },
     "LR-CS-10": {
-      "fulfillable": 1089,
+      "fulfillable": 1086,
       "inbound": 1,
-      "reserved": 602,
+      "reserved": 605,
       "researching": 0,
-      "unfulfillable": 5
+      "unfulfillable": 6
     },
     "LR-CS-120": {
       "fulfillable": 290,
@@ -58,9 +58,9 @@
       "unfulfillable": 0
     },
     "LR-CS-30": {
-      "fulfillable": 480,
+      "fulfillable": 479,
       "inbound": 270,
-      "reserved": 80,
+      "reserved": 81,
       "researching": 1,
       "unfulfillable": 4
     },
