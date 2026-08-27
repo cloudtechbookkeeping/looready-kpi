@@ -1,18 +1,18 @@
 {
   "date": "2026-08-27",
-  "pulled_at": "2026-08-27T04:28:12.228975",
-  "orders_today": 32,
-  "revenue_today": 653.95,
+  "pulled_at": "2026-08-27T16:17:28.971517",
+  "orders_today": 56,
+  "revenue_today": 1171.03,
   "units_ordered": 95,
   "finance": {
     "total_sales": 1288.38,
     "total_fees": 523.3
   },
   "sku_units": {
-    "LR-TSC-30PACK": 19,
-    "LR-CS-10": 10,
-    "LR-TSC-5PACK": 2,
-    "LR-CS-30": 2
+    "LR-TSC-30PACK": 31,
+    "LR-CS-10": 22,
+    "LR-TSC-5PACK": 4,
+    "LR-CS-30": 5
   },
   "fba_inventory": {
     "0N-C5DX-S7RX": {
@@ -23,10 +23,10 @@
       "unfulfillable": 0
     },
     "3Z-3J64-NT0U": {
-      "fulfillable": 949,
-      "inbound": 160,
-      "reserved": 1005,
-      "researching": 4,
+      "fulfillable": 998,
+      "inbound": 110,
+      "reserved": 966,
+      "researching": 3,
       "unfulfillable": 1
     },
     "DogSmall": {
@@ -44,9 +44,9 @@
       "unfulfillable": 0
     },
     "LR-CS-10": {
-      "fulfillable": 1238,
+      "fulfillable": 1243,
       "inbound": 1,
-      "reserved": 344,
+      "reserved": 218,
       "researching": 0,
       "unfulfillable": 4
     },
@@ -58,25 +58,25 @@
       "unfulfillable": 0
     },
     "LR-CS-30": {
-      "fulfillable": 437,
-      "inbound": 189,
-      "reserved": 313,
+      "fulfillable": 439,
+      "inbound": 0,
+      "reserved": 497,
       "researching": 1,
       "unfulfillable": 4
     },
     "LR-TSC-30PACK": {
-      "fulfillable": 949,
-      "inbound": 160,
-      "reserved": 1005,
-      "researching": 4,
+      "fulfillable": 998,
+      "inbound": 110,
+      "reserved": 966,
+      "researching": 3,
       "unfulfillable": 1
     },
     "LR-TSC-5PACK": {
-      "fulfillable": 269,
+      "fulfillable": 270,
       "inbound": 0,
-      "reserved": 7,
-      "researching": 2,
-      "unfulfillable": 2
+      "reserved": 5,
+      "researching": 1,
+      "unfulfillable": 3
     },
     "LR-TSC-CS-10PACK": {
       "fulfillable": 0,
@@ -138,7 +138,7 @@
       "outbound": 0
     },
     "LR-TSC-30PACK": {
-      "onhand": 770,
+      "onhand": 745,
       "inbound": 1050,
       "outbound": 0
     },
