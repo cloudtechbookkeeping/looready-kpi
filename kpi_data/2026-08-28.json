@@ -1,18 +1,18 @@
 {
   "date": "2026-08-28",
-  "pulled_at": "2026-08-28T14:11:10.299176",
-  "orders_today": 58,
-  "revenue_today": 1398.11,
+  "pulled_at": "2026-08-28T23:57:35.659206",
+  "orders_today": 79,
+  "revenue_today": 1861.82,
   "units_ordered": 86,
   "finance": {
     "total_sales": 1597.18,
     "total_fees": 581.92
   },
   "sku_units": {
-    "LR-CS-10": 25,
-    "LR-TSC-30PACK": 35,
-    "LR-TSC-5PACK": 3,
-    "LR-CS-30": 8
+    "LR-CS-10": 30,
+    "LR-TSC-30PACK": 47,
+    "LR-TSC-5PACK": 4,
+    "LR-CS-30": 12
   },
   "fba_inventory": {
     "0N-C5DX-S7RX": {
@@ -23,10 +23,10 @@
       "unfulfillable": 0
     },
     "3Z-3J64-NT0U": {
-      "fulfillable": 999,
+      "fulfillable": 989,
       "inbound": 110,
-      "reserved": 921,
-      "researching": 3,
+      "reserved": 918,
+      "researching": 2,
       "unfulfillable": 0
     },
     "DogSmall": {
@@ -44,9 +44,9 @@
       "unfulfillable": 0
     },
     "LR-CS-10": {
-      "fulfillable": 1287,
+      "fulfillable": 1274,
       "inbound": 5,
-      "reserved": 149,
+      "reserved": 159,
       "researching": 0,
       "unfulfillable": 4
     },
@@ -58,23 +58,23 @@
       "unfulfillable": 0
     },
     "LR-CS-30": {
-      "fulfillable": 431,
+      "fulfillable": 428,
       "inbound": 0,
-      "reserved": 492,
+      "reserved": 490,
       "researching": 1,
-      "unfulfillable": 4
+      "unfulfillable": 3
     },
     "LR-TSC-30PACK": {
-      "fulfillable": 999,
+      "fulfillable": 989,
       "inbound": 110,
-      "reserved": 921,
-      "researching": 3,
+      "reserved": 918,
+      "researching": 2,
       "unfulfillable": 0
     },
     "LR-TSC-5PACK": {
-      "fulfillable": 264,
+      "fulfillable": 261,
       "inbound": 0,
-      "reserved": 8,
+      "reserved": 10,
       "researching": 1,
       "unfulfillable": 3
     },
@@ -133,12 +133,12 @@
       "outbound": 0
     },
     "LR-CS-30": {
-      "onhand": 5238,
+      "onhand": 5049,
       "inbound": 0,
       "outbound": 0
     },
     "LR-TSC-30PACK": {
-      "onhand": 745,
+      "onhand": 720,
       "inbound": 1050,
       "outbound": 0
     },
@@ -149,28 +149,35 @@
     }
   },
   "sku_units_7d": {
-    "LR-CS-10": 148,
-    "LR-TSC-5PACK": 31,
-    "LR-TSC-30PACK": 277,
-    "LR-CS-30": 73
+    "LR-CS-10": 166,
+    "LR-TSC-30PACK": 306,
+    "LR-TSC-5PACK": 34,
+    "LR-CS-30": 78
   },
-  "revenue_7d": 10595.67,
-  "orders_7d": 474,
+  "revenue_7d": 11745.16,
+  "orders_7d": 516,
   "sku_units_30d": {
-    "LR-TSC-30PACK": 1194,
-    "LR-CS-10": 621,
-    "LR-TSC-5PACK": 148,
-    "LR-CS-30": 355
+    "LR-CS-10": 617,
+    "LR-TSC-30PACK": 1178,
+    "LR-TSC-5PACK": 145,
+    "LR-CS-30": 350
   },
-  "revenue_30d": 45254.82,
-  "orders_30d": 2047,
-  "units_30d": 2399,
+  "revenue_30d": 45029.43,
+  "orders_30d": 2028,
+  "units_30d": 2388,
   "days_30d": 29,
-  "ads_metrics": {},
+  "ads_metrics": {
+    "clicks_30d": 5468,
+    "ad_orders_30d": 637,
+    "ad_spend_30d": 8782.05,
+    "ad_sales_30d": 13728.08,
+    "cvr_30d": 11.65,
+    "acos_30d": 63.97
+  },
   "ads_debug": "ok",
   "cvr_30d": null,
   "sessions_30d": null,
   "cvr_debug": "create_403:{\n  \"errors\": [\n    {\n      \"code\": \"Unauthorized\",\n      \"message\": \"Access to the resource is forbidden\",\n      \"details\": \"\"\n    }\n  ]\n}",
-  "ads_spend_30d": 13133.51,
-  "acos_30d": 29.02
+  "ads_spend_30d": 12632.68,
+  "acos_30d": 28.05
 }
