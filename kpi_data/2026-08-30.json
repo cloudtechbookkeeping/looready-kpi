@@ -1,18 +1,18 @@
 {
   "date": "2026-08-30",
-  "pulled_at": "2026-08-30T10:24:03.186713",
-  "orders_today": 39,
-  "revenue_today": 821.26,
+  "pulled_at": "2026-08-30T15:16:40.327702",
+  "orders_today": 43,
+  "revenue_today": 895.12,
   "units_ordered": 81,
   "finance": {
     "total_sales": 1690.13,
     "total_fees": 608.79
   },
   "sku_units": {
-    "LR-TSC-30PACK": 17,
-    "LR-CS-10": 20,
+    "LR-TSC-30PACK": 18,
+    "LR-CS-10": 22,
     "LR-TSC-5PACK": 4,
-    "LR-CS-30": 6
+    "LR-CS-30": 7
   },
   "fba_inventory": {
     "0N-C5DX-S7RX": {
@@ -23,9 +23,9 @@
       "unfulfillable": 0
     },
     "3Z-3J64-NT0U": {
-      "fulfillable": 1115,
-      "inbound": 265,
-      "reserved": 747,
+      "fulfillable": 1131,
+      "inbound": 235,
+      "reserved": 760,
       "researching": 2,
       "unfulfillable": 0
     },
@@ -44,8 +44,8 @@
       "unfulfillable": 0
     },
     "LR-CS-10": {
-      "fulfillable": 1333,
-      "inbound": 329,
+      "fulfillable": 1332,
+      "inbound": 328,
       "reserved": 70,
       "researching": 0,
       "unfulfillable": 4
@@ -58,23 +58,23 @@
       "unfulfillable": 0
     },
     "LR-CS-30": {
-      "fulfillable": 420,
+      "fulfillable": 419,
       "inbound": 54,
       "reserved": 483,
       "researching": 1,
       "unfulfillable": 3
     },
     "LR-TSC-30PACK": {
-      "fulfillable": 1115,
-      "inbound": 265,
-      "reserved": 747,
+      "fulfillable": 1131,
+      "inbound": 235,
+      "reserved": 760,
       "researching": 2,
       "unfulfillable": 0
     },
     "LR-TSC-5PACK": {
-      "fulfillable": 255,
+      "fulfillable": 256,
       "inbound": 0,
-      "reserved": 10,
+      "reserved": 9,
       "researching": 1,
       "unfulfillable": 3
     },
@@ -138,7 +138,7 @@
       "outbound": 0
     },
     "LR-TSC-30PACK": {
-      "onhand": 720,
+      "onhand": 690,
       "inbound": 1050,
       "outbound": 0
     },
@@ -166,7 +166,14 @@
   "orders_30d": 2000,
   "units_30d": 2401,
   "days_30d": 29,
-  "ads_metrics": {},
+  "ads_metrics": {
+    "clicks_30d": 5488,
+    "ad_orders_30d": 652,
+    "ad_spend_30d": 8804.99,
+    "ad_sales_30d": 14155.86,
+    "cvr_30d": 11.88,
+    "acos_30d": 62.2
+  },
   "ads_debug": "ok",
   "cvr_30d": null,
   "sessions_30d": null,
