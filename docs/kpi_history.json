@@ -2416,14 +2416,14 @@
   },
   {
     "date": "2026-09-04",
-    "revenue": 1351.0,
-    "orders": 58,
+    "revenue": 1404.93,
+    "orders": 62,
     "units": 74,
     "sku_units": {
-      "LR-TSC-30PACK": 37,
-      "LR-CS-10": 13,
+      "LR-TSC-30PACK": 38,
+      "LR-CS-10": 15,
       "LR-CS-30": 10,
-      "LR-TSC-5PACK": 4
+      "LR-TSC-5PACK": 5
     },
     "acos": null,
     "cvr": null,
