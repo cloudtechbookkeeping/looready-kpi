@@ -1,17 +1,17 @@
 {
   "date": "2026-09-07",
-  "pulled_at": "2026-09-07T15:38:51.651582",
-  "orders_today": 43,
-  "revenue_today": 962.78,
+  "pulled_at": "2026-09-07T19:43:44.563556",
+  "orders_today": 50,
+  "revenue_today": 1175.16,
   "units_ordered": 64,
   "finance": {
     "total_sales": 1520.18,
     "total_fees": 554.51
   },
   "sku_units": {
-    "LR-TSC-30PACK": 24,
-    "LR-CS-30": 9,
-    "LR-CS-10": 9,
+    "LR-TSC-30PACK": 30,
+    "LR-CS-30": 10,
+    "LR-CS-10": 12,
     "LR-TSC-5PACK": 2
   },
   "fba_inventory": {
@@ -23,9 +23,9 @@
       "unfulfillable": 0
     },
     "3Z-3J64-NT0U": {
-      "fulfillable": 1222,
+      "fulfillable": 1252,
       "inbound": 50,
-      "reserved": 742,
+      "reserved": 703,
       "researching": 1,
       "unfulfillable": 1
     },
@@ -44,10 +44,10 @@
       "unfulfillable": 0
     },
     "LR-CS-10": {
-      "fulfillable": 1316,
+      "fulfillable": 1318,
       "inbound": 2,
-      "reserved": 359,
-      "researching": 1,
+      "reserved": 355,
+      "researching": 0,
       "unfulfillable": 4
     },
     "LR-CS-120": {
@@ -58,23 +58,23 @@
       "unfulfillable": 0
     },
     "LR-CS-30": {
-      "fulfillable": 604,
+      "fulfillable": 600,
       "inbound": 2,
-      "reserved": 367,
-      "researching": 1,
+      "reserved": 369,
+      "researching": 0,
       "unfulfillable": 2
     },
     "LR-TSC-30PACK": {
-      "fulfillable": 1222,
+      "fulfillable": 1252,
       "inbound": 50,
-      "reserved": 742,
+      "reserved": 703,
       "researching": 1,
       "unfulfillable": 1
     },
     "LR-TSC-5PACK": {
-      "fulfillable": 82,
+      "fulfillable": 80,
       "inbound": 0,
-      "reserved": 291,
+      "reserved": 293,
       "researching": 1,
       "unfulfillable": 4
     },
@@ -133,12 +133,12 @@
       "outbound": 0
     },
     "LR-CS-30": {
-      "onhand": 4914,
+      "onhand": 4887,
       "inbound": 0,
       "outbound": 0
     },
     "LR-TSC-30PACK": {
-      "onhand": 615,
+      "onhand": 565,
       "inbound": 1050,
       "outbound": 0
     },
