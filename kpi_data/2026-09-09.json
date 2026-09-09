@@ -1,18 +1,18 @@
 {
   "date": "2026-09-09",
-  "pulled_at": "2026-09-09T17:43:04.920234",
-  "orders_today": 52,
-  "revenue_today": 1270.91,
+  "pulled_at": "2026-09-09T20:45:03.557829",
+  "orders_today": 58,
+  "revenue_today": 1374.61,
   "units_ordered": 55,
   "finance": {
     "total_sales": 1184.33,
     "total_fees": 489.17
   },
   "sku_units": {
-    "LR-CS-10": 9,
-    "LR-TSC-30PACK": 39,
-    "LR-CS-30": 6,
-    "LR-TSC-5PACK": 3
+    "LR-CS-10": 11,
+    "LR-TSC-30PACK": 41,
+    "LR-CS-30": 7,
+    "LR-TSC-5PACK": 4
   },
   "fba_inventory": {
     "0N-C5DX-S7RX": {
@@ -23,9 +23,9 @@
       "unfulfillable": 0
     },
     "3Z-3J64-NT0U": {
-      "fulfillable": 1241,
-      "inbound": 25,
-      "reserved": 657,
+      "fulfillable": 1244,
+      "inbound": 75,
+      "reserved": 649,
       "researching": 0,
       "unfulfillable": 1
     },
@@ -44,9 +44,9 @@
       "unfulfillable": 0
     },
     "LR-CS-10": {
-      "fulfillable": 1303,
+      "fulfillable": 1300,
       "inbound": 0,
-      "reserved": 349,
+      "reserved": 348,
       "researching": 1,
       "unfulfillable": 4
     },
@@ -60,21 +60,21 @@
     "LR-CS-30": {
       "fulfillable": 625,
       "inbound": 2,
-      "reserved": 330,
+      "reserved": 329,
       "researching": 0,
       "unfulfillable": 2
     },
     "LR-TSC-30PACK": {
-      "fulfillable": 1241,
-      "inbound": 25,
-      "reserved": 657,
+      "fulfillable": 1244,
+      "inbound": 75,
+      "reserved": 649,
       "researching": 0,
       "unfulfillable": 1
     },
     "LR-TSC-5PACK": {
-      "fulfillable": 223,
+      "fulfillable": 220,
       "inbound": 0,
-      "reserved": 147,
+      "reserved": 149,
       "researching": 0,
       "unfulfillable": 2
     },
@@ -166,7 +166,14 @@
   "orders_30d": 1967,
   "units_30d": 2288,
   "days_30d": 29,
-  "ads_metrics": {},
+  "ads_metrics": {
+    "clicks_30d": 5394,
+    "ad_orders_30d": 648,
+    "ad_spend_30d": 8706.9,
+    "ad_sales_30d": 14073.96,
+    "cvr_30d": 12.01,
+    "acos_30d": 61.87
+  },
   "ads_debug": "ok",
   "cvr_30d": null,
   "sessions_30d": null,
