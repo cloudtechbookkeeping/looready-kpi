@@ -2515,5 +2515,22 @@
     "ad_spend": null,
     "ad_clicks": null,
     "ad_orders": null
+  },
+  {
+    "date": "2026-09-10",
+    "revenue": 1173.15,
+    "orders": 47,
+    "units": 63,
+    "sku_units": {
+      "LR-TSC-30PACK": 29,
+      "LR-CS-30": 12,
+      "LR-CS-10": 11,
+      "LR-TSC-5PACK": 1
+    },
+    "acos": null,
+    "cvr": null,
+    "ad_spend": null,
+    "ad_clicks": null,
+    "ad_orders": null
   }
 ]
