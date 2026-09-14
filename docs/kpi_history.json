@@ -1847,7 +1847,7 @@
       "LR-TSC-5PACK": 4,
       "LR-CS-10": 24
     },
-    "acos": null,
+    "acos": 42.11,
     "cvr": null,
     "ad_spend": null,
     "ad_clicks": null,
@@ -1864,7 +1864,7 @@
       "LR-CS-10": 24,
       "LR-TSC-5PACK": 5
     },
-    "acos": null,
+    "acos": 42.69,
     "cvr": null,
     "ad_spend": null,
     "ad_clicks": null,
@@ -1881,7 +1881,7 @@
       "LR-TSC-5PACK": 7,
       "LR-CS-10": 10
     },
-    "acos": null,
+    "acos": 41.86,
     "cvr": null,
     "ad_spend": null,
     "ad_clicks": null,
@@ -1898,7 +1898,7 @@
       "LR-CS-30": 13,
       "LR-TSC-5PACK": 5
     },
-    "acos": null,
+    "acos": 40.36,
     "cvr": null,
     "ad_spend": null,
     "ad_clicks": null,
@@ -1915,7 +1915,7 @@
       "LR-CS-30": 13,
       "LR-TSC-5PACK": 11
     },
-    "acos": null,
+    "acos": 40.14,
     "cvr": null,
     "ad_spend": null,
     "ad_clicks": null,
@@ -1932,7 +1932,7 @@
       "LR-TSC-5PACK": 8,
       "LR-CS-30": 6
     },
-    "acos": null,
+    "acos": 39.92,
     "cvr": null,
     "ad_spend": null,
     "ad_clicks": null,
@@ -1949,7 +1949,7 @@
       "LR-TSC-5PACK": 9,
       "LR-CS-10": 20
     },
-    "acos": null,
+    "acos": 38.43,
     "cvr": null,
     "ad_spend": null,
     "ad_clicks": null,
@@ -1966,7 +1966,7 @@
       "LR-TSC-5PACK": 6,
       "LR-CS-30": 14
     },
-    "acos": 107.72,
+    "acos": 37.98,
     "cvr": 10.9,
     "ad_spend": null,
     "ad_clicks": null,
@@ -1983,7 +1983,7 @@
       "LR-CS-10": 20,
       "LR-CS-30": 15
     },
-    "acos": 103.25,
+    "acos": 37.68,
     "cvr": 11.17,
     "ad_spend": null,
     "ad_clicks": null,
@@ -2000,7 +2000,7 @@
       "LR-CS-10": 23,
       "LR-TSC-5PACK": 7
     },
-    "acos": 97.58,
+    "acos": 37.38,
     "cvr": 11.31,
     "ad_spend": null,
     "ad_clicks": null,
@@ -2017,7 +2017,7 @@
       "LR-CS-10": 23,
       "LR-CS-30": 9
     },
-    "acos": 93.92,
+    "acos": 35.7,
     "cvr": 11.29,
     "ad_spend": null,
     "ad_clicks": null,
@@ -2034,7 +2034,7 @@
       "LR-TSC-30PACK": 50,
       "LR-TSC-5PACK": 4
     },
-    "acos": 94.05,
+    "acos": 34.25,
     "cvr": 11.19,
     "ad_spend": null,
     "ad_clicks": null,
@@ -2051,7 +2051,7 @@
       "LR-CS-10": 22,
       "LR-TSC-5PACK": 4
     },
-    "acos": 93.27,
+    "acos": 33.99,
     "cvr": 10.99,
     "ad_spend": null,
     "ad_clicks": null,
@@ -2068,7 +2068,7 @@
       "LR-CS-30": 9,
       "LR-TSC-5PACK": 3
     },
-    "acos": 93.01,
+    "acos": 34.02,
     "cvr": 10.81,
     "ad_spend": null,
     "ad_clicks": null,
@@ -2085,7 +2085,7 @@
       "LR-CS-30": 17,
       "LR-TSC-5PACK": 3
     },
-    "acos": 88.94,
+    "acos": 33.71,
     "cvr": 10.88,
     "ad_spend": null,
     "ad_clicks": null,
@@ -2102,7 +2102,7 @@
       "LR-CS-10": 16,
       "LR-TSC-5PACK": 2
     },
-    "acos": 86.19,
+    "acos": 32.56,
     "cvr": 11.08,
     "ad_spend": null,
     "ad_clicks": null,
@@ -2119,7 +2119,7 @@
       "LR-CS-10": 22,
       "LR-TSC-5PACK": 3
     },
-    "acos": 84.43,
+    "acos": 32.77,
     "cvr": 11.06,
     "ad_spend": null,
     "ad_clicks": null,
@@ -2136,7 +2136,7 @@
       "LR-CS-30": 18,
       "LR-TSC-5PACK": 5
     },
-    "acos": 82.12,
+    "acos": 32.32,
     "cvr": 11.02,
     "ad_spend": null,
     "ad_clicks": null,
@@ -2153,7 +2153,7 @@
       "LR-CS-10": 15,
       "LR-TSC-5PACK": 4
     },
-    "acos": 79.54,
+    "acos": 31.82,
     "cvr": 11.18,
     "ad_spend": null,
     "ad_clicks": null,
@@ -2170,7 +2170,7 @@
       "LR-CS-30": 15,
       "LR-TSC-5PACK": 2
     },
-    "acos": 77.59,
+    "acos": 30.7,
     "cvr": 11.21,
     "ad_spend": null,
     "ad_clicks": null,
@@ -2187,7 +2187,7 @@
       "LR-CS-30": 18,
       "LR-TSC-5PACK": 6
     },
-    "acos": 75.65,
+    "acos": 30.32,
     "cvr": 11.21,
     "ad_spend": null,
     "ad_clicks": null,
@@ -2204,7 +2204,7 @@
       "LR-CS-30": 13,
       "LR-TSC-5PACK": 1
     },
-    "acos": 72.41,
+    "acos": 29.67,
     "cvr": 11.51,
     "ad_spend": null,
     "ad_clicks": null,
@@ -2221,7 +2221,7 @@
       "LR-TSC-5PACK": 5,
       "LR-CS-10": 13
     },
-    "acos": 70.51,
+    "acos": 29.74,
     "cvr": 11.53,
     "ad_spend": null,
     "ad_clicks": null,
@@ -2238,7 +2238,7 @@
       "LR-CS-30": 15,
       "LR-TSC-5PACK": 8
     },
-    "acos": 67.89,
+    "acos": 29.55,
     "cvr": 11.69,
     "ad_spend": null,
     "ad_clicks": null,
@@ -2255,7 +2255,7 @@
       "LR-CS-30": 18,
       "LR-TSC-5PACK": 6
     },
-    "acos": 66.18,
+    "acos": 29.08,
     "cvr": 11.83,
     "ad_spend": null,
     "ad_clicks": null,
@@ -2272,7 +2272,7 @@
       "LR-TSC-30PACK": 55,
       "LR-TSC-5PACK": 4
     },
-    "acos": 64.28,
+    "acos": 28.87,
     "cvr": 12.02,
     "ad_spend": null,
     "ad_clicks": null,
@@ -2289,7 +2289,7 @@
       "LR-TSC-5PACK": 4,
       "LR-CS-30": 5
     },
-    "acos": null,
+    "acos": 28.56,
     "cvr": null,
     "ad_spend": null,
     "ad_clicks": null,
@@ -2306,7 +2306,7 @@
       "LR-TSC-5PACK": 4,
       "LR-CS-30": 12
     },
-    "acos": 63.97,
+    "acos": 28.05,
     "cvr": 11.65,
     "ad_spend": null,
     "ad_clicks": null,
@@ -2323,7 +2323,7 @@
       "LR-CS-30": 9,
       "LR-TSC-5PACK": 3
     },
-    "acos": 63.97,
+    "acos": 28.05,
     "cvr": 11.65,
     "ad_spend": null,
     "ad_clicks": null,
@@ -2340,7 +2340,7 @@
       "LR-TSC-5PACK": 5,
       "LR-CS-30": 10
     },
-    "acos": 62.2,
+    "acos": 29.5,
     "cvr": 11.88,
     "ad_spend": null,
     "ad_clicks": null,
@@ -2357,7 +2357,7 @@
       "LR-CS-30": 8,
       "LR-TSC-5PACK": 5
     },
-    "acos": 62.14,
+    "acos": 29.1,
     "cvr": 11.78,
     "ad_spend": null,
     "ad_clicks": null,
@@ -2374,7 +2374,7 @@
       "LR-CS-10": 30,
       "LR-TSC-5PACK": 5
     },
-    "acos": 60.58,
+    "acos": 28.82,
     "cvr": 12.08,
     "ad_spend": null,
     "ad_clicks": null,
@@ -2391,7 +2391,7 @@
       "LR-CS-10": 27,
       "LR-TSC-5PACK": 3
     },
-    "acos": 60.17,
+    "acos": 27.21,
     "cvr": 12.25,
     "ad_spend": null,
     "ad_clicks": null,
@@ -2408,7 +2408,7 @@
       "LR-CS-10": 15,
       "LR-TSC-5PACK": 5
     },
-    "acos": 61.09,
+    "acos": 28.33,
     "cvr": 12.08,
     "ad_spend": null,
     "ad_clicks": null,
@@ -2425,7 +2425,7 @@
       "LR-CS-30": 12,
       "LR-TSC-5PACK": 6
     },
-    "acos": 59.63,
+    "acos": 28.63,
     "cvr": 12.3,
     "ad_spend": null,
     "ad_clicks": null,
@@ -2442,7 +2442,7 @@
       "LR-CS-30": 7,
       "LR-TSC-5PACK": 4
     },
-    "acos": 60.1,
+    "acos": 27.83,
     "cvr": 12.09,
     "ad_spend": null,
     "ad_clicks": null,
@@ -2459,7 +2459,7 @@
       "LR-CS-10": 20,
       "LR-TSC-5PACK": 5
     },
-    "acos": 60.21,
+    "acos": 27.82,
     "cvr": 12.07,
     "ad_spend": null,
     "ad_clicks": null,
@@ -2476,7 +2476,7 @@
       "LR-CS-10": 12,
       "LR-TSC-5PACK": 2
     },
-    "acos": 59.94,
+    "acos": 28.08,
     "cvr": 12.11,
     "ad_spend": null,
     "ad_clicks": null,
@@ -2493,7 +2493,7 @@
       "LR-TSC-30PACK": 35,
       "LR-TSC-5PACK": 1
     },
-    "acos": 60.88,
+    "acos": 28.3,
     "cvr": 11.98,
     "ad_spend": null,
     "ad_clicks": null,
@@ -2510,7 +2510,7 @@
       "LR-CS-30": 8,
       "LR-TSC-5PACK": 4
     },
-    "acos": 61.87,
+    "acos": 27.4,
     "cvr": 12.01,
     "ad_spend": null,
     "ad_clicks": null,
@@ -2527,7 +2527,7 @@
       "LR-CS-10": 11,
       "LR-TSC-5PACK": 4
     },
-    "acos": 62.02,
+    "acos": 28.56,
     "cvr": 12.12,
     "ad_spend": null,
     "ad_clicks": null,
@@ -2544,7 +2544,7 @@
       "LR-CS-10": 9,
       "LR-TSC-5PACK": 8
     },
-    "acos": 61.21,
+    "acos": 29.13,
     "cvr": 12.16,
     "ad_spend": null,
     "ad_clicks": null,
@@ -2561,7 +2561,7 @@
       "LR-CS-10": 19,
       "LR-TSC-5PACK": 4
     },
-    "acos": 61.57,
+    "acos": 28.17,
     "cvr": 12.16,
     "ad_spend": null,
     "ad_clicks": null,
@@ -2578,7 +2578,7 @@
       "LR-CS-10": 8,
       "LR-TSC-5PACK": 3
     },
-    "acos": 61.9,
+    "acos": null,
     "cvr": 12.26,
     "ad_spend": null,
     "ad_clicks": null,
@@ -2586,16 +2586,16 @@
   },
   {
     "date": "2026-09-14",
-    "revenue": 814.91,
-    "orders": 36,
+    "revenue": 869.18,
+    "orders": 38,
     "units": 56,
     "sku_units": {
       "LR-TSC-30PACK": 26,
       "LR-CS-10": 5,
-      "LR-TSC-5PACK": 3,
-      "LR-CS-30": 2
+      "LR-TSC-5PACK": 4,
+      "LR-CS-30": 4
     },
-    "acos": 61.9,
+    "acos": null,
     "cvr": 12.26,
     "ad_spend": null,
     "ad_clicks": null,
