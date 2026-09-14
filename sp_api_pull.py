@@ -712,7 +712,7 @@ def main():
         kpi["ads_metrics"] = {}
         kpi["ads_debug"] = str(e)
 
-    print("📊 Pulling 30d CVR from Sales & Traffic report (no Ads API needed)...")
+    print("📈 Pulling 30d CVR from Sales & Traffic report (no Ads API needed)...")
     try:
         cvr_30d, sessions_30d, cvr_debug = get_cvr_30d(token)
         kpi["cvr_30d"] = cvr_30d
@@ -728,16 +728,19 @@ def main():
         ads_spend = get_ads_spend_30d(token)
         revenue_30d_val = kpi.get("revenue_30d") or 0
         if ads_spend and revenue_30d_val > 0:
-            acos_30d = round((ads_spend / revenue_30d_val) * 100, 2)
+            # TACoS = Total Advertising Cost of Sales = total ad spend / TOTAL revenue
+            # (organic + ads). This is distinct from ACOS (ad spend / ad-attributed
+            # sales only), which is computed separately in get_ads_cvr() above.
+            tacos_30d = round((ads_spend / revenue_30d_val) * 100, 2)
         else:
-            acos_30d = None
+            tacos_30d = None
         kpi["ads_spend_30d"] = ads_spend
-        kpi["acos_30d"] = acos_30d
-        print(f"   \u2705 ACOS 30d: {acos_30d}% (spend={ads_spend})")
+        kpi["tacos_30d"] = tacos_30d
+        print(f"   \u2705 TACoS 30d: {tacos_30d}% (spend={ads_spend})")
     except Exception as e:
-        print(f"   \u26a0\ufe0f ACOS pull failed: {e}")
+        print(f"   \u26a0\ufe0f TACoS pull failed: {e}")
         kpi["ads_spend_30d"] = None
-        kpi["acos_30d"] = None
+        kpi["tacos_30d"] = None
 
     with open(save_path, "w") as f:
         json.dump(kpi, f, indent=2, default=str)

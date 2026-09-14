@@ -50,8 +50,11 @@ def build_chart_data():
             if cvr is None:
                 cvr = d.get("cvr_30d")
             chart_cvr.append(round(float(cvr), 2) if cvr is not None else None)
-            acos = d.get("acos_30d")
-            chart_acos.append(round(float(acos), 2) if acos is not None else None)
+            # TACoS = ad spend / total revenue (top-level field). Old archived files
+            # before the rename stored this same value under "acos_30d" — fall back
+            # to that key so history predating the rename still charts correctly.
+            tacos = d.get("tacos_30d", d.get("acos_30d"))
+            chart_acos.append(round(float(tacos), 2) if tacos is not None else None)
         except Exception as e:
             print("Chart data skip " + str(path) + ": " + str(e))
     return chart_days, chart_rev, chart_units, chart_cvr, chart_acos
@@ -82,7 +85,10 @@ def update_html(data):
     cvr_val   = (str(cvr_30d_raw) + '%') if cvr_30d_raw is not None else '--'
     sessions_30d_raw = data.get('sessions_30d')
     sessions_val = f"{sessions_30d_raw:,}" if sessions_30d_raw else '--'
-    acos_30d_raw = data.get('acos_30d') or ads.get('acos_30d')
+    # TACoS (ad spend / total revenue) — NOT the Ads-API ACOS (ad spend / ad sales,
+    # in ads.get('acos_30d')). Those are different metrics and must not be mixed:
+    # falling back to the Ads-API ACOS here was the bug that mislabeled the card.
+    acos_30d_raw = data.get('tacos_30d', data.get('acos_30d'))
     acos_val  = (str(acos_30d_raw) + '%') if acos_30d_raw is not None else '--'
     acos_color = '#ef4444' if (acos_30d_raw or 0) > 30 else '#10b981'
     ads_spend_30d_raw = data.get('ads_spend_30d', 0)
@@ -264,7 +270,9 @@ def write_history():
                 "orders":    d.get("orders_today", 0),
                 "units":     d.get("units_ordered", 0),
                 "sku_units": d.get("sku_units", {}),
-                "acos":      d.get("acos") or (d.get("ads_metrics") or {}).get("acos_30d"),
+                # TACoS only — do not fall back to ads_metrics.acos_30d (that's the
+                # separate, genuine ACOS figure and mixing it in here was the bug).
+                "acos":      d.get("tacos_30d", d.get("acos_30d")),
                 "cvr":       (d.get("ads_metrics") or {}).get("cvr_30d"),
                 "ad_spend":  d.get("ad_spend"),
                 "ad_clicks": d.get("ad_clicks"),
@@ -293,13 +301,13 @@ def write_docs(html, status):
         "var cv=l.map(function(x){return x.cvr!=null?+x.cvr:null;});"
         "var ac=l.map(function(x){return x.acos!=null?+x.acos:null;});"
         "c.data.datasets=c.data.datasets.filter(function(d){"
-        "return d.label.indexOf('CVR')<0&&d.label.indexOf('ACOS')<0;});"
+        "return d.label.indexOf('CVR')<0&&d.label.indexOf('TACoS')<0;});"
         "var cvrIdx=c.data.datasets.length;"
         "c.data.datasets.push({label:'CVR (%)',data:cv,borderColor:'#2688c9',"
         "backgroundColor:'rgba(38,136,201,0.08)',borderWidth:2,pointRadius:2,"
         "tension:0.4,yAxisID:'y2',spanGaps:true});"
         "var acosIdx=c.data.datasets.length;"
-        "c.data.datasets.push({label:'ACOS (%)',data:ac,borderColor:'#f59e0b',"
+        "c.data.datasets.push({label:'TACoS (%)',data:ac,borderColor:'#f59e0b',"
         "backgroundColor:'rgba(245,158,11,0.08)',borderWidth:2,pointRadius:2,"
         "tension:0.4,yAxisID:'y3',spanGaps:true});"
         "if(c.options.scales){"
@@ -314,7 +322,7 @@ def write_docs(html, status):
         "if(!lbl)return;"
         "var txt=lbl.textContent;"
         "if(txt.indexOf('CVR')>=0)t.setAttribute('data-ds',String(cvrIdx));"
-        "else if(txt.indexOf('ACOS')>=0){"
+        "else if(txt.indexOf('TACoS')>=0){"
         "t.setAttribute('data-ds',String(acosIdx));"
         "t.classList.remove('perf-no-chart');"
         "t.title='Click to show/hide on chart';}});"
