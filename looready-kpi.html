@@ -349,7 +349,6 @@ body {
 }
 .product-table tr:last-child td { border-bottom: none; }
 .product-table tr:hover td { background: #fafafa; }
-
 .sku-badge {
   font-size: 10px; background: var(--blue-light); color: var(--blue);
   padding: 2px 8px; border-radius: 5px; font-weight: 600;
@@ -864,7 +863,7 @@ aside.sidebar.collapsed {
           <div class="perf-kpi-value" id="perf-units">--</div>
         </div>
                 <div class="perf-kpi-tile" data-ds="4" title="Click to show/hide on chart">
-          <div class="perf-kpi-label"><span class="perf-dot" style="background:#f59e0b;"></span>ACOS</div>
+          <div class="perf-kpi-label"><span class="perf-dot" style="background:#f59e0b;"></span>TACoS</div>
           <div class="perf-kpi-value" id="perf-acos">--</div>
         </div>
         </div>
@@ -937,7 +936,7 @@ aside.sidebar.collapsed {
     <div class="kpi-card ads">
       <div class="kpi-accent"></div>
       <div class="kpi-icon">📊</div>
-      <div class="kpi-label">ACOS</div>
+      <div class="kpi-label">TACoS</div>
       <div class="kpi-value" id="kv-acos">51.5%</div>
       <div class="kpi-sub" id="ks-acos">Lifetime avg</div>
       <div class="kpi-chip warn">Target &lt;35%</div>
@@ -1099,7 +1098,7 @@ aside.sidebar.collapsed {
           <span class="stat-val green">$439,795</span>
         </div>
         <div class="stat-row">
-          <span class="stat-name">Lifetime ACOS</span>
+          <span class="stat-name">Lifetime TACoS</span>
           <span class="stat-val orange">51.5%</span>
         </div>
       </div>
@@ -1341,7 +1340,7 @@ const tabData = {
   '7d':  { revenue:'--', units:'--', spend:'--', acos:'--', cvr:'--', sessions:'--', ipi:'628', rsub:'--', usub:'--', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':'--','LR-CS-10':'--','LR-CS-30':'--','LR-TSC-5PACK':'--','LR-CS-120':'--'} }, /* 7D_KPI_PLACEHOLDER */
   'today': { revenue:'--', units:'--', spend:'--', acos:'--', cvr:'--', sessions:'--', ipi:'628', rsub:'--', usub:'--', ssub:'Not yet available', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#6b7280', skuUnits:{'LR-TSC-30PACK':'--','LR-CS-10':'--','LR-CS-30':'--','LR-TSC-5PACK':'--','LR-CS-120':'--'} }, /* TODAY_KPI_PLACEHOLDER */
   'lifetime': { revenue:'$439,795', units:'20,748', spend:'$226,449', acos:'51.5%', sessions:'187,331', ipi:'628',
-               rsub:'Lifetime Ad Sales (all campaigns)', usub:'Lifetime ad purchases', ssub:'Lifetime total spend', asub:'Lifetime avg ACOS', sesub:'Lifetime ad clicks', isub:'Range 570–686',
+               rsub:'Lifetime Ad Sales (all campaigns)', usub:'Lifetime ad purchases', ssub:'Lifetime total spend', asub:'Lifetime avg TACoS', sesub:'Lifetime ad clicks', isub:'Range 570–686',
                acosColor:'#d97706' },
 };
 
@@ -1999,7 +1998,7 @@ renderProfitBreakdown('30d');
           { label: 'Units Sold',  data: unitsArr, borderColor: '#8b5cf6', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 0, tension: 0.4, yAxisID: 'y1' },
           { label: 'Sessions',   data: [],        borderColor: '#2688c9', backgroundColor: 'transparent', borderWidth: 1.5, borderDash: [4,3], pointRadius: 0, tension: 0.4, yAxisID: 'y1', hidden: true },
           { label: 'CVR (%)',    data: cvrsArr,   borderColor: '#2688c9', backgroundColor: 'rgba(38,136,201,0.06)', borderWidth: 2, pointRadius: 0, tension: 0.4, yAxisID: 'y2' },
-          { label: 'ACOS (%)',   data: acosArr,   borderColor: '#f59e0b', backgroundColor: 'transparent', borderWidth: 2, borderDash: [4,3], pointRadius: 0, tension: 0.4, yAxisID: 'y2' }
+          { label: 'TACoS (%)',  data: acosArr,   borderColor: '#f59e0b', backgroundColor: 'transparent', borderWidth: 2, borderDash: [4,3], pointRadius: 0, tension: 0.4, yAxisID: 'y2' }
         ]
       },
       options: {
@@ -2017,7 +2016,7 @@ renderProfitBreakdown('30d');
                 if (label.includes('Revenue')) return '  Revenue: $' + val.toLocaleString(undefined, {minimumFractionDigits:0, maximumFractionDigits:0});
                 if (label.includes('Units'))   return '  Units Sold: ' + val.toLocaleString();
                 if (label.includes('CVR'))     return '  CVR: ' + val.toFixed(1) + '%';
-                if (label.includes('ACOS'))    return '  ACOS: ' + val.toFixed(1) + '%';
+                if (label.includes('TACoS'))   return '  TACoS: ' + val.toFixed(1) + '%';
                 return '  ' + label + ': ' + val;
               }
             }
