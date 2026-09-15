@@ -349,7 +349,6 @@ body {
 }
 .product-table tr:last-child td { border-bottom: none; }
 .product-table tr:hover td { background: #fafafa; }
-
 .sku-badge {
   font-size: 10px; background: var(--blue-light); color: var(--blue);
   padding: 2px 8px; border-radius: 5px; font-weight: 600;
@@ -645,7 +644,7 @@ aside.sidebar.collapsed {
       <div class="live-dot"></div>
       <div>
         <span class="live-label">Live</span>
-        <span class="live-time">Updated September 15, 2026<br>10:46 AM ET</span>
+        <span class="live-time">Updated September 15, 2026<br>2:17 PM ET</span>
       </div>
     </div>
   </div>
@@ -678,7 +677,7 @@ aside.sidebar.collapsed {
 <!-- ══════════════ DASHBOARD SECTION ══════════════ -->
 <div id="section-dashboard" class="section active">
 
-  <div class="updated-line">Data snapshot: September 15, 2026 10:46 AM ET · SP-API live pull</div>
+  <div class="updated-line">Data snapshot: September 15, 2026 2:17 PM ET · SP-API live pull</div>
 
   <!-- 1st + 2nd: Profit Breakdown + Inventory Health -->
   <div class="grid-2-eq mb-20">
@@ -696,15 +695,15 @@ aside.sidebar.collapsed {
         </div>
         <div class="mini-stat">
           <span class="mini-stat-label">LR-TSC-30PACK</span>
-          <span class="mini-stat-val" id="inv-30pack">3,306 units</span>
+          <span class="mini-stat-val" id="inv-30pack">3,303 units</span>
         </div>
         <div class="mini-stat">
           <span class="mini-stat-label">LR-CS-10</span>
-          <span class="mini-stat-val" id="inv-cs10">2,457 units</span>
+          <span class="mini-stat-val" id="inv-cs10">2,456 units</span>
         </div>
         <div class="mini-stat">
           <span class="mini-stat-label">LR-CS-30</span>
-          <span class="mini-stat-val" id="inv-cs30">5,710 units</span>
+          <span class="mini-stat-val" id="inv-cs30">5,709 units</span>
         </div>
         <div class="mini-stat">
           <span class="mini-stat-label">LR-TSC-5PACK</span>
@@ -864,7 +863,7 @@ aside.sidebar.collapsed {
           <div class="perf-kpi-value" id="perf-units">--</div>
         </div>
                 <div class="perf-kpi-tile" data-ds="4" title="Click to show/hide on chart">
-          <div class="perf-kpi-label"><span class="perf-dot" style="background:#f59e0b;"></span>ACOS</div>
+          <div class="perf-kpi-label"><span class="perf-dot" style="background:#f59e0b;"></span>TACoS</div>
           <div class="perf-kpi-value" id="perf-acos">--</div>
         </div>
         </div>
@@ -937,7 +936,7 @@ aside.sidebar.collapsed {
     <div class="kpi-card ads">
       <div class="kpi-accent"></div>
       <div class="kpi-icon">📊</div>
-      <div class="kpi-label">ACOS</div>
+      <div class="kpi-label">TACoS</div>
       <div class="kpi-value" id="kv-acos">51.5%</div>
       <div class="kpi-sub" id="ks-acos">Lifetime avg</div>
       <div class="kpi-chip warn">Target &lt;35%</div>
@@ -1099,7 +1098,7 @@ aside.sidebar.collapsed {
           <span class="stat-val green">$439,795</span>
         </div>
         <div class="stat-row">
-          <span class="stat-name">Lifetime ACOS</span>
+          <span class="stat-name">Lifetime TACoS</span>
           <span class="stat-val orange">51.5%</span>
         </div>
       </div>
@@ -1333,15 +1332,15 @@ aside.sidebar.collapsed {
 
 <script>
 // ── Inventory Data ──────────────────────────────────────────────
-const inventoryData = {'LR-TSC-30PACK':{fba:{fulfillable:1317,inbound:51,reserved:502,researching:0,unfulfillable:1},awd:{onhand:385,inbound:1050,outbound:0}},'LR-CS-10':{fba:{fulfillable:1450,inbound:0,reserved:136,researching:3,unfulfillable:4},awd:{onhand:864,inbound:0,outbound:0}},'LR-CS-30':{fba:{fulfillable:610,inbound:4,reserved:260,researching:0,unfulfillable:3},awd:{onhand:4833,inbound:0,outbound:0}},'LR-TSC-5PACK':{fba:{fulfillable:229,inbound:1,reserved:107,researching:6,unfulfillable:0},awd:{onhand:750,inbound:0,outbound:0}},'LR-CS-120':{fba:{fulfillable:288,inbound:0,reserved:1,researching:1,unfulfillable:0},awd:{onhand:348,inbound:0,outbound:0}}};
+const inventoryData = {'LR-TSC-30PACK':{fba:{fulfillable:1311,inbound:51,reserved:505,researching:0,unfulfillable:1},awd:{onhand:385,inbound:1050,outbound:0}},'LR-CS-10':{fba:{fulfillable:1460,inbound:0,reserved:125,researching:3,unfulfillable:4},awd:{onhand:864,inbound:0,outbound:0}},'LR-CS-30':{fba:{fulfillable:635,inbound:4,reserved:234,researching:0,unfulfillable:3},awd:{onhand:4833,inbound:0,outbound:0}},'LR-TSC-5PACK':{fba:{fulfillable:228,inbound:1,reserved:108,researching:6,unfulfillable:0},awd:{onhand:750,inbound:0,outbound:0}},'LR-CS-120':{fba:{fulfillable:288,inbound:0,reserved:1,researching:1,unfulfillable:0},awd:{onhand:348,inbound:0,outbound:0}}};
 
 // ── Tab Switching Data ──────────────────────────────────────────
 const tabData = {
   '30d': { revenue:'$42,297.76', units:'2194', spend:'$11,611', acos:'27.45%', cvr:'12.09%', sessions:'--', ipi:'628', rsub:'Last 30 Days · SP-API live', usub:'1868 orders . 2194 units', ssub:'ROAS 3.64x · 30d', asub:'Not yet available', sesub:'12.09% CVR · -- sessions', isub:'Range 570-686', acosColor:'#10b981', skuUnits:{'LR-TSC-30PACK':1156,'LR-CS-10':551,'LR-CS-30':326,'LR-TSC-5PACK':123,'LR-CS-120':0}, days30d:29 }, /* 30D_KPI_PLACEHOLDER */
   '7d':  { revenue:'$8,420.23', units:'389', spend:'$11,611', acos:'27.45%', cvr:'12.09%', sessions:'--', ipi:'628', rsub:'Last 7 Days · SP-API live', usub:'358 orders . 389 units', ssub:'ROAS 3.64x · 30d', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#10b981', skuUnits:{'LR-TSC-30PACK':234,'LR-CS-10':70,'LR-CS-30':56,'LR-TSC-5PACK':29,'LR-CS-120':0} }, /* 7D_KPI_PLACEHOLDER */
-  'today': { revenue:'$913.88', units:'46', spend:'$11,611', acos:'27.45%', cvr:'12.09%', sessions:'--', ipi:'628', rsub:'Today September 15, 2026 10:46 AM ET . SP-API live', usub:'40 orders . 56 units . Fees $426.09', ssub:'ROAS 3.64x · 30d', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#10b981', skuUnits:{'LR-TSC-30PACK':23,'LR-CS-10':12,'LR-CS-30':7,'LR-TSC-5PACK':4,'LR-CS-120':0} }, /* TODAY_KPI_PLACEHOLDER */
+  'today': { revenue:'$1,000.51', units:'50', spend:'$11,611', acos:'27.45%', cvr:'12.09%', sessions:'--', ipi:'628', rsub:'Today September 15, 2026 2:17 PM ET . SP-API live', usub:'44 orders . 56 units . Fees $426.09', ssub:'ROAS 3.64x · 30d', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#10b981', skuUnits:{'LR-TSC-30PACK':25,'LR-CS-10':13,'LR-CS-30':8,'LR-TSC-5PACK':4,'LR-CS-120':0} }, /* TODAY_KPI_PLACEHOLDER */
   'lifetime': { revenue:'$439,795', units:'20,748', spend:'$226,449', acos:'51.5%', sessions:'187,331', ipi:'628',
-               rsub:'Lifetime Ad Sales (all campaigns)', usub:'Lifetime ad purchases', ssub:'Lifetime total spend', asub:'Lifetime avg ACOS', sesub:'Lifetime ad clicks', isub:'Range 570–686',
+               rsub:'Lifetime Ad Sales (all campaigns)', usub:'Lifetime ad purchases', ssub:'Lifetime total spend', asub:'Lifetime avg TACoS', sesub:'Lifetime ad clicks', isub:'Range 570–686',
                acosColor:'#d97706' },
 };
 
@@ -1999,7 +1998,7 @@ renderProfitBreakdown('30d');
           { label: 'Units Sold',  data: unitsArr, borderColor: '#8b5cf6', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 0, tension: 0.4, yAxisID: 'y1' },
           { label: 'Sessions',   data: [],        borderColor: '#2688c9', backgroundColor: 'transparent', borderWidth: 1.5, borderDash: [4,3], pointRadius: 0, tension: 0.4, yAxisID: 'y1', hidden: true },
           { label: 'CVR (%)',    data: cvrsArr,   borderColor: '#2688c9', backgroundColor: 'rgba(38,136,201,0.06)', borderWidth: 2, pointRadius: 0, tension: 0.4, yAxisID: 'y2' },
-          { label: 'ACOS (%)',   data: acosArr,   borderColor: '#f59e0b', backgroundColor: 'transparent', borderWidth: 2, borderDash: [4,3], pointRadius: 0, tension: 0.4, yAxisID: 'y2' }
+          { label: 'TACoS (%)',  data: acosArr,   borderColor: '#f59e0b', backgroundColor: 'transparent', borderWidth: 2, borderDash: [4,3], pointRadius: 0, tension: 0.4, yAxisID: 'y2' }
         ]
       },
       options: {
@@ -2017,7 +2016,7 @@ renderProfitBreakdown('30d');
                 if (label.includes('Revenue')) return '  Revenue: $' + val.toLocaleString(undefined, {minimumFractionDigits:0, maximumFractionDigits:0});
                 if (label.includes('Units'))   return '  Units Sold: ' + val.toLocaleString();
                 if (label.includes('CVR'))     return '  CVR: ' + val.toFixed(1) + '%';
-                if (label.includes('ACOS'))    return '  ACOS: ' + val.toFixed(1) + '%';
+                if (label.includes('TACoS'))   return '  TACoS: ' + val.toFixed(1) + '%';
                 return '  ' + label + ': ' + val;
               }
             }
