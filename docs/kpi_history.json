@@ -2620,14 +2620,14 @@
   },
   {
     "date": "2026-09-16",
-    "revenue": 715.11,
-    "orders": 34,
+    "revenue": 952.84,
+    "orders": 41,
     "units": 66,
     "sku_units": {
       "LR-CS-10": 12,
-      "LR-TSC-5PACK": 2,
-      "LR-CS-30": 7,
-      "LR-TSC-30PACK": 16
+      "LR-TSC-5PACK": 3,
+      "LR-CS-30": 8,
+      "LR-TSC-30PACK": 24
     },
     "acos": 27.76,
     "cvr": 12.09,
