@@ -213,6 +213,21 @@ def update_html(data):
     placeholder_inv = "{ /* INVENTORY_PLACEHOLDER */ }"
     n6 = 1 if placeholder_inv in html else 0
     html = html.replace(placeholder_inv, inv_js)
+    # 6b. Repeat purchase / est. CLTV data — aggregate, per-SKU, from Brand Analytics
+    repeat_purchase = data.get("repeat_purchase", {})
+    rp_parts = []
+    for sku, d in repeat_purchase.items():
+        rp_parts.append(
+            f"'{sku}':{{orders:{d.get('orders',0)},"
+            f"unique_customers:{d.get('unique_customers',0)},"
+            f"repeat_customers_pct:{d.get('repeat_customers_pct',0)},"
+            f"avg_orders_per_customer:{json.dumps(d.get('avg_orders_per_customer'))},"
+            f"est_cltv:{json.dumps(d.get('est_cltv'))}}}"
+        )
+    rp_js = "{" + ",".join(rp_parts) + "}"
+    placeholder_rp = "{ /* REPEAT_PURCHASE_PLACEHOLDER */ }"
+    n6b = 1 if placeholder_rp in html else 0
+    html = html.replace(placeholder_rp, rp_js)
 
     # 7. Write inventory totals directly into mini-stat HTML elements
     inv_el_map = [
@@ -246,7 +261,7 @@ def update_html(data):
         badge_range = chart_days[0] + ' – ' + chart_days[-1]
         html = html.replace('id="perf-badge">Last 30 Days', 'id="perf-badge">' + badge_range)
     n7 = html.count('[/* CHART')
-    print("n1=" + str(n1) + " n2=" + str(n2) + " n3=" + str(n3) + " n4=" + str(n4) + " n5=" + str(n5) + " n6=" + str(n6) + " chart_days=" + str(len(chart_days)) + " remaining_ph=" + str(n7))
+    print("n1=" + str(n1) + " n2=" + str(n2) + " n3=" + str(n3) + " n4=" + str(n4) + " n5=" + str(n5) + " n6=" + str(n6) + " n6b=" + str(n6b) + " chart_days=" + str(len(chart_days)) + " remaining_ph=" + str(n7))
     if n1 == 0 or n2 == 0 or n3 == 0 or n4 == 0 or n5 == 0:
         print("WARNING: one or more KPI patterns did not match!")
     return html, today_str, n1, n2, n3
