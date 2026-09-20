@@ -63,7 +63,7 @@ def update_html(data):
     # US Eastern time (handles DST automatically)
     import zoneinfo
     et = zoneinfo.ZoneInfo("America/New_York")
-    now_et = datetime.datetime.now(tz=t)
+    now_et = datetime.datetime.now(tz=et)
     today_str  = now_et.strftime("%B %-d, %Y %-I:%M %p ET")
     date_str   = now_et.strftime("%B %-d, %Y")
     time_str   = now_et.strftime("%-I:%M %p ET")
@@ -72,7 +72,7 @@ def update_html(data):
     units     = data.get('units_ordered', 0)
     fees      = data.get('finance', {}).get('total_fees', 0)
     sku_raw      = data.get('sku_units', {})
-    sku_raw_7d   = data.get('sku_units7d', {})
+    sku_raw_7d   = data.get('sku_units_7d', {})
     revenue_7d   = "$" + f"{data.get('revenue_7d', 0):,.2f}"
     orders_7d    = data.get('orders_7d', 0)
     sku_raw_30d  = data.get('sku_units_30d', {})
