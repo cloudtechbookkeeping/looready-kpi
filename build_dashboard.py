@@ -80,7 +80,20 @@ def update_html(data):
     orders_30d   = data.get('orders_30d', 0)
     units_30d    = data.get('units_30d', 0)   # accurate total from sales metrics API
     ads      = data.get('ads_metrics', {})
+    # CVR resolution: try SP-API Sales & Traffic first, then today's Ads metrics,
+    # then fall back to the most recent ads_cvr_*.json cache (Ads API CVR from a
+    # prior day — still meaningful because campaigns don't change drastically overnight).
     cvr_30d_raw = data.get('cvr_30d') or ads.get('cvr_30d')
+    if cvr_30d_raw is None:
+        recent_ads_caches = sorted(DATA_DIR.glob("ads_cvr_*.json"))
+        if recent_ads_caches:
+            try:
+                fallback_ads = json.load(open(recent_ads_caches[-1]))
+                cvr_30d_raw = fallback_ads.get('cvr_30d')
+                if cvr_30d_raw is not None:
+                    print(f"   ℹ️  CVR: using fallback from {recent_ads_caches[-1].name} ({cvr_30d_raw}%)")
+            except Exception:
+                pass
     cvr_val   = (str(cvr_30d_raw) + '%') if cvr_30d_raw is not None else '--'
     sessions_30d_raw = data.get('sessions_30d')
     sessions_val = f"{sessions_30d_raw:,}" if sessions_30d_raw else '--'
