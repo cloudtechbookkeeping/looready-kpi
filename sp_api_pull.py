@@ -28,6 +28,148 @@ ADS_ENDPOINT      = "https://advertising-api.amazon.com"
 DATA_DIR = Path("kpi_data")
 DATA_DIR.mkdir(exist_ok=True)
 
+# ASIN → SKU map for the tracked LooReady catalog (stable product identifiers).
+# Brand Analytics reports are keyed by ASIN; the dashboard is keyed by SKU.
+ASIN_TO_SKU = {
+    "B09NCMRR37": "LR-TSC-30PACK",
+    "B0GLQ5V2PS": "LR-CS-10",
+    "B0FWMW3VCL": "LR-CS-30",
+    "B0BWZMPKKC": "LR-TSC-5PACK",
+    "B0GLV3DH7X": "LR-CS-120",
+}
+
+
+def get_repeat_purchase(token, aov_blended=None):
+    """Fetch last-full-month repeat-purchase behaviour per ASIN from Amazon
+    Brand Analytics (GET_BRAND_ANALYTICS_REPEAT_PURCHASE_REPORT), map ASIN to SKU,
+    and derive repeat rate, avg orders per customer, and an estimated CLTV.
+
+    Requires the seller account to be enrolled in Brand Registry. Returns a dict
+    keyed by SKU, or {} on any failure (non-fatal). Cached daily.
+
+    Amazon exposes NO individual-buyer identity or demographic data via API, so
+    CLTV is necessarily an estimate: revenue per unique customer for the period
+    where Amazon reports it, otherwise avg orders per customer * blended AOV.
+    """
+    import gzip as gz
+
+    today_str  = datetime.date.today().isoformat()
+    cache_path = DATA_DIR / f"repeat_purchase_{today_str}.json"
+    if cache_path.exists():
+        print("   Repeat-purchase cache hit")
+        with open(cache_path) as f:
+            return json.load(f)
+
+    # Most recent COMPLETE calendar month (Brand Analytics only returns whole periods)
+    first_this_month = datetime.date.today().replace(day=1)
+    last_month_end   = first_this_month - datetime.timedelta(days=1)
+    last_month_start = last_month_end.replace(day=1)
+    start = last_month_start.isoformat() + "T00:00:00Z"
+    end   = last_month_end.isoformat() + "T00:00:00Z"
+
+    resp = requests.post(
+        ENDPOINT + "/reports/2021-06-30/reports",
+        headers={"x-amz-access-token": token, "content-type": "application/json"},
+        json={
+            "reportType": "GET_BRAND_ANALYTICS_REPEAT_PURCHASE_REPORT",
+            "marketplaceIds": [MARKETPLACE_ID],
+            "dataStartTime": start,
+            "dataEndTime": end,
+            "reportOptions": {"reportPeriod": "MONTH"},
+        }
+    )
+    if resp.status_code not in (200, 202):
+        print(f"Repeat-purchase report create {resp.status_code}: {resp.text[:300]}")
+        return {}
+
+    report_id = resp.json().get("reportId")
+    print(f"   Repeat-purchase report ID: {report_id} (period {last_month_start}..{last_month_end})")
+
+    # Poll for completion (max ~5 min)
+    doc_id = None
+    for attempt in range(30):
+        time.sleep(10)
+        r = sp_request(token, "GET", f"/reports/2021-06-30/reports/{report_id}")
+        if r.status_code != 200:
+            continue
+        status_val = r.json().get("processingStatus")
+        if attempt % 3 == 0:
+            print(f"   Repeat-purchase status: {status_val}")
+        if status_val == "DONE":
+            doc_id = r.json().get("reportDocumentId")
+            break
+        if status_val in ("FATAL", "CANCELLED"):
+            print(f"   Repeat-purchase report {status_val}")
+            return {}
+    if not doc_id:
+        print("   Repeat-purchase report timed out")
+        return {}
+
+    r = sp_request(token, "GET", f"/reports/2021-06-30/documents/{doc_id}")
+    if r.status_code != 200:
+        print(f"Repeat-purchase doc {r.status_code}")
+        return {}
+    doc_url     = r.json().get("url")
+    compression = r.json().get("compressionAlgorithm", "")
+    raw = requests.get(doc_url).content
+    if compression == "GZIP":
+        raw = gz.decompress(raw)
+    report = json.loads(raw.decode("utf-8"))
+
+    rows = report.get("dataByAsin") or report.get("dataByAsinAndOrders") or []
+    if rows:
+        # Log the real schema so the first live run reveals exact field names
+        print(f"   Repeat-purchase raw fields: {list(rows[0].keys())}")
+
+    def _num(v):
+        if isinstance(v, dict):
+            v = v.get("amount", v.get("value"))
+        try:
+            return float(v)
+        except (TypeError, ValueError):
+            return None
+
+    def _pick(row, *names):
+        for n in names:
+            if n in row and row[n] is not None:
+                return row[n]
+        return None
+
+    result = {}
+    for row in rows:
+        asin = row.get("asin") or row.get("parentAsin") or row.get("childAsin")
+        sku  = ASIN_TO_SKU.get(asin)
+        if not sku:
+            continue
+        orders = _num(_pick(row, "orders", "orderCount", "totalOrders")) or 0
+        uniq   = _num(_pick(row, "uniqueCustomers", "customers", "totalCustomers")) or 0
+        rc_pct = _num(_pick(row, "repeatCustomersPercentage", "repeatPurchaseRate", "repeatCustomerRate"))
+        if rc_pct is None and orders > 0 and uniq > 0:
+            rc_pct = max(0.0, (orders - uniq) / orders * 100)
+        avg_orders = round(orders / uniq, 2) if uniq > 0 else None
+
+        period_rev = _num(_pick(row, "orderedProductSales", "orderedRevenue",
+                                 "salesAmount", "totalRevenue"))
+        if period_rev is not None and uniq > 0:
+            est_cltv = round(period_rev / uniq, 2)
+        elif avg_orders is not None and aov_blended:
+            est_cltv = round(avg_orders * aov_blended, 2)
+        else:
+            est_cltv = None
+
+        result[sku] = {
+            "orders":                  int(orders),
+            "unique_customers":        int(uniq),
+            "repeat_customers_pct":    round(rc_pct, 1) if rc_pct is not None else 0,
+            "avg_orders_per_customer": avg_orders,
+            "est_cltv":                est_cltv,
+        }
+
+    print(f"   Repeat-purchase: {len(result)}/{len(ASIN_TO_SKU)} SKUs mapped")
+    with open(cache_path, "w") as f:
+        json.dump(result, f)
+    return result
+
 
 def get_access_token():
     resp = requests.post(
@@ -689,9 +831,19 @@ def main():
     kpi["sku_units_30d"] = data_30d["sku_units_30d"]
     kpi["revenue_30d"]   = data_30d["revenue_30d"]
     kpi["orders_30d"]    = data_30d["orders_30d"]
-    kpi["units_30d"]     = data_30d.get("units_30d", 0)
-    kpi["days_30d"]      = data_30d["days_30d"]
+    kpi["units_30d"] = data_30d.get("units_30d", 0)
+    kpi["days_30d"] = data_30d["days_30d"]
 
+    print("Pulling repeat-purchase & est. CLTV from Brand Analytics...")
+    try:
+        rev_30d = kpi.get("revenue_30d") or 0
+        ord_30d = kpi.get("orders_30d") or 0
+        aov_blended = round(rev_30d / ord_30d, 2) if ord_30d else None
+        kpi["repeat_purchase"] = get_repeat_purchase(token, aov_blended=aov_blended)
+    except Exception as e:
+        print(f"   Repeat-purchase pull failed (non-fatal): {e}")
+        kpi["repeat_purchase"] = {}
+    
     print("Pulling Ads API metrics (CVR, ACOS)...")
     try:
         ads_token = get_ads_token()
