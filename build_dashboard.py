@@ -3,7 +3,6 @@ LooReady - Dashboard Builder
 Reads today's KPI JSON, patches looready-kpi.html, writes to docs/index.html.
 The workflow then commits docs/index.html back to the repo (GitHub Pages).
 """
-
 import json
 import re
 import os
@@ -64,7 +63,7 @@ def update_html(data):
     # US Eastern time (handles DST automatically)
     import zoneinfo
     et = zoneinfo.ZoneInfo("America/New_York")
-    now_et = datetime.datetime.now(tz=et)
+    now_et = datetime.datetime.now(tz=t)
     today_str  = now_et.strftime("%B %-d, %Y %-I:%M %p ET")
     date_str   = now_et.strftime("%B %-d, %Y")
     time_str   = now_et.strftime("%-I:%M %p ET")
@@ -73,14 +72,14 @@ def update_html(data):
     units     = data.get('units_ordered', 0)
     fees      = data.get('finance', {}).get('total_fees', 0)
     sku_raw      = data.get('sku_units', {})
-    sku_raw_7d   = data.get('sku_units_7d', {})
+    sku_raw_7d   = data.get('sku_units7d', {})
     revenue_7d   = "$" + f"{data.get('revenue_7d', 0):,.2f}"
     orders_7d    = data.get('orders_7d', 0)
     sku_raw_30d  = data.get('sku_units_30d', {})
     revenue_30d  = "$" + f"{data.get('revenue_30d', 0):,.2f}"
     orders_30d   = data.get('orders_30d', 0)
     units_30d    = data.get('units_30d', 0)   # accurate total from sales metrics API
-    ads       = data.get('ads_metrics', {})
+    ads      = data.get('ads_metrics', {})
     cvr_30d_raw = data.get('cvr_30d') or ads.get('cvr_30d')
     cvr_val   = (str(cvr_30d_raw) + '%') if cvr_30d_raw is not None else '--'
     sessions_30d_raw = data.get('sessions_30d')
