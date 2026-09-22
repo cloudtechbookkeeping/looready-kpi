@@ -1,8 +1,8 @@
 {
   "date": "2026-09-22",
-  "pulled_at": "2026-09-22T09:43:48.069330",
-  "orders_today": 43,
-  "revenue_today": 988.58,
+  "pulled_at": "2026-09-22T12:01:53.442518",
+  "orders_today": 44,
+  "revenue_today": 996.02,
   "units_ordered": 68,
   "finance": {
     "total_sales": 993.52,
@@ -12,7 +12,7 @@
     "LR-TSC-30PACK": 25,
     "LR-CS-30": 11,
     "LR-CS-10": 8,
-    "LR-TSC-5PACK": 1
+    "LR-TSC-5PACK": 2
   },
   "fba_inventory": {
     "0N-C5DX-S7RX": {
@@ -23,9 +23,9 @@
       "unfulfillable": 0
     },
     "3Z-3J64-NT0U": {
-      "fulfillable": 1353,
+      "fulfillable": 1354,
       "inbound": 26,
-      "reserved": 401,
+      "reserved": 400,
       "researching": 2,
       "unfulfillable": 2
     },
@@ -44,9 +44,9 @@
       "unfulfillable": 0
     },
     "LR-CS-10": {
-      "fulfillable": 1482,
+      "fulfillable": 1481,
       "inbound": 0,
-      "reserved": 28,
+      "reserved": 29,
       "researching": 1,
       "unfulfillable": 3
     },
@@ -65,14 +65,14 @@
       "unfulfillable": 1
     },
     "LR-TSC-30PACK": {
-      "fulfillable": 1353,
+      "fulfillable": 1354,
       "inbound": 26,
-      "reserved": 401,
+      "reserved": 400,
       "researching": 2,
       "unfulfillable": 2
     },
     "LR-TSC-5PACK": {
-      "fulfillable": 282,
+      "fulfillable": 281,
       "inbound": 1,
       "reserved": 12,
       "researching": 6,
@@ -166,12 +166,41 @@
   "orders_30d": 1776,
   "units_30d": 2078,
   "days_30d": 29,
-  "repeat_purchase": {},
+  "repeat_purchase": {
+    "LR-TSC-30PACK": {
+      "orders": 1228,
+      "unique_customers": 1169,
+      "repeat_customers_pct": 4.8,
+      "avg_orders_per_customer": 1.05,
+      "est_cltv": 23.68
+    },
+    "LR-TSC-5PACK": {
+      "orders": 163,
+      "unique_customers": 155,
+      "repeat_customers_pct": 4.9,
+      "avg_orders_per_customer": 1.05,
+      "est_cltv": 23.68
+    },
+    "LR-CS-30": {
+      "orders": 371,
+      "unique_customers": 363,
+      "repeat_customers_pct": 2.2,
+      "avg_orders_per_customer": 1.02,
+      "est_cltv": 23.0
+    },
+    "LR-CS-10": {
+      "orders": 624,
+      "unique_customers": 605,
+      "repeat_customers_pct": 3.0,
+      "avg_orders_per_customer": 1.03,
+      "est_cltv": 23.23
+    }
+  },
   "ads_metrics": {},
   "ads_debug": "ok",
   "cvr_30d": null,
   "sessions_30d": null,
-  "cvr_debug": "create_403:{\n  \"errors\": [\n    {\n      \"code\": \"Unauthorized\",\n      \"message\": \"Access to the resource is forbidden\",\n      \"details\": \"\"\n    }\n  ]\n}",
+  "cvr_debug": "no_sessions",
   "ads_spend_30d": 10599.57,
   "tacos_30d": 26.47
 }
