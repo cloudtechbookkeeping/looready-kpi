@@ -619,6 +619,8 @@ aside.sidebar.collapsed {
 .pnl-badge-demo { background:#fff4d6; color:#8a6d1a; }
 .pnl-badge-live { background:#e6f6ea; color:#1f7a3d; }
 .kpi-tile-sub { display:block; font-size:11px; font-weight:600; margin-top:3px; }
+.pnl-tile-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:8px; }
+@media (max-width:640px) { .pnl-tile-grid { grid-template-columns:repeat(2,1fr); } }
 </style>
 </head>
 <body>
@@ -1400,8 +1402,9 @@ aside.sidebar.collapsed {
       </div>
     </div>
     <div class="card-body">
-      <div class="kpi-tile-grid" style="margin-bottom:18px;">
+      <div class="pnl-tile-grid" style="margin-bottom:18px;">
         <div class="kpi-tile"><span class="kpi-tile-label">Total Income</span><span class="kpi-tile-val" id="pnl-income">—</span></div>
+        <div class="kpi-tile"><span class="kpi-tile-label">COGS</span><span class="kpi-tile-val" id="pnl-cogs">—</span></div>
         <div class="kpi-tile"><span class="kpi-tile-label">Gross Profit</span><span class="kpi-tile-val" id="pnl-gross">—</span></div>
         <div class="kpi-tile"><span class="kpi-tile-label">Net Profit</span><span class="kpi-tile-val" id="pnl-net">—</span><span class="kpi-tile-sub" id="pnl-net-delta"></span></div>
         <div class="kpi-tile"><span class="kpi-tile-label">Net Margin</span><span class="kpi-tile-val" id="pnl-margin">—</span></div>
@@ -2138,6 +2141,8 @@ function renderPnl(key){
   if(next) next.disabled = idx <= 0;                 // newer month
   const setv = (id,v)=>{ const e=document.getElementById(id); if(e) e.textContent = fmtPnl(v); };
   setv('pnl-income', s.income);
+  const cogsEl = document.getElementById('pnl-cogs');
+  if (cogsEl){ cogsEl.textContent = (s.income!=null && s.gross_profit!=null) ? fmtPnl((Number(s.income)||0)-(Number(s.gross_profit)||0)) : '—'; }
   setv('pnl-gross',  s.gross_profit);
   const net = document.getElementById('pnl-net');
   const netVal = Number(s.net_profit)||0;
