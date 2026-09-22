@@ -24,6 +24,13 @@ jobs:
           AMAZON_ADS_CLIENT_SECRET: ${{ secrets.AMAZON_ADS_CLIENT_SECRET }}
           ADS_REFRESH_TOKEN: ${{ secrets.AMAZON_ADS_REFRESH_TOKEN }}
         run: python sp_api_pull.py
+      - name: Pull Xero P&L
+        env:
+          XERO_CLIENT_ID: ${{ secrets.XERO_CLIENT_ID }}
+          XERO_CLIENT_SECRET: ${{ secrets.XERO_CLIENT_SECRET }}
+          XERO_REFRESH_TOKEN: ${{ secrets.XERO_REFRESH_TOKEN }}
+          XERO_TENANT_ID: ${{ secrets.XERO_TENANT_ID }}
+        run: python xero_pull.py
       - run: python build_dashboard.py
       - name: Commit dashboard
         run: |
