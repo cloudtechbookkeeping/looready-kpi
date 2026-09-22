@@ -896,8 +896,39 @@ aside.sidebar.collapsed {
           <div class="kpi-tile"><span class="kpi-tile-label">Buy Box %</span><span class="kpi-tile-val green">100% 🏆</span></div>
         </div>
       </div>
-    
 
+
+  </div>
+
+  <!-- Repeat Purchase & Est. CLTV by SKU (Dashboard, beside Traffic & Conversion) -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">
+        <span class="dot" style="background:var(--purple);"></span>
+        Repeat Purchase &amp; Est. CLTV by SKU
+      </div>
+      <span class="card-badge">Last full month · Brand Analytics</span>
+    </div>
+    <div class="card-body" style="padding: 16px 20px;">
+      <div class="table-scroll">
+        <table class="product-table">
+          <thead>
+            <tr>
+              <th>SKU</th>
+              <th>Orders</th>
+              <th>Unique</th>
+              <th>Repeat</th>
+              <th>Avg/Cust</th>
+              <th>Est. CLTV</th>
+            </tr>
+          </thead>
+          <tbody id="repeat-purchase-body">
+            <tr><td colspan="6" style="color:var(--text-muted);text-align:center;padding:16px;">Not yet available</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="footnote">Aggregate Amazon Brand Analytics data (no individual buyer identity or demographic data is ever available via Amazon's API — a policy restriction, not a limitation of this dashboard). Est. CLTV = est. total revenue per SKU ÷ unique customers, from Amazon's reported repeat-purchase revenue share.</p>
+    </div>
   </div>
 <!-- /section-dashboard -->
 
@@ -971,38 +1002,6 @@ aside.sidebar.collapsed {
     </div>
     <div class="card-body">
       <div class="sku-grid" id="sku-grid"></div>
-    </div>
-  </div>
-
-
-    <!-- Repeat Purchase & Est. CLTV by SKU -->
-  <div class="card mb-20">
-    <div class="card-header">
-      <div class="card-title">
-        <span class="dot" style="background:var(--purple);"></span>
-        Repeat Purchase &amp; Est. CLTV by SKU
-      </div>
-      <span class="card-badge">Last full month · Brand Analytics</span>
-    </div>
-    <div class="card-body">
-      <div class="table-scroll">
-        <table class="product-table">
-          <thead>
-            <tr>
-              <th>SKU</th>
-              <th>Orders</th>
-              <th>Unique Customers</th>
-              <th>Repeat Rate</th>
-              <th>Avg Orders / Customer</th>
-              <th>Est. CLTV</th>
-            </tr>
-          </thead>
-          <tbody id="repeat-purchase-body">
-            <tr><td colspan="6" style="color:var(--text-muted);text-align:center;padding:16px;">Not yet available</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <p class="footnote">Aggregate Amazon Brand Analytics data (no individual buyer identity or demographic data is ever available via Amazon's API — this is a policy restriction, not a limitation of this dashboard). Est. CLTV = est. total revenue per SKU ÷ unique customers, derived from Amazon's reported repeat-purchase revenue share.</p>
     </div>
   </div>
 
