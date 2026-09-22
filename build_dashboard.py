@@ -241,6 +241,22 @@ def update_html(data):
     n6b = 1 if placeholder_rp in html else 0
     html = html.replace(placeholder_rp, rp_js)
 
+    # 6c. Xero Profit & Loss (Financial Reports tab) — pulled by xero_pull.py
+    #     into kpi_data/xero_pnl.json, injected here as a JS object literal.
+    xero_path = DATA_DIR / "xero_pnl.json"
+    if xero_path.exists():
+        try:
+            xero_pnl = json.load(open(xero_path))
+        except Exception:
+            xero_pnl = {"connected": False, "months": {}}
+    else:
+        xero_pnl = {"connected": False, "months": {}}
+    placeholder_xero = "{ /* XERO_PNL_PLACEHOLDER */ }"
+    n6c = 1 if placeholder_xero in html else 0
+    html = html.replace(placeholder_xero, json.dumps(xero_pnl))
+    print("Xero P&L: connected=" + str(xero_pnl.get("connected")) +
+          " months=" + str(len(xero_pnl.get("months", {}))))
+
     # 7. Write inventory totals directly into mini-stat HTML elements
     inv_el_map = [
         ('LR-TSC-30PACK', 'inv-30pack',  False),
@@ -273,7 +289,7 @@ def update_html(data):
         badge_range = chart_days[0] + ' – ' + chart_days[-1]
         html = html.replace('id="perf-badge">Last 30 Days', 'id="perf-badge">' + badge_range)
     n7 = html.count('[/* CHART')
-    print("n1=" + str(n1) + " n2=" + str(n2) + " n3=" + str(n3) + " n4=" + str(n4) + " n5=" + str(n5) + " n6=" + str(n6) + " n6b=" + str(n6b) + " chart_days=" + str(len(chart_days)) + " remaining_ph=" + str(n7))
+    print("n1=" + str(n1) + " n2=" + str(n2) + " n3=" + str(n3) + " n4=" + str(n4) + " n5=" + str(n5) + " n6=" + str(n6) + " n6b=" + str(n6b) + " n6c=" + str(n6c) + " chart_days=" + str(len(chart_days)) + " remaining_ph=" + str(n7))
     if n1 == 0 or n2 == 0 or n3 == 0 or n4 == 0 or n5 == 0:
         print("WARNING: one or more KPI patterns did not match!")
     return html, today_str, n1, n2, n3
