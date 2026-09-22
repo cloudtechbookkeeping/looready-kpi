@@ -613,6 +613,12 @@ aside.sidebar.collapsed {
 .pnl-table tr.pnl-section td { background:#f6f8fc; font-weight:700; text-transform:uppercase; font-size:10px; letter-spacing:.04em; color:var(--text-muted); padding-top:12px; }
 .pnl-table tr.pnl-summary td { border-top:1px solid var(--border); font-weight:700; }
 .pnl-table tr:hover td { background:#fafafa; }
+.pnl-nav { width:30px; height:30px; border:1px solid var(--border); border-radius:8px; background:var(--surface); color:var(--text-primary); font-size:18px; line-height:1; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; padding:0; }
+.pnl-nav:hover:not(:disabled) { border-color:var(--brand-blue); color:var(--brand-blue); }
+.pnl-nav:disabled { opacity:.4; cursor:default; }
+.pnl-badge-demo { background:#fff4d6; color:#8a6d1a; }
+.pnl-badge-live { background:#e6f6ea; color:#1f7a3d; }
+.kpi-tile-sub { display:block; font-size:11px; font-weight:600; margin-top:3px; }
 </style>
 </head>
 <body>
@@ -654,7 +660,7 @@ aside.sidebar.collapsed {
       <div class="live-dot"></div>
       <div>
         <span class="live-label">Live</span>
-        <span class="live-time">Updated September 22, 2026<br>9:12 AM ET</span>
+        <span class="live-time">Updated September 22, 2026<br>9:17 AM ET</span>
       </div>
     </div>
   </div>
@@ -687,7 +693,7 @@ aside.sidebar.collapsed {
 <!-- ══════════════ DASHBOARD SECTION ══════════════ -->
 <div id="section-dashboard" class="section active">
 
-  <div class="updated-line">Data snapshot: September 22, 2026 9:12 AM ET · SP-API live pull</div>
+  <div class="updated-line">Data snapshot: September 22, 2026 9:17 AM ET · SP-API live pull</div>
 
   <!-- 1st + 2nd: Profit Breakdown + Inventory Health -->
   <div class="grid-2-eq mb-20">
@@ -1373,13 +1379,10 @@ aside.sidebar.collapsed {
 
   <div class="updated-line" style="margin-bottom:20px;">Financial Reports · Profit &amp; Loss · pulled live from Xero</div>
 
-  <!-- Not-connected / empty state -->
-  <div id="pnl-empty" class="card mb-20" style="display:none;">
-    <div class="card-body" style="text-align:center;padding:44px 20px;color:var(--text-muted);">
-      <div style="font-size:34px;margin-bottom:12px;">📄</div>
-      <div style="font-weight:700;color:var(--text-primary);margin-bottom:6px;">Xero not connected yet</div>
-      Connect the LooReady organisation in Xero to load Profit &amp; Loss. Once the API credentials are in place, monthly P&amp;L appears here automatically — no manual entry.
-    </div>
+  <!-- Preview banner (sample figures until Xero is connected) -->
+  <div id="pnl-banner" style="display:none;align-items:center;gap:10px;background:#fff8e6;border:1px solid #f0e0a8;color:#8a6d1a;border-radius:10px;padding:11px 15px;margin-bottom:16px;font-size:12.5px;line-height:1.4;">
+    <span style="font-size:16px;">👁️</span>
+    <span><strong>Preview</strong> — sample figures shown so you can review the layout. Once the Xero API is connected, these are replaced automatically with live Profit &amp; Loss data. Nothing here is manually entered.</span>
   </div>
 
   <!-- P&L card -->
@@ -1388,17 +1391,20 @@ aside.sidebar.collapsed {
       <div class="card-title">
         <span class="dot" style="background:var(--green);"></span>
         Profit &amp; Loss
+        <span id="pnl-mode" class="card-badge" style="margin-left:10px;"></span>
       </div>
-      <div style="display:flex;align-items:center;gap:8px;">
-        <label for="pnl-month" style="font-size:12px;color:var(--text-muted);font-weight:600;">Month</label>
+      <div style="display:flex;align-items:center;gap:6px;">
+        <button id="pnl-prev" class="pnl-nav" title="Previous month" onclick="pnlStep(1)">&lsaquo;</button>
         <select id="pnl-month" class="pnl-select"></select>
+        <button id="pnl-next" class="pnl-nav" title="Next month" onclick="pnlStep(-1)">&rsaquo;</button>
       </div>
     </div>
     <div class="card-body">
       <div class="kpi-tile-grid" style="margin-bottom:18px;">
         <div class="kpi-tile"><span class="kpi-tile-label">Total Income</span><span class="kpi-tile-val" id="pnl-income">—</span></div>
         <div class="kpi-tile"><span class="kpi-tile-label">Gross Profit</span><span class="kpi-tile-val" id="pnl-gross">—</span></div>
-        <div class="kpi-tile"><span class="kpi-tile-label">Net Profit</span><span class="kpi-tile-val" id="pnl-net">—</span></div>
+        <div class="kpi-tile"><span class="kpi-tile-label">Net Profit</span><span class="kpi-tile-val" id="pnl-net">—</span><span class="kpi-tile-sub" id="pnl-net-delta"></span></div>
+        <div class="kpi-tile"><span class="kpi-tile-label">Net Margin</span><span class="kpi-tile-val" id="pnl-margin">—</span></div>
       </div>
       <div class="table-scroll">
         <table class="product-table pnl-table">
@@ -1410,7 +1416,7 @@ aside.sidebar.collapsed {
           </tbody>
         </table>
       </div>
-      <p class="footnote">Profit &amp; Loss pulled live from Xero for <span id="pnl-period">—</span>. Figures are as reported by Xero for the LooReady organisation; the current month is shown month-to-date. Amounts in <span id="pnl-cur2">USD</span>.</p>
+      <p class="footnote">Profit &amp; Loss for <span id="pnl-period">—</span>. When Xero is connected, figures are pulled live for the LooReady organisation and the current month is shown month-to-date. Amounts in <span id="pnl-cur2">USD</span>.</p>
     </div>
   </div>
 
@@ -1422,7 +1428,7 @@ aside.sidebar.collapsed {
 
 <script>
 // ── Inventory Data ──────────────────────────────────────────────
-const inventoryData = {'LR-TSC-30PACK':{fba:{fulfillable:1350,inbound:26,reserved:404,researching:2,unfulfillable:2},awd:{onhand:200,inbound:1050,outbound:0}},'LR-CS-10':{fba:{fulfillable:1480,inbound:0,reserved:30,researching:1,unfulfillable:3},awd:{onhand:864,inbound:0,outbound:0}},'LR-CS-30':{fba:{fulfillable:686,inbound:3,reserved:118,researching:1,unfulfillable:1},awd:{onhand:4293,inbound:0,outbound:0}},'LR-TSC-5PACK':{fba:{fulfillable:281,inbound:1,reserved:12,researching:6,unfulfillable:0},awd:{onhand:750,inbound:0,outbound:0}},'LR-CS-120':{fba:{fulfillable:288,inbound:0,reserved:1,researching:0,unfulfillable:0},awd:{onhand:348,inbound:0,outbound:0}}};
+const inventoryData = {'LR-TSC-30PACK':{fba:{fulfillable:1351,inbound:26,reserved:403,researching:2,unfulfillable:2},awd:{onhand:200,inbound:1050,outbound:0}},'LR-CS-10':{fba:{fulfillable:1480,inbound:0,reserved:30,researching:1,unfulfillable:3},awd:{onhand:864,inbound:0,outbound:0}},'LR-CS-30':{fba:{fulfillable:684,inbound:3,reserved:120,researching:1,unfulfillable:1},awd:{onhand:4293,inbound:0,outbound:0}},'LR-TSC-5PACK':{fba:{fulfillable:281,inbound:1,reserved:12,researching:6,unfulfillable:0},awd:{onhand:750,inbound:0,outbound:0}},'LR-CS-120':{fba:{fulfillable:288,inbound:0,reserved:1,researching:0,unfulfillable:0},awd:{onhand:348,inbound:0,outbound:0}}};
 
 // ── Repeat Purchase & Est. CLTV Data (aggregate, per-SKU, last full month) ──
 const repeatPurchaseData = {'LR-TSC-30PACK':{orders:1228,unique_customers:1169,repeat_customers_pct:4.8,avg_orders_per_customer:1.05,est_cltv:23.68},'LR-TSC-5PACK':{orders:163,unique_customers:155,repeat_customers_pct:4.9,avg_orders_per_customer:1.05,est_cltv:23.68},'LR-CS-30':{orders:371,unique_customers:363,repeat_customers_pct:2.2,avg_orders_per_customer:1.02,est_cltv:23.0},'LR-CS-10':{orders:624,unique_customers:605,repeat_customers_pct:3.0,avg_orders_per_customer:1.03,est_cltv:23.23}};
@@ -1453,7 +1459,7 @@ function renderRepeatPurchase() {
 const tabData = {
   '30d': { revenue:'$40,051.27', units:'2078', spend:'$10,600', acos:'26.47%', cvr:'12.15%', sessions:'--', ipi:'628', rsub:'Last 30 Days · SP-API live', usub:'1776 orders . 2078 units', ssub:'ROAS 3.78x · 30d', asub:'Not yet available', sesub:'12.15% CVR · -- sessions', isub:'Range 570-686', acosColor:'#10b981', skuUnits:{'LR-TSC-30PACK':1054,'LR-CS-10':513,'LR-CS-30':304,'LR-TSC-5PACK':137,'LR-CS-120':0}, days30d:29 }, /* 30D_KPI_PLACEHOLDER */
   '7d':  { revenue:'$8,037.73', units:'395', spend:'$10,600', acos:'26.47%', cvr:'12.15%', sessions:'--', ipi:'628', rsub:'Last 7 Days · SP-API live', usub:'362 orders . 395 units', ssub:'ROAS 3.78x · 30d', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#10b981', skuUnits:{'LR-TSC-30PACK':204,'LR-CS-10':90,'LR-CS-30':66,'LR-TSC-5PACK':35,'LR-CS-120':0} }, /* 7D_KPI_PLACEHOLDER */
-  'today': { revenue:'$996.02', units:'46', spend:'$10,600', acos:'26.47%', cvr:'12.15%', sessions:'--', ipi:'628', rsub:'Today September 22, 2026 9:12 AM ET . SP-API live', usub:'44 orders . 68 units . Fees $343.92', ssub:'ROAS 3.78x · 30d', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#10b981', skuUnits:{'LR-TSC-30PACK':25,'LR-CS-10':8,'LR-CS-30':11,'LR-TSC-5PACK':2,'LR-CS-120':0} }, /* TODAY_KPI_PLACEHOLDER */
+  'today': { revenue:'$996.02', units:'46', spend:'$10,600', acos:'26.47%', cvr:'12.15%', sessions:'--', ipi:'628', rsub:'Today September 22, 2026 9:17 AM ET . SP-API live', usub:'44 orders . 68 units . Fees $343.92', ssub:'ROAS 3.78x · 30d', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#10b981', skuUnits:{'LR-TSC-30PACK':25,'LR-CS-10':8,'LR-CS-30':11,'LR-TSC-5PACK':2,'LR-CS-120':0} }, /* TODAY_KPI_PLACEHOLDER */
   'lifetime': { revenue:'$439,795', units:'20,748', spend:'$226,449', acos:'51.5%', sessions:'187,331', ipi:'628',
                rsub:'Lifetime Ad Sales (all campaigns)', usub:'Lifetime ad purchases', ssub:'Lifetime total spend', asub:'Lifetime avg TACoS', sesub:'Lifetime ad clicks', isub:'Range 570–686',
                acosColor:'#d97706' },
@@ -2082,15 +2088,70 @@ function fmtPnl(v){
   if (isNaN(n)) return '—';
   return (n < 0 ? '-$' : '$') + Math.abs(n).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
 }
+// Representative sample P&L (12 months) — used ONLY as a design preview until
+// the live Xero pull provides xeroPnlData.connected === true.
+function buildPnlDemo(){
+  const names = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const incomes = [40051.27,38240.00,42115.60,39880.40,44320.10,41200.75,37650.20,43010.90,45870.30,39990.00,42600.55,38100.40];
+  const now = new Date();
+  const order = [], months = {};
+  for (let i=0;i<12;i++){
+    const d = new Date(now.getFullYear(), now.getMonth()-i, 1);
+    const key = d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');
+    const label = names[d.getMonth()]+' '+d.getFullYear();
+    const r2 = x => Math.round(x*100)/100;
+    const income = incomes[i];
+    const fba = r2(income*0.92), b2b = r2(income-fba);
+    const cogs = r2(income*0.30), gross = r2(income-cogs);
+    const ads = r2(income*0.25), fees = r2(income*0.15), fulfil = r2(income*0.08), admin = 1850 + (i%3)*200;
+    const opex = r2(ads+fees+fulfil+admin), net = r2(gross-opex);
+    order.push(key);
+    months[key] = { label:label, from:key+'-01', to:key+'-28',
+      summary:{ income:income, gross_profit:gross, net_profit:net },
+      rows:[
+        {t:'section',label:'Income'},
+        {t:'row',label:'Sales — Amazon FBA',value:fba},
+        {t:'row',label:'Sales — B2B / Wholesale',value:b2b},
+        {t:'summary',label:'Total Income',value:income},
+        {t:'section',label:'Less Cost of Sales'},
+        {t:'row',label:'Cost of Goods Sold',value:cogs},
+        {t:'summary',label:'Gross Profit',value:gross},
+        {t:'section',label:'Less Operating Expenses'},
+        {t:'row',label:'Advertising & Promotion',value:ads},
+        {t:'row',label:'Amazon Selling Fees',value:fees},
+        {t:'row',label:'Fulfilment & Shipping',value:fulfil},
+        {t:'row',label:'General & Administration',value:admin},
+        {t:'summary',label:'Total Operating Expenses',value:opex},
+        {t:'summary',label:'Net Profit',value:net}
+      ]};
+  }
+  return { currency:'USD', months_order:order, months:months, demo:true };
+}
 function renderPnl(key){
-  const m = xeroPnlData.months && xeroPnlData.months[key];
-  if (!m) return;
-  const s = m.summary || {};
+  const data = window._pnl; if(!data) return;
+  const order = data.months_order || [];
+  const idx = order.indexOf(key); if(idx < 0) return;
+  const m = data.months[key]; const s = m.summary || {};
+  const sel = document.getElementById('pnl-month'); if(sel) sel.value = key;
+  const prev = document.getElementById('pnl-prev'), next = document.getElementById('pnl-next');
+  if(prev) prev.disabled = idx >= order.length-1;   // older month
+  if(next) next.disabled = idx <= 0;                 // newer month
   const setv = (id,v)=>{ const e=document.getElementById(id); if(e) e.textContent = fmtPnl(v); };
   setv('pnl-income', s.income);
   setv('pnl-gross',  s.gross_profit);
   const net = document.getElementById('pnl-net');
-  if (net){ net.textContent = fmtPnl(s.net_profit); net.className = 'kpi-tile-val ' + ((Number(s.net_profit)||0) >= 0 ? 'green' : 'red'); }
+  const netVal = Number(s.net_profit)||0;
+  if (net){ net.textContent = fmtPnl(s.net_profit); net.className = 'kpi-tile-val ' + (netVal >= 0 ? 'green' : 'red'); }
+  const marginEl = document.getElementById('pnl-margin');
+  if (marginEl){ const inc = Number(s.income)||0; marginEl.textContent = inc ? ((netVal/inc*100).toFixed(1)+'%') : '—'; }
+  const deltaEl = document.getElementById('pnl-net-delta');
+  if (deltaEl){
+    const pk = order[idx+1];   // previous (older) month
+    if (pk){ const pn = Number(data.months[pk].summary.net_profit)||0; const dv = netVal - pn;
+      deltaEl.textContent = (dv>=0?'▲ ':'▼ ') + fmtPnl(Math.abs(dv)) + ' vs prev';
+      deltaEl.style.color = dv>=0 ? 'var(--green)' : 'var(--red)';
+    } else { deltaEl.textContent = ''; }
+  }
   const body = document.getElementById('pnl-body');
   if (body){
     body.innerHTML = (m.rows||[]).map(function(r){
@@ -2103,25 +2164,31 @@ function renderPnl(key){
   }
   const per = document.getElementById('pnl-period'); if(per) per.textContent = m.label;
 }
+function pnlStep(dir){
+  const data = window._pnl; if(!data) return;
+  const order = data.months_order || [];
+  const cur = document.getElementById('pnl-month').value;
+  let idx = order.indexOf(cur) + dir;
+  if (idx < 0 || idx >= order.length) return;
+  renderPnl(order[idx]);
+}
 function initPnl(){
-  const sel = document.getElementById('pnl-month');
-  const content = document.getElementById('pnl-content');
-  const empty = document.getElementById('pnl-empty');
-  const order = (xeroPnlData && xeroPnlData.months_order) || [];
-  const ok = xeroPnlData && xeroPnlData.connected && order.length;
-  if (!ok){
-    if (empty) empty.style.display = 'block';
-    if (content) content.style.display = 'none';
-    return;
-  }
-  if (empty) empty.style.display = 'none';
-  if (content) content.style.display = 'block';
-  const cur = xeroPnlData.currency || 'USD';
+  const connected = xeroPnlData && xeroPnlData.connected && (xeroPnlData.months_order||[]).length;
+  window._pnl = connected ? xeroPnlData : buildPnlDemo();
+  const data = window._pnl;
+  const isDemo = !connected;
+  const badge = document.getElementById('pnl-mode');
+  if (badge){ badge.textContent = isDemo ? 'Preview · sample data' : 'Live · Xero';
+    badge.className = 'card-badge ' + (isDemo ? 'pnl-badge-demo' : 'pnl-badge-live'); }
+  const banner = document.getElementById('pnl-banner'); if(banner) banner.style.display = isDemo ? 'flex' : 'none';
+  const content = document.getElementById('pnl-content'); if(content) content.style.display = 'block';
+  const cur = data.currency || 'USD';
   const c1 = document.getElementById('pnl-cur'); if(c1) c1.textContent = cur;
   const c2 = document.getElementById('pnl-cur2'); if(c2) c2.textContent = cur;
-  sel.innerHTML = order.map(function(k){ return '<option value="'+k+'">'+(xeroPnlData.months[k].label)+'</option>'; }).join('');
+  const sel = document.getElementById('pnl-month');
+  sel.innerHTML = (data.months_order||[]).map(function(k){ return '<option value="'+k+'">'+(data.months[k].label)+'</option>'; }).join('');
   sel.onchange = function(){ renderPnl(sel.value); };
-  renderPnl(order[0]);
+  renderPnl(data.months_order[0]);
 }
 initPnl();
 
