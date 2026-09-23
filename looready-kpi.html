@@ -3164,7 +3164,8 @@ function toggleSidebar() {
 })();</script>
 </div><!-- /main-area -->
 <script>
-/* Patch: remove empty Sessions/CVR datasets from performance chart */
+/* Drop only genuinely-empty datasets (e.g. the unused Sessions line); keep any
+   series that actually has data so CVR and TACoS render alongside Revenue/Units. */
 (function() {
   var elapsed = 0, iv = setInterval(function() {
     elapsed += 300;
@@ -3174,9 +3175,10 @@ function toggleSidebar() {
     clearInterval(iv);
     if (!chart) return;
     chart.data.datasets = chart.data.datasets.filter(function(d) {
-      return d.label === 'Revenue ($)' || d.label === 'Units Sold';
+      return (d.data || []).some(function(v) { return v !== null && v !== undefined; });
     });
-    if (chart.options.scales && chart.options.scales.y2) chart.options.scales.y2.display = false;
+    var hasPct = chart.data.datasets.some(function(d) { return d.yAxisID === 'y2'; });
+    if (chart.options.scales && chart.options.scales.y2) chart.options.scales.y2.display = hasPct;
     chart.update('none');
   }, 300);
 })();
