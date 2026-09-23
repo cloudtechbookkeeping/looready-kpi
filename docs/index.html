@@ -616,6 +616,47 @@ aside.sidebar.collapsed {
 .pnl-table tr.bs-divider td { cursor:default; color:var(--text-primary); background:#eaeef4; font-size:11px; }
 .pnl-table tr.bs-divider:hover td { background:#eaeef4; color:var(--text-primary); }
 .pnl-table tr.bs-grand td { border-top:2px solid var(--border); font-weight:800; }
+/* ── Team Members + auth footer ─────────────────────────── */
+.user-box { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-top:12px; padding-top:12px; border-top:1px solid rgba(255,255,255,.12); }
+.user-meta { display:flex; flex-direction:column; min-width:0; }
+.user-name { font-size:12.5px; font-weight:700; color:#e8f1fb; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.user-role { font-size:10.5px; color:#8fb4d6; text-transform:capitalize; }
+.logout-btn { flex:none; font-size:11.5px; font-weight:600; color:#c8dff0; text-decoration:none; border:1px solid rgba(255,255,255,.18); border-radius:7px; padding:5px 9px; white-space:nowrap; }
+.logout-btn:hover { background:rgba(255,255,255,.08); color:#fff; }
+.team-table { width:100%; border-collapse:collapse; }
+.team-table th { text-align:left; font-size:10.5px; text-transform:uppercase; letter-spacing:.04em; color:var(--text-muted); padding:10px 12px; border-bottom:1px solid var(--border); }
+.team-table td { font-size:13px; padding:12px; border-bottom:1px solid var(--border); vertical-align:middle; }
+.team-table tr:hover td { background:#fafcff; }
+.team-name { font-weight:600; }
+.team-email { color:var(--text-muted); font-size:12px; }
+.role-pill,.status-pill { display:inline-block; font-size:11px; font-weight:700; padding:3px 9px; border-radius:20px; }
+.role-pill.admin { background:#eaf1fb; color:var(--brand-blue); } .role-pill.member { background:#eef3f0; color:#4a6b57; }
+.status-pill.active { background:#e6f6ea; color:#1f7a3d; } .status-pill.invited { background:#fff4e0; color:#9a6b12; } .status-pill.deactivated { background:#fdecec; color:#c0392b; }
+.team-act { border:1px solid var(--border); background:var(--surface); color:var(--text-primary); font-size:11.5px; font-weight:600; border-radius:7px; padding:5px 10px; cursor:pointer; margin-left:6px; }
+.team-act:hover { border-color:var(--brand-blue); color:var(--brand-blue); }
+.team-act.danger:hover { border-color:var(--red); color:var(--red); }
+.team-toolbar { display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:16px; }
+.invite-btn { background:var(--brand-blue); color:#fff; border:none; border-radius:9px; padding:10px 16px; font-size:13.5px; font-weight:700; cursor:pointer; }
+.invite-btn:hover { background:#1f74ad; }
+.modal-overlay { display:none; position:fixed; inset:0; background:rgba(15,30,55,.45); z-index:1000; align-items:center; justify-content:center; padding:20px; }
+.modal-overlay.open { display:flex; }
+.modal { background:var(--surface); border-radius:14px; width:100%; max-width:440px; box-shadow:0 20px 60px rgba(20,40,80,.25); overflow:hidden; }
+.modal-head { padding:18px 22px; border-bottom:1px solid var(--border); font-size:16px; font-weight:700; display:flex; justify-content:space-between; align-items:center; }
+.modal-head .x { cursor:pointer; color:var(--text-muted); font-size:20px; line-height:1; border:none; background:none; }
+.modal-body { padding:20px 22px; }
+.modal-field { margin-bottom:15px; }
+.modal-field label { display:block; font-size:12.5px; font-weight:600; color:var(--text-muted); margin-bottom:6px; }
+.modal-field input, .modal-field select { width:100%; padding:10px 12px; border:1px solid var(--border); border-radius:9px; font-size:14px; color:var(--text-primary); background:#fbfdff; }
+.modal-field input:focus, .modal-field select:focus { outline:none; border-color:var(--brand-blue); }
+.modal-foot { padding:16px 22px; border-top:1px solid var(--border); display:flex; justify-content:flex-end; gap:10px; }
+.btn-secondary { background:var(--surface); border:1px solid var(--border); color:var(--text-primary); border-radius:9px; padding:9px 16px; font-size:13.5px; font-weight:600; cursor:pointer; }
+.btn-primary { background:var(--brand-blue); border:none; color:#fff; border-radius:9px; padding:9px 16px; font-size:13.5px; font-weight:700; cursor:pointer; }
+.btn-primary:disabled { opacity:.6; cursor:not-allowed; }
+.team-msg { padding:11px 14px; border-radius:9px; font-size:13px; margin-bottom:16px; display:none; line-height:1.45; }
+.team-msg.err { background:#fdecec; border:1px solid #f5c6c6; color:#c0392b; display:block; }
+.team-msg.ok { background:#e9f7ee; border:1px solid #bfe6cd; color:#1f7a3d; display:block; }
+.invite-link-box { margin-top:14px; padding:12px; background:#f6f9fc; border:1px solid var(--border); border-radius:9px; font-size:12px; word-break:break-all; }
+.invite-link-box input { width:100%; margin-top:6px; padding:8px; border:1px solid var(--border); border-radius:7px; font-size:12px; }
 .pnl-table td { font-size:13px; }
 .pnl-table tr.pnl-section td { background:#f6f8fc; font-weight:700; text-transform:uppercase; font-size:10px; letter-spacing:.04em; color:var(--text-muted); padding-top:12px; cursor:pointer; user-select:none; } .pnl-table tr.pnl-section:hover td { background:#eef2fa; color:var(--brand-blue); } .pnl-arrow { display:inline-block; width:11px; margin-right:7px; font-size:8px; color:var(--text-muted); transition:transform .15s ease; transform:translateY(-1px); } .pnl-table tr.pnl-section.open .pnl-arrow { transform:translateY(-1px) rotate(90deg); } .pnl-table tr.pnl-section:hover .pnl-arrow { color:var(--brand-blue); }
 .pnl-table tr.pnl-summary td { border-top:1px solid var(--border); font-weight:700; }
@@ -647,6 +688,12 @@ aside.sidebar.collapsed {
 .pnl-range-chip button { background:none; border:none; color:var(--brand-blue); cursor:pointer; font-size:15px; font-weight:700; padding:0 2px; line-height:1; }
 #pnl-month-controls.disabled, #bs-month-controls.disabled { opacity:.4; pointer-events:none; }
 </style>
+<script>
+/* Injected by the server (index.php) with the signed-in user's identity + CSRF.
+   When the page is opened outside the PHP gate the marker stays unreplaced and
+   this safely falls back to null, so the dashboard still renders standalone. */
+try { window.CURRENT_USER = __AUTH_CONTEXT__; } catch (e) { window.CURRENT_USER = null; }
+</script>
 </head>
 <body>
 
@@ -680,6 +727,9 @@ aside.sidebar.collapsed {
     <button class="nav-btn" onclick="switchSection('financial', this)">
       <span class="nav-icon">📄</span> Financial Reports
     </button>
+    <button class="nav-btn" id="nav-team" style="display:none;" onclick="switchSection('team', this)">
+      <span class="nav-icon">👥</span> Team Members
+    </button>
   </nav>
 
   <div class="sidebar-footer">
@@ -687,8 +737,15 @@ aside.sidebar.collapsed {
       <div class="live-dot"></div>
       <div>
         <span class="live-label">Live</span>
-        <span class="live-time">Updated September 23, 2026<br>3:25 AM ET</span>
+        <span class="live-time">Updated September 23, 2026<br>5:04 AM ET</span>
       </div>
+    </div>
+    <div id="user-box" class="user-box" style="display:none;">
+      <div class="user-meta">
+        <span class="user-name" id="user-name">—</span>
+        <span class="user-role" id="user-role">—</span>
+      </div>
+      <a href="/logout.php" class="logout-btn" title="Log out">⎋ Log out</a>
     </div>
   </div>
 </aside>
@@ -720,7 +777,7 @@ aside.sidebar.collapsed {
 <!-- ══════════════ DASHBOARD SECTION ══════════════ -->
 <div id="section-dashboard" class="section active">
 
-  <div class="updated-line">Data snapshot: September 23, 2026 3:25 AM ET · SP-API live pull</div>
+  <div class="updated-line">Data snapshot: September 23, 2026 5:04 AM ET · SP-API live pull</div>
 
   <!-- 1st + 2nd: Profit Breakdown + Inventory Health -->
   <div class="grid-2-eq mb-20">
@@ -738,11 +795,11 @@ aside.sidebar.collapsed {
         </div>
         <div class="mini-stat">
           <span class="mini-stat-label">LR-TSC-30PACK</span>
-          <span class="mini-stat-val" id="inv-30pack">3,026 units</span>
+          <span class="mini-stat-val" id="inv-30pack">3,022 units</span>
         </div>
         <div class="mini-stat">
           <span class="mini-stat-label">LR-CS-10</span>
-          <span class="mini-stat-val" id="inv-cs10">2,363 units</span>
+          <span class="mini-stat-val" id="inv-cs10">2,361 units</span>
         </div>
         <div class="mini-stat">
           <span class="mini-stat-label">LR-CS-30</span>
@@ -1527,13 +1584,65 @@ aside.sidebar.collapsed {
 
 </div><!-- /section-financial -->
 
+<!-- ══════════════ TEAM MEMBERS SECTION (admin only) ══════════════ -->
+<div id="section-team" class="section">
+  <div class="updated-line" style="margin-bottom:16px;">Team Management · who can access this dashboard</div>
+  <div class="card mb-20">
+    <div class="card-header">
+      <div class="card-title"><span class="dot" style="background:var(--brand-blue);"></span> Team Members</div>
+      <button class="invite-btn" onclick="openInvite()">+ Invite member</button>
+    </div>
+    <div class="card-body">
+      <div id="team-msg" class="team-msg"></div>
+      <div class="table-scroll">
+        <table class="team-table">
+          <thead>
+            <tr><th>Name</th><th>Role</th><th>Status</th><th>Invited</th><th>Last login</th><th style="text-align:right;">Actions</th></tr>
+          </thead>
+          <tbody id="team-body">
+            <tr><td colspan="6" style="text-align:center;color:var(--text-muted);padding:20px;">Loading…</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="footnote">Roles and access are enforced on the server. Removed members lose access immediately; their record is kept for audit.</p>
+    </div>
+  </div>
+</div><!-- /section-team -->
+
+<!-- Invite modal -->
+<div id="invite-modal" class="modal-overlay">
+  <div class="modal">
+    <div class="modal-head">Invite a team member <button class="x" onclick="closeInvite()">&times;</button></div>
+    <div class="modal-body">
+      <div id="invite-msg" class="team-msg"></div>
+      <div id="invite-form-wrap">
+        <div class="modal-field"><label for="inv-name">Full name</label><input type="text" id="inv-name" placeholder="e.g. Agnes Shithi"></div>
+        <div class="modal-field"><label for="inv-email">Email address</label><input type="email" id="inv-email" placeholder="name@example.com"></div>
+        <div class="modal-field"><label for="inv-role">Role</label>
+          <select id="inv-role"><option value="member">Team Member</option><option value="admin">Admin</option></select>
+        </div>
+      </div>
+      <div id="invite-result" style="display:none;">
+        <div class="invite-link-box">
+          <strong>Invitation link</strong> (also emailed to the user — valid 72 hours):
+          <input type="text" id="inv-link" readonly onclick="this.select()">
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-secondary" onclick="closeInvite()">Close</button>
+      <button class="btn-primary" id="inv-send" onclick="sendInvite()">Send invitation</button>
+    </div>
+  </div>
+</div>
+
 
 </div><!-- /page -->
 
 
 <script>
 // ── Inventory Data ──────────────────────────────────────────────
-const inventoryData = {'LR-TSC-30PACK':{fba:{fulfillable:1357,inbound:26,reserved:389,researching:2,unfulfillable:2},awd:{onhand:200,inbound:1050,outbound:0}},'LR-CS-10':{fba:{fulfillable:1469,inbound:0,reserved:26,researching:1,unfulfillable:3},awd:{onhand:864,inbound:0,outbound:0}},'LR-CS-30':{fba:{fulfillable:673,inbound:3,reserved:124,researching:0,unfulfillable:1},awd:{onhand:4293,inbound:0,outbound:0}},'LR-TSC-5PACK':{fba:{fulfillable:277,inbound:1,reserved:11,researching:6,unfulfillable:0},awd:{onhand:750,inbound:0,outbound:0}},'LR-CS-120':{fba:{fulfillable:288,inbound:0,reserved:1,researching:0,unfulfillable:0},awd:{onhand:348,inbound:0,outbound:0}}};
+const inventoryData = {'LR-TSC-30PACK':{fba:{fulfillable:1357,inbound:26,reserved:386,researching:1,unfulfillable:2},awd:{onhand:200,inbound:1050,outbound:0}},'LR-CS-10':{fba:{fulfillable:1468,inbound:0,reserved:25,researching:1,unfulfillable:3},awd:{onhand:864,inbound:0,outbound:0}},'LR-CS-30':{fba:{fulfillable:673,inbound:3,reserved:124,researching:0,unfulfillable:1},awd:{onhand:4293,inbound:0,outbound:0}},'LR-TSC-5PACK':{fba:{fulfillable:277,inbound:1,reserved:11,researching:6,unfulfillable:0},awd:{onhand:750,inbound:0,outbound:0}},'LR-CS-120':{fba:{fulfillable:288,inbound:0,reserved:1,researching:0,unfulfillable:0},awd:{onhand:348,inbound:0,outbound:0}}};
 
 // ── Repeat Purchase & Est. CLTV Data (aggregate, per-SKU, last full month) ──
 const repeatPurchaseData = {'LR-TSC-30PACK':{orders:1228,unique_customers:1169,repeat_customers_pct:4.8,avg_orders_per_customer:1.05,est_cltv:23.65},'LR-TSC-5PACK':{orders:163,unique_customers:155,repeat_customers_pct:4.9,avg_orders_per_customer:1.05,est_cltv:23.65},'LR-CS-30':{orders:371,unique_customers:363,repeat_customers_pct:2.2,avg_orders_per_customer:1.02,est_cltv:22.97},'LR-CS-10':{orders:624,unique_customers:605,repeat_customers_pct:3.0,avg_orders_per_customer:1.03,est_cltv:23.2}};
@@ -1564,7 +1673,7 @@ function renderRepeatPurchase() {
 const tabData = {
   '30d': { revenue:'$39,235.61', units:'2060', spend:'$10,091', acos:'25.72%', cvr:'12.18%', sessions:'--', ipi:'628', rsub:'Last 30 Days · SP-API live', usub:'1742 orders . 2060 units', ssub:'ROAS 3.89x · 30d', asub:'Not yet available', sesub:'12.18% CVR · -- sessions', isub:'Range 570-686', acosColor:'#10b981', skuUnits:{'LR-TSC-30PACK':1039,'LR-CS-10':509,'LR-CS-30':305,'LR-TSC-5PACK':134,'LR-CS-120':0}, days30d:29 }, /* 30D_KPI_PLACEHOLDER */
   '7d':  { revenue:'$8,079.94', units:'395', spend:'$10,091', acos:'25.72%', cvr:'12.18%', sessions:'--', ipi:'628', rsub:'Last 7 Days · SP-API live', usub:'361 orders . 395 units', ssub:'ROAS 3.89x · 30d', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#10b981', skuUnits:{'LR-TSC-30PACK':202,'LR-CS-10':86,'LR-CS-30':71,'LR-TSC-5PACK':36,'LR-CS-120':0} }, /* 7D_KPI_PLACEHOLDER */
-  'today': { revenue:'$937.83', units:'43', spend:'$10,091', acos:'25.72%', cvr:'12.18%', sessions:'--', ipi:'628', rsub:'Today September 23, 2026 3:25 AM ET . SP-API live', usub:'34 orders . 70 units . Fees $427.53', ssub:'ROAS 3.89x · 30d', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#10b981', skuUnits:{'LR-TSC-30PACK':24,'LR-CS-10':6,'LR-CS-30':9,'LR-TSC-5PACK':4,'LR-CS-120':0} }, /* TODAY_KPI_PLACEHOLDER */
+  'today': { revenue:'$1,051.26', units:'48', spend:'$10,091', acos:'25.72%', cvr:'12.18%', sessions:'--', ipi:'628', rsub:'Today September 23, 2026 5:04 AM ET . SP-API live', usub:'38 orders . 70 units . Fees $427.53', ssub:'ROAS 3.89x · 30d', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#10b981', skuUnits:{'LR-TSC-30PACK':28,'LR-CS-10':7,'LR-CS-30':9,'LR-TSC-5PACK':4,'LR-CS-120':0} }, /* TODAY_KPI_PLACEHOLDER */
   'lifetime': { revenue:'$439,795', units:'20,748', spend:'$226,449', acos:'51.5%', sessions:'187,331', ipi:'628',
                rsub:'Lifetime Ad Sales (all campaigns)', usub:'Lifetime ad purchases', ssub:'Lifetime total spend', asub:'Lifetime avg TACoS', sesub:'Lifetime ad clicks', isub:'Range 570–686',
                acosColor:'#d97706' },
@@ -1591,6 +1700,7 @@ function switchSection(name, btn) {
   document.getElementById('date-subnav').style.display = name === 'sales' ? '' : 'none';
   document.getElementById('custom-date-panel').style.display = 'none';
   if (name === 'inventory') switchInvTab(currentInvPanel, null);
+  if (name === 'team' && typeof loadTeam === 'function') loadTeam();
 }
 
 // ── Date Tab Switching ──────────────────────────────────────────
@@ -2498,6 +2608,92 @@ function initBs(){
   renderBs(defKey);
 }
 initBs();
+
+// ══════════════ Auth + Team Management ══════════════
+var AUTH = { role:null, csrf:(window.CURRENT_USER && window.CURRENT_USER.csrf) || '' };
+function _api(action, opts){ return fetch('/api.php?action='+action, opts).then(function(r){ return r.json().then(function(j){ return {status:r.status, body:j}; }); }); }
+function _esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
+function _fmtDT(s){ if(!s) return '—'; var d=new Date(s.replace(' ','T')); if(isNaN(d)) return '—'; return d.toLocaleDateString(undefined,{year:'numeric',month:'short',day:'numeric'}); }
+
+function initAuth(){
+  var u = window.CURRENT_USER;
+  function apply(user){
+    if(!user || !user.role) return;              // not authenticated (standalone view)
+    AUTH.role = user.role;
+    var nb=document.getElementById('user-name'); if(nb) nb.textContent=user.name||user.email||'';
+    var rb=document.getElementById('user-role'); if(rb) rb.textContent=user.role;
+    var box=document.getElementById('user-box'); if(box) box.style.display='flex';
+    if(user.role==='admin'){ var nav=document.getElementById('nav-team'); if(nav) nav.style.display=''; }
+  }
+  if(u && u.role){ apply(u); }
+  else { _api('me').then(function(r){ if(r.status===200){ AUTH.csrf=AUTH.csrf; apply(r.body); } }).catch(function(){}); }
+}
+initAuth();
+
+function teamMsg(el, type, text){ var m=document.getElementById(el); if(!m) return; m.className='team-msg '+(type||''); m.textContent=text||''; if(!text) m.style.display='none'; }
+
+function loadTeam(){
+  var body=document.getElementById('team-body'); if(!body) return;
+  body.innerHTML='<tr><td colspan="6" style="text-align:center;color:var(--text-muted);padding:20px;">Loading…</td></tr>';
+  _api('list_team').then(function(r){
+    if(r.status!==200){ teamMsg('team-msg','err', (r.body&&r.body.error)||'Unable to load team.'); body.innerHTML=''; return; }
+    teamMsg('team-msg','', '');
+    var rows=(r.body.members||[]).map(function(m){
+      var role='<span class="role-pill '+m.role+'">'+(m.role==='admin'?'Admin':'Team Member')+'</span>';
+      var stat='<span class="status-pill '+m.status+'">'+m.status.charAt(0).toUpperCase()+m.status.slice(1)+'</span>';
+      var acts='';
+      var self = window.CURRENT_USER && window.CURRENT_USER.email && (m.email.toLowerCase()===window.CURRENT_USER.email.toLowerCase());
+      if(!self){
+        if(m.status==='deactivated'){ acts+='<button class="team-act" onclick="teamAction('+m.id+',\'reactivate\')">Reactivate</button>'; }
+        else {
+          if(m.status==='invited'){ acts+='<button class="team-act" onclick="teamAction('+m.id+',\'resend_invite\')">Resend</button>'; }
+          acts+='<button class="team-act danger" onclick="teamAction('+m.id+',\'deactivate\')">Deactivate</button>';
+        }
+      } else { acts='<span style="color:var(--text-muted);font-size:12px;">You</span>'; }
+      return '<tr>'
+        +'<td><div class="team-name">'+_esc(m.name)+'</div><div class="team-email">'+_esc(m.email)+'</div></td>'
+        +'<td>'+role+'</td><td>'+stat+'</td>'
+        +'<td>'+_fmtDT(m.invited_at)+'</td><td>'+_fmtDT(m.last_login)+'</td>'
+        +'<td style="text-align:right;">'+acts+'</td></tr>';
+    }).join('');
+    body.innerHTML = rows || '<tr><td colspan="6" style="text-align:center;color:var(--text-muted);padding:20px;">No members yet.</td></tr>';
+  }).catch(function(){ teamMsg('team-msg','err','Network error loading team.'); });
+}
+
+function teamAction(id, action){
+  var labels={deactivate:'deactivate this member (they lose access immediately)',reactivate:'reactivate this member',resend_invite:'resend the invitation'};
+  if(action==='deactivate' && !confirm('Are you sure you want to '+labels[action]+'?')) return;
+  var fd=new FormData(); fd.append('id',id);
+  _api(action,{method:'POST',headers:{'X-CSRF-Token':AUTH.csrf},body:fd}).then(function(r){
+    if(r.status!==200){ teamMsg('team-msg','err',(r.body&&r.body.error)||'Action failed.'); return; }
+    if(action==='resend_invite' && r.body.invite_link){ teamMsg('team-msg','ok','Invitation re-sent'+(r.body.emailed?' by email.':' — copy the link: '+r.body.invite_link)); }
+    else teamMsg('team-msg','ok','Done.');
+    loadTeam();
+  }).catch(function(){ teamMsg('team-msg','err','Network error.'); });
+}
+
+// ── Invite modal ──
+function openInvite(){ document.getElementById('inv-name').value=''; document.getElementById('inv-email').value=''; document.getElementById('inv-role').value='member';
+  teamMsg('invite-msg','',''); document.getElementById('invite-result').style.display='none'; document.getElementById('invite-form-wrap').style.display='';
+  document.getElementById('inv-send').style.display=''; document.getElementById('inv-send').disabled=false; document.getElementById('inv-send').textContent='Send invitation';
+  document.getElementById('invite-modal').classList.add('open'); }
+function closeInvite(){ document.getElementById('invite-modal').classList.remove('open'); }
+function sendInvite(){
+  var name=document.getElementById('inv-name').value.trim(), email=document.getElementById('inv-email').value.trim(), role=document.getElementById('inv-role').value;
+  if(!name){ teamMsg('invite-msg','err','Please enter a name.'); return; }
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ teamMsg('invite-msg','err','Please enter a valid email.'); return; }
+  var btn=document.getElementById('inv-send'); btn.disabled=true; btn.textContent='Sending…'; teamMsg('invite-msg','','');
+  var fd=new FormData(); fd.append('name',name); fd.append('email',email); fd.append('role',role);
+  _api('invite',{method:'POST',headers:{'X-CSRF-Token':AUTH.csrf},body:fd}).then(function(r){
+    if(r.status!==200){ teamMsg('invite-msg','err',(r.body&&r.body.error)||'Could not send invitation.'); btn.disabled=false; btn.textContent='Send invitation'; return; }
+    teamMsg('invite-msg','ok', r.body.emailed ? 'Invitation emailed to '+email+'.' : 'Invitation created. Email delivery is off — copy the link below to share it.');
+    document.getElementById('invite-form-wrap').style.display='none';
+    document.getElementById('inv-link').value=r.body.invite_link||'';
+    document.getElementById('invite-result').style.display='block';
+    btn.style.display='none';
+    loadTeam();
+  }).catch(function(){ teamMsg('invite-msg','err','Network error.'); btn.disabled=false; btn.textContent='Send invitation'; });
+}
 
 // == Performance Chart (Dashboard) — rolling 30-day dynamic ==
 (function() {
