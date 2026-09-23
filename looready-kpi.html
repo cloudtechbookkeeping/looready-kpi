@@ -652,6 +652,8 @@ aside.sidebar.collapsed {
 .btn-secondary { background:var(--surface); border:1px solid var(--border); color:var(--text-primary); border-radius:9px; padding:9px 16px; font-size:13.5px; font-weight:600; cursor:pointer; }
 .btn-primary { background:var(--brand-blue); border:none; color:#fff; border-radius:9px; padding:9px 16px; font-size:13.5px; font-weight:700; cursor:pointer; }
 .btn-primary:disabled { opacity:.6; cursor:not-allowed; }
+.btn-danger { background:var(--red); border:none; color:#fff; border-radius:9px; padding:9px 16px; font-size:13.5px; font-weight:700; cursor:pointer; }
+.btn-danger:disabled { opacity:.6; cursor:not-allowed; }
 .team-msg { padding:11px 14px; border-radius:9px; font-size:13px; margin-bottom:16px; display:none; line-height:1.45; }
 .team-msg.err { background:#fdecec; border:1px solid #f5c6c6; color:#c0392b; display:block; }
 .team-msg.ok { background:#e9f7ee; border:1px solid #bfe6cd; color:#1f7a3d; display:block; }
@@ -1632,6 +1634,20 @@ try { window.CURRENT_USER = __AUTH_CONTEXT__; } catch (e) { window.CURRENT_USER 
     <div class="modal-foot">
       <button class="btn-secondary" onclick="closeInvite()">Close</button>
       <button class="btn-primary" id="inv-send" onclick="sendInvite()">Send invitation</button>
+    </div>
+  </div>
+</div>
+
+<div id="delete-modal" class="modal-overlay">
+  <div class="modal">
+    <div class="modal-head">Delete Team Member? <button class="x" onclick="closeDeleteModal()">&times;</button></div>
+    <div class="modal-body">
+      <div id="delete-msg" class="team-msg"></div>
+      <p style="margin:0;color:var(--text-primary);font-size:14px;line-height:1.55;">Are you sure you want to permanently delete this team member? This action cannot be undone.</p>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-secondary" onclick="closeDeleteModal()">Cancel</button>
+      <button class="btn-danger" id="del-confirm" onclick="confirmDeleteMember()">Delete</button>
     </div>
   </div>
 </div>
@@ -2644,7 +2660,8 @@ function loadTeam(){
       var acts='';
       var self = window.CURRENT_USER && window.CURRENT_USER.email && (m.email.toLowerCase()===window.CURRENT_USER.email.toLowerCase());
       if(!self){
-        if(m.status==='deactivated'){ acts+='<button class="team-act" onclick="teamAction('+m.id+',\'reactivate\')">Reactivate</button>'; }
+        if(m.status==='deactivated'){ acts+='<button class="team-act" onclick="teamAction('+m.id+',\'reactivate\')">Reactivate</button>';
+          acts+='<button class="team-act danger" onclick="askDeleteMember('+m.id+')">Delete</button>'; }
         else {
           if(m.status==='invited'){ acts+='<button class="team-act" onclick="teamAction('+m.id+',\'resend_invite\')">Resend</button>'; }
           acts+='<button class="team-act danger" onclick="teamAction('+m.id+',\'deactivate\')">Deactivate</button>';
@@ -2670,6 +2687,27 @@ function teamAction(id, action){
     else teamMsg('team-msg','ok','Done.');
     loadTeam();
   }).catch(function(){ teamMsg('team-msg','err','Network error.'); });
+}
+
+// ── Delete member (deactivated only) ──
+var _delMemberId = null;
+function askDeleteMember(id){
+  _delMemberId = id;
+  teamMsg('delete-msg','','');
+  var b=document.getElementById('del-confirm'); b.disabled=false; b.textContent='Delete';
+  document.getElementById('delete-modal').classList.add('open');
+}
+function closeDeleteModal(){ document.getElementById('delete-modal').classList.remove('open'); _delMemberId=null; }
+function confirmDeleteMember(){
+  if(!_delMemberId) return;
+  var b=document.getElementById('del-confirm'); b.disabled=true; b.textContent='Deleting…';
+  var fd=new FormData(); fd.append('id',_delMemberId);
+  _api('delete_member',{method:'POST',headers:{'X-CSRF-Token':AUTH.csrf},body:fd}).then(function(r){
+    if(r.status!==200){ teamMsg('delete-msg','err',(r.body&&r.body.error)||'Could not delete member.'); b.disabled=false; b.textContent='Delete'; return; }
+    closeDeleteModal();
+    teamMsg('team-msg','ok','Team member deleted.');
+    loadTeam();
+  }).catch(function(){ teamMsg('delete-msg','err','Network error.'); b.disabled=false; b.textContent='Delete'; });
 }
 
 // ── Invite modal ──
