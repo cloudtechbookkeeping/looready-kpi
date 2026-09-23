@@ -6,7 +6,7 @@ for i in range(3):
         f = ftplib.FTP()
         f.connect('145.79.209.123', 21, timeout=60)
         f.login('u133013644', os.environ['FTP_PASS'])
-        f.storbinary('STOR /public_html/looreadykpi/index.html', io.BytesIO(d))
+        f.storbinary('STOR /public_html/looreadykpi/private/dashboard.html', io.BytesIO(d))
         f.quit()
         print('done', len(d))
         break
