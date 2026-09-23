@@ -609,6 +609,10 @@ aside.sidebar.collapsed {
 /* ── Financial Reports (Xero P&L) ─────────────────────────── */
 .pnl-select { padding:6px 10px; border:1px solid var(--border); border-radius:8px; background:var(--surface); color:var(--text-primary); font-size:13px; font-weight:600; cursor:pointer; min-width:150px; }
 .pnl-select:focus { outline:none; border-color:var(--brand-blue); }
+.fin-tabs { display:flex; gap:6px; margin-bottom:18px; border-bottom:1px solid var(--border); }
+.fin-tab { appearance:none; border:none; background:none; padding:10px 16px; font-size:14px; font-weight:600; color:var(--text-muted); cursor:pointer; border-bottom:2px solid transparent; margin-bottom:-1px; transition:color .15s, border-color .15s; }
+.fin-tab:hover { color:var(--text-primary); }
+.fin-tab.active { color:var(--brand-blue); border-bottom-color:var(--brand-blue); }
 .pnl-table td { font-size:13px; }
 .pnl-table tr.pnl-section td { background:#f6f8fc; font-weight:700; text-transform:uppercase; font-size:10px; letter-spacing:.04em; color:var(--text-muted); padding-top:12px; cursor:pointer; user-select:none; } .pnl-table tr.pnl-section:hover td { background:#eef2fa; color:var(--brand-blue); } .pnl-arrow { display:inline-block; width:11px; margin-right:7px; font-size:8px; color:var(--text-muted); transition:transform .15s ease; transform:translateY(-1px); } .pnl-table tr.pnl-section.open .pnl-arrow { transform:translateY(-1px) rotate(90deg); } .pnl-table tr.pnl-section:hover .pnl-arrow { color:var(--brand-blue); }
 .pnl-table tr.pnl-summary td { border-top:1px solid var(--border); font-weight:700; }
@@ -638,7 +642,7 @@ aside.sidebar.collapsed {
 .pnl-range-chip.active { display:inline-flex; }
 .pnl-range-chip strong { font-weight:800; }
 .pnl-range-chip button { background:none; border:none; color:var(--brand-blue); cursor:pointer; font-size:15px; font-weight:700; padding:0 2px; line-height:1; }
-#pnl-month-controls.disabled { opacity:.4; pointer-events:none; }
+#pnl-month-controls.disabled, #bs-month-controls.disabled { opacity:.4; pointer-events:none; }
 </style>
 </head>
 <body>
@@ -1397,7 +1401,13 @@ aside.sidebar.collapsed {
 <!-- ══════════════ FINANCIAL REPORTS SECTION ══════════════ -->
 <div id="section-financial" class="section">
 
-  <div class="updated-line" style="margin-bottom:20px;">Financial Reports · Profit &amp; Loss · pulled live from Xero</div>
+  <div class="updated-line" style="margin-bottom:16px;">Financial Reports · pulled live from Xero</div>
+
+  <!-- Report tabs: Profit & Loss / Balance Sheet -->
+  <div class="fin-tabs">
+    <button type="button" id="fin-tab-pnl" class="fin-tab active" onclick="switchFinTab('pnl')">Profit &amp; Loss</button>
+    <button type="button" id="fin-tab-bs" class="fin-tab" onclick="switchFinTab('bs')">Balance Sheet</button>
+  </div>
 
   <!-- Preview banner (sample figures until Xero is connected) -->
   <div id="pnl-banner" style="display:none;align-items:center;gap:10px;background:#fff8e6;border:1px solid #f0e0a8;color:#8a6d1a;border-radius:10px;padding:11px 15px;margin-bottom:16px;font-size:12.5px;line-height:1.4;">
@@ -1453,6 +1463,62 @@ aside.sidebar.collapsed {
         </table>
       </div>
       <p class="footnote">Profit &amp; Loss for <span id="pnl-period">—</span>. When Xero is connected, figures are pulled live for the LooReady organisation and the current month is shown month-to-date. Amounts in <span id="pnl-cur2">USD</span>.</p>
+    </div>
+  </div>
+
+  <!-- Balance Sheet card -->
+  <div id="bs-content" class="card mb-20" style="display:none;">
+    <div class="card-header">
+      <div class="card-title">
+        <span class="dot" style="background:var(--green);"></span>
+        Balance Sheet
+        <span id="bs-mode" class="card-badge" style="margin-left:10px;"></span>
+      </div>
+      <div id="bs-month-controls" style="display:flex;align-items:center;gap:6px;">
+        <button id="bs-prev" class="pnl-nav" title="Previous month" onclick="bsStep(1)">&lsaquo;</button>
+        <select id="bs-month" class="pnl-select"></select>
+        <button id="bs-next" class="pnl-nav" title="Next month" onclick="bsStep(-1)">&rsaquo;</button>
+      </div>
+    </div>
+    <!-- As-of date (point-in-time position) -->
+    <div class="pnl-filter-bar">
+      <button type="button" id="bs-custom-toggle" class="pnl-custom-toggle" onclick="toggleBsCustom()">📅 As-of date</button>
+      <div id="bs-custom-panel" class="pnl-custom-panel">
+        <div class="pnl-date-field"><label for="bs-asof">Position as of</label><input type="date" id="bs-asof"></div>
+        <button type="button" id="bs-apply" class="pnl-apply-btn" onclick="applyBsCustom()">Apply</button>
+        <span id="bs-custom-msg" class="pnl-custom-msg"></span>
+      </div>
+      <div id="bs-range-chip" class="pnl-range-chip">
+        <span>As of:</span>
+        <strong id="bs-range-text"></strong>
+        <button type="button" id="bs-range-clear" onclick="clearBsCustom()" title="Back to monthly" aria-label="Clear as-of date">&times;</button>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="pnl-tile-grid" style="margin-bottom:18px;">
+        <div class="kpi-tile"><span class="kpi-tile-label">Total Assets</span><span class="kpi-tile-val" id="bs-assets">—</span></div>
+        <div class="kpi-tile"><span class="kpi-tile-label">Total Liabilities</span><span class="kpi-tile-val" id="bs-liabilities">—</span></div>
+        <div class="kpi-tile"><span class="kpi-tile-label">Total Equity</span><span class="kpi-tile-val" id="bs-equity">—</span></div>
+        <div class="kpi-tile"><span class="kpi-tile-label">Net Assets</span><span class="kpi-tile-val" id="bs-net">—</span></div>
+      </div>
+      <div class="table-scroll">
+        <table class="product-table pnl-table">
+          <thead>
+            <tr><th>Account</th><th style="text-align:right;">Balance (<span id="bs-cur">USD</span>)</th></tr>
+          </thead>
+          <tbody id="bs-body">
+            <tr><td colspan="2" style="color:var(--text-muted);text-align:center;padding:16px;">Select a month</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="footnote">Balance Sheet as at <span id="bs-period">—</span>. Position pulled live from Xero for the LooReady organisation. Amounts in <span id="bs-cur2">USD</span>.</p>
+    </div>
+  </div>
+
+  <!-- Balance Sheet not-yet-available state -->
+  <div id="bs-empty" class="card mb-20" style="display:none;">
+    <div class="card-body">
+      <p class="footnote" style="text-align:center;padding:20px;">The Balance Sheet will appear here on the next Xero sync. It reuses the existing Xero connection — nothing here is manually entered.</p>
     </div>
   </div>
 
@@ -2305,6 +2371,111 @@ function initPnl(){
   renderPnl(order.find(function(k){return Number((data.months[k].summary||{}).income)>0;})||order[0]);
 }
 initPnl();
+
+// ── Financial Reports tabs (Profit & Loss / Balance Sheet) ──────
+function switchFinTab(which){
+  var isBs = which === 'bs';
+  var tP=document.getElementById('fin-tab-pnl'), tB=document.getElementById('fin-tab-bs');
+  if(tP) tP.classList.toggle('active', !isBs);
+  if(tB) tB.classList.toggle('active', isBs);
+  var pnl=document.getElementById('pnl-content'); if(pnl) pnl.style.display = isBs ? 'none' : 'block';
+  var banner=document.getElementById('pnl-banner');
+  if(banner) banner.style.display = (!isBs && window._pnl && window._pnl.demo) ? 'flex' : 'none';
+  var hasBs = !!(window._bs && (window._bs.months_order||[]).length);
+  var bs=document.getElementById('bs-content'), bsE=document.getElementById('bs-empty');
+  if(bs) bs.style.display = (isBs && hasBs) ? 'block' : 'none';
+  if(bsE) bsE.style.display = (isBs && !hasBs) ? 'block' : 'none';
+}
+// Generic collapse toggle — scoped to the table body the heading lives in,
+// so it serves both the P&L and Balance Sheet tables.
+function toggleFinGroup(grp, el){
+  var head=el.closest('tr'); if(!head) return;
+  var body=el.closest('tbody'); if(!body) return;
+  var open=head.classList.toggle('open');
+  body.querySelectorAll('tr[data-pnl-grp="'+grp+'"]').forEach(function(r){ r.style.display = open ? '' : 'none'; });
+}
+// ── Balance Sheet (point-in-time, reuses xeroPnlData.balance_sheet) ──
+function paintBs(m){
+  var s = m.summary || {};
+  var setv=function(id,v){ var e=document.getElementById(id); if(e) e.textContent=fmtPnl(v); };
+  setv('bs-assets', s.assets); setv('bs-liabilities', s.liabilities);
+  setv('bs-equity', s.equity); setv('bs-net', s.net_assets);
+  var body=document.getElementById('bs-body');
+  if(body){
+    var grp=-1;
+    body.innerHTML = (m.rows||[]).map(function(r){
+      if(r.t==='section'){ grp+=1; return '<tr class="pnl-section" data-pnl-head="'+grp+'"><td colspan="2" onclick="toggleFinGroup('+grp+',this)"><span class="pnl-arrow">▶</span>'+r.label+'</td></tr>'; }
+      var _g=grp>=0; var cls=r.t==='summary'?' class="pnl-summary"':''; var pad=r.t==='summary'?'':' style="padding-left:24px;"'; var amt='text-align:right;'+(r.t==='summary'?'font-weight:700;':'');
+      return '<tr'+cls+(_g?' data-pnl-grp="'+grp+'"':'')+(_g?' style="display:none;"':'')+'><td'+pad+'>'+r.label+'</td><td style="'+amt+'">'+fmtPnl(r.value)+'</td></tr>';
+    }).join('');
+  }
+  var per=document.getElementById('bs-period'); if(per) per.textContent = m.label;
+}
+function renderBs(key){
+  var data=window._bs; if(!data) return;
+  var order=data.months_order||[]; var idx=order.indexOf(key); if(idx<0) return;
+  var sel=document.getElementById('bs-month'); if(sel) sel.value=key;
+  var prev=document.getElementById('bs-prev'), next=document.getElementById('bs-next');
+  if(prev) prev.disabled = idx>=order.length-1;
+  if(next) next.disabled = idx<=0;
+  paintBs(data.months[key]);
+}
+function bsStep(dir){
+  if(window._bsCustom) return;
+  var data=window._bs; if(!data) return;
+  var order=data.months_order||[]; var cur=document.getElementById('bs-month').value;
+  var idx=order.indexOf(cur)+dir; if(idx<0||idx>=order.length) return;
+  renderBs(order[idx]);
+}
+function toggleBsCustom(){
+  var panel=document.getElementById('bs-custom-panel'); var btn=document.getElementById('bs-custom-toggle');
+  var open=panel.classList.toggle('open'); btn.classList.toggle('active', open);
+  document.getElementById('bs-custom-msg').textContent='';
+}
+function applyBsCustom(){
+  var asof=document.getElementById('bs-asof').value; var msg=document.getElementById('bs-custom-msg'); msg.textContent='';
+  if(!asof){ msg.textContent='Pick a date.'; return; }
+  var data=window._bs; if(!data) return;
+  var order=data.months_order||[]; var key=null;
+  for(var i=0;i<order.length;i++){ if(data.months[order[i]].date <= asof){ key=order[i]; break; } }
+  if(!key){ msg.textContent='No Balance Sheet on or before that date yet.'; return; }
+  window._bsCustom=true;
+  var m=data.months[key];
+  paintBs({ label:_fmtDate(asof)+' (position at '+m.label+' close)', rows:m.rows, summary:m.summary });
+  var mc=document.getElementById('bs-month-controls'); if(mc){ mc.classList.add('disabled'); var sel=document.getElementById('bs-month'); if(sel) sel.disabled=true; }
+  document.getElementById('bs-range-text').textContent=_fmtDate(asof);
+  document.getElementById('bs-range-chip').classList.add('active');
+}
+function clearBsCustom(){
+  window._bsCustom=false;
+  var mc=document.getElementById('bs-month-controls'); if(mc){ mc.classList.remove('disabled'); var sel=document.getElementById('bs-month'); if(sel) sel.disabled=false; }
+  document.getElementById('bs-range-chip').classList.remove('active');
+  document.getElementById('bs-custom-panel').classList.remove('open');
+  document.getElementById('bs-custom-toggle').classList.remove('active');
+  var sel=document.getElementById('bs-month'); renderBs(sel && sel.value ? sel.value : (window._bs.months_order||[])[0]);
+}
+function initBs(){
+  var bsData = (typeof xeroPnlData!=='undefined' && xeroPnlData.connected && xeroPnlData.balance_sheet && (xeroPnlData.balance_sheet.months_order||[]).length) ? xeroPnlData.balance_sheet : null;
+  window._bs = bsData; window._bsCustom=false;
+  var badge=document.getElementById('bs-mode');
+  if(badge){ badge.textContent='Live · Xero'; badge.className='card-badge pnl-badge-live'; }
+  if(!bsData) return;
+  var cur = (typeof xeroPnlData!=='undefined' && xeroPnlData.currency) || 'USD';
+  var c1=document.getElementById('bs-cur'); if(c1) c1.textContent=cur;
+  var c2=document.getElementById('bs-cur2'); if(c2) c2.textContent=cur;
+  var sel=document.getElementById('bs-month');
+  sel.innerHTML=(bsData.months_order||[]).map(function(k){ return '<option value="'+k+'">'+bsData.months[k].label+'</option>'; }).join('');
+  sel.onchange=function(){ renderBs(sel.value); };
+  var order=bsData.months_order||[];
+  if(order.length){
+    var newest=order[0], oldest=order[order.length-1];
+    var af=document.getElementById('bs-asof');
+    if(af){ af.value=bsData.months[newest].date; af.min=bsData.months[oldest].date; af.max=bsData.months[newest].date; }
+  }
+  var defKey=order.find(function(k){ return Number((bsData.months[k].summary||{}).assets)>0; })||order[0];
+  renderBs(defKey);
+}
+initBs();
 
 // == Performance Chart (Dashboard) — rolling 30-day dynamic ==
 (function() {
