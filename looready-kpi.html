@@ -3163,26 +3163,6 @@ function toggleSidebar() {
   for (var gi = 0; gi < grids.length; gi++) initDragGrid(grids[gi], gi);
 })();</script>
 </div><!-- /main-area -->
-<script>
-/* Drop only genuinely-empty datasets (e.g. the unused Sessions line); keep any
-   series that actually has data so CVR and TACoS render alongside Revenue/Units. */
-(function() {
-  var elapsed = 0, iv = setInterval(function() {
-    elapsed += 300;
-    var canvas = document.getElementById('performanceChart');
-    var chart = canvas && Chart.getChart && Chart.getChart(canvas);
-    if (!chart && elapsed < 8000) return;
-    clearInterval(iv);
-    if (!chart) return;
-    chart.data.datasets = chart.data.datasets.filter(function(d) {
-      return (d.data || []).some(function(v) { return v !== null && v !== undefined; });
-    });
-    var hasPct = chart.data.datasets.some(function(d) { return d.yAxisID === 'y2'; });
-    if (chart.options.scales && chart.options.scales.y2) chart.options.scales.y2.display = hasPct;
-    chart.update('none');
-  }, 300);
-})();
-</script>
 </body>
 </html>
 
