@@ -2986,6 +2986,9 @@ new Chart(iCtx, {
   const inv = inventoryData || {};
   const SKUS = ['LR-TSC-30PACK','LR-CS-10','LR-CS-30','LR-TSC-5PACK','LR-CS-120'];
   const counts = { overdue:0, urgent:0, soon:0, ontrack:0 };
+  const skuNames = { overdue:[], urgent:[], soon:[], ontrack:[] };
+  const nameOf = {};
+  skuMeta.forEach(function(m){ nameOf[m.key] = m.name; });
   SKUS.forEach(function(sku) {
     const fba = (inv[sku] || {}).fba || {};
     const awd = (inv[sku] || {}).awd || {};
@@ -2999,6 +3002,7 @@ new Chart(iCtx, {
       else if (notifyIn <= 45) status = 'soon';
     }
     counts[status]++;
+    skuNames[status].push(nameOf[sku] || sku);
   });
   const N = SKUS.length;
   const healthPct = N > 0 ? Math.round(counts.ontrack / N * 100) : 0;
@@ -3062,12 +3066,16 @@ new Chart(iCtx, {
   ].map(function(s) {
     var n = counts[s.key] || 0;
     var pct = N > 0 ? Math.round(n / N * 100) : 0;
-    return '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;">'
-      + '<div style="display:flex;align-items:center;gap:6px;">'
-        + '<span style="width:8px;height:8px;border-radius:50%;background:' + s.color + ';display:inline-block;flex-shrink:0;"></span>'
-        + '<span style="font-size:11px;color:var(--text-muted);">' + s.label + '</span>'
+    var names = (skuNames[s.key] && skuNames[s.key].length) ? skuNames[s.key].join(', ') : 'No SKUs';
+    return '<div style="margin-bottom:8px;">'
+      + '<div style="display:flex;align-items:center;justify-content:space-between;">'
+        + '<div style="display:flex;align-items:center;gap:6px;">'
+          + '<span style="width:8px;height:8px;border-radius:50%;background:' + s.color + ';display:inline-block;flex-shrink:0;"></span>'
+          + '<span style="font-size:11px;color:var(--text-muted);">' + s.label + '</span>'
+        + '</div>'
+        + '<span style="font-size:11px;font-weight:600;color:#374151;margin-left:16px;">' + pct + '% (' + n + (n===1?' SKU':' SKUs') + ')</span>'
       + '</div>'
-      + '<span style="font-size:11px;font-weight:600;color:#374151;margin-left:16px;">' + pct + '% (' + n + (n===1?' SKU':' SKUs') + ')</span>'
+      + '<div style="font-size:10px;color:#94a3b8;margin-left:14px;margin-top:1px;line-height:1.35;">' + names + '</div>'
     + '</div>';
   }).join('');
   var summaryHtml = '<div style="display:flex;align-items:center;gap:16px;background:#f8fafc;border-radius:12px;padding:14px 16px;margin-top:6px;">'
@@ -3078,7 +3086,7 @@ new Chart(iCtx, {
       + '<div style="font-size:11px;color:var(--text-muted);">' + counts.ontrack + ' of ' + N + ' SKUs are on track</div>'
     + '</div>'
     + '<svg width="72" height="72" viewBox="0 0 72 72" style="flex-shrink:0;">' + svgSegs + '</svg>'
-    + '<div style="min-width:120px;">' + legendItems + '</div>'
+    + '<div style="min-width:160px;">' + legendItems + '</div>'
   + '</div>';
   var html = ROWS.map(rowHtml).join('') + summaryHtml;
   var el = document.getElementById('dash-sc-health');
