@@ -652,6 +652,8 @@ aside.sidebar.collapsed {
 .btn-secondary { background:var(--surface); border:1px solid var(--border); color:var(--text-primary); border-radius:9px; padding:9px 16px; font-size:13.5px; font-weight:600; cursor:pointer; }
 .btn-primary { background:var(--brand-blue); border:none; color:#fff; border-radius:9px; padding:9px 16px; font-size:13.5px; font-weight:700; cursor:pointer; }
 .btn-primary:disabled { opacity:.6; cursor:not-allowed; }
+.btn-danger { background:var(--red); border:none; color:#fff; border-radius:9px; padding:9px 16px; font-size:13.5px; font-weight:700; cursor:pointer; }
+.btn-danger:disabled { opacity:.6; cursor:not-allowed; }
 .team-msg { padding:11px 14px; border-radius:9px; font-size:13px; margin-bottom:16px; display:none; line-height:1.45; }
 .team-msg.err { background:#fdecec; border:1px solid #f5c6c6; color:#c0392b; display:block; }
 .team-msg.ok { background:#e9f7ee; border:1px solid #bfe6cd; color:#1f7a3d; display:block; }
@@ -737,7 +739,7 @@ try { window.CURRENT_USER = __AUTH_CONTEXT__; } catch (e) { window.CURRENT_USER 
       <div class="live-dot"></div>
       <div>
         <span class="live-label">Live</span>
-        <span class="live-time">Updated September 23, 2026<br>12:32 PM ET</span>
+        <span class="live-time">Updated September 23, 2026<br>1:28 PM ET</span>
       </div>
     </div>
     <div id="user-box" class="user-box" style="display:none;">
@@ -777,7 +779,7 @@ try { window.CURRENT_USER = __AUTH_CONTEXT__; } catch (e) { window.CURRENT_USER 
 <!-- ══════════════ DASHBOARD SECTION ══════════════ -->
 <div id="section-dashboard" class="section active">
 
-  <div class="updated-line">Data snapshot: September 23, 2026 12:32 PM ET · SP-API live pull</div>
+  <div class="updated-line">Data snapshot: September 23, 2026 1:28 PM ET · SP-API live pull</div>
 
   <!-- 1st + 2nd: Profit Breakdown + Inventory Health -->
   <div class="grid-2-eq mb-20">
@@ -795,11 +797,11 @@ try { window.CURRENT_USER = __AUTH_CONTEXT__; } catch (e) { window.CURRENT_USER 
         </div>
         <div class="mini-stat">
           <span class="mini-stat-label">LR-TSC-30PACK</span>
-          <span class="mini-stat-val" id="inv-30pack">3,017 units</span>
+          <span class="mini-stat-val" id="inv-30pack">3,016 units</span>
         </div>
         <div class="mini-stat">
           <span class="mini-stat-label">LR-CS-10</span>
-          <span class="mini-stat-val" id="inv-cs10">2,360 units</span>
+          <span class="mini-stat-val" id="inv-cs10">2,359 units</span>
         </div>
         <div class="mini-stat">
           <span class="mini-stat-label">LR-CS-30</span>
@@ -1636,13 +1638,27 @@ try { window.CURRENT_USER = __AUTH_CONTEXT__; } catch (e) { window.CURRENT_USER 
   </div>
 </div>
 
+<div id="delete-modal" class="modal-overlay">
+  <div class="modal">
+    <div class="modal-head">Delete Team Member? <button class="x" onclick="closeDeleteModal()">&times;</button></div>
+    <div class="modal-body">
+      <div id="delete-msg" class="team-msg"></div>
+      <p style="margin:0;color:var(--text-primary);font-size:14px;line-height:1.55;">Are you sure you want to permanently delete this team member? This action cannot be undone.</p>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-secondary" onclick="closeDeleteModal()">Cancel</button>
+      <button class="btn-danger" id="del-confirm" onclick="confirmDeleteMember()">Delete</button>
+    </div>
+  </div>
+</div>
+
 
 </div><!-- /page -->
 
 
 <script>
 // ── Inventory Data ──────────────────────────────────────────────
-const inventoryData = {'LR-TSC-30PACK':{fba:{fulfillable:1358,inbound:26,reserved:381,researching:0,unfulfillable:2},awd:{onhand:200,inbound:1050,outbound:0}},'LR-CS-10':{fba:{fulfillable:1461,inbound:0,reserved:31,researching:1,unfulfillable:3},awd:{onhand:864,inbound:0,outbound:0}},'LR-CS-30':{fba:{fulfillable:672,inbound:3,reserved:120,researching:0,unfulfillable:1},awd:{onhand:4293,inbound:0,outbound:0}},'LR-TSC-5PACK':{fba:{fulfillable:277,inbound:1,reserved:11,researching:6,unfulfillable:0},awd:{onhand:750,inbound:0,outbound:0}},'LR-CS-120':{fba:{fulfillable:288,inbound:0,reserved:1,researching:0,unfulfillable:0},awd:{onhand:348,inbound:0,outbound:0}}};
+const inventoryData = {'LR-TSC-30PACK':{fba:{fulfillable:1358,inbound:26,reserved:380,researching:0,unfulfillable:2},awd:{onhand:200,inbound:1050,outbound:0}},'LR-CS-10':{fba:{fulfillable:1459,inbound:0,reserved:32,researching:1,unfulfillable:3},awd:{onhand:864,inbound:0,outbound:0}},'LR-CS-30':{fba:{fulfillable:672,inbound:3,reserved:120,researching:0,unfulfillable:1},awd:{onhand:4293,inbound:0,outbound:0}},'LR-TSC-5PACK':{fba:{fulfillable:277,inbound:1,reserved:11,researching:6,unfulfillable:0},awd:{onhand:750,inbound:0,outbound:0}},'LR-CS-120':{fba:{fulfillable:288,inbound:0,reserved:1,researching:0,unfulfillable:0},awd:{onhand:348,inbound:0,outbound:0}}};
 
 // ── Repeat Purchase & Est. CLTV Data (aggregate, per-SKU, last full month) ──
 const repeatPurchaseData = {'LR-TSC-30PACK':{orders:1228,unique_customers:1169,repeat_customers_pct:4.8,avg_orders_per_customer:1.05,est_cltv:23.65},'LR-TSC-5PACK':{orders:163,unique_customers:155,repeat_customers_pct:4.9,avg_orders_per_customer:1.05,est_cltv:23.65},'LR-CS-30':{orders:371,unique_customers:363,repeat_customers_pct:2.2,avg_orders_per_customer:1.02,est_cltv:22.97},'LR-CS-10':{orders:624,unique_customers:605,repeat_customers_pct:3.0,avg_orders_per_customer:1.03,est_cltv:23.2}};
@@ -1673,7 +1689,7 @@ function renderRepeatPurchase() {
 const tabData = {
   '30d': { revenue:'$39,235.61', units:'2060', spend:'$10,091', acos:'25.72%', cvr:'12.18%', sessions:'--', ipi:'628', rsub:'Last 30 Days · SP-API live', usub:'1742 orders . 2060 units', ssub:'ROAS 3.89x · 30d', asub:'Not yet available', sesub:'12.18% CVR · -- sessions', isub:'Range 570-686', acosColor:'#10b981', skuUnits:{'LR-TSC-30PACK':1039,'LR-CS-10':509,'LR-CS-30':305,'LR-TSC-5PACK':134,'LR-CS-120':0}, days30d:29 }, /* 30D_KPI_PLACEHOLDER */
   '7d':  { revenue:'$8,079.94', units:'395', spend:'$10,091', acos:'25.72%', cvr:'12.18%', sessions:'--', ipi:'628', rsub:'Last 7 Days · SP-API live', usub:'361 orders . 395 units', ssub:'ROAS 3.89x · 30d', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#10b981', skuUnits:{'LR-TSC-30PACK':202,'LR-CS-10':86,'LR-CS-30':71,'LR-TSC-5PACK':36,'LR-CS-120':0} }, /* 7D_KPI_PLACEHOLDER */
-  'today': { revenue:'$1,321.24', units:'61', spend:'$10,091', acos:'25.72%', cvr:'12.18%', sessions:'--', ipi:'628', rsub:'Today September 23, 2026 12:32 PM ET . SP-API live', usub:'48 orders . 70 units . Fees $427.53', ssub:'ROAS 3.89x · 30d', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#10b981', skuUnits:{'LR-TSC-30PACK':34,'LR-CS-10':9,'LR-CS-30':14,'LR-TSC-5PACK':4,'LR-CS-120':0} }, /* TODAY_KPI_PLACEHOLDER */
+  'today': { revenue:'$1,356.02', units:'63', spend:'$10,091', acos:'25.72%', cvr:'12.18%', sessions:'--', ipi:'628', rsub:'Today September 23, 2026 1:28 PM ET . SP-API live', usub:'50 orders . 70 units . Fees $427.53', ssub:'ROAS 3.89x · 30d', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#10b981', skuUnits:{'LR-TSC-30PACK':35,'LR-CS-10':10,'LR-CS-30':14,'LR-TSC-5PACK':4,'LR-CS-120':0} }, /* TODAY_KPI_PLACEHOLDER */
   'lifetime': { revenue:'$439,795', units:'20,748', spend:'$226,449', acos:'51.5%', sessions:'187,331', ipi:'628',
                rsub:'Lifetime Ad Sales (all campaigns)', usub:'Lifetime ad purchases', ssub:'Lifetime total spend', asub:'Lifetime avg TACoS', sesub:'Lifetime ad clicks', isub:'Range 570–686',
                acosColor:'#d97706' },
@@ -2644,7 +2660,8 @@ function loadTeam(){
       var acts='';
       var self = window.CURRENT_USER && window.CURRENT_USER.email && (m.email.toLowerCase()===window.CURRENT_USER.email.toLowerCase());
       if(!self){
-        if(m.status==='deactivated'){ acts+='<button class="team-act" onclick="teamAction('+m.id+',\'reactivate\')">Reactivate</button>'; }
+        if(m.status==='deactivated'){ acts+='<button class="team-act" onclick="teamAction('+m.id+',\'reactivate\')">Reactivate</button>';
+          acts+='<button class="team-act danger" onclick="askDeleteMember('+m.id+')">Delete</button>'; }
         else {
           if(m.status==='invited'){ acts+='<button class="team-act" onclick="teamAction('+m.id+',\'resend_invite\')">Resend</button>'; }
           acts+='<button class="team-act danger" onclick="teamAction('+m.id+',\'deactivate\')">Deactivate</button>';
@@ -2670,6 +2687,27 @@ function teamAction(id, action){
     else teamMsg('team-msg','ok','Done.');
     loadTeam();
   }).catch(function(){ teamMsg('team-msg','err','Network error.'); });
+}
+
+// ── Delete member (deactivated only) ──
+var _delMemberId = null;
+function askDeleteMember(id){
+  _delMemberId = id;
+  teamMsg('delete-msg','','');
+  var b=document.getElementById('del-confirm'); b.disabled=false; b.textContent='Delete';
+  document.getElementById('delete-modal').classList.add('open');
+}
+function closeDeleteModal(){ document.getElementById('delete-modal').classList.remove('open'); _delMemberId=null; }
+function confirmDeleteMember(){
+  if(!_delMemberId) return;
+  var b=document.getElementById('del-confirm'); b.disabled=true; b.textContent='Deleting…';
+  var fd=new FormData(); fd.append('id',_delMemberId);
+  _api('delete_member',{method:'POST',headers:{'X-CSRF-Token':AUTH.csrf},body:fd}).then(function(r){
+    if(r.status!==200){ teamMsg('delete-msg','err',(r.body&&r.body.error)||'Could not delete member.'); b.disabled=false; b.textContent='Delete'; return; }
+    closeDeleteModal();
+    teamMsg('team-msg','ok','Team member deleted.');
+    loadTeam();
+  }).catch(function(){ teamMsg('delete-msg','err','Network error.'); b.disabled=false; b.textContent='Delete'; });
 }
 
 // ── Invite modal ──
@@ -2742,7 +2780,7 @@ function sendInvite(){
         responsive: true, maintainAspectRatio: false,
         interaction: { mode: 'index', intersect: false },
         plugins: {
-          legend: { display: true, position: 'top', labels: { boxWidth: 12, font: { size: 10 }, filter: function(item) { return item.text !== 'Sessions'; } } },
+          legend: { display: false },
           tooltip: {
             backgroundColor: 'rgba(15,23,42,0.88)', titleColor: '#e2e8f0', bodyColor: '#cbd5e1',
             padding: 10, cornerRadius: 8,
@@ -2769,25 +2807,35 @@ function sendInvite(){
     });
   }
 
-  fetch('kpi_history.json')
-    .then(function(r) { return r.json(); })
-    .then(function(history) {
-      var last30 = history.slice(-30);
-      var days = last30.map(function(h) {
-        var dt = new Date(h.date + 'T12:00:00Z');
-        return ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][dt.getMonth()] + ' ' + dt.getDate();
-      });
-      var revArr   = last30.map(function(h) { return Math.round(h.revenue || 0); });
-      var unitsArr = last30.map(function(h) { return h.units   || 0; });
-      var cvrsArr  = last30.map(function(h) { return h.cvr != null ? parseFloat(h.cvr) : null; });
-      var acosArr = last30.map(function(h) { return h.acos != null ? parseFloat(h.acos) : null; });
-      buildChart(days, revArr, unitsArr, cvrsArr, acosArr);
-    })
-    .catch(function() {
-      var days = last30Labels();
-      var empty = days.map(function() { return 0; });
-      buildChart(days, empty, empty, empty);
+  function renderPerf(history) {
+    var last30 = history.slice(-30);
+    var days = last30.map(function(h) {
+      var dt = new Date(h.date + 'T12:00:00Z');
+      return ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][dt.getMonth()] + ' ' + dt.getDate();
     });
+    var revArr   = last30.map(function(h) { return Math.round(h.revenue || 0); });
+    var unitsArr = last30.map(function(h) { return h.units   || 0; });
+    var cvrsArr  = last30.map(function(h) { return h.cvr != null ? parseFloat(h.cvr) : null; });
+    var acosArr = last30.map(function(h) { return h.acos != null ? parseFloat(h.acos) : null; });
+    buildChart(days, revArr, unitsArr, cvrsArr, acosArr);
+  }
+
+  // The last-30-day history is injected inline at build time so the chart renders
+  // no matter how the page is served. Fall back to fetching kpi_history.json
+  // (e.g. GitHub Pages), then to an empty axis if neither is available.
+  var PERF_HISTORY = [{"date": "2026-08-25", "revenue": 1879.84, "units": 96, "cvr": 11.83, "acos": 29.08}, {"date": "2026-08-26", "revenue": 2119.45, "units": 84, "cvr": 12.02, "acos": 28.87}, {"date": "2026-08-27", "revenue": 1171.03, "units": 95, "cvr": null, "acos": 28.56}, {"date": "2026-08-28", "revenue": 1861.82, "units": 86, "cvr": 11.65, "acos": 28.05}, {"date": "2026-08-29", "revenue": 1388.92, "units": 68, "cvr": 11.65, "acos": 28.05}, {"date": "2026-08-30", "revenue": 1119.73, "units": 81, "cvr": 11.88, "acos": 29.5}, {"date": "2026-08-31", "revenue": 1385.05, "units": 75, "cvr": 11.78, "acos": 29.1}, {"date": "2026-09-01", "revenue": 1939.99, "units": 90, "cvr": 12.08, "acos": 28.82}, {"date": "2026-09-02", "revenue": 1918.2, "units": 99, "cvr": 12.25, "acos": 27.21}, {"date": "2026-09-03", "revenue": 1285.11, "units": 75, "cvr": 12.08, "acos": 28.33}, {"date": "2026-09-04", "revenue": 1556.71, "units": 74, "cvr": 12.3, "acos": 28.63}, {"date": "2026-09-05", "revenue": 1158.74, "units": 74, "cvr": 12.09, "acos": 27.83}, {"date": "2026-09-06", "revenue": 1250.66, "units": 64, "cvr": 12.07, "acos": 27.82}, {"date": "2026-09-07", "revenue": 1279.54, "units": 64, "cvr": 12.11, "acos": 28.08}, {"date": "2026-09-08", "revenue": 1246.37, "units": 60, "cvr": 11.98, "acos": 28.3}, {"date": "2026-09-09", "revenue": 1445.15, "units": 55, "cvr": 12.01, "acos": 27.4}, {"date": "2026-09-10", "revenue": 1710.16, "units": 63, "cvr": 12.12, "acos": 28.56}, {"date": "2026-09-11", "revenue": 1608.52, "units": 76, "cvr": 12.16, "acos": 29.13}, {"date": "2026-09-12", "revenue": 1391.09, "units": 71, "cvr": 12.16, "acos": 28.17}, {"date": "2026-09-13", "revenue": 967.08, "units": 68, "cvr": 12.26, "acos": null}, {"date": "2026-09-14", "revenue": 932.06, "units": 56, "cvr": 12.26, "acos": null}, {"date": "2026-09-15", "revenue": 1041.37, "units": 56, "cvr": 12.09, "acos": 27.45}, {"date": "2026-09-16", "revenue": 1156.73, "units": 66, "cvr": 12.09, "acos": 27.76}, {"date": "2026-09-17", "revenue": 1079.59, "units": 62, "cvr": 12.01, "acos": 26.97}, {"date": "2026-09-18", "revenue": 1002.2, "units": 57, "cvr": 12.04, "acos": 25.76}, {"date": "2026-09-19", "revenue": 1168.48, "units": 55, "cvr": 12.04, "acos": 26.31}, {"date": "2026-09-20", "revenue": 1478.47, "units": 55, "cvr": 12.15, "acos": 26.59}, {"date": "2026-09-21", "revenue": 1529.03, "units": 71, "cvr": 12.15, "acos": 26.59}, {"date": "2026-09-22", "revenue": 1417.01, "units": 68, "cvr": 12.32, "acos": 26.47}, {"date": "2026-09-23", "revenue": 1356.02, "units": 70, "cvr": 12.18, "acos": 25.72}];
+  if (PERF_HISTORY && PERF_HISTORY.length) {
+    renderPerf(PERF_HISTORY);
+  } else {
+    fetch('kpi_history.json')
+      .then(function(r) { return r.json(); })
+      .then(renderPerf)
+      .catch(function() {
+        var days = last30Labels();
+        var empty = days.map(function() { return 0; });
+        buildChart(days, empty, empty, empty);
+      });
+  }
 })();
 
 
@@ -3115,24 +3163,6 @@ function toggleSidebar() {
   for (var gi = 0; gi < grids.length; gi++) initDragGrid(grids[gi], gi);
 })();</script>
 </div><!-- /main-area -->
-<script>
-/* Patch: remove empty Sessions/CVR datasets from performance chart */
-(function() {
-  var elapsed = 0, iv = setInterval(function() {
-    elapsed += 300;
-    var canvas = document.getElementById('performanceChart');
-    var chart = canvas && Chart.getChart && Chart.getChart(canvas);
-    if (!chart && elapsed < 8000) return;
-    clearInterval(iv);
-    if (!chart) return;
-    chart.data.datasets = chart.data.datasets.filter(function(d) {
-      return d.label === 'Revenue ($)' || d.label === 'Units Sold';
-    });
-    if (chart.options.scales && chart.options.scales.y2) chart.options.scales.y2.display = false;
-    chart.update('none');
-  }, 300);
-})();
-</script>
 <script>(function(){setTimeout(function(){var c=window.__perfChart;if(!c)try{Object.values(Chart.instances).forEach(function(i){if(i.canvas&&i.canvas.id==='performanceChart')c=i;});}catch(e){}if(!c)return;fetch('kpi_history.json?v='+Date.now()).then(function(r){return r.json();}).then(function(h){var l=h.slice(-30);var cv=l.map(function(x){return x.cvr!=null?+x.cvr:null;});var ac=l.map(function(x){return x.acos!=null?+x.acos:null;});c.data.datasets=c.data.datasets.filter(function(d){return d.label.indexOf('CVR')<0&&d.label.indexOf('TACoS')<0;});var cvrIdx=c.data.datasets.length;c.data.datasets.push({label:'CVR (%)',data:cv,borderColor:'#2688c9',backgroundColor:'rgba(38,136,201,0.08)',borderWidth:2,pointRadius:2,tension:0.4,yAxisID:'y2',spanGaps:true});var acosIdx=c.data.datasets.length;c.data.datasets.push({label:'TACoS (%)',data:ac,borderColor:'#f59e0b',backgroundColor:'rgba(245,158,11,0.08)',borderWidth:2,pointRadius:2,tension:0.4,yAxisID:'y3',spanGaps:true});if(c.options.scales){c.options.scales.y2={position:'right',display:true,min:0,suggestedMax:25,ticks:{font:{size:9},color:'#2688c9',callback:function(v){return v+'%';}},grid:{display:false}};c.options.scales.y3={position:'right',display:false,min:0,suggestedMax:200,ticks:{font:{size:9},color:'#f59e0b',callback:function(v){return v+'%';}},grid:{display:false}};}document.querySelectorAll('.perf-kpi-row .perf-kpi-tile').forEach(function(t){var lbl=t.querySelector('.perf-kpi-label');if(!lbl)return;var txt=lbl.textContent;if(txt.indexOf('CVR')>=0)t.setAttribute('data-ds',String(cvrIdx));else if(txt.indexOf('TACoS')>=0){t.setAttribute('data-ds',String(acosIdx));t.classList.remove('perf-no-chart');t.title='Click to show/hide on chart';}});if(c.options.plugins&&c.options.plugins.legend)c.options.plugins.legend.display=false;c.update('none');}).catch(function(){});},1500);})();</script>
 </body>
 </html>
