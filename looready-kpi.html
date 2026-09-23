@@ -613,6 +613,9 @@ aside.sidebar.collapsed {
 .fin-tab { appearance:none; border:none; background:none; padding:10px 16px; font-size:14px; font-weight:600; color:var(--text-muted); cursor:pointer; border-bottom:2px solid transparent; margin-bottom:-1px; transition:color .15s, border-color .15s; }
 .fin-tab:hover { color:var(--text-primary); }
 .fin-tab.active { color:var(--brand-blue); border-bottom-color:var(--brand-blue); }
+.pnl-table tr.bs-divider td { cursor:default; color:var(--text-primary); background:#eaeef4; font-size:11px; }
+.pnl-table tr.bs-divider:hover td { background:#eaeef4; color:var(--text-primary); }
+.pnl-table tr.bs-grand td { border-top:2px solid var(--border); font-weight:800; }
 .pnl-table td { font-size:13px; }
 .pnl-table tr.pnl-section td { background:#f6f8fc; font-weight:700; text-transform:uppercase; font-size:10px; letter-spacing:.04em; color:var(--text-muted); padding-top:12px; cursor:pointer; user-select:none; } .pnl-table tr.pnl-section:hover td { background:#eef2fa; color:var(--brand-blue); } .pnl-arrow { display:inline-block; width:11px; margin-right:7px; font-size:8px; color:var(--text-muted); transition:transform .15s ease; transform:translateY(-1px); } .pnl-table tr.pnl-section.open .pnl-arrow { transform:translateY(-1px) rotate(90deg); } .pnl-table tr.pnl-section:hover .pnl-arrow { color:var(--brand-blue); }
 .pnl-table tr.pnl-summary td { border-top:1px solid var(--border); font-weight:700; }
@@ -2395,6 +2398,7 @@ function toggleFinGroup(grp, el){
   body.querySelectorAll('tr[data-pnl-grp="'+grp+'"]').forEach(function(r){ r.style.display = open ? '' : 'none'; });
 }
 // ── Balance Sheet (point-in-time, reuses xeroPnlData.balance_sheet) ──
+var BS_GRAND_TOTALS = {'total assets':1,'total liabilities':1,'total equity':1,'total liabilities and equity':1,'net assets':1};
 function paintBs(m){
   var s = m.summary || {};
   var setv=function(id,v){ var e=document.getElementById(id); if(e) e.textContent=fmtPnl(v); };
@@ -2402,12 +2406,30 @@ function paintBs(m){
   setv('bs-equity', s.equity); setv('bs-net', s.net_assets);
   var body=document.getElementById('bs-body');
   if(body){
-    var grp=-1;
-    body.innerHTML = (m.rows||[]).map(function(r){
-      if(r.t==='section'){ grp+=1; return '<tr class="pnl-section" data-pnl-head="'+grp+'"><td colspan="2" onclick="toggleFinGroup('+grp+',this)"><span class="pnl-arrow">▶</span>'+r.label+'</td></tr>'; }
+    var rows=m.rows||[]; var grp=-1; var html='';
+    for(var i=0;i<rows.length;i++){
+      var r=rows[i];
+      if(r.t==='section'){
+        // A heading with no accounts under it (immediately followed by another
+        // heading) is a parent divider — shown but not collapsible. Otherwise it
+        // is a collapsible sub-section.
+        if(i+1>=rows.length || rows[i+1].t==='section'){
+          html+='<tr class="pnl-section bs-divider"><td colspan="2">'+r.label+'</td></tr>';
+        } else {
+          grp+=1;
+          html+='<tr class="pnl-section" data-pnl-head="'+grp+'"><td colspan="2" onclick="toggleFinGroup('+grp+',this)"><span class="pnl-arrow">▶</span>'+r.label+'</td></tr>';
+        }
+        continue;
+      }
+      if(r.t!=='section' && BS_GRAND_TOTALS[(r.label||'').trim().toLowerCase()]){
+        // Grand totals stay visible even when sub-sections are collapsed.
+        html+='<tr class="pnl-summary bs-grand"><td>'+r.label+'</td><td style="text-align:right;font-weight:800;">'+fmtPnl(r.value)+'</td></tr>';
+        continue;
+      }
       var _g=grp>=0; var cls=r.t==='summary'?' class="pnl-summary"':''; var pad=r.t==='summary'?'':' style="padding-left:24px;"'; var amt='text-align:right;'+(r.t==='summary'?'font-weight:700;':'');
-      return '<tr'+cls+(_g?' data-pnl-grp="'+grp+'"':'')+(_g?' style="display:none;"':'')+'><td'+pad+'>'+r.label+'</td><td style="'+amt+'">'+fmtPnl(r.value)+'</td></tr>';
-    }).join('');
+      html+='<tr'+cls+(_g?' data-pnl-grp="'+grp+'"':'')+(_g?' style="display:none;"':'')+'><td'+pad+'>'+r.label+'</td><td style="'+amt+'">'+fmtPnl(r.value)+'</td></tr>';
+    }
+    body.innerHTML=html;
   }
   var per=document.getElementById('bs-period'); if(per) per.textContent = m.label;
 }
