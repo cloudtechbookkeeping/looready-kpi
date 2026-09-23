@@ -45,6 +45,7 @@ SCOPE       = "accounting.reports.profitandloss.read"
 
 MONTHS_BACK = 12          # current month + previous 11
 CURRENCY    = "USD"       # LooReady, LLC base currency (US org)
+PARSER_VERSION = 2        # bump to force a re-fetch/re-parse (busts daily cache)
 
 
 # ── Auth ─────────────────────────────────────────────────────────────────────
@@ -98,36 +99,75 @@ def _num(v):
         return None
 
 
+def _append_row(rows, r):
+    """Append a single Xero data row (Row or SummaryRow) to the flat list."""
+    cells = r.get("Cells", [])
+    if not cells:
+        return
+    label = cells[0].get("Value", "")
+    value = _num(cells[1].get("Value")) if len(cells) > 1 else None
+    if not label and value is None:
+        return
+    rows.append({
+        "t": "summary" if r.get("RowType") == "SummaryRow" else "row",
+        "label": label,
+        "value": value,
+    })
+
+
+# Headline totals can be labelled differently depending on the org's chart of
+# accounts / report layout. LooReady, LLC (US org) uses "Total Revenue",
+# "Gross Profit" and "Net Income" as plain rows rather than the UK-style
+# "Total Income" / "Net Profit" summary rows, so we match a set of aliases.
+INCOME_LABELS = ("total revenue", "total income", "total operating income",
+                 "total trading income")
+GROSS_LABELS  = ("gross profit",)
+NET_LABELS    = ("net income", "net profit")            # exact match preferred
+NET_FALLBACK  = ("net income", "net profit")            # substring fallback
+
+
+def _derive_summary(rows):
+    """Pull the headline income / gross profit / net profit figures out of the
+    flattened rows, tolerant of US- and UK-style P&L labels."""
+    summary = {}
+    for r in rows:
+        if r.get("t") == "section" or r.get("value") is None:
+            continue
+        low = (r.get("label") or "").strip().lower()
+        val = r["value"]
+        if low in INCOME_LABELS:
+            summary["income"] = val
+        elif low in GROSS_LABELS:
+            summary["gross_profit"] = val
+        elif low in NET_LABELS:
+            summary["net_profit"] = val          # last exact match wins (bottom line)
+    if "net_profit" not in summary:
+        for r in rows:
+            if r.get("t") == "section" or r.get("value") is None:
+                continue
+            low = (r.get("label") or "").strip().lower()
+            if any(t in low for t in NET_FALLBACK):
+                summary["net_profit"] = r["value"]
+    return summary
+
+
 def parse_pnl(report):
     """Flatten a single-period Xero ProfitAndLoss report into ordered display
-    rows plus the headline summary figures."""
-    rows, summary = [], {}
+    rows plus the headline summary figures. Handles both section-nested rows
+    and top-level Gross Profit / Net Income rows."""
+    rows = []
     for section in report.get("Rows", []):
-        if section.get("RowType") != "Section":
-            continue
-        title = section.get("Title") or ""
-        if title:
-            rows.append({"t": "section", "label": title})
-        for r in section.get("Rows", []):
-            cells = r.get("Cells", [])
-            if not cells:
-                continue
-            label = cells[0].get("Value", "")
-            value = _num(cells[1].get("Value")) if len(cells) > 1 else None
-            is_summary = r.get("RowType") == "SummaryRow"
-            rows.append({
-                "t": "summary" if is_summary else "row",
-                "label": label,
-                "value": value,
-            })
-            low = label.lower()
-            if is_summary:
-                if "net profit" in low:
-                    summary["net_profit"] = value
-                elif "gross profit" in low:
-                    summary["gross_profit"] = value
-                elif low.startswith("total income") or "total operating income" in low:
-                    summary["income"] = value
+        rtype = section.get("RowType")
+        if rtype == "Section":
+            title = section.get("Title") or ""
+            if title:
+                rows.append({"t": "section", "label": title})
+            for r in section.get("Rows", []):
+                _append_row(rows, r)
+        elif rtype in ("Row", "SummaryRow"):
+            # Some layouts emit Gross Profit / Net Income as top-level rows.
+            _append_row(rows, section)
+    summary = _derive_summary(rows)
     return rows, summary
 
 
@@ -188,7 +228,9 @@ def main():
     if OUT_FILE.exists():
         try:
             existing = json.loads(OUT_FILE.read_text())
-            if existing.get("generated") == today_str and existing.get("connected"):
+            if (existing.get("generated") == today_str
+                    and existing.get("connected")
+                    and existing.get("parser_version") == PARSER_VERSION):
                 print("   Cache hit - already pulled today")
                 return
         except Exception:
@@ -242,6 +284,7 @@ def main():
     out = {
         "connected": True,
         "generated": today_str,
+        "parser_version": PARSER_VERSION,
         "currency": CURRENCY,
         "months_order": order,      # newest first
         "months": months,
