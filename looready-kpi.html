@@ -2302,7 +2302,7 @@ function initPnl(){
     if(st){ st.value = oldest; st.min = oldest; st.max = newestEnd; }
     if(en){ en.value = newestEnd; en.min = oldest; en.max = newestEnd; }
   }
-  renderPnl(order[0]);
+  renderPnl(order.find(function(k){return Number((data.months[k].summary||{}).income)>0;})||order[0]);
 }
 initPnl();
 
