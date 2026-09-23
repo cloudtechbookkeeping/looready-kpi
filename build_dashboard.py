@@ -32,7 +32,11 @@ KNOWN_SKUS = ['LR-TSC-30PACK', 'LR-CS-10', 'LR-CS-30', 'LR-TSC-5PACK', 'LR-CS-12
 
 def build_chart_data():
     """Build chart data arrays from the last 30 kpi_data files for Performance chart."""
-    paths = sorted([p for p in DATA_DIR.glob("*.json") if "cache" not in p.stem])[-30:]
+    # Only the daily KPI files are named YYYY-MM-DD.json. Other helper files in
+    # this folder (ads_spend_v2_*, repeat_purchase_*, xero_pnl) sort *after* the
+    # dated files and would otherwise crowd out the real data from the last-30 window.
+    _date_re = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+    paths = sorted([p for p in DATA_DIR.glob("*.json") if _date_re.match(p.stem)])[-30:]
     chart_days, chart_rev, chart_units, chart_cvr, chart_acos = [], [], [], [], []
     for path in paths:
         try:
@@ -57,6 +61,36 @@ def build_chart_data():
         except Exception as e:
             print("Chart data skip " + str(path) + ": " + str(e))
     return chart_days, chart_rev, chart_units, chart_cvr, chart_acos
+
+
+def build_perf_history():
+    """Last-30 daily records for the Performance chart, in the same shape the
+    chart's renderer expects ({date, revenue, units, cvr, acos}). Injected inline
+    so the chart never depends on a runtime fetch of kpi_history.json."""
+    _date_re = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+    paths = sorted([p for p in DATA_DIR.glob("*.json") if _date_re.match(p.stem)])[-30:]
+    out = []
+    for path in paths:
+        try:
+            with open(path) as f:
+                d = json.load(f)
+            if "date" not in d:
+                continue
+            ads = d.get("ads_metrics") or {}
+            cvr = ads.get("cvr_30d")
+            if cvr is None:
+                cvr = d.get("cvr_30d")
+            tacos = d.get("tacos_30d", d.get("acos_30d"))
+            out.append({
+                "date": d["date"],
+                "revenue": round(d.get("revenue_today", 0), 2),
+                "units": d.get("units_ordered", 0),
+                "cvr": round(float(cvr), 2) if cvr is not None else None,
+                "acos": round(float(tacos), 2) if tacos is not None else None,
+            })
+        except Exception as e:
+            print("Perf history skip " + str(path) + ": " + str(e))
+    return out
 
 
 def update_html(data):
@@ -278,18 +312,14 @@ def update_html(data):
         html = html.replace(old_frag, new_frag)
         print(f"inv {el_id}: {old_text} -> {new_text}")
 
-    # 7. Performance chart data injection
-    chart_days, chart_rev, chart_units, chart_cvr, chart_acos = build_chart_data()
-    html = html.replace('[/* CHART_DAYS_PH */]',  json.dumps(chart_days))
-    html = html.replace('[/* CHART_REV_PH */]',   json.dumps(chart_rev))
-    html = html.replace('[/* CHART_UNITS_PH */]', json.dumps(chart_units))
-    html = html.replace('[/* CHART_CVR_PH */]',   json.dumps(chart_cvr))
-    html = html.replace('[/* CHART_ACOS_PH */]',  json.dumps(chart_acos))
-    if chart_days:
-        badge_range = chart_days[0] + ' – ' + chart_days[-1]
-        html = html.replace('id="perf-badge">Last 30 Days', 'id="perf-badge">' + badge_range)
-    n7 = html.count('[/* CHART')
-    print("n1=" + str(n1) + " n2=" + str(n2) + " n3=" + str(n3) + " n4=" + str(n4) + " n5=" + str(n5) + " n6=" + str(n6) + " n6b=" + str(n6b) + " n6c=" + str(n6c) + " chart_days=" + str(len(chart_days)) + " remaining_ph=" + str(n7))
+    # 7. Performance chart data — inject the last-30-day history inline. The page
+    # is served by index.php on Hostinger (a single HTML file at the domain root),
+    # so a runtime fetch of kpi_history.json 404s and the chart would fall back to
+    # a flat zero line. Injecting the data avoids any dependency on a served file.
+    perf_history = build_perf_history()
+    html = html.replace('/* PERF_HISTORY_PLACEHOLDER */ null', json.dumps(perf_history))
+    n7 = html.count('PERF_HISTORY_PLACEHOLDER')
+    print("n1=" + str(n1) + " n2=" + str(n2) + " n3=" + str(n3) + " n4=" + str(n4) + " n5=" + str(n5) + " n6=" + str(n6) + " n6b=" + str(n6b) + " n6c=" + str(n6c) + " perf_days=" + str(len(perf_history)) + " remaining_ph=" + str(n7))
     if n1 == 0 or n2 == 0 or n3 == 0 or n4 == 0 or n5 == 0:
         print("WARNING: one or more KPI patterns did not match!")
     return html, today_str, n1, n2, n3

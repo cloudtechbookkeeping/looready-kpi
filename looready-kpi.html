@@ -2807,25 +2807,35 @@ function sendInvite(){
     });
   }
 
-  fetch('kpi_history.json')
-    .then(function(r) { return r.json(); })
-    .then(function(history) {
-      var last30 = history.slice(-30);
-      var days = last30.map(function(h) {
-        var dt = new Date(h.date + 'T12:00:00Z');
-        return ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][dt.getMonth()] + ' ' + dt.getDate();
-      });
-      var revArr   = last30.map(function(h) { return Math.round(h.revenue || 0); });
-      var unitsArr = last30.map(function(h) { return h.units   || 0; });
-      var cvrsArr  = last30.map(function(h) { return h.cvr != null ? parseFloat(h.cvr) : null; });
-      var acosArr = last30.map(function(h) { return h.acos != null ? parseFloat(h.acos) : null; });
-      buildChart(days, revArr, unitsArr, cvrsArr, acosArr);
-    })
-    .catch(function() {
-      var days = last30Labels();
-      var empty = days.map(function() { return 0; });
-      buildChart(days, empty, empty, empty);
+  function renderPerf(history) {
+    var last30 = history.slice(-30);
+    var days = last30.map(function(h) {
+      var dt = new Date(h.date + 'T12:00:00Z');
+      return ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][dt.getMonth()] + ' ' + dt.getDate();
     });
+    var revArr   = last30.map(function(h) { return Math.round(h.revenue || 0); });
+    var unitsArr = last30.map(function(h) { return h.units   || 0; });
+    var cvrsArr  = last30.map(function(h) { return h.cvr != null ? parseFloat(h.cvr) : null; });
+    var acosArr = last30.map(function(h) { return h.acos != null ? parseFloat(h.acos) : null; });
+    buildChart(days, revArr, unitsArr, cvrsArr, acosArr);
+  }
+
+  // The last-30-day history is injected inline at build time so the chart renders
+  // no matter how the page is served. Fall back to fetching kpi_history.json
+  // (e.g. GitHub Pages), then to an empty axis if neither is available.
+  var PERF_HISTORY = /* PERF_HISTORY_PLACEHOLDER */ null;
+  if (PERF_HISTORY && PERF_HISTORY.length) {
+    renderPerf(PERF_HISTORY);
+  } else {
+    fetch('kpi_history.json')
+      .then(function(r) { return r.json(); })
+      .then(renderPerf)
+      .catch(function() {
+        var days = last30Labels();
+        var empty = days.map(function() { return 0; });
+        buildChart(days, empty, empty, empty);
+      });
+  }
 })();
 
 
