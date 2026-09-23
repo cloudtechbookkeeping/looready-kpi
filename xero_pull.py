@@ -43,16 +43,17 @@ CONN_URL      = "https://api.xero.com/connections"
 REPORT_URL    = "https://api.xero.com/api.xro/2.0/Reports/ProfitAndLoss"
 BS_REPORT_URL = "https://api.xero.com/api.xro/2.0/Reports/BalanceSheet"
 
-# The broad reports scope covers both Profit & Loss and Balance Sheet. If the
-# app was only granted the granular P&L scope, we fall back to it so P&L keeps
+# Xero exposes granular per-report scopes. Request Profit & Loss + Balance Sheet
+# together; if the app only has the P&L scope, fall back to it so P&L keeps
 # working (Balance Sheet is simply skipped in that case).
-SCOPE_BROAD = "accounting.reports.read"
 SCOPE_PNL   = "accounting.reports.profitandloss.read"
+SCOPE_BS    = "accounting.reports.balancesheet.read"
+SCOPE_FULL  = SCOPE_PNL + " " + SCOPE_BS
 SCOPE       = SCOPE_PNL   # retained for backwards reference
 
 MONTHS_BACK = 12          # current month + previous 11
 CURRENCY    = "USD"       # LooReady, LLC base currency (US org)
-PARSER_VERSION = 3        # bump to force a re-fetch/re-parse (busts daily cache)
+PARSER_VERSION = 4        # bump to force a re-fetch/re-parse (busts daily cache)
 
 
 # ── Auth ─────────────────────────────────────────────────────────────────────
@@ -77,7 +78,7 @@ def get_access_token():
         # A refresh grant carries whatever scopes were authorised; assume the
         # broad reports scope is available and let a 403 on the report say otherwise.
         return tok.get("access_token"), tok.get("refresh_token"), "refresh"
-    for sc in (SCOPE_BROAD, SCOPE_PNL):
+    for sc in (SCOPE_FULL, SCOPE_PNL):
         r = requests.post(TOKEN_URL, headers=headers, timeout=30,
                           data={"grant_type": "client_credentials", "scope": sc})
         if r.status_code == 200:
@@ -362,7 +363,7 @@ def main():
     # Balance Sheet (point-in-time as at each month-end). Only attempted when the
     # broad reports scope was granted; a P&L-only scope simply skips it.
     bs_months, bs_order = {}, []
-    if granted_scope in (SCOPE_BROAD, "refresh"):
+    if granted_scope == "refresh" or (granted_scope and "balancesheet" in granted_scope):
         for key, label, from_date, to_date in month_windows(MONTHS_BACK):
             rep = fetch_balance_sheet(token, tenant, to_date)
             if not rep:
