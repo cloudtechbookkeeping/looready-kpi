@@ -739,7 +739,7 @@ try { window.CURRENT_USER = __AUTH_CONTEXT__; } catch (e) { window.CURRENT_USER 
       <div class="live-dot"></div>
       <div>
         <span class="live-label">Live</span>
-        <span class="live-time">Updated September 24, 2026<br>10:53 AM ET</span>
+        <span class="live-time">Updated September 24, 2026<br>2:57 PM ET</span>
       </div>
     </div>
     <div id="user-box" class="user-box" style="display:none;">
@@ -779,7 +779,7 @@ try { window.CURRENT_USER = __AUTH_CONTEXT__; } catch (e) { window.CURRENT_USER 
 <!-- ══════════════ DASHBOARD SECTION ══════════════ -->
 <div id="section-dashboard" class="section active">
 
-  <div class="updated-line">Data snapshot: September 24, 2026 10:53 AM ET · SP-API live pull</div>
+  <div class="updated-line">Data snapshot: September 24, 2026 2:57 PM ET · SP-API live pull</div>
 
   <!-- 1st + 2nd: Profit Breakdown + Inventory Health -->
   <div class="grid-2-eq mb-20">
@@ -801,7 +801,7 @@ try { window.CURRENT_USER = __AUTH_CONTEXT__; } catch (e) { window.CURRENT_USER 
         </div>
         <div class="mini-stat">
           <span class="mini-stat-label">LR-CS-10</span>
-          <span class="mini-stat-val" id="inv-cs10">2,345 units</span>
+          <span class="mini-stat-val" id="inv-cs10">2,341 units</span>
         </div>
         <div class="mini-stat">
           <span class="mini-stat-label">LR-CS-30</span>
@@ -809,7 +809,7 @@ try { window.CURRENT_USER = __AUTH_CONTEXT__; } catch (e) { window.CURRENT_USER 
         </div>
         <div class="mini-stat">
           <span class="mini-stat-label">LR-TSC-5PACK</span>
-          <span class="mini-stat-val" id="inv-5pack">1,043 units</span>
+          <span class="mini-stat-val" id="inv-5pack">1,042 units</span>
         </div>
         <div class="mini-stat">
           <span class="mini-stat-label">LR-CS-120 ⚠️</span>
@@ -1658,7 +1658,7 @@ try { window.CURRENT_USER = __AUTH_CONTEXT__; } catch (e) { window.CURRENT_USER 
 
 <script>
 // ── Inventory Data ──────────────────────────────────────────────
-const inventoryData = {'LR-TSC-30PACK':{fba:{fulfillable:1373,inbound:76,reserved:335,researching:0,unfulfillable:2},awd:{onhand:200,inbound:1050,outbound:0}},'LR-CS-10':{fba:{fulfillable:1445,inbound:0,reserved:33,researching:0,unfulfillable:3},awd:{onhand:864,inbound:0,outbound:0}},'LR-CS-30':{fba:{fulfillable:667,inbound:3,reserved:117,researching:0,unfulfillable:1},awd:{onhand:4293,inbound:0,outbound:0}},'LR-TSC-5PACK':{fba:{fulfillable:273,inbound:1,reserved:13,researching:6,unfulfillable:0},awd:{onhand:750,inbound:0,outbound:0}},'LR-CS-120':{fba:{fulfillable:287,inbound:0,reserved:1,researching:0,unfulfillable:0},awd:{onhand:348,inbound:0,outbound:0}}};
+const inventoryData = {'LR-TSC-30PACK':{fba:{fulfillable:1367,inbound:76,reserved:341,researching:0,unfulfillable:2},awd:{onhand:200,inbound:1050,outbound:0}},'LR-CS-10':{fba:{fulfillable:1439,inbound:0,reserved:35,researching:0,unfulfillable:3},awd:{onhand:864,inbound:0,outbound:0}},'LR-CS-30':{fba:{fulfillable:658,inbound:3,reserved:126,researching:0,unfulfillable:1},awd:{onhand:4293,inbound:0,outbound:0}},'LR-TSC-5PACK':{fba:{fulfillable:271,inbound:1,reserved:14,researching:6,unfulfillable:0},awd:{onhand:750,inbound:0,outbound:0}},'LR-CS-120':{fba:{fulfillable:287,inbound:0,reserved:1,researching:0,unfulfillable:0},awd:{onhand:348,inbound:0,outbound:0}}};
 
 // ── Repeat Purchase & Est. CLTV Data (aggregate, per-SKU, last full month) ──
 const repeatPurchaseData = {'LR-TSC-30PACK':{orders:1228,unique_customers:1169,repeat_customers_pct:4.8,avg_orders_per_customer:1.05,est_cltv:23.72},'LR-TSC-5PACK':{orders:163,unique_customers:155,repeat_customers_pct:4.9,avg_orders_per_customer:1.05,est_cltv:23.72},'LR-CS-30':{orders:371,unique_customers:363,repeat_customers_pct:2.2,avg_orders_per_customer:1.02,est_cltv:23.04},'LR-CS-10':{orders:624,unique_customers:605,repeat_customers_pct:3.0,avg_orders_per_customer:1.03,est_cltv:23.27}};
@@ -1687,9 +1687,9 @@ function renderRepeatPurchase() {
 
 // ── Tab Switching Data ──────────────────────────────────────────
 const tabData = {
-  '30d': { revenue:'$39,154.27', units:'2048', spend:'$10,085', acos:'25.76%', cvr:'12.18%', sessions:'--', ipi:'628', rsub:'Last 30 Days · SP-API live', usub:'1733 orders . 2048 units', ssub:'ROAS 3.88x · 30d', asub:'Not yet available', sesub:'12.18% CVR · -- sessions', isub:'Range 570-686', acosColor:'#10b981', skuUnits:{'LR-TSC-30PACK':1037,'LR-CS-10':498,'LR-CS-30':302,'LR-TSC-5PACK':133,'LR-CS-120':0}, days30d:29 }, /* 30D_KPI_PLACEHOLDER */
-  '7d':  { revenue:'$8,906.36', units:'428', spend:'$10,085', acos:'25.76%', cvr:'12.18%', sessions:'--', ipi:'628', rsub:'Last 7 Days · SP-API live', usub:'385 orders . 428 units', ssub:'ROAS 3.88x · 30d', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#10b981', skuUnits:{'LR-TSC-30PACK':227,'LR-CS-10':90,'LR-CS-30':77,'LR-TSC-5PACK':34,'LR-CS-120':0} }, /* 7D_KPI_PLACEHOLDER */
-  'today': { revenue:'$1,231.42', units:'56', spend:'$10,085', acos:'25.76%', cvr:'12.18%', sessions:'--', ipi:'628', rsub:'Today September 24, 2026 10:53 AM ET . SP-API live', usub:'50 orders . 85 units . Fees $495.84', ssub:'ROAS 3.88x · 30d', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#10b981', skuUnits:{'LR-TSC-30PACK':34,'LR-CS-10':14,'LR-CS-30':7,'LR-TSC-5PACK':1,'LR-CS-120':0} }, /* TODAY_KPI_PLACEHOLDER */
+  '30d': { revenue:'$39,154.27', units:'2048', spend:'$10,085', acos:'25.76%', cvr:'12.2%', sessions:'--', ipi:'628', rsub:'Last 30 Days · SP-API live', usub:'1733 orders . 2048 units', ssub:'ROAS 3.88x · 30d', asub:'Not yet available', sesub:'12.2% CVR · -- sessions', isub:'Range 570-686', acosColor:'#10b981', skuUnits:{'LR-TSC-30PACK':1037,'LR-CS-10':498,'LR-CS-30':302,'LR-TSC-5PACK':133,'LR-CS-120':0}, days30d:29 }, /* 30D_KPI_PLACEHOLDER */
+  '7d':  { revenue:'$8,906.36', units:'428', spend:'$10,085', acos:'25.76%', cvr:'12.2%', sessions:'--', ipi:'628', rsub:'Last 7 Days · SP-API live', usub:'385 orders . 428 units', ssub:'ROAS 3.88x · 30d', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#10b981', skuUnits:{'LR-TSC-30PACK':227,'LR-CS-10':90,'LR-CS-30':77,'LR-TSC-5PACK':34,'LR-CS-120':0} }, /* 7D_KPI_PLACEHOLDER */
+  'today': { revenue:'$1,349.12', units:'63', spend:'$10,085', acos:'25.76%', cvr:'12.2%', sessions:'--', ipi:'628', rsub:'Today September 24, 2026 2:57 PM ET . SP-API live', usub:'57 orders . 85 units . Fees $495.84', ssub:'ROAS 3.88x · 30d', asub:'Not yet available', sesub:'Not yet available', isub:'Range 570-686', acosColor:'#10b981', skuUnits:{'LR-TSC-30PACK':37,'LR-CS-10':17,'LR-CS-30':7,'LR-TSC-5PACK':2,'LR-CS-120':0} }, /* TODAY_KPI_PLACEHOLDER */
   'lifetime': { revenue:'$439,795', units:'20,748', spend:'$226,449', acos:'51.5%', sessions:'187,331', ipi:'628',
                rsub:'Lifetime Ad Sales (all campaigns)', usub:'Lifetime ad purchases', ssub:'Lifetime total spend', asub:'Lifetime avg TACoS', sesub:'Lifetime ad clicks', isub:'Range 570–686',
                acosColor:'#d97706' },
@@ -2823,7 +2823,7 @@ function sendInvite(){
   // The last-30-day history is injected inline at build time so the chart renders
   // no matter how the page is served. Fall back to fetching kpi_history.json
   // (e.g. GitHub Pages), then to an empty axis if neither is available.
-  var PERF_HISTORY = [{"date": "2026-08-26", "revenue": 2119.45, "units": 84, "cvr": 12.02, "acos": 28.87}, {"date": "2026-08-27", "revenue": 1171.03, "units": 95, "cvr": null, "acos": 28.56}, {"date": "2026-08-28", "revenue": 1861.82, "units": 86, "cvr": 11.65, "acos": 28.05}, {"date": "2026-08-29", "revenue": 1388.92, "units": 68, "cvr": 11.65, "acos": 28.05}, {"date": "2026-08-30", "revenue": 1119.73, "units": 81, "cvr": 11.88, "acos": 29.5}, {"date": "2026-08-31", "revenue": 1385.05, "units": 75, "cvr": 11.78, "acos": 29.1}, {"date": "2026-09-01", "revenue": 1939.99, "units": 90, "cvr": 12.08, "acos": 28.82}, {"date": "2026-09-02", "revenue": 1918.2, "units": 99, "cvr": 12.25, "acos": 27.21}, {"date": "2026-09-03", "revenue": 1285.11, "units": 75, "cvr": 12.08, "acos": 28.33}, {"date": "2026-09-04", "revenue": 1556.71, "units": 74, "cvr": 12.3, "acos": 28.63}, {"date": "2026-09-05", "revenue": 1158.74, "units": 74, "cvr": 12.09, "acos": 27.83}, {"date": "2026-09-06", "revenue": 1250.66, "units": 64, "cvr": 12.07, "acos": 27.82}, {"date": "2026-09-07", "revenue": 1279.54, "units": 64, "cvr": 12.11, "acos": 28.08}, {"date": "2026-09-08", "revenue": 1246.37, "units": 60, "cvr": 11.98, "acos": 28.3}, {"date": "2026-09-09", "revenue": 1445.15, "units": 55, "cvr": 12.01, "acos": 27.4}, {"date": "2026-09-10", "revenue": 1710.16, "units": 63, "cvr": 12.12, "acos": 28.56}, {"date": "2026-09-11", "revenue": 1608.52, "units": 76, "cvr": 12.16, "acos": 29.13}, {"date": "2026-09-12", "revenue": 1391.09, "units": 71, "cvr": 12.16, "acos": 28.17}, {"date": "2026-09-13", "revenue": 967.08, "units": 68, "cvr": 12.26, "acos": null}, {"date": "2026-09-14", "revenue": 932.06, "units": 56, "cvr": 12.26, "acos": null}, {"date": "2026-09-15", "revenue": 1041.37, "units": 56, "cvr": 12.09, "acos": 27.45}, {"date": "2026-09-16", "revenue": 1156.73, "units": 66, "cvr": 12.09, "acos": 27.76}, {"date": "2026-09-17", "revenue": 1079.59, "units": 62, "cvr": 12.01, "acos": 26.97}, {"date": "2026-09-18", "revenue": 1002.2, "units": 57, "cvr": 12.04, "acos": 25.76}, {"date": "2026-09-19", "revenue": 1168.48, "units": 55, "cvr": 12.04, "acos": 26.31}, {"date": "2026-09-20", "revenue": 1478.47, "units": 55, "cvr": 12.15, "acos": 26.59}, {"date": "2026-09-21", "revenue": 1529.03, "units": 71, "cvr": 12.15, "acos": 26.59}, {"date": "2026-09-22", "revenue": 1417.01, "units": 68, "cvr": 12.32, "acos": 26.47}, {"date": "2026-09-23", "revenue": 1623.2, "units": 70, "cvr": 12.18, "acos": 25.72}, {"date": "2026-09-24", "revenue": 1231.42, "units": 85, "cvr": null, "acos": 25.76}];
+  var PERF_HISTORY = [{"date": "2026-08-26", "revenue": 2119.45, "units": 84, "cvr": 12.02, "acos": 28.87}, {"date": "2026-08-27", "revenue": 1171.03, "units": 95, "cvr": null, "acos": 28.56}, {"date": "2026-08-28", "revenue": 1861.82, "units": 86, "cvr": 11.65, "acos": 28.05}, {"date": "2026-08-29", "revenue": 1388.92, "units": 68, "cvr": 11.65, "acos": 28.05}, {"date": "2026-08-30", "revenue": 1119.73, "units": 81, "cvr": 11.88, "acos": 29.5}, {"date": "2026-08-31", "revenue": 1385.05, "units": 75, "cvr": 11.78, "acos": 29.1}, {"date": "2026-09-01", "revenue": 1939.99, "units": 90, "cvr": 12.08, "acos": 28.82}, {"date": "2026-09-02", "revenue": 1918.2, "units": 99, "cvr": 12.25, "acos": 27.21}, {"date": "2026-09-03", "revenue": 1285.11, "units": 75, "cvr": 12.08, "acos": 28.33}, {"date": "2026-09-04", "revenue": 1556.71, "units": 74, "cvr": 12.3, "acos": 28.63}, {"date": "2026-09-05", "revenue": 1158.74, "units": 74, "cvr": 12.09, "acos": 27.83}, {"date": "2026-09-06", "revenue": 1250.66, "units": 64, "cvr": 12.07, "acos": 27.82}, {"date": "2026-09-07", "revenue": 1279.54, "units": 64, "cvr": 12.11, "acos": 28.08}, {"date": "2026-09-08", "revenue": 1246.37, "units": 60, "cvr": 11.98, "acos": 28.3}, {"date": "2026-09-09", "revenue": 1445.15, "units": 55, "cvr": 12.01, "acos": 27.4}, {"date": "2026-09-10", "revenue": 1710.16, "units": 63, "cvr": 12.12, "acos": 28.56}, {"date": "2026-09-11", "revenue": 1608.52, "units": 76, "cvr": 12.16, "acos": 29.13}, {"date": "2026-09-12", "revenue": 1391.09, "units": 71, "cvr": 12.16, "acos": 28.17}, {"date": "2026-09-13", "revenue": 967.08, "units": 68, "cvr": 12.26, "acos": null}, {"date": "2026-09-14", "revenue": 932.06, "units": 56, "cvr": 12.26, "acos": null}, {"date": "2026-09-15", "revenue": 1041.37, "units": 56, "cvr": 12.09, "acos": 27.45}, {"date": "2026-09-16", "revenue": 1156.73, "units": 66, "cvr": 12.09, "acos": 27.76}, {"date": "2026-09-17", "revenue": 1079.59, "units": 62, "cvr": 12.01, "acos": 26.97}, {"date": "2026-09-18", "revenue": 1002.2, "units": 57, "cvr": 12.04, "acos": 25.76}, {"date": "2026-09-19", "revenue": 1168.48, "units": 55, "cvr": 12.04, "acos": 26.31}, {"date": "2026-09-20", "revenue": 1478.47, "units": 55, "cvr": 12.15, "acos": 26.59}, {"date": "2026-09-21", "revenue": 1529.03, "units": 71, "cvr": 12.15, "acos": 26.59}, {"date": "2026-09-22", "revenue": 1417.01, "units": 68, "cvr": 12.32, "acos": 26.47}, {"date": "2026-09-23", "revenue": 1623.2, "units": 70, "cvr": 12.18, "acos": 25.72}, {"date": "2026-09-24", "revenue": 1349.12, "units": 85, "cvr": 12.2, "acos": 25.76}];
   if (PERF_HISTORY && PERF_HISTORY.length) {
     renderPerf(PERF_HISTORY);
   } else {
